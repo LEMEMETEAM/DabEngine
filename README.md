@@ -2,7 +2,7 @@
 <p>This is just a simple 2D and 3D engine. It still has small bugs here and there but those will be ironed out soon.</p>
 
 <h2>Structure</h2>
-`/src` contains the engine code.</br>
+`dab` contains the engine code.</br>
 `/Animation Test` and `\Testing` contain some small tests that I made (you can try them out for yourselves).</br>
 `/res` contains textures and sprites.</br>
 
