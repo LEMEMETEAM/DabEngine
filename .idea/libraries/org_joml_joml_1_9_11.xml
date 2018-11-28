@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="org.joml:joml:1.9.11" type="repository">
+    <properties maven-id="org.joml:joml:1.9.11" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/joml/joml/1.9.11/joml-1.9.11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="https://joml-ci.github.io/JOML/apidocs" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
