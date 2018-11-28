@@ -1,5 +1,5 @@
 <h1>DabEngine</h1>
-<p>This is just a simple 2D and 3D engine. It still has small bugs here and there but those will be ironed out soon.</p>
+<p>This is just a simple 2D and 3D engine written in Java and using OpenGL. It still has small bugs here and there but those will be ironed out soon.</p>
 
 <h2>Structure</h2>
 `/src` contains the engine code.</br>
