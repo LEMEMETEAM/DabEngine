@@ -2,7 +2,7 @@
 <p>This is just a simple 2D and 3D engine. It still has small bugs here and there but those will be ironed out soon.</p>
 
 <h2>Structure</h2>
-`dab` contains the engine code.</br>
+`/src` contains the engine code.</br>
 `/Animation Test` and `\Testing` contain some small tests that I made (you can try them out for yourselves).</br>
 `/res` contains textures and sprites.</br>
 
@@ -14,7 +14,8 @@ public class Main extends Engine{
   public static void main(String[] args){
     new Main().start();
   }
-}```
+}
+```
 When you run the code, if done correctly, you should just get a black screen.
 <p>Also all OpenGL code and anything related to OpenGL should be called in the `initWindow()` method since it creates all OpenGL contexts in that same super method.
 
