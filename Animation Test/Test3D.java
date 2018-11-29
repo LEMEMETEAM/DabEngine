@@ -1,5 +1,6 @@
 import Core.Engine;
 import Graphics.Camera3D;
+import Graphics.HUD;
 import Graphics.Shaders;
 import Stage.Stage;
 import Input.*;
@@ -9,7 +10,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Test3D extends Engine {
 
-    private Gui gui;
+    private HUD gui;
     private Camera3D cam;
     private Shaders s;
     private Stage stage;
@@ -24,7 +25,7 @@ public class Test3D extends Engine {
 
         cam = new Camera3D();
 
-        gui = new Gui(getMainWindow().getWidth(), getMainWindow().getHeight());
+        gui = new HUD(getMainWindow().getWidth(), getMainWindow().getHeight());
 
         stage = new Stage();
 

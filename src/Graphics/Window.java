@@ -28,6 +28,8 @@ public class Window {
         }
         glfwMakeContextCurrent(win);
         GL.createCapabilities();
+
+        windowCallback();
     }
 
     public Window(int width, int height, String title, int monitor){
@@ -42,6 +44,8 @@ public class Window {
         }
         glfwMakeContextCurrent(win);
         GL.createCapabilities();
+
+        windowCallback();
     }
 
     public Window(int width, int height, String title, int monitor, int share){
@@ -56,6 +60,8 @@ public class Window {
         }
         glfwMakeContextCurrent(win);
         GL.createCapabilities();
+
+        windowCallback();
     }
 
     private void windowCallback(){
