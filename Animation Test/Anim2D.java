@@ -11,9 +11,12 @@ public class Anim2D extends Engine {
     private Stage stage;
     private Camera2D cam;
 
-    @Override
-    public void initWindow() {
-        super.initWindow();
+    public void initWindow(int width, int height, String title) {
+        width = 1366;
+        height = 768;
+        title = "dab";
+
+        super.initWindow(width, height, title);
 
         glClearColor(0.5f, 0.75f, 0.75f, 1f);
 

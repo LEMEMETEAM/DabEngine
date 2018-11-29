@@ -16,8 +16,8 @@ public class Main extends Engine {
     private Menu menu;
 
     @Override
-    public void initWindow() {
-        super.initWindow();
+    public void initWindow(int width, int height, String title) {
+        super.initWindow(1366, 768, "Pong");
 
         glClearColor(0.1f, 0.5f, 0.5f, 1f);
 

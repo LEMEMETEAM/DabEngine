@@ -15,8 +15,8 @@ public class Test3D extends Engine {
     private Stage stage;
 
     @Override
-    public void initWindow() {
-        super.initWindow();
+    public void initWindow(int width, int height, String title) {
+        super.initWindow(1366, 768, "TEst3d");
 
         glfwSetInputMode(getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 

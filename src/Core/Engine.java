@@ -9,7 +9,8 @@ import org.joml.Matrix4f;
 
 public abstract class Engine implements Runnable {
 
-    private final int WIDTH = 800, HEIGHT = 600;
+    private int width, height;
+    private String title;
     private float FOV = 90;
     private final float Z_NEAR = 0.01f;
     private final float Z_FAR = 1000.f;
@@ -38,7 +39,7 @@ public abstract class Engine implements Runnable {
         int updates = 0;
         int frames = 0;
 
-        initWindow();
+        initWindow(width, height, title);
         while (!glfwWindowShouldClose(mainWindow.getWin())) {
             if(mainWindow.isResized()){
                 glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
@@ -67,13 +68,17 @@ public abstract class Engine implements Runnable {
         glfwTerminate();
     }
 
-    public void initWindow() {
+    public void initWindow(int width, int height, String title) {
+        this.width = width;
+        this.height = height;
+        this.title = title;
+
         if (!glfwInit()) {
             System.err.println("Window not initialised");
             System.exit(1);
         }
 
-        mainWindow = new Window(WIDTH, HEIGHT, "Test");
+        mainWindow = new Window(width, height, title);
         mainWindow.showWindow();
 
         glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
