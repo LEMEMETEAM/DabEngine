@@ -24,4 +24,4 @@ When you run the code, if done correctly, you should just get a black screen.
 <li>Better optimizations (don't know if it's just my shit laptop)</li>
 <li>More HUD methods (such as draw image or shape, not just text (I only used the HUD for debugging))</li>
 <li>Learn more about shaders so they can be implemented better (you have to create all 5 default uniform variables manually)</li>
-<li>Window title and size changing (will be one of the first added (I am also not 100% sure if the resize callback even works so I will fix that as well))</li>
+<li>~~Window title and size changing (will be one of the first added (I am also not 100% sure if the resize callback even works so I will fix that as well))~~</li>

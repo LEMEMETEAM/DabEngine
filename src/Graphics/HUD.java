@@ -22,19 +22,14 @@ public class HUD {
         this.windowHeight = windowHeight;
     }
 
-    public HUD(float windowWidth, float windowHeight, Vector4f xywh, Vector4f colour){
-        vg = nvgCreate(NVG_STENCIL_STROKES);
-        color = NVGColor.create();
-
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
-
-        nvgBeginFrame(vg, windowWidth, windowHeight, 1);
-        nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGBf(colour.x, colour.y, colour.z, color));
-        nvgRect(vg, xywh.x, xywh.y, xywh.z, xywh.w);
-        nvgFill(vg);
+    public void begin(Vector4f xywh, Vector4f colour){
+      nvgBeginFrame(vg, windowWidth, windowHeight, 1);
+      nvgBeginPath(vg);
+      nvgFillColor(vg, nvgRGBAf(colour.x, colour.y, colour.z, colour.w, color));
+      nvgRect(vg, xywh.x, xywh.y, xywh.z, xywh.w);
+      nvgFill(vg);
     }
+
 
     public void drawText(String text, float x, float y, String fontType, String fontLoc){
         int font = nvgCreateFont(vg, fontType, fontLoc);
@@ -46,6 +41,12 @@ public class HUD {
         nvgFontFace(vg, "BOLD");
         nvgFillColor(vg, nvgRGBAf(1f, 1f, 1f, 1f, color));
         nvgText(vg, x, y, text);
+    }
+
+    public void drawRect(Vector4f xywh, Vector4f colour){
+        nvgFillColor(vg, nvgRGBf(colour.x, colour.y, colour.z, color));
+        nvgRect(vg, xywh.x, xywh.y, xywh.z, xywh.w);
+        nvgFill(vg);
     }
 
     public void end(){

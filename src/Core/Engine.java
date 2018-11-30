@@ -3,9 +3,11 @@ package Core;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import Graphics.Window;
-import Input.*;
 import org.joml.Matrix4f;
+
+import Graphics.Window;
+import Input.Input;
+import Input.Mouse;
 
 public abstract class Engine implements Runnable {
 
