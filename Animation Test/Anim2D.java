@@ -1,4 +1,6 @@
 import Core.Engine;
+
+import static org.lwjgl.opengl.GL46.*;
 import Graphics.Camera2D;
 import Graphics.Shaders;
 import Stage.Stage;
@@ -17,6 +19,8 @@ public class Anim2D extends Engine {
         title = "dab";
 
         super.initWindow(width, height, title);
+        
+        glEnable(GL_DEBUG_OUTPUT);
 
         glClearColor(0.5f, 0.75f, 0.75f, 1f);
 

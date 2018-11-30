@@ -5,6 +5,7 @@ import Graphics.Shaders;
 import Stage.Stage;
 import Input.*;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -17,7 +18,11 @@ public class Test3D extends Engine {
 
     @Override
     public void initWindow(int width, int height, String title) {
-        super.initWindow(1366, 768, "TEst3d");
+    	width = 1366;
+    	height = 768;
+    	title = "test3d";
+    	
+        super.initWindow(width, height, title);
 
         glfwSetInputMode(getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -40,11 +45,13 @@ public class Test3D extends Engine {
 
     @Override
     public void onRender() {
+    	gui.begin(new Vector4f(0, 0, getMainWindow().getWidth(), getMainWindow().getHeight()), new Vector4f(1, 1, 1, 0.65f));
         gui.drawText(Integer.toString(getFrames()) + " FPS", 5, 20, "BOLD", "./res/OpenSans-Bold.ttf");
         gui.drawText(Integer.toString(getFrames()) + " UPS", 5, 40, "BOLD", "./res/OpenSans-Bold.ttf");
         gui.drawText(Float.toString(getFOV()) + " FOV", 5, 60, "BOLD", "./res/OpenSans-Bold.ttf");
         gui.drawText("Yaw: " + cam.getYaw() + " - Pitch:" + cam.getPitch(), 50, 20, "BOLD", "./res/OpenSans-Bold.ttf");
         gui.drawText("Mouse stuff: " + Mouse.dx + " - " + Mouse.dy, 50, 40, "BOLD", "./res/OpenSans-Bold.ttf");
+        gui.end();
 
         s.bind();
 
