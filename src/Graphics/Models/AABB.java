@@ -1,11 +1,22 @@
 package Graphics.Models;
 
+import java.util.Vector;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class AABB {
 
     private Vector2f center, half_extent;
+    public static enum Direction{
+    	UP,RIGHT,DOWN,LEFT
+    }
+    private Vector2f[] compass = {
+    	new Vector2f(0.0f, 1.0f).normalize(),	//up
+    	new Vector2f(1.0f, 0.0f).normalize(), 	//right
+    	new Vector2f(0.0f, -1.0f).normalize(),	//down
+    	new Vector2f(-1.0f, 0.0f).normalize()	//left
+    };
 
     public AABB(){
         this.center = new Vector2f(0);
@@ -22,14 +33,52 @@ public class AABB {
         this.half_extent = new Vector2f(0);
     }
 
-    public boolean intersects(AABB bounds2){
-        Vector2f distance = bounds2.center.sub(center, new Vector2f());
+    public Direction intersects(AABB bounds2){
+        /*Vector2f distance = bounds2.center.sub(center, new Vector2f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
 
         distance.sub(half_extent.add(bounds2.half_extent, new Vector2f()));
-
-        return (distance.x < 0 && distance.y < 0);
+        float max = 0f;
+        int best_match = -1;
+        
+        if(distance.x < 0 && distance.y < 0) {
+	        for(int i = 0; i < 4; i++) {
+	        	System.out.println(distance);
+	        	float dot = distance.normalize().dot(compass[i]);
+	        	System.out.println(dot);
+	        	if(dot > max) {
+	        		max = dot;
+	        		best_match = i;
+	        	}
+	        }
+	        System.out.println(Direction.values()[best_match]);
+	        System.out.println("collision");
+	        return Direction.values()[best_match];
+        }
+        return null;*/
+    	Vector2f distance = bounds2.center.sub(center, new Vector2f());
+    	Vector2f bounds2_negative = bounds2.half_extent.negate(new Vector2f());
+    	float clampx = Math.max(bounds2_negative.x, Math.min(bounds2.half_extent.x, distance.x));
+    	float clampy = Math.max(bounds2_negative.y, Math.min(bounds2.half_extent.y, distance.y));
+    	Vector2f clamped = new Vector2f(clampx, clampy);
+    	Vector2f closest = bounds2.center.sub(clamped, new Vector2f());
+    	distance = closest.sub(center);
+    	
+    	float max = 0f;
+        int best_match = -1;
+    	
+    	if(distance.length() < half_extent.x || distance.length() < half_extent.y) {
+    		for(int i = 0; i < 4; i++) {
+	        	float dot = distance.normalize().dot(compass[i]);
+	        	if(dot > max) {
+	        		max = dot;
+	        		best_match = i;
+	        	}
+	        }
+    		return Direction.values()[best_match];
+    	}
+    	return null;
     }
 
     public Vector2f getCenter() {

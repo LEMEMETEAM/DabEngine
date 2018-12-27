@@ -1,9 +1,9 @@
 package Stage;
 
-import Graphics.Models.Model;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import Deprecated3D.Model;
 
 public class Stage {
 

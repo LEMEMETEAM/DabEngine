@@ -3,27 +3,35 @@ package Core;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.HashMap;
+
 import org.joml.Matrix4f;
 
 import Graphics.Window;
-import Input.Input;
+import Input.InputHandler;
+import Input.KeyBoard;
 import Input.Mouse;
 
 public abstract class Engine implements Runnable {
 
     private int width, height;
+    private boolean fullscreen;
     private String title;
-    private float FOV = 90;
-    private final float Z_NEAR = 0.01f;
-    private final float Z_FAR = 1000.f;
+    private HashMap<Integer, Integer> hints = new HashMap<>();
     private static Window mainWindow = null;
     private Thread t;
-    private Matrix4f projectionMatrix;
-    private float aspectRatio;
     private int finalFrames = 0;
     private int finalUpdates = 0;
-    private String projectionMatrixType;
     private static double delta = 0.0;
+    private InputHandler inputhandler;
+    
+    public Engine(int width, int height, String title, HashMap<Integer, Integer> hints, boolean fullscreen) {
+        this.width = width;
+        this.height = height;
+        this.title = title;
+        this.fullscreen = fullscreen;
+        this.hints = hints;
+    }
 
     public synchronized void start() {
         t = new Thread(this, "gameThread");
@@ -41,15 +49,15 @@ public abstract class Engine implements Runnable {
         int updates = 0;
         int frames = 0;
 
-        initWindow(width, height, title);
+        init();
         while (!glfwWindowShouldClose(mainWindow.getWin())) {
             if(mainWindow.isResized()){
                 glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
-                aspectRatio = (float) mainWindow.getWidth() / (float) mainWindow.getHeight();
             }
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
+            processInput();
             if (delta >= 1.0) {
                 update();
                 updates++;
@@ -70,40 +78,46 @@ public abstract class Engine implements Runnable {
         glfwTerminate();
     }
 
-    public void initWindow(int width, int height, String title) {
-        this.width = width;
-        this.height = height;
-        this.title = title;
+    public void init() {
 
         if (!glfwInit()) {
             System.err.println("Window not initialised");
             System.exit(1);
         }
 
-        mainWindow = new Window(width, height, title);
+        mainWindow = new Window(width, height, title, hints, fullscreen);
+        if(fullscreen) {
+        	mainWindow.createFullScreenWindow(glfwGetPrimaryMonitor());
+        }
+        else {
+        	mainWindow.createWindow();
+        }
         mainWindow.showWindow();
 
         glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
+        
+        inputhandler = new InputHandler();
 
-        glfwSetKeyCallback(mainWindow.getWin(), new Input());
-        glfwSetCursorPosCallback(mainWindow.getWin(), new Mouse());
+        glfwSetKeyCallback(mainWindow.getWin(), inputhandler);
+        glfwSetCursorPosCallback(mainWindow.getWin(), inputhandler);
         glfwSwapInterval(1);
 
-        glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_STENCIL_TEST);
 
-        aspectRatio = (float) mainWindow.getWidth() / (float) mainWindow.getHeight();
+    }
+    
+    public void processInput() {
+    	onAction(inputhandler);
+    	glfwPollEvents();
     }
 
     public void update() {
         onUpdate();
-        glfwPollEvents();
     }
 
     public void render() {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         onRender();
 
@@ -112,42 +126,10 @@ public abstract class Engine implements Runnable {
 
     public abstract void onRender();
     public abstract void onUpdate();
+    public abstract void onAction(InputHandler handler);
 
     public static Window getMainWindow() {
         return mainWindow;
-    }
-
-    public Matrix4f getProjectionMatrix() {
-        if(mainWindow.isResized()){
-            if(projectionMatrixType.equals("2D")){
-                projectionMatrix = new Matrix4f().ortho(-10.0f * aspectRatio, 10.0f * aspectRatio, -10.0f, 10.0f, -1.0f, 1.0f);
-            }
-            else if(projectionMatrixType.equals("3D")){
-                projectionMatrix = new Matrix4f().perspective((float) Math.toRadians(FOV), aspectRatio, Z_NEAR, Z_FAR);
-            }
-        }
-        return projectionMatrix;
-    }
-
-    public void setProjection(String type){
-        switch(type){
-            case "2D":
-                projectionMatrixType = "2D";
-                projectionMatrix = new Matrix4f().ortho(-10.0f * aspectRatio, 10.0f * aspectRatio, -10.0f, 10.0f, -1.0f, 1.0f);
-                break;
-            case "3D":
-                projectionMatrixType = "3D";
-                projectionMatrix = new Matrix4f().perspective((float) Math.toRadians(FOV), aspectRatio, Z_NEAR, Z_FAR);
-                break;
-        }
-    }
-
-    public void setFOV(float FOV) {
-        this.FOV = FOV;
-    }
-
-    public float getFOV() {
-        return FOV;
     }
 
     public int getFrames() {
