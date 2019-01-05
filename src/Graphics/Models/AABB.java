@@ -1,9 +1,9 @@
 package Graphics.Models;
 
-import java.util.Vector;
-
 import org.joml.Vector2f;
-import org.joml.Vector3f;
+
+import Utils.Pair;
+import Utils.Tuple3;
 
 public class AABB {
 
@@ -33,8 +33,8 @@ public class AABB {
         this.half_extent = new Vector2f(0);
     }
 
-    public Direction intersects(AABB bounds2){
-        /*Vector2f distance = bounds2.center.sub(center, new Vector2f());
+    /*public Tuple3<Boolean, Direction, Vector2f> intersects(AABB bounds2){
+        Vector2f distance = bounds2.center.sub(center, new Vector2f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
 
@@ -56,7 +56,7 @@ public class AABB {
 	        System.out.println("collision");
 	        return Direction.values()[best_match];
         }
-        return null;*/
+        return null;
     	Vector2f distance = bounds2.center.sub(center, new Vector2f());
     	Vector2f bounds2_negative = bounds2.half_extent.negate(new Vector2f());
     	float clampx = Math.max(bounds2_negative.x, Math.min(bounds2.half_extent.x, distance.x));
@@ -76,9 +76,23 @@ public class AABB {
 	        		best_match = i;
 	        	}
 	        }
-    		return Direction.values()[best_match];
+    		if(best_match == -1) {
+    			return new Tuple3<>(false, Direction.UP, new Vector2f(0));
+    		}else {
+    			return new Tuple3<>(true, Direction.values()[best_match], distance);
+    		}
     	}
-    	return null;
+    	return new Tuple3<>(false, Direction.UP, new Vector2f(0));
+    }*/
+    
+    public Pair<Boolean, Vector2f> intersects(AABB bounds2){
+    	Vector2f distance = bounds2.center.sub(center, new Vector2f());
+        distance.x = (float) Math.abs(distance.x);
+        distance.y = (float) Math.abs(distance.y);
+
+        distance.sub(half_extent.add(bounds2.half_extent, new Vector2f()));
+        
+        return new Pair<>(distance.x < 0 && distance.y < 0, distance);
     }
 
     public Vector2f getCenter() {

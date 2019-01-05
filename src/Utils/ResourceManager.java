@@ -1,7 +1,9 @@
 package Utils;
 
+import java.io.IOException;
 import java.util.HashMap;
 
+import Graphics.Level2D;
 import Graphics.Shaders;
 import Graphics.Models.Texture;
 
@@ -9,12 +11,14 @@ public class ResourceManager {
 	
 	private static HashMap<String, Shaders> shaders;
 	private static HashMap<String, Texture> textures;
+	private static HashMap<String, Level2D> levels;
 	
 	private ResourceManager() {}
 	
 	static {
 		shaders = new HashMap<>();
 		textures = new HashMap<>();
+		levels = new HashMap<>();
 	}
 	
 	public static ResourceManager addShader(String name, Shaders shader) {
