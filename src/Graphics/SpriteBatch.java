@@ -2,12 +2,10 @@ package Graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
 
 import org.joml.Vector4f;
-import org.lwjgl.BufferUtils;
 
 import Graphics.Models.Texture;
 import Graphics.Models.VertexAttrib;

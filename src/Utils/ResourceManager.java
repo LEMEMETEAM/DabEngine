@@ -1,6 +1,5 @@
 package Utils;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import Graphics.Level2D;
@@ -31,6 +30,11 @@ public class ResourceManager {
 		return null;
 	}
 	
+	public static ResourceManager addLevel(String name, Level2D level) {
+		levels.put(name,  level);
+		return null;
+	}
+	
 	//does the exact same as add, only used for readability
 	public static ResourceManager replaceShader(String nametoreplace, Shaders shader) {
 		shaders.put(nametoreplace, shader);
@@ -42,6 +46,11 @@ public class ResourceManager {
 		return null;
 	}
 	
+	public static ResourceManager replaceLevel(String nametoreplace, Level2D level) {
+		levels.put(nametoreplace,  level);
+		return null;
+	}
+	
 	public static Shaders getShader(String name) {
 		return shaders.get(name);
 	}
@@ -50,11 +59,19 @@ public class ResourceManager {
 		return textures.get(name);
 	}
 	
-	public static HashMap getShaders() {
+	public static Level2D getLevel(String name) {
+		return levels.get(name);
+	}
+	
+	public static HashMap<String, Shaders> getShaders() {
 		return shaders;
 	}
 	
-	public static HashMap getTextures() {
+	public static HashMap<String, Texture> getTextures() {
 		return textures;
+	}
+	
+	public static HashMap<String, Level2D> getLevels() {
+		return levels;
 	}
 }

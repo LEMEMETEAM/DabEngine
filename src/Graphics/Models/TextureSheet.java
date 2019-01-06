@@ -2,7 +2,6 @@ package Graphics.Models;
 
 import Graphics.Shaders;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 public class TextureSheet {
 

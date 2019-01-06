@@ -4,13 +4,11 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.HashMap;
-
-import org.joml.Matrix4f;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import Graphics.Window;
 import Input.InputHandler;
-import Input.KeyBoard;
-import Input.Mouse;
 
 public abstract class Engine implements Runnable {
 
@@ -18,12 +16,12 @@ public abstract class Engine implements Runnable {
     private boolean fullscreen;
     private String title;
     private HashMap<Integer, Integer> hints = new HashMap<>();
-    private static Window mainWindow = null;
+    private Window mainWindow = null;
     private Thread t;
     private int finalFrames = 0;
     private int finalUpdates = 0;
-    private static double delta = 0.0;
     private InputHandler inputhandler;
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     
     public Engine(int width, int height, String title, HashMap<Integer, Integer> hints, boolean fullscreen) {
         this.width = width;
@@ -38,7 +36,7 @@ public abstract class Engine implements Runnable {
         try {
             t.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -48,6 +46,7 @@ public abstract class Engine implements Runnable {
         long timer = System.currentTimeMillis();
         int updates = 0;
         int frames = 0;
+        double delta = 0.0;
 
         init();
         while (!glfwWindowShouldClose(mainWindow.getWin())) {
@@ -81,7 +80,7 @@ public abstract class Engine implements Runnable {
     public void init() {
 
         if (!glfwInit()) {
-            System.err.println("Window not initialised");
+            LOGGER.log(Level.SEVERE, "Window not initialized");
             System.exit(1);
         }
 
@@ -128,7 +127,7 @@ public abstract class Engine implements Runnable {
     public abstract void onUpdate();
     public abstract void onAction(InputHandler handler);
 
-    public static Window getMainWindow() {
+    public Window getMainWindow() {
         return mainWindow;
     }
 
@@ -138,9 +137,5 @@ public abstract class Engine implements Runnable {
 
     public int getUpdates() {
         return finalUpdates;
-    }
-
-    public static double getDelta() {
-        return delta;
     }
 }

@@ -1,24 +1,14 @@
 package Graphics;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -44,16 +34,15 @@ public class Level2D {
 	private char[][] level_info;
 	private Tiles[][] tiles;
 	private boolean loaded = false;
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public void load(String level) {
 		loaded = false;
-		BufferedReader in;
 		boolean start_of_tag = false;
 		boolean end_of_tag = false;
 		String tag_start_name = "";
 		ArrayList<ArrayList<Character>> raw_info = new ArrayList<>();
-		try {
-			in = new BufferedReader(new FileReader(new File(level)));
+		try(BufferedReader in = new BufferedReader(new FileReader(new File(level)));) {
 			String s;
 			while((s = in.readLine()) != null) {
 				if(start_of_tag) {
@@ -90,13 +79,12 @@ public class Level2D {
 				}
 			}
 		} catch(IOException e) {
-			e.printStackTrace();
-			System.err.println("Level load error");
+			LOGGER.log(Level.SEVERE, "Level Load Error", e);
 		}
 		level_info = convertIntegers(raw_info);
 		tiles = new Tiles[level_info.length][level_info[0].length];
 		loaded = true;
-		System.out.println("Level '" + level + "' loaded");
+		LOGGER.log(Level.SEVERE, "Level '" + level + "' loaded");
 	}
 	
 	public void init(Texture spawn_texture) {
@@ -149,8 +137,9 @@ public class Level2D {
 	
 	public void render(SpriteBatch batch) {
 		for(int y = 0; y < tiles.length; y++) {
-			for(int x = 0; x < tiles[0].length; x++)
-			tiles[y][x].render(batch);
+			for(int x = 0; x < tiles[0].length; x++) {
+				tiles[y][x].render(batch);
+			}
 		}
 	}
 	

@@ -1,0 +1,24 @@
+
+=Audio.AudioManager#getSample(Ljava/lang/String;)LAudio/Audio;
+__unknown_file ("1*Â
+1L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Audio\AudioManager.java	 (•
+’
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Audio\AudioManager.java	 (
+%0java.util.HashMap"__id*#*!
+Audio.AudioManager"	
+samplesñî
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Audio\AudioManager.java	 (
+%1Audio.Audio";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
+
+%0java.util.HashMap*
+
+namejava.lang.String2get(Ljava/lang/Object;)"c
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Audio\AudioManager.java (
+
+%1Audio.Audio:
+namejava.lang.StringB"
+Audio.AudioManager

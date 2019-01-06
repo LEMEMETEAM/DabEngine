@@ -2,7 +2,6 @@ package Audio;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -10,7 +9,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import Graphics.Models.Renderable2D;
 import Observer.Observer;
 
 public class Audio implements Observer {
@@ -26,10 +24,8 @@ public class Audio implements Observer {
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 		} catch (UnsupportedAudioFileException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

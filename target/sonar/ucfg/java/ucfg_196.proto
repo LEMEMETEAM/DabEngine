@@ -1,0 +1,196 @@
+
+LUtils.Utils#ioResourceToByteBuffer(Ljava/lang/String;I)Ljava/nio/ByteBuffer;
+__unknown_file (resource"""24*±
+12E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (I^
+\
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (I
+rbc"__id*
+
+%6*
+11*î
+24E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (a
+_
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (
+buffer"__id*
+""À
+»
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ('
+%0"Rjava.nio.file.Paths#get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;*"
+java.nio.file.Paths*
+
+
+resource_
+]
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ((
+path"__id*
+
+%0™
+ß
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ("
+%1"5java.nio.file.Files#isReadable(Ljava/nio/file/Path;)Z*"
+java.nio.file.Files*
+
+path*
+14
+22*ò
+13E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Ra
+_
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (R
+source"__id*
+
+%5·
+ﬁ
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java. (I
+%6"cjava.nio.channels.Channels#newChannel(Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;*"
+java.nio.channels.Channels*
+
+
+source*
+12*à
+14E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java) (4¥
+±
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java) (R
+%5"Ljava.lang.Class#getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;*
+""*
+
+
+resource*
+13*ˇ
+18E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (®
+•
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (&
+%4"Bjava.nio.channels.SeekableByteChannel#read(Ljava/nio/ByteBuffer;)I*
+
+fc*
+
+
+buffer*
+18
+1*¥
+19E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Ja
+_
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (J
+buffer"__id*
+""*
+18*∞
+1E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java, ,(é
+ã
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java, ,(
+%11"/java.nio.ByteBuffer#flip()Ljava/nio/ByteBuffer;*
+
+
+buffer"S
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java- -(
+
+
+buffer*∂
+2E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java& &(Lb
+`
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java& &(L
+buffer"__id*
+
+%10*
+9
+1*è
+3E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&J &(KΩ
+∫
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&! &(L
+%10"EUtils.Utils#resizeBuffer(Ljava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;*"
+Utils.Utils*
+
+
+buffer*
+""*
+2*…
+4E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&! &(-x
+v
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&6 &(G
+%9"java.nio.Buffer#capacity()I*
+
+
+buffer*
+3*–
+6E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java% %(y
+w
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java% %(*
+%8"java.nio.Buffer#remaining()I*
+
+
+buffer*	
+4
+9
+1*˛
+9E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java!  !(#©
+¶
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java!  !(0
+%7"Bjava.nio.channels.ReadableByteChannel#read(Ljava/nio/ByteBuffer;)I*
+
+rbc*
+
+
+buffer*
+6
+1*∫
+21E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (D]
+[
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (D
+fc"__id*
+
+%2á
+Ñ
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java< (E
+%3"-java.nio.channels.SeekableByteChannel#size()J*
+
+fc*
+19*√
+22E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java* (/Ô
+Ï
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java* (D
+%2"zjava.nio.file.Files#newByteChannel(Ljava/nio/file/Path;[Ljava/nio/file/OpenOption;)Ljava/nio/channels/SeekableByteChannel;*"
+java.nio.file.Files*
+
+path*
+21*∂
+11E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Aa
+_
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (A
+buffer"__id*
+""*
+9
+1

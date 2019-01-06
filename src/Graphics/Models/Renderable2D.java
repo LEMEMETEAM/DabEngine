@@ -1,25 +1,14 @@
 package Graphics.Models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joml.*;
 
-import Deprecated3D.Mesh;
-import Deprecated3D.Model;
-import Graphics.Shaders;
 import Graphics.SpriteBatch;
-import Graphics.Models.AABB.Direction;
 import Input.InputHandler;
-import Observer.Observer;
-import Observer.Observerable;
 import Utils.Pair;
-import Utils.Tuple3;
 
 public abstract class Renderable2D{
 	
 	protected int velx, vely;
-	private Shaders s;
 	private Texture texture;
 	private float width, height;
 	private Vector4f color;

@@ -3,7 +3,6 @@ package Graphics.Models;
 import org.joml.Vector2f;
 
 import Utils.Pair;
-import Utils.Tuple3;
 
 public class AABB {
 
@@ -11,7 +10,9 @@ public class AABB {
     public static enum Direction{
     	UP,RIGHT,DOWN,LEFT
     }
-    private Vector2f[] compass = {
+    
+    @SuppressWarnings("unused")
+	private Vector2f[] compass = {
     	new Vector2f(0.0f, 1.0f).normalize(),	//up
     	new Vector2f(1.0f, 0.0f).normalize(), 	//right
     	new Vector2f(0.0f, -1.0f).normalize(),	//down

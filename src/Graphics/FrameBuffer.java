@@ -2,23 +2,27 @@ package Graphics;
 
 import static org.lwjgl.opengl.GL40.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import Core.Engine;
-import Deprecated3D.Mesh;
+import Graphics.Models.Mesh;
 public class FrameBuffer {
 	
 	private int f_id;
 	private int t_id;
 	private int r_id;
 	private Mesh quad;
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	public FrameBuffer() {
+	public FrameBuffer(Engine engine) {
 		f_id = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, f_id);
 		
 		t_id = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, f_id);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Engine.getMainWindow().getWidth(), Engine.getMainWindow().getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, engine.getMainWindow().getWidth(), engine.getMainWindow().getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -29,13 +33,13 @@ public class FrameBuffer {
 		
 		r_id = glGenRenderbuffers();
 		glBindRenderbuffer(GL_RENDERBUFFER, r_id);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, Engine.getMainWindow().getWidth(), Engine.getMainWindow().getHeight());
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, engine.getMainWindow().getWidth(), engine.getMainWindow().getHeight());
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, r_id);
 		
 		if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			System.err.println("FrameBuffer incomplete");
+			LOGGER.log(Level.SEVERE, "Framebuffer Incomplete");
 			System.exit(0);
 		}
 		

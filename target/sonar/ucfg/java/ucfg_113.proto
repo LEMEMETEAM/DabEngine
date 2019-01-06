@@ -1,0 +1,138 @@
+
+?Graphics.Shaders#readFile(Ljava/lang/String;)Ljava/lang/String;
+__unknown_file (filename"11*¡
+1J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaY Y(ò
+ï
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaY Y( 
+%12"4java.lang.StringBuilder#toString()Ljava/lang/String;*
+
+
+string"U
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaY Y(!
+
+%12*é
+3J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaT T(∑
+¥
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaT T(#
+%10"Kjava.lang.StringBuilder#append(Ljava/lang/String;)Ljava/lang/StringBuilder;*
+
+
+string*
+\n*
+6*è
+4J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaS S(∏
+µ
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaS S(#
+%9"Kjava.lang.StringBuilder#append(Ljava/lang/String;)Ljava/lang/StringBuilder;*
+
+
+string*
+
+line*
+3*Ω
+5J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaR R('d
+b
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaR R('
+line"__id*
+
+%8*
+4
+1*È
+6J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaR R(í
+è
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaR R('
+%8"3java.io.BufferedReader#readLine()Ljava/lang/String;*
+
+br*
+5*û
+7J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP P(Gb
+`
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP P(G
+br"__id*
+
+%6d
+b
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaQ Q(
+line"__id*
+""*
+6*‹
+8J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP P(Glj
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP P(#
+%6"java.io.BufferedReaderó
+î
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP P(G
+%7"0java.io.BufferedReader#<init>(Ljava/io/Reader;)V*
+
+%6*
+
+%4*
+7*“
+9J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP$ P(Fhf
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP( P(2
+%4"java.io.FileReaderë
+é
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP$ P(F
+%5"*java.io.FileReader#<init>(Ljava/io/File;)V*
+
+%4*
+
+%2*
+8*—
+10J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP< P(Db`
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP7 P(;
+%2"java.io.Fileï
+í
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaP3 P(E
+%3"(java.io.File#<init>(Ljava/lang/String;)V*
+
+%2*
+
+
+filename*
+9*í
+11J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaM M(2mk
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaM# M(0
+%0"java.lang.StringBuilder
+}
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaM M(2
+%1"!java.lang.StringBuilder#<init>()V*
+
+%0f
+d
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaM M(3
+string"__id*
+
+%0b
+`
+J
+@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.javaN N(
+br"__id*
+""*
+10

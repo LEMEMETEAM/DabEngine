@@ -1,0 +1,39 @@
+
+SDeprecated3D.Model#collision(LDeprecated3D/Model;LGraphics/Models/AABB$Direction;)Z
+__unknown_file ("3*©
+1L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaU U("V
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaU U(
+""*©
+2L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaS S("V
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaS S(
+""*Ì
+3L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaR R(—
+”
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaR R(
+%0Graphics.Models.AABB"__id*"* 
+Deprecated3D.Model"
+boundsËÈ
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaR R(*
+%1Graphics.Models.AABB"4Deprecated3D.Model#getBounds()LGraphics/Models/AABB;*
+
+mDeprecated3D.Model2getBounds()ˆ…
+L
+BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaR R(+
+%2
+Utils.Pair"CGraphics.Models.AABB#intersects(LGraphics/Models/AABB;)LUtils/Pair;*
+
+%0Graphics.Models.AABB*
+
+%1Graphics.Models.AABB2"intersects(LGraphics/Models/AABB;)*
+2
+1:
+mDeprecated3D.Model:%
+dirGraphics.Models.AABB$DirectionB
+Deprecated3D.Model

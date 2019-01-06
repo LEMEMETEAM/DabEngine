@@ -2,7 +2,6 @@ package Graphics.Models;
 
 import Utils.ImageDecoder;
 
-import java.awt.image.BufferStrategy;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;

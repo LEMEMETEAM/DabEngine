@@ -4,6 +4,8 @@ public class Timer {
 	
 	private static long lastTime = System.nanoTime();
 	
+	private Timer() {}
+	
 	public static void setLastTime(long newlastTime) {
 		lastTime = newlastTime;
 	}

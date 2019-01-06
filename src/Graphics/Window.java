@@ -1,12 +1,13 @@
 package Graphics;
 
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
@@ -22,6 +23,8 @@ public class Window {
     private long monitor;
     private HashMap<Integer, Integer> hints;
     private boolean resized;
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final String WINDOW_NOT_CREATED = "Window Not Created";
     
     static{
     	GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -44,7 +47,7 @@ public class Window {
         
         win = glfwCreateWindow(width, height, title, 0, 0);
         if(win == GL_FALSE){
-            System.err.println("Window not created");
+            LOGGER.log(Level.SEVERE, WINDOW_NOT_CREATED);
             glfwTerminate();
             System.exit(1);
         }
@@ -63,7 +66,7 @@ public class Window {
 
         win = glfwCreateWindow(reswidth, resheight, title, monitor, 0);
         if(win == GL_FALSE){
-            System.err.println("Window not created");
+            LOGGER.log(Level.SEVERE, WINDOW_NOT_CREATED);
             glfwTerminate();
             System.exit(1);
         }

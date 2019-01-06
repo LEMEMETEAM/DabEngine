@@ -1,0 +1,168 @@
+
+CUtils.TextToLevelData#load(Ljava/lang/String;)Ljava/util/ArrayList;
+__unknown_file (levelloc"17*ı
+12O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (ó
+î
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+%8"3java.io.BufferedReader#readLine()Ljava/lang/String;*
+
+in*
+11*Ø
+13O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (>g
+e
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (>
+in"__id*
+
+%6i
+g
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+line"__id*
+""*
+12*Ì
+14O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (>qo
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+%6"java.io.BufferedReaderú
+ô
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (>
+%7"0java.io.BufferedReader#<init>(Ljava/io/Reader;)V*
+
+%6*
+
+%4*
+13*„
+15O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (=mk
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java ()
+%4"java.io.FileReaderñ
+ì
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (=
+%5"*java.io.FileReader#<init>(Ljava/io/File;)V*
+
+%4*
+
+%2*
+14*·
+16O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java3 (;ge
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java. (2
+%2"java.io.Fileö
+ó
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java* (<
+%3"(java.io.File#<init>(Ljava/lang/String;)V*
+
+%2*
+
+
+levelloc*
+15*¢
+17O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java) (:nl
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java- (8
+%0"java.util.ArrayListÄ
+~
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java) (:
+%1"java.util.ArrayList#<init>()V*
+
+%0i
+g
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (;
+data"__id*
+
+%0g
+e
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+in"__id*
+""*
+16*±
+1O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java#	 #("[
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java# #(
+
+data*˙
+4O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (ù
+ö
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+%14",java.util.ArrayList#add(Ljava/lang/Object;)Z*
+
+data*
+
+rows*
+12*˜
+6O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (	õ
+ò
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (
+%13",java.util.ArrayList#add(Ljava/lang/Object;)Z*
+
+rows*
+""*
+7*÷
+7O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (x
+v
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java ("
+%12"__id**
+$Array"
+length*
+4
+6*Œ
+9O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (2i
+g
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java (2
+rows"__id*
+
+%9á
+Ñ
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java ($
+%11" java.lang.String#toCharArray()[C*
+
+line*
+7*Œ
+10O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java  (1nl
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java$ (/
+%9"java.util.ArrayListÅ
+
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java  (1
+%10"java.util.ArrayList#<init>()V*
+
+%9*
+9*…
+11O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java
+ (i
+g
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\TextToLevelData.java
+ (
+line"__id*
+
+%8*
+10
+1
