@@ -84,7 +84,7 @@ public class Level2D {
 		level_info = convertIntegers(raw_info);
 		tiles = new Tiles[level_info.length][level_info[0].length];
 		loaded = true;
-		LOGGER.log(Level.SEVERE, "Level '" + level + "' loaded");
+		LOGGER.log(Level.INFO, "Level '" + level + "' loaded");
 	}
 	
 	public void init(Texture spawn_texture) {

@@ -39,6 +39,16 @@ public abstract class Engine implements Runnable {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+    
+    public synchronized void end() {
+    	glfwDestroyWindow(mainWindow.getWin());
+        glfwTerminate();
+        try {
+			t.join();
+		} catch (InterruptedException e) {
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+		}
+    }
 
     public void run() {
         long lastTime = System.nanoTime();
@@ -73,8 +83,7 @@ public abstract class Engine implements Runnable {
                 frames = 0;
             }
         }
-        glfwDestroyWindow(mainWindow.getWin());
-        glfwTerminate();
+        end();
     }
 
     public void init() {
