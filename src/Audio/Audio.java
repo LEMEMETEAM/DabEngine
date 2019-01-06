@@ -2,6 +2,8 @@ package Audio;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -9,12 +11,11 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import Observer.Observer;
-
-public class Audio implements Observer {
+public class Audio {
 	
 	private Clip clip;
 	private int loop;
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public Audio(String filename) {
 		try {
@@ -24,9 +25,9 @@ public class Audio implements Observer {
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 		} catch (UnsupportedAudioFileException | IOException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		} catch (LineUnavailableException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
 	
@@ -53,10 +54,5 @@ public class Audio implements Observer {
 	
 	public void setLoop(int loop) {
 		this.loop = loop;
-	}
-
-	@Override
-	public void onNotify(String s) {
-		// TODO Auto-generated method stub
 	}
 }

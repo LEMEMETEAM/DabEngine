@@ -1,26 +1,15 @@
 
-`Utils.ResourceManager#replaceShader(Ljava/lang/String;LGraphics/Shaders;)LUtils/ResourceManager;
-__unknown_file ("1*”
-1O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java$ $(	›
-˜
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java$ $(	
-%0java.util.HashMap"__id*&*$
-Utils.ResourceManager"	
-shadersÄÁ
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java$ $($
-%1Graphics.Shaders"Mjava.util.HashMap#put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;*
-
-%0java.util.HashMap*#
-!
-nametoreplacejava.lang.String*
-
-shaderGraphics.Shaders2)put(Ljava/lang/Object;Ljava/lang/Object;)"Y
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java% %(
-"":!
-nametoreplacejava.lang.String:
-shaderGraphics.ShadersB"
-Utils.ResourceManager
+Utils.Timer#getCurrentTime()J
+__unknown_file ("1*¨
+1E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java	 (Š
+‡
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java	 (
+
+%0long"java.lang.System#nanoTime()J*"
+java.lang.System"O
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java (
+""B"
+Utils.Timer

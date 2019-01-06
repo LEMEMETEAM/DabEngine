@@ -1,15 +1,39 @@
 
-Graphics.Level2D#isLoaded()Z
-__unknown_file ("1*´
-1L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Level2D.java¢	 ¢(ˆ
-…
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Level2D.java¢	 ¢(
-%0boolean"__id* *
-Graphics.Level2D"
-loaded"V
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Level2D.java¢ ¢(
-""B
-Graphics.Level2D
+CGraphics.Models.AABB#intersects(LGraphics/Models/AABB;)LUtils/Pair;
+__unknown_file ("3*­
+1N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.java`< `(D"X
+N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.java` `(F
+""*”
+3N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.javaZ Z( Ž
+‹
+N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.javaZ Z('
+%0"__id*-*+
+
+bounds2Graphics.Models.AABB"
+center…
+‚
+N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.javaZ, Z(2
+%1"__id*$*"
+Graphics.Models.AABB"
+centerŠ
+‡
+N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.java^ ^( 
+%2"__id*)*'
+Graphics.Models.AABB"
+half_extent“
+
+N
+DC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\AABB.java^% ^(8
+%3"__id*2*0
+
+bounds2Graphics.Models.AABB"
+half_extent*
+1:
+bounds2Graphics.Models.AABBB
+Graphics.Models.AABB

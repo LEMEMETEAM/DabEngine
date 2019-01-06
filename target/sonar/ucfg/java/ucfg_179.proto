@@ -1,27 +1,15 @@
 
-dUtils.ResourceManager#addTexture(Ljava/lang/String;LGraphics/Models/Texture;)LUtils/ResourceManager;
-__unknown_file (nametexture"1*†
-1O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java (
-‰
-†
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java (
-
-%0"__id*'*%
-Utils.ResourceManager"
+Utils.Timer#getLastTime()J
+__unknown_file ("1*‘
+1E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java	 (t
+r
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java	 (
+%0"__id**
+Utils.Timer"
 
-texturesÈ
-Å
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java (
-%1"Mjava.util.HashMap#put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;*
-
-%0*
-
-name*
-	
-texture"Y
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java (
+lastTime"O
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java (
 ""

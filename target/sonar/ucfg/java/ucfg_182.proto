@@ -1,23 +1,15 @@
 
-EUtils.ResourceManager#getShader(Ljava/lang/String;)LGraphics/Shaders;
-__unknown_file (name"1*Ê
-1O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java.	 .(à
-Ö
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java.	 .(
-%0"__id*&*$
-Utils.ResourceManager"	
-shaders©
-¶
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java.	 .(
-%1";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
-
-%0*
-
-name"Y
-O
-EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java. .(
-
-%1
+Utils.Timer#SecondsToNano(I)D
+__unknown_file ("""1*´
+1E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java	 (ç
+ä
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java ("
+%0"java.lang.Math#pow(DD)D*"
+java.lang.Math*
+""*
+"""O
+E
+;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Timer.java (#
+""

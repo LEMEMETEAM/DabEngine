@@ -1,16 +1,9 @@
 
-#Input.InputHandler#isKeyPressed(I)Z
-__unknown_file ("1*³
+3Input.InputHandler#getSignature()Ljava/lang/String;
+__unknown_file ("1*©
 1L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Input\InputHandler.java,	 ,(‡
-„
+BC:\Users\B\eclipse-workspace\DabEngine\src\Input\InputHandler.javaF	 F("V
 L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Input\InputHandler.java,	 ,(
-%0$Array"__id* *
-Input.InputHandler"
-keys"V
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Input\InputHandler.java, ,(
-"":
+BC:\Users\B\eclipse-workspace\DabEngine\src\Input\InputHandler.javaF F(/
 ""B
 Input.InputHandler

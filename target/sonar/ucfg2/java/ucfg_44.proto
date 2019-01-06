@@ -1,15 +1,15 @@
 
-*Entities.Creatures.Creature2D#getHealth()F
-__unknown_file ("1*à
-1W
-MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java	 (ž
-›
-W
-MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java	 (
-%0float"__id*-*+
-Entities.Creatures.Creature2D"
-health"a
-W
-MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java (
-""B!
-Entities.Creatures.Creature2D
+(Entities.Objects.Object2D#isDestroyed()Z
+__unknown_file ("1*Õ
+1S
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java	 (›
+˜
+S
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java	 (
+%0boolean"__id*,**
+Entities.Objects.Object2D"
+	destroyed"]
+S
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java (
+""B
+Entities.Objects.Object2D

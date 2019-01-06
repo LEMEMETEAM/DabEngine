@@ -1,15 +1,17 @@
 
-Core.Engine#getFrames()I
-__unknown_file ("1*Ÿ
+,Core.Engine#getMainWindow()LGraphics/Window;
+__unknown_file ("1*½
 1G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaˆ ˆ(~
-|
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaƒ ƒ(Š
+‡
 G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaˆ ˆ(	
-%0int"__id* *
-Core.Engine"
-finalFrames"Q
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaƒ ƒ(
+%0Graphics.Window"__id**
+Core.Engine"
+
+mainWindow"b
 G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaˆ ˆ(
-""B
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaƒ ƒ(
+
+%0Graphics.WindowB
 Core.Engine

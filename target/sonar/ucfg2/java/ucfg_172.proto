@@ -1,15 +1,25 @@
 
-Utils.ImageDecoder#getWidth()I
-__unknown_file ("1*±
-1L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ImageDecoder.java= =(…
-‚
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ImageDecoder.java= =(	
-%0int"__id*!*
-Utils.ImageDecoder"
-width"V
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ImageDecoder.java= =(
-""B
-Utils.ImageDecoder
+MUtils.ResourceManager#getTexture(Ljava/lang/String;)LGraphics/Models/Texture;
+__unknown_file ("1*ê
+1O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java;	 ;(œ
+™
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java;	 ;(
+%0java.util.HashMap"__id*'*%
+Utils.ResourceManager"
+
+textures€ý
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java;	 ;(
+%1Graphics.Models.Texture";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
+
+%0java.util.HashMap*
+
+namejava.lang.String2get(Ljava/lang/Object;)"r
+O
+EC:\Users\B\eclipse-workspace\DabEngine\src\Utils\ResourceManager.java; ;(
+
+%1Graphics.Models.Texture:
+namejava.lang.StringB"
+Utils.ResourceManager

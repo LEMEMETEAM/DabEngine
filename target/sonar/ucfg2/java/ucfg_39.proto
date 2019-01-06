@@ -1,16 +1,15 @@
 
-/Deprecated3D.Model#getMesh()LDeprecated3D/Mesh;
-__unknown_file ("1*—
-1L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.java` `(í
-è
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.java` `(
-%0Deprecated3D.Mesh"__id* *
-Deprecated3D.Model"
-mesh"i
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.java` `(
-
-%0Deprecated3D.MeshB
-Deprecated3D.Model
+*Entities.Creatures.Creature2D#getHealth()F
+__unknown_file ("1*‡
+1W
+MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java	 (û
+õ
+W
+MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java	 (
+%0float"__id*-*+
+Entities.Creatures.Creature2D"
+health"a
+W
+MC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Creatures\Creature2D.java (
+""B!
+Entities.Creatures.Creature2D

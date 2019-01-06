@@ -1,15 +1,15 @@
 
-*Entities.Objects.Object2D#isDestroyable()Z
-__unknown_file ("1*◊
+$Entities.Objects.Object2D#isSolid()Z
+__unknown_file ("1*—
 1S
-IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java 	  (ù
-ö
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java+	 +(ó
+î
 S
-IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java 	  (
-%0boolean"__id*.*,
-Entities.Objects.Object2D"
-destroyable"]
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java+	 +(
+%0boolean"__id*(*&
+Entities.Objects.Object2D"
+solid"]
 S
-IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java   (
+IC:\Users\B\eclipse-workspace\DabEngine\src\Entities\Objects\Object2D.java+ +(
 ""B
 Entities.Objects.Object2D

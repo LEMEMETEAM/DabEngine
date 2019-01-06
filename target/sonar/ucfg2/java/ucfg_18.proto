@@ -1,15 +1,15 @@
 
-Core.Engine#getDelta()D
-__unknown_file ("1*ú
+Core.Engine#getUpdates()I
+__unknown_file ("1*†
 1G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaê ê({
-y
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaã ã(
+}
 G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaê ê(
-%0double"__id**
-Core.Engine"
-delta"Q
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaã ã(	
+%0int"__id*!*
+Core.Engine"
+finalUpdates"Q
 G
-;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaê ê(
-""B"
+;C:\Users\B\eclipse-workspace\DabEngine\src\Core\Engine.javaã ã(
+""B
 Core.Engine
