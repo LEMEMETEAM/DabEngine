@@ -1,8 +1,10 @@
-package Graphics.Models;
+package Entities;
 
 import org.joml.*;
 
 import Graphics.SpriteBatch;
+import Graphics.Models.AABB;
+import Graphics.Models.Texture;
 import Input.InputHandler;
 import Utils.Pair;
 
@@ -16,6 +18,7 @@ public abstract class Renderable2D{
 	private Vector4f xywh;
 	private AABB bounds;
 	public int MAX_VELOCITY;
+	private boolean solid;
 	
 	public Renderable2D(float width, float height, Vector4f color, boolean center_anchor) {
 		this.width = width;
@@ -48,6 +51,18 @@ public abstract class Renderable2D{
 		} else {
 			bounds.setCenter(new Vector2f(x + (width/2), y + (height/2)));
 		}
+	}
+	
+	public void setColor(Vector4f color) {
+		this.color = color;
+	}
+	
+	public void addColor(Vector4f color) {
+		this.color.add(color);
+	}
+	
+	public Vector4f getColor() {
+		return color;
 	}
 	
 	public void setPosition(Vector2f xy) {
@@ -118,6 +133,14 @@ public abstract class Renderable2D{
 	
 	public AABB getBounds() {
 		return bounds;
+	}
+	
+	public boolean isSolid() {
+		return solid;
+	}
+	
+	public void setSolid(boolean solid) {
+		this.solid = solid;
 	}
 	
 	public void resolveCollision(AABB bounds2) {

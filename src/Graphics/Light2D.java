@@ -2,11 +2,11 @@ package Graphics;
 
 import org.joml.Vector4f;
 
-import Entities.Objects.Object2D;
+import Entities.Renderable2D;
 import Graphics.Models.Texture;
 import Input.InputHandler;
 
-public class Light2D extends Object2D {
+public class Light2D extends Renderable2D {
 	
 	/*
 	 * Must use an empty texture

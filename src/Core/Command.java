@@ -1,6 +1,6 @@
 package Core;
 
-import Graphics.Models.Renderable2D;
+import Entities.Renderable2D;
 
 public interface Command {
 	
