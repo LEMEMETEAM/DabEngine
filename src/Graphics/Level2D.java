@@ -28,6 +28,7 @@ public class Level2D {
 	
 	public float levelwidth;
 	public float levelheight;
+	public float tilewidth, tileheight;
 	private char spawn_point;
 	public Vector2f spawnpos;
 	private HashMap<Character, String[]> info = new HashMap<>();
@@ -35,8 +36,10 @@ public class Level2D {
 	private Tiles[][] tiles;
 	private boolean loaded = false;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private String levelname;
 	
 	public void load(String level) {
+		levelname = level;
 		loaded = false;
 		boolean start_of_tag = false;
 		boolean end_of_tag = false;
@@ -91,7 +94,8 @@ public class Level2D {
 		int height = level_info.length;
 		int width = level_info[0].length;
 		
-		float tilewidth = levelwidth / (float) width, tileheight = levelheight / (float) height;
+		tilewidth = levelwidth / (float) width; 
+		tileheight = levelheight / (float) height;
 		
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
@@ -162,5 +166,13 @@ public class Level2D {
 	    	}
 	    }
 	    return ret;
+	}
+
+	public String getLevelName() {
+		return levelname.split(".")[0];
+	}
+
+	public void setLevelName(String levelname) {
+		this.levelname = levelname;
 	}
 }
