@@ -14,7 +14,17 @@ public abstract class StateManager {
 	}
 	
 	public static void setCurrentState(State newcurrentState) {
-		currentState = newcurrentState;
+		setCurrentState(newcurrentState, null);
+	}
+	
+	public static void setCurrentState(State newcurrentstate, Transition transition) {
+		if(transition != null) {
+			transition.in();
+			currentState = newcurrentstate;
+			transition.out();
+		} else {
+			currentState = newcurrentstate;
+		}
 	}
 	
 	/*

@@ -11,17 +11,19 @@ public class NPC extends Renderable2D implements Interactable {
 	@SuppressWarnings("unused")
 	private String name;
 
-	public NPC(String name, Texture texture, float width, float height, Vector4f color, boolean center_anchor) {
+	public NPC(String name, Texture texture, float x, float y, float width, float height, Vector4f color, boolean center_anchor) {
 		super(width, height, color, center_anchor);
 		// TODO Auto-generated constructor stub
 		this.name = name;
 		setTexture(texture);
+		setPosition(x, y);
+		setSolid(true);
 	}
 
 	@Override
 	public void onInteraction() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("dab dab dab");
 	}
 
 	@Override
@@ -31,9 +33,6 @@ public class NPC extends Renderable2D implements Interactable {
 	}
 
 	@Override
-	public void processInput(InputHandler handler) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void processInput(InputHandler handler) {}
 
 }

@@ -11,13 +11,14 @@ import java.util.logging.Logger;
 import org.joml.Vector4f;
 
 import Graphics.Level2D;
+import Graphics.SpriteBatch;
 import Utils.ResourceManager;
 
 public class NPCManager {
 	
 	private Level2D level;
 	private ArrayList<NPC> NPCs;
-	private static final float MAX_TALKING_DISTANCE = 3;
+	private static final float MAX_TALKING_DISTANCE = 50;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public NPCManager(Level2D level, String npcinfo) {
@@ -32,11 +33,14 @@ public class NPCManager {
 			String[] lineInfo;
 			while((line = in.readLine()) != null) {
 				lineInfo = line.split(" ");
+				System.out.println(level.tilewidth);
 				NPCs.add(new NPC(
 						lineInfo[0],
 						ResourceManager.getTexture(lineInfo[1]),
 						level.tilewidth * Float.parseFloat(lineInfo[2]),
 						level.tileheight * Float.parseFloat(lineInfo[3]),
+						40,
+						80,
 						new Vector4f(1, 1, 1, 1),
 						true));
 			}
@@ -45,6 +49,11 @@ public class NPCManager {
 		}
 	}
 	
+	public void renderAll(SpriteBatch batch) {
+		for(NPC npc : NPCs) {
+			npc.render(batch);
+		}
+	}
 	public NPC closestNPC(Renderable2D entity) {
 		NPC closest_npc = null;
 		float distance;
@@ -60,5 +69,9 @@ public class NPCManager {
 			}
 		}
 		return closest_npc;
+	}
+	
+	public ArrayList<NPC> getNPCs() {
+		return NPCs;
 	}
 }
