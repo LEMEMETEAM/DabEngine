@@ -1,12 +1,11 @@
 package States;
 
 import Core.Engine;
-import Graphics.Camera;
-import Graphics.SpriteBatch;
+import Graphics.*;
 import Input.InputHandler;
 
-public interface State {
-	public void render(Engine engine, SpriteBatch batch, Camera cam);
-	public void update(Engine engine, Camera cam);
-	public void processInput(Engine engine, InputHandler handler, Camera cam);
+public abstract class State extends Container2D {
+	public abstract void render(Engine engine, SpriteBatch batch, Camera cam);
+	public abstract void update(Engine engine, Camera cam);
+	public abstract void processInput(Engine engine, InputHandler handler, Camera cam);
 }

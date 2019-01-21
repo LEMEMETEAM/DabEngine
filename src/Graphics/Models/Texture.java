@@ -13,8 +13,9 @@ public class Texture {
     private ImageDecoder decoder;
     private int width;
     private int height;
-
-    public Texture(String filename){
+    private TextureRegion region;
+    
+    public Texture(String filename, int tileNomX, int tileNomY){
         decoder = new ImageDecoder(filename);
 
         ByteBuffer pixels = decoder.decode();
@@ -28,7 +29,17 @@ public class Texture {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        
+        region = new TextureRegion(tileNomX, tileNomY);
     }
+    
+    public Texture(String filename) {
+    	this(filename, 1, 1);
+    }
+    
+    public TextureRegion getRegion() {
+		return region;
+	}
 
     public void bind(){
         glActiveTexture(GL_TEXTURE0);

@@ -18,7 +18,7 @@ public class NPCManager {
 	
 	private Level2D level;
 	private ArrayList<NPC> NPCs;
-	private static final float MAX_TALKING_DISTANCE = 50;
+	private static final float MAX_TALKING_DISTANCE = 150;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public NPCManager(Level2D level, String npcinfo) {
@@ -39,8 +39,8 @@ public class NPCManager {
 						ResourceManager.getTexture(lineInfo[1]),
 						level.tilewidth * Float.parseFloat(lineInfo[2]),
 						level.tileheight * Float.parseFloat(lineInfo[3]),
-						40,
-						80,
+						Float.parseFloat(lineInfo[4]),
+						Float.parseFloat(lineInfo[5]),
 						new Vector4f(1, 1, 1, 1),
 						true));
 			}
@@ -54,7 +54,7 @@ public class NPCManager {
 			npc.render(batch);
 		}
 	}
-	public NPC closestNPC(Renderable2D entity) {
+	public NPC closestNPC(GameObject entity) {
 		NPC closest_npc = null;
 		float distance;
 		for(int a = 0; a < NPCs.size(); a++) {

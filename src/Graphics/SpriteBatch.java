@@ -49,7 +49,7 @@ public class SpriteBatch {
 		flush();
 	}
 	
-	public void setShader(Shaders shader, boolean updateUniforms) {
+	public void setShader(Shaders shader) {
 		if(shader == null) {
 			throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
 		}
@@ -58,16 +58,9 @@ public class SpriteBatch {
 		}
 		this.shader = shader;
 		
-		if(updateUniforms) {
-			updateUniforms();
-		}
-		else if(drawing) {
+		if(drawing) {
 			shader.bind();
 		}
-	}
-	
-	public void setShader(Shaders shader) {
-		setShader(shader, true);
 	}
 	
 	public Shaders getShader() {
@@ -78,60 +71,40 @@ public class SpriteBatch {
 		return texture;
 	}
 	
-	public void updateUniforms(Shaders shaders) {
-		shader.setUniform("texture_sampler", 0);
-	}
-	
-	public void updateUniforms() {
-		updateUniforms(shader);
-	}
-	
 	//draws a texture with no tint, full opacity and texture wrapped fully
 	public void draw(Texture tex, float x, float y, float width, float height) {
-		draw(tex, x, y, width, height, 0, 0, 1, 1, 1, 1, 1, 1, true);
+		draw(tex, x, y, width, height, 1, 1, 1, 1, true);
 	}
 	
 	public void draw(Texture tex, float x, float y, float width, float height, boolean center_anchor) {
-		draw(tex, x, y, width, height, 0, 0, 1, 1, 1, 1, 1, 1, center_anchor);
+		draw(tex, x, y, width, height, 1, 1, 1, 1, center_anchor);
 	}
 	
 	//simplified version of above
 	public void draw(Texture tex, Vector4f xywh) {
-		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 0, 0, 1, 1, 1, 1, 1, 1, true);
+		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, true);
 	}
 	
 	public void draw(Texture tex, Vector4f xywh, boolean center_anchor) {
-		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 0, 0, 1, 1, 1, 1, 1, 1, center_anchor);
+		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, center_anchor);
 	}
 	
 	//draw a texture with full texture wrap
 	public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a) {
-		draw(tex, x, y, width, height, 0, 0, 1, 1, r, g, b, a, true);
-	}
-	
-	public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a, boolean center_anchor) {
-		draw(tex, x, y, width, height, 0, 0, 1, 1, r, g, b, a, center_anchor);
+		draw(tex, x, y, width, height, r, g, b, a, true);
 	}
 	
 	//simplified version of above
 	public void draw(Texture tex, Vector4f xywh, Vector4f rgba) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), 0, 0, 1, 1, rgba.x(), rgba.y(), rgba.z(), rgba.w(), true);
+		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), true);
 	}
 	
 	public void draw(Texture tex, Vector4f xywh, Vector4f rgba, boolean center_anchor) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), 0, 0, 1, 1, rgba.x(), rgba.y(), rgba.z(), rgba.w(), center_anchor);
-	}
-	
-	public void draw(Texture tex, Vector4f xywh, Vector4f uv, Vector4f rgba) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), uv.x(), uv.y(), uv.z(), uv.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), true);
-	}
-	
-	public void draw(Texture tex, Vector4f xywh, Vector4f uv, Vector4f rgba, boolean center_anchor) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), uv.x(), uv.y(), uv.z(), uv.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), center_anchor);
+		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), center_anchor);
 	}
 	
 	//full draw method
-	public void draw(Texture tex, float x, float y, float width, float height, float u, float v, float u2, float v2, float r, float g, float b, float a, boolean center_anchor) {
+	public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a, boolean center_anchor) {
 		float x1,y1,x2,y2,x3,y3,x4,y4;
 		
 		checkFlush(tex);
@@ -162,6 +135,9 @@ public class SpriteBatch {
 			x4 = x + (width/2f);
 			y4 = y - (height/2f);
 		}
+		
+		Vector4f uv = tex.getRegion().getUV();
+		float u = uv.x(), v = uv.y(), u2 = uv.z, v2 = uv.w;
 		
 		//0, 1, 2
 		//0, 3, 2

@@ -2,16 +2,19 @@ package Graphics.Models;
 
 import org.joml.Vector4f;
 
-import Entities.Renderable2D;
-import Entities.Components.Destroyable;
+import Core.Engine;
+import Entities.PhysicsBody;
 import Input.InputHandler;
 
-public class Tiles extends Renderable2D implements Destroyable {
+public class Tiles extends PhysicsBody {
 
-	public Tiles(Texture texture, float x, float y, float width, float height, Vector4f color, boolean center_anchor, boolean destroyable) {
+	public Tiles(Texture texture, float x, float y, float width, float height, Vector4f color, boolean center_anchor, boolean destroyable, BodyType type) {
 		super(width, height, color, center_anchor);
 		setTexture(texture);
 		setPosition(x, y);
+		setBodyType(type);
+		
+		Engine.addToPhysics(this);
 	}
 
 	@Override
@@ -23,11 +26,7 @@ public class Tiles extends Renderable2D implements Destroyable {
 	public void processInput(InputHandler handler) {
 		
 	}
-
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	//TODO fix destroy comp
 	
 }

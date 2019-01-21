@@ -2,11 +2,10 @@ package Entities;
 
 import org.joml.Vector4f;
 
-import Entities.Components.Interactable;
 import Graphics.Models.Texture;
 import Input.InputHandler;
 
-public class NPC extends Renderable2D implements Interactable {
+public class NPC extends PhysicsBody {
 	
 	@SuppressWarnings("unused")
 	private String name;
@@ -18,13 +17,10 @@ public class NPC extends Renderable2D implements Interactable {
 		setTexture(texture);
 		setPosition(x, y);
 		setSolid(true);
+		setBodyType(BodyType.DYNAMIC);
 	}
-
-	@Override
-	public void onInteraction() {
-		// TODO Auto-generated method stub
-		System.out.println("dab dab dab");
-	}
+	
+	//TODO fix interact comp
 
 	@Override
 	public void update() {

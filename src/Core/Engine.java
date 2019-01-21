@@ -7,11 +7,16 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joml.Vector3fc;
+
+import Entities.GameObject;
+import Entities.PhysicsBody;
 import Graphics.Window;
 import Input.InputHandler;
 
 public abstract class Engine implements Runnable {
-
+	
+	private static PhysicsEngine phys = new PhysicsEngine();
     private int width, height;
     private boolean fullscreen;
     private String title;
@@ -43,11 +48,7 @@ public abstract class Engine implements Runnable {
     public synchronized void end() {
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
-        try {
-			t.join();
-		} catch (InterruptedException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-		}
+        System.exit(0);
     }
 
     public void run() {
@@ -69,6 +70,7 @@ public abstract class Engine implements Runnable {
             processInput();
             if (delta >= 1.0) {
                 update();
+                phys.update();
                 updates++;
                 delta--;
             }
@@ -130,6 +132,10 @@ public abstract class Engine implements Runnable {
         onRender();
 
         glfwSwapBuffers(mainWindow.getWin());
+    }
+    
+    public static void addToPhysics(PhysicsBody obj) {
+    	phys.addToPhysics(obj);
     }
 
     public abstract void onRender();

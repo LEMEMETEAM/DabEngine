@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import Entities.PhysicsBody.BodyType;
 import Graphics.Models.Texture;
 import Graphics.Models.Tiles;
 import Utils.ResourceManager;
@@ -57,10 +58,14 @@ public class Level2D {
 					if(s.contains("=")) {
 						s = s.replace(";", "").strip();
 						String[] split = s.split(" = ", 2);
-						if(split[0].contains("width")) {
+						if(split[0].equals("width")) {
 							levelwidth = Float.parseFloat(split[1]);
-						} else if(split[0].contains("height")) {
+						} else if(split[0].equals("height")) {
 							levelheight = Float.parseFloat(split[1]);
+						} else if(split[0].contains("tile") && split[0].contains("width")) {
+							tilewidth = Float.parseFloat(split[1]);
+						} else if(split[0].contains("tile") && split[0].contains("height")) {
+							tileheight = Float.parseFloat(split[1]);
 						} else if(split[0].contains("spawn") && split[0].contains("point")) {
 							spawn_point = split[1].strip().charAt(0);
 						} else {
@@ -94,8 +99,13 @@ public class Level2D {
 		int height = level_info.length;
 		int width = level_info[0].length;
 		
-		tilewidth = levelwidth / (float) width; 
-		tileheight = levelheight / (float) height;
+		if(tilewidth == 0 && tileheight == 0) {
+			tilewidth = levelwidth / (float) width; 
+			tileheight = levelheight / (float) height;
+		} else if(levelwidth == 0 && levelheight == 0) {
+			levelwidth = tilewidth * (float) width;
+			levelheight = tileheight * (float) height;
+		}
 		
 		for(int y = 0; y < height; y++) {
 			for(int x = 0; x < width; x++) {
@@ -111,7 +121,8 @@ public class Level2D {
 								tileheight,
 								new Vector4f(1, 1, 1, 1),
 								false,
-								false);
+								false,
+								BodyType.STATIC);
 						if(entry.getValue()[1].equals("solid")) {
 							tile.setSolid(true);
 						} else {
@@ -124,7 +135,7 @@ public class Level2D {
 					float posx = tilewidth * x;
 					float posy = tileheight * y;
 					spawnpos = new Vector2f(posx, posy);
-					Tiles tile = new Tiles(
+					/*Tiles tile = new Tiles(
 							spawn_texture,
 							posx,
 							posy,
@@ -133,7 +144,7 @@ public class Level2D {
 							new Vector4f(1, 1, 1, 1),
 							false,
 							false);
-					tiles[y][x] = tile;
+					tiles[y][x] = tile;*/
 				}
 			}
 		}
@@ -142,7 +153,8 @@ public class Level2D {
 	public void render(SpriteBatch batch) {
 		for(int y = 0; y < tiles.length; y++) {
 			for(int x = 0; x < tiles[0].length; x++) {
-				tiles[y][x].render(batch);
+				if(tiles[y][x] != null)
+					tiles[y][x].render(batch);
 			}
 		}
 	}
