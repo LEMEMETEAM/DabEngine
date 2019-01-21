@@ -70,21 +70,23 @@ public class PhysicsEngine {
 			}
 		}
 		else if(body1.getBodyType() == BodyType.DYNAMIC && body2.getBodyType() == BodyType.STATIC) {
-			Vector2f correction = body2.getBounds().getHalf_extent().sub(body1.getBounds().getHalf_extent(), new Vector2f());
+			Vector2f oldpos = body1.getPosition();
 			if(distance.x > distance.y) {
 				body1.setVelx(0);
-				body1.addPosition(correction.x, 0);
+				body1.setPosition(oldpos.x, body1.getPosition().x);
 			} else {
 				body1.setVely(0);
-				body1.addPosition(0, correction.y);
+				body1.setPosition(oldpos.y, body1.getPosition().y);
 			}
 		}
 		else if(body1.getBodyType() == BodyType.STATIC && body2.getBodyType() == BodyType.DYNAMIC) {
-			Vector2f correction = body1.getBounds().getHalf_extent().sub(body2.getBounds().getHalf_extent(), new Vector2f());
+			Vector2f oldpos = body2.getPosition();
 			if(distance.x > distance.y) {
 				body2.setVelx(0);
+				body2.setPosition(oldpos.x, body2.getPosition().x);
 			} else {
 				body2.setVely(0);
+				body2.setPosition(oldpos.y, body2.getPosition().y);
 			}
 		}
 	}
