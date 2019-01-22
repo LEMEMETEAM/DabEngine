@@ -51,13 +51,17 @@ public class PhysicsEngine {
 				AABB bounds2 = body2.getBounds();
 				Pair<Boolean, Vector2f> info = bounds1.intersects(bounds2);
 				if(info.left) {
-					resolveCollision(body1, body2, info.right);
+					if(body1.isSolid() && body2.isSolid()) {
+						resolveCollision(body1, body2, info.right);
+					}
 				}
 			}
 		}
 	}
 	
 	private void resolveCollision(PhysicsBody body1, PhysicsBody body2, Vector2f distance) {
+		distance.x = Math.abs(distance.x());
+		distance.y = Math.abs(distance.y());
 		if(body1.getBodyType() == BodyType.DYNAMIC && body2.getBodyType() == BodyType.DYNAMIC) {
 			if(distance.x < distance.y) {
 				float momentum = calculateVelocityWithMomentum(body1.MASS, body1.getVelx(), body2.MASS, body2.getVelx());
@@ -70,23 +74,43 @@ public class PhysicsEngine {
 			}
 		}
 		else if(body1.getBodyType() == BodyType.DYNAMIC && body2.getBodyType() == BodyType.STATIC) {
-			Vector2f oldpos = body1.getPosition();
-			if(distance.x > distance.y) {
-				body1.setVelx(0);
-				body1.setPosition(oldpos.x, body1.getPosition().x);
+			Vector2f diff = body2.getBounds().getCenter().sub(body1.getBounds().getCenter(), new Vector2f());
+			if(distance.x < distance.y) {
+				if(diff.x > 0) {
+					body1.setVelx(0);
+					body1.addPosition(-distance.x, 0);
+				} else {
+					body1.setVelx(0);
+					body1.addPosition(distance.x, 0);
+				}
 			} else {
-				body1.setVely(0);
-				body1.setPosition(oldpos.y, body1.getPosition().y);
+				if(diff.y > 0) {
+					body1.setVely(0);
+					body1.addPosition(0, -distance.y);
+				} else {
+					body1.setVely(0);
+					body1.addPosition(0, distance.y);
+				}
 			}
 		}
 		else if(body1.getBodyType() == BodyType.STATIC && body2.getBodyType() == BodyType.DYNAMIC) {
-			Vector2f oldpos = body2.getPosition();
-			if(distance.x > distance.y) {
-				body2.setVelx(0);
-				body2.setPosition(oldpos.x, body2.getPosition().x);
+			Vector2f diff = body1.getBounds().getCenter().sub(body2.getBounds().getCenter(), new Vector2f());
+			if(distance.x < distance.y) {
+				if(diff.x > 0) {
+					body2.setVelx(0);
+					body2.addPosition(-distance.x, 0);
+				} else {
+					body2.setVelx(0);
+					body2.addPosition(distance.x, 0);
+				}
 			} else {
-				body2.setVely(0);
-				body2.setPosition(oldpos.y, body2.getPosition().y);
+				if(diff.y > 0) {
+					body2.setVely(0);
+					body2.addPosition(0, -distance.y);
+				} else {
+					body2.setVely(0);
+					body2.addPosition(0, distance.y);
+				}
 			}
 		}
 	}

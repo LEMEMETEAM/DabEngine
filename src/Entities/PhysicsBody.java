@@ -8,7 +8,6 @@ public abstract class PhysicsBody extends GameObject {
 		DYNAMIC, STATIC
 	}
 	private BodyType bodytype;
-	public int MASS = 10;
 
 	public PhysicsBody(float width, float height, Vector4f color, boolean center_anchor) {
 		super(width, height, color, center_anchor);

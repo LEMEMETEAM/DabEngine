@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,6 +37,7 @@ public class Level2D {
 	private HashMap<Character, String[]> info = new HashMap<>();
 	private char[][] level_info;
 	private Tiles[][] tiles;
+	private ArrayList<Background> backgrounds = new ArrayList<>();
 	private boolean loaded = false;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String levelname;
@@ -42,48 +45,58 @@ public class Level2D {
 	public void load(String level) {
 		levelname = level;
 		loaded = false;
-		boolean start_of_tag = false;
-		boolean end_of_tag = false;
-		String tag_start_name = "";
 		ArrayList<ArrayList<Character>> raw_info = new ArrayList<>();
 		try(BufferedReader in = new BufferedReader(new FileReader(new File(level)));) {
 			String s;
-			while((s = in.readLine()) != null) {
-				if(start_of_tag) {
-					if(s.equals("</" + tag_start_name + ">")) {
-						start_of_tag = false;
-						end_of_tag = true;
-						continue;
+			while((s = in.readLine().replace(" ", "")) != null) {
+				if(s.equals("[General]")) {
+					String[] map = s.split(":");
+					String stringval = map[1];
+					Float floatval = Float.parseFloat(map[1]);
+					switch(map[0]) {
+						case "TileWidth":
+							tilewidth = floatval;
+							break;
+						case "TileHeight":
+							tileheight = floatval;
+							break;
+						case "LevelWidth": 
+							levelwidth = floatval;
+							break;
+						case "LevelHeight":
+							levelheight = floatval;
+							break;
+						case "Backgrounds":
+							String[] bg = stringval.split(",");
+							for(int i = 0; i < bg.length; i++) {
+								String[] bg_split = bg[i].split(":");
+								switch(bg_split[0]) {
+									case "BackgroundFilename":
+										backgrounds.add
+										(
+												new Background() 
+												{{
+													texture = new Texture(Files.getFileStore(new File(level).toPath()).toString() + bg_split[1]);
+												}}
+										);
+								}
+							}
 					}
-					if(s.contains("=")) {
-						s = s.replace(";", "").strip();
-						String[] split = s.split(" = ", 2);
-						if(split[0].equals("width")) {
-							levelwidth = Float.parseFloat(split[1]);
-						} else if(split[0].equals("height")) {
-							levelheight = Float.parseFloat(split[1]);
-						} else if(split[0].contains("tile") && split[0].contains("width")) {
-							tilewidth = Float.parseFloat(split[1]);
-						} else if(split[0].contains("tile") && split[0].contains("height")) {
-							tileheight = Float.parseFloat(split[1]);
-						} else if(split[0].contains("spawn") && split[0].contains("point")) {
-							spawn_point = split[1].strip().charAt(0);
-						} else {
-							String[] map = split[1].split(", ", 2);
-							info.put(split[0].charAt(0), map);
-						}
-					}
-				} else {
-					start_of_tag = s.startsWith("<") && s.endsWith(">");
-					tag_start_name = s.replace("<", "").replace(">", "");
 				}
-				if(end_of_tag) {
+				else if(s.equals("[TileInfo]")) {
+					String[] map = s.split(":");
+					String[] t_info = map[1].split(",");
+					String stringval = map[1];
+					Float floatval = Float.parseFloat(map[1]);
+					info.put(map[0].charAt(0), t_info);
+				}
+				else if(s.equals("[TileMap]")) {
+					ArrayList<Character> row = new ArrayList<>();
 					char[] chars = s.toCharArray();
-					ArrayList<Character> rows = new ArrayList<>();
-					for(int i = 0; i < chars.length; i++) {
-						rows.add(chars[i]);
+					for(char c : chars) {
+						row.add(c);
 					}
-					raw_info.add(rows);
+					raw_info.add(row);
 				}
 			}
 		} catch(IOException e) {
@@ -113,17 +126,19 @@ public class Level2D {
 					if(level_info[y][x] == entry.getKey()) {
 						float posx = tilewidth * x;
 						float posy = tileheight * y;
-						Tiles tile = new Tiles(
-								ResourceManager.getTexture(entry.getValue()[0]),
-								posx,
-								posy,
-								tilewidth,
-								tileheight,
-								new Vector4f(1, 1, 1, 1),
-								false,
-								false,
-								BodyType.STATIC);
-						if(entry.getValue()[1].equals("solid")) {
+						if(entry.getValue()[0].equals("Tile")) {
+							Tiles tile = new Tiles(
+									ResourceManager.getTexture(entry.getValue()[0]),
+									posx,
+									posy,
+									tilewidth,
+									tileheight,
+									new Vector4f(1, 1, 1, 1),
+									false,
+									false,
+									BodyType.STATIC);
+						}
+						if(entry.getValue()[2].equals('1')) {
 							tile.setSolid(true);
 						} else {
 							tile.setSolid(false);
@@ -151,6 +166,13 @@ public class Level2D {
 	}
 	
 	public void render(SpriteBatch batch) {
+		for(Background bg : backgrounds) {
+			bg.x = 0;
+			bg.y = 0;
+			bg.width = levelwidth;
+			bg.height = levelheight;
+			bg.draw(batch);
+		}
 		for(int y = 0; y < tiles.length; y++) {
 			for(int x = 0; x < tiles[0].length; x++) {
 				if(tiles[y][x] != null)

@@ -21,6 +21,7 @@ public abstract class GameObject extends ComponentSystem {
 	public int MAX_VELOCITY;
 	private boolean solid;
 	public Animation anim = new Animation();
+	public int MASS = 10;
 
 	public GameObject(float width, float height, Vector4f color, boolean center_anchor) {
 		this.width = width;
