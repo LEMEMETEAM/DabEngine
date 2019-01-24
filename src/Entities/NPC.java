@@ -2,33 +2,30 @@ package Entities;
 
 import org.joml.Vector4f;
 
+import Entities.Components.CInteract;
+import Entities.Components.CRender;
+import Entities.Components.CTransform;
 import Graphics.Models.Texture;
-import Input.InputHandler;
 
-public class NPC extends PhysicsBody {
+public class NPC extends GameObject {
 	
 	@SuppressWarnings("unused")
 	private String name;
 
 	public NPC(String name, Texture texture, float x, float y, float width, float height, Vector4f color, boolean center_anchor) {
-		super(width, height, color, center_anchor);
-		// TODO Auto-generated constructor stub
 		this.name = name;
-		setTexture(texture);
-		setPosition(x, y);
-		setSolid(true);
-		setBodyType(BodyType.DYNAMIC);
-	}
-	
-	//TODO fix interact comp
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
 		
+		addComponent(new CRender());
+		addComponent(new CInteract());
+		addComponent(new CTransform());
+		
+		CRender render = this.getComponent(CRender.class);
+		render.setTexture(texture);
+		render.setAnchorCenter(center_anchor);
+		render.setColor(color);
+		
+		CTransform transform = this.getComponent(CTransform.class);
+		transform.setPos(x, y);
+		transform.setSize(width, height);
 	}
-
-	@Override
-	public void processInput(InputHandler handler) {}
-
 }

@@ -12,7 +12,6 @@ public class Background {
 	public Texture texture;
 	public float x, y, width, height;
 	public Vector4f color = new Vector4f();
-	public int layer_nom;
 	public float z;
 	
 	public void draw(SpriteBatch batch) {

@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 
 import org.joml.Vector4f;
 
+import Entities.Components.CRender;
+import Entities.Components.CTransform;
 import Graphics.Level2D;
 import Graphics.SpriteBatch;
 import Utils.ResourceManager;
@@ -51,19 +53,20 @@ public class NPCManager {
 	
 	public void renderAll(SpriteBatch batch) {
 		for(NPC npc : NPCs) {
-			npc.render(batch);
+			npc.getComponent(CRender.class).render(batch);
 		}
 	}
 	public NPC closestNPC(GameObject entity) {
 		NPC closest_npc = null;
+		CTransform transform_e = (CTransform) entity.getComponent(CTransform.class);
 		float distance;
 		for(int a = 0; a < NPCs.size(); a++) {
-			distance = entity.getPosition().distance(NPCs.get(a).getPosition());
+			distance = transform_e.getPos().distance(NPCs.get(a).getComponent(CTransform.class).getPos());
 			if(distance <= MAX_TALKING_DISTANCE) {
 				if(closest_npc == null) {
 					closest_npc = NPCs.get(a);
 				}
-				if(entity.getPosition().distance(closest_npc.getPosition()) < distance) {
+				if(transform_e.getPos().distance(closest_npc.getComponent(CTransform.class).getPos()) < distance) {
 					closest_npc = NPCs.get(a);
 				}
 			}

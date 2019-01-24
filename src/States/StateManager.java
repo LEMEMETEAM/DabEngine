@@ -34,11 +34,7 @@ public abstract class StateManager {
 		currentState.render(engine, batch, cam);
 	}
 	
-	public void update(Engine engine, Camera cam) {
-		currentState.update(engine, cam);
-	}
-	
-	public void processInput(Engine engine, InputHandler handler, Camera cam) {
-		currentState.processInput(engine, handler, cam);
+	public void update(Engine engine, InputHandler handler, Camera cam) {
+		currentState.update(engine, handler, cam);
 	}
 }

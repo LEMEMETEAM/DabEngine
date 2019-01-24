@@ -1,8 +1,8 @@
-package Graphics;
+package Entities.Components;
 
 import java.util.ArrayList;
 
-public class Animation {
+public class CAnimation extends Component {
 	
 	private int currentFrame;
 	private int texSheetFrame;
@@ -10,7 +10,7 @@ public class Animation {
 	private ArrayList<Integer> frames = new ArrayList<>();
 	private ArrayList<Integer> delays = new ArrayList<>();
 	
-	public Animation() {
+	public CAnimation() {
 		currentFrame = 0;
 		texSheetFrame = 0;
 		looped = false;

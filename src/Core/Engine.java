@@ -7,10 +7,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.joml.Vector3fc;
-
-import Entities.GameObject;
-import Entities.PhysicsBody;
+import Entities.Components.CPhysics;
 import Graphics.Window;
 import Input.InputHandler;
 
@@ -67,7 +64,6 @@ public abstract class Engine implements Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
-            processInput();
             if (delta >= 1.0) {
                 update();
                 phys.update();
@@ -117,14 +113,10 @@ public abstract class Engine implements Runnable {
         glEnable(GL_STENCIL_TEST);
 
     }
-    
-    public void processInput() {
-    	onAction(inputhandler);
-    	glfwPollEvents();
-    }
 
     public void update() {
-        onUpdate();
+        onUpdate(inputhandler);
+        glfwPollEvents();
     }
 
     public void render() {
@@ -134,13 +126,12 @@ public abstract class Engine implements Runnable {
         glfwSwapBuffers(mainWindow.getWin());
     }
     
-    public static void addToPhysics(PhysicsBody obj) {
-    	phys.addToPhysics(obj);
+    public static void addToPhysics(CPhysics cPhysics) {
+    	phys.addToPhysics(cPhysics);
     }
 
     public abstract void onRender();
-    public abstract void onUpdate();
-    public abstract void onAction(InputHandler handler);
+    public abstract void onUpdate(InputHandler handler);
 
     public Window getMainWindow() {
         return mainWindow;

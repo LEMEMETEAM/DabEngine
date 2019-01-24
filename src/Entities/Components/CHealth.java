@@ -1,6 +1,6 @@
 package Entities.Components;
 
-public class CHealth {
+public class CHealth extends Component {
 	private float health;
 
 	public void increaseHealth() {

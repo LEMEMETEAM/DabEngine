@@ -4,18 +4,24 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import Entities.PhysicsBody.BodyType;
+import Entities.Components.CCollision;
+import Entities.Components.CRender;
+import Entities.Components.CTransform;
+import Entities.Components.CPhysics.BodyType;
 import Graphics.Models.Texture;
 import Graphics.Models.Tiles;
 import Utils.ResourceManager;
@@ -42,70 +48,98 @@ public class Level2D {
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private String levelname;
 	
-	public void load(String level) {
-		levelname = level;
+	private File findLevel(File level_dir) {
+		for(File file : level_dir.listFiles()) {
+			if(file.isFile() && file.toString().contains(".del")) {
+				return file;
+			}
+		}
+		return null;
+	}
+	
+	public void load(File level_dir) {
 		loaded = false;
 		ArrayList<ArrayList<Character>> raw_info = new ArrayList<>();
-		try(BufferedReader in = new BufferedReader(new FileReader(new File(level)));) {
-			String s;
-			while((s = in.readLine().replace(" ", "")) != null) {
-				if(s.equals("[General]")) {
-					String[] map = s.split(":");
-					String stringval = map[1];
-					Float floatval = Float.parseFloat(map[1]);
-					switch(map[0]) {
-						case "TileWidth":
-							tilewidth = floatval;
-							break;
-						case "TileHeight":
-							tileheight = floatval;
-							break;
-						case "LevelWidth": 
-							levelwidth = floatval;
-							break;
-						case "LevelHeight":
-							levelheight = floatval;
-							break;
-						case "Backgrounds":
-							String[] bg = stringval.split(",");
-							for(int i = 0; i < bg.length; i++) {
-								String[] bg_split = bg[i].split(":");
-								switch(bg_split[0]) {
-									case "BackgroundFilename":
-										backgrounds.add
-										(
-												new Background() 
-												{{
-													texture = new Texture(Files.getFileStore(new File(level).toPath()).toString() + bg_split[1]);
-												}}
-										);
-								}
-							}
+		File level = findLevel(level_dir);
+		if(level_dir.isDirectory()) {
+			try(BufferedReader in = new BufferedReader(new FileReader(level))) {
+				String s;
+				String header = null;
+				while((s = in.readLine()) != null) {
+					s = s.replace(" ", "");
+					if(s.equals("[General]")) {
+						header = s;
+						continue;
+					}
+					else if(s.equals("[Backgrounds]")) {
+						header = s;
+						continue;
+					}
+					else if(s.equals("[TileInfo]")) {
+						header = s;
+						continue;
+					}
+					else if(s.equals("[TileMap]")) {
+						header = s;
+						continue;
+					}
+					else if(s.isBlank()) {
+						continue;
+					}
+					if(header.equals("[General]")) {
+						String[] map = s.split(":");
+						String stringval = map[1];
+						switch(map[0]) {
+							case "TileWidth":
+								tilewidth = Float.parseFloat(map[1]);
+								break;
+							case "TileHeight":
+								tileheight = Float.parseFloat(map[1]);
+								break;
+							case "LevelWidth": 
+								levelwidth = Float.parseFloat(map[1]);
+								break;
+							case "LevelHeight":
+								levelheight = Float.parseFloat(map[1]);
+								break;
+						}
+					}
+					else if(header.equals("[Backgrounds]")) {
+						String[] map = s.split(":");
+						switch(map[0]) {
+							case "BackgroundFilename":
+								backgrounds.add
+								(
+										new Background() 
+										{{
+											texture = new Texture(level_dir.toPath().resolve(map[1]).toString());
+										}}
+								);
+								break;
+						}
+					}
+					else if(header.equals("[TileInfo]")) {
+						String[] map = s.split(":");
+						String[] t_info = map[1].split(",");
+						info.put(map[0].charAt(0), t_info);
+					}
+					else if(header.equals("[TileMap]")) {
+						ArrayList<Character> row = new ArrayList<>();
+						char[] chars = s.toCharArray();
+						for(char c : chars) {
+							row.add(c);
+						}
+						raw_info.add(row);
 					}
 				}
-				else if(s.equals("[TileInfo]")) {
-					String[] map = s.split(":");
-					String[] t_info = map[1].split(",");
-					String stringval = map[1];
-					Float floatval = Float.parseFloat(map[1]);
-					info.put(map[0].charAt(0), t_info);
-				}
-				else if(s.equals("[TileMap]")) {
-					ArrayList<Character> row = new ArrayList<>();
-					char[] chars = s.toCharArray();
-					for(char c : chars) {
-						row.add(c);
-					}
-					raw_info.add(row);
-				}
-			}
-		} catch(IOException e) {
+			} catch(IOException e) {
 			LOGGER.log(Level.SEVERE, "Level Load Error", e);
+			}
 		}
 		level_info = convertIntegers(raw_info);
 		tiles = new Tiles[level_info.length][level_info[0].length];
 		loaded = true;
-		LOGGER.log(Level.INFO, "Level '" + level + "' loaded");
+		LOGGER.log(Level.INFO, "Level '" + level_dir.toString() + "' loaded");
 	}
 	
 	public void init(Texture spawn_texture) {
@@ -128,7 +162,7 @@ public class Level2D {
 						float posy = tileheight * y;
 						if(entry.getValue()[0].equals("Tile")) {
 							Tiles tile = new Tiles(
-									ResourceManager.getTexture(entry.getValue()[0]),
+									ResourceManager.getTexture(entry.getValue()[1]),
 									posx,
 									posy,
 									tilewidth,
@@ -137,46 +171,39 @@ public class Level2D {
 									false,
 									false,
 									BodyType.STATIC);
+							if(entry.getValue()[2].equals("1")) {
+								tile.addComponent(new CCollision());
+								tile.getComponent(CCollision.class).correctBounds();
+							}
+							tiles[y][x] = tile;
+						} else if(entry.getValue()[0].equals("Trigger")) {
+							
 						}
-						if(entry.getValue()[2].equals('1')) {
-							tile.setSolid(true);
-						} else {
-							tile.setSolid(false);
+						else if(entry.getValue()[0].equals("SpawnPoint")) {
+							spawnpos = new Vector2f(posx, posy);
 						}
-						tiles[y][x] = tile;
 					}
-				}
-				if(level_info[y][x] == spawn_point) {
-					float posx = tilewidth * x;
-					float posy = tileheight * y;
-					spawnpos = new Vector2f(posx, posy);
-					/*Tiles tile = new Tiles(
-							spawn_texture,
-							posx,
-							posy,
-							tilewidth,
-							tileheight,
-							new Vector4f(1, 1, 1, 1),
-							false,
-							false);
-					tiles[y][x] = tile;*/
 				}
 			}
 		}
 	}
 	
 	public void render(SpriteBatch batch) {
-		for(Background bg : backgrounds) {
+		for(int i = 0; i < backgrounds.size(); i++) {
+			Background bg = backgrounds.get(i);
 			bg.x = 0;
 			bg.y = 0;
+			bg.z = i * 5;
 			bg.width = levelwidth;
 			bg.height = levelheight;
+			bg.color = new Vector4f(1);
 			bg.draw(batch);
 		}
 		for(int y = 0; y < tiles.length; y++) {
 			for(int x = 0; x < tiles[0].length; x++) {
-				if(tiles[y][x] != null)
-					tiles[y][x].render(batch);
+				if(tiles[y][x] != null) {
+					tiles[y][x].getComponent(CRender.class).render(batch);
+				}
 			}
 		}
 	}

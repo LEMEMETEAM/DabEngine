@@ -1,5 +1,5 @@
 package Entities.Components;
 
-public abstract class InteractComponent implements Component {
+public class CInteract extends Component {
 	 public boolean interaction = false;
 }
