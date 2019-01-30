@@ -1,17 +1,19 @@
-package Graphics;
+package Graphics.Batch;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.Arrays;
 import java.util.List;
 
+import Graphics.ProjectionMatrix;
+import Graphics.Shaders;
 import org.joml.Vector4f;
 
 import Graphics.Models.Texture;
 import Graphics.Models.VertexAttrib;
 import Graphics.Models.VertexBuffer;
 
-public class SpriteBatch {
+public class SpriteBatch implements IBatch {
 	
 	private boolean drawing;
 	private int idx;
@@ -28,6 +30,7 @@ public class SpriteBatch {
 	public SpriteBatch(Shaders shader) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
 		this.shader = shader;
+		updateUniforms();
 	}
 	
 	public void begin() {
@@ -49,7 +52,19 @@ public class SpriteBatch {
 		flush();
 	}
 	
-	public void setShader(Shaders shader) {
+	public void updateUniforms() {
+		updateUniforms(shader);
+	}
+	
+	public void updateUniforms(Shaders shader) {
+		shader.bind();
+		
+		shader.setUniform("projectionMatrix", ProjectionMatrix.get());
+		
+		shader.setUniform("texture", 0);
+	}
+	
+	public void setShader(Shaders shader, boolean updateUniforms) {
 		if(shader == null) {
 			throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
 		}
@@ -58,9 +73,16 @@ public class SpriteBatch {
 		}
 		this.shader = shader;
 		
-		if(drawing) {
-			shader.bind();
+		if(updateUniforms) {
+			updateUniforms();
 		}
+		else if(drawing) {
+			this.shader.bind();
+		}
+	}
+	
+	public void setShader(Shaders shader) {
+		setShader(shader, true);
 	}
 	
 	public Shaders getShader() {

@@ -14,10 +14,6 @@ public class CPhysics extends Component {
 	}
 	private BodyType bodytype;
 	
-	public CPhysics() {
-		Engine.addToPhysics(this);
-	}
-	
 	public BodyType getBodyType() {
 		return bodytype;
 	}

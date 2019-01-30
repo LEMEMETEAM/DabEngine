@@ -1,5 +1,6 @@
 package Graphics;
 
+import Graphics.Batch.SpriteBatch;
 import org.joml.Vector4f;
 
 import Graphics.Models.Texture;

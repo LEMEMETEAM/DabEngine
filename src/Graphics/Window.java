@@ -25,12 +25,7 @@ public class Window {
     private boolean resized;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String WINDOW_NOT_CREATED = "Window Not Created";
-    
-    static{
-    	GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    	reswidth = vidmode.width();
-    	resheight = vidmode.height();
-    }
+    private boolean loaded;
 
     public Window(int width, int height, String title, HashMap<Integer, Integer> hints, boolean fullscreen){
         this.width = width;
@@ -38,6 +33,22 @@ public class Window {
         this.title = title;
         this.hints = hints;
         this.fullscreen = fullscreen;
+        
+        if (!glfwInit()) {
+            LOGGER.log(Level.SEVERE, "Window not initialized");
+            System.exit(1);
+        }
+        
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    	reswidth = vidmode.width();
+    	resheight = vidmode.height();
+        
+        if(fullscreen) {
+        	createFullScreenWindow(glfwGetPrimaryMonitor());
+        }
+        else {
+        	createWindow();
+        }
     }
     
     public void createWindow() {
@@ -55,6 +66,8 @@ public class Window {
         GL.createCapabilities();
 
         windowCallback();
+        
+        loaded = true;
     }
     
     public void createFullScreenWindow(long monitor) {
@@ -74,10 +87,16 @@ public class Window {
         GL.createCapabilities();
 
         windowCallback();
+        
+        loaded = true;
     }
     
     public void changeResolution(int dwidth, int dheight) {
     	glfwSetWindowSize(win, dwidth, dheight);
+    }
+    
+    public boolean isLoaded() {
+    	return loaded;
     }
 
     private void windowCallback(){

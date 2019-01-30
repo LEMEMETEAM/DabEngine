@@ -2,8 +2,7 @@ package Entities.Components;
 
 import org.joml.Vector4f;
 
-import Entities.GameObject;
-import Graphics.SpriteBatch;
+import Graphics.Batch.SpriteBatch;
 import Graphics.Models.Texture;
 
 public class CRender extends Component {
@@ -12,12 +11,8 @@ public class CRender extends Component {
 	private Vector4f color;
 	private boolean center_anchor;
 	
-	public CRender() {
-		name = "render";
-	}
-	
 	public void render(SpriteBatch batch) {
-		CTransform transform = this.gameObject.getComponent(CTransform.class);
+		CTransform transform = this.gameObject.get().getComponent(CTransform.class);
 		batch.draw(texture, transform.getPos().x(), transform.getPos().y(), transform.getSize().x(), transform.getSize().y(), color.x(), color.y(), color.z(), color.w(), center_anchor);
 	}
 	

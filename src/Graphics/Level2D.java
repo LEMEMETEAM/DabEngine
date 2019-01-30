@@ -4,23 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import Graphics.Batch.SpriteBatch;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import Entities.Components.CCollision;
 import Entities.Components.CRender;
-import Entities.Components.CTransform;
 import Entities.Components.CPhysics.BodyType;
 import Graphics.Models.Texture;
 import Graphics.Models.Tiles;

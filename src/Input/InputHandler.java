@@ -2,12 +2,19 @@ package Input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.HashMap;
+
 import org.joml.Vector2d;
 import org.lwjgl.glfw.*;
 
 public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI{
 	
-	private boolean[] keys = new boolean[65536];
+	//private boolean[] keys = new boolean[65536];
+	private HashMap<Integer, Integer> keys = new HashMap<>() {{
+		for(int i = 0; i < 65536; i++) {
+			put(i, GLFW_RELEASE);
+		}
+	}};
 	private boolean[] buttons = new boolean[3];
 	private int last_key;
 	private double xpos, ypos, dx, dy, lastx, lasty;
@@ -16,8 +23,9 @@ public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, G
 	@Override
 	public void invoke(long arg0, int arg1, int arg2, int arg3, int arg4) {
 		// TODO Auto-generated method stub
-		keys[arg1] = arg3 != GLFW_RELEASE;
-		last_key = arg1;
+		keys.put(arg1, arg3);
+		/*keys[arg1] = arg3 != GLFW_RELEASE;
+		last_key = arg1;*/
 	}
 	
 	@Override
@@ -41,11 +49,11 @@ public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, G
 	}
 	
 	public boolean isKeyPressed(int keycode) {
-		return keys[keycode];
+		return keys.get(keycode) != GLFW_RELEASE;
 	}
 	
 	public boolean isKeyReleased(int keycode) {
-		return keycode == last_key && keys[keycode] == false;
+		return keys.get(keycode) == GLFW_RELEASE;
 	}
 	
 	public boolean isMousePressed(int buttoncode) {

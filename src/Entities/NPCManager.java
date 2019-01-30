@@ -13,7 +13,7 @@ import org.joml.Vector4f;
 import Entities.Components.CRender;
 import Entities.Components.CTransform;
 import Graphics.Level2D;
-import Graphics.SpriteBatch;
+import Graphics.Batch.SpriteBatch;
 import Utils.ResourceManager;
 
 public class NPCManager {

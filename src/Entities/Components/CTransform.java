@@ -23,9 +23,9 @@ public class CTransform extends Component {
 	
 	public void setPos(float x, float y) {
 		this.pos.set(x, y);
-		if(this.gameObject.hasComponent(CCollision.class)) {
-			CCollision collision = this.gameObject.getComponent(CCollision.class);
-			CRender render = this.gameObject.getComponent(CRender.class);
+		if(this.gameObject.get().hasComponent(CCollision.class)) {
+			CCollision collision = this.gameObject.get().getComponent(CCollision.class);
+			CRender render = this.gameObject.get().getComponent(CRender.class);
 			if(render.isAnchorCenter()) {
 				collision.getBounds().setCenter(new Vector2f(x, y));
 			}
@@ -37,24 +37,24 @@ public class CTransform extends Component {
 	
 	public void setSize(float width, float height) {
 		this.size.set(width, height);
-		if(this.gameObject.hasComponent(CCollision.class)) {
-			CCollision collision = this.gameObject.getComponent(CCollision.class);
+		if(this.gameObject.get().hasComponent(CCollision.class)) {
+			CCollision collision = this.gameObject.get().getComponent(CCollision.class);
 			collision.getBounds().setHalf_extent(new Vector2f(width, height));
 		}
 	}
 	
 	public void addPos(float x, float y) {
 		this.pos.add(x, y);
-		if(this.gameObject.hasComponent(CCollision.class)) {
-			CCollision collision = this.gameObject.getComponent(CCollision.class);
+		if(this.gameObject.get().hasComponent(CCollision.class)) {
+			CCollision collision = this.gameObject.get().getComponent(CCollision.class);
 			collision.getBounds().addToCenter(new Vector2f(x, y));
 		}
 	}
 	
 	public void addSize(float width, float height) {
 		this.size.add(width, height);
-		if(this.gameObject.hasComponent(CCollision.class)) {
-			CCollision collision = this.gameObject.getComponent(CCollision.class);
+		if(this.gameObject.get().hasComponent(CCollision.class)) {
+			CCollision collision = this.gameObject.get().getComponent(CCollision.class);
 			collision.getBounds().addToHalf_extent(new Vector2f(width, height));
 		}
 	}
