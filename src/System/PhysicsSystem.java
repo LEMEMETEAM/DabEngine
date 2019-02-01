@@ -32,14 +32,14 @@ public class PhysicsSystem extends System {
 		 * ACC = FORCE / MASS
 		 */
 		Vector2f gravityforce = computeGravityForce(object);
-		phys.addVelocity(gravityforce.x / phys.MASS, gravityforce.y / phys.MASS);
+		phys.velocity.add(gravityforce.x / phys.MASS, gravityforce.y / phys.MASS);
 	}
 	
 	private void computeVelocity(GameObject object) {
 		CPhysics phys = object.getComponent(CPhysics.class);
 		CTransform trans = object.getComponent(CTransform.class);
 		
-		trans.addPos(phys.velocity.x, phys.velocity.y);
+		trans.pos.add(phys.velocity.x, phys.velocity.y);
 	}
 	
 	private void collisionDetection(int index, GameObject object1) {
@@ -59,7 +59,7 @@ public class PhysicsSystem extends System {
 		CCollision object1c = object1.getComponent(CCollision.class);
 		CCollision object2c = object2.getComponent(CCollision.class);
 		
-		if(object1p.getBodyType() == BodyType.DYNAMIC && object2p.getBodyType() == BodyType.STATIC) {
+		if(object1p.bodytype == BodyType.DYNAMIC && object2p.bodytype == BodyType.STATIC) {
 			Vector2f dir = object1c.getBounds().getCenter().sub(object2c.getBounds().getCenter());
 			if(cor.x > cor.y) {
 				if(dir.x > 0) {
@@ -78,7 +78,7 @@ public class PhysicsSystem extends System {
 				}
 			}
 		}
-		else if(object1p.getBodyType() == BodyType.STATIC && object2p.getBodyType() == BodyType.DYNAMIC) {
+		else if(object1p.bodytype == BodyType.STATIC && object2p.bodytype == BodyType.DYNAMIC) {
 			Vector2f dir = object2c.getBounds().getCenter().sub(object1c.getBounds().getCenter());
 			if(cor.x > cor.y) {
 				if(dir.x > 0) {

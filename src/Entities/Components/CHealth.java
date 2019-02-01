@@ -10,12 +10,4 @@ public class CHealth extends Component {
 	public void decreaseHealth() {
 		health--;
 	}
-	
-	public void set(float health) {
-		this.health = health;
-	}
-	
-	public float get() {
-		return health;
-	}
 }

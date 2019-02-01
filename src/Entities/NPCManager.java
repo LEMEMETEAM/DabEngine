@@ -61,12 +61,12 @@ public class NPCManager {
 		CTransform transform_e = (CTransform) entity.getComponent(CTransform.class);
 		float distance;
 		for(int a = 0; a < NPCs.size(); a++) {
-			distance = transform_e.getPos().distance(NPCs.get(a).getComponent(CTransform.class).getPos());
+			distance = transform_e.pos.distance(NPCs.get(a).getComponent(CTransform.class).pos);
 			if(distance <= MAX_TALKING_DISTANCE) {
 				if(closest_npc == null) {
 					closest_npc = NPCs.get(a);
 				}
-				if(transform_e.getPos().distance(closest_npc.getComponent(CTransform.class).getPos()) < distance) {
+				if(transform_e.pos.distance(closest_npc.getComponent(CTransform.class).pos) < distance) {
 					closest_npc = NPCs.get(a);
 				}
 			}

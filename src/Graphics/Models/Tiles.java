@@ -1,5 +1,6 @@
 package Graphics.Models;
 
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import Entities.GameObject;
@@ -16,14 +17,14 @@ public class Tiles extends GameObject {
 		addComponent(new CTransform());
 		
 		CTransform transform = this.getComponent(CTransform.class);
-		transform.setPos(x, y);
-		transform.setSize(width, height);
+		transform.pos.set(x, y);
+		transform.size.set(width, height);
 		
 		CRender renderer = this.getComponent(CRender.class);
-		renderer.setTexture(texture);
-		renderer.setColor(color);
-		renderer.setAnchorCenter(center_anchor);
+		renderer.texture = texture;
+		renderer.color = color;
+		renderer.center_anchor = center_anchor;
 		
-		this.getComponent(CPhysics.class).setBodyType(BodyType.STATIC);
+		this.getComponent(CPhysics.class).bodytype = BodyType.STATIC;
 	}
 }

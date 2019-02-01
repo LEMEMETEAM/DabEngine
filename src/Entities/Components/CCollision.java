@@ -19,12 +19,12 @@ public class CCollision extends Component {
 	public void correctBounds() {
     	CRender render = this.gameObject.get().getComponent(CRender.class);
 		CTransform transform = this.gameObject.get().getComponent(CTransform.class);
-		if(render.isAnchorCenter()) {
-			this.gameObject.get().getComponent(CCollision.class).getBounds().setCenter(transform.getPos());
+		if(render.center_anchor) {
+			this.gameObject.get().getComponent(CCollision.class).getBounds().setCenter(transform.pos);
 		} else {
-			this.gameObject.get().getComponent(CCollision.class).getBounds().setCenter(new Vector2f(transform.getPos().x() + (transform.getSize().x()/2),
-					transform.getPos().y() + (transform.getSize().y()/2)));
+			this.gameObject.get().getComponent(CCollision.class).getBounds().setCenter(new Vector2f(transform.pos.x() + (transform.size.x()/2),
+					transform.pos.y() + (transform.size.y()/2)));
 		}
-		this.gameObject.get().getComponent(CCollision.class).getBounds().setHalf_extent(new Vector2f(transform.getSize().x()/2, transform.getSize().y()/2));
+		this.gameObject.get().getComponent(CCollision.class).getBounds().setHalf_extent(new Vector2f(transform.size.x()/2, transform.size.y()/2));
     }
 }

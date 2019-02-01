@@ -12,17 +12,5 @@ public class CPhysics extends Component {
 	public enum BodyType {
 		DYNAMIC, STATIC
 	}
-	private BodyType bodytype;
-	
-	public BodyType getBodyType() {
-		return bodytype;
-	}
-
-	public void setBodyType(BodyType bodytype) {
-		this.bodytype = bodytype;
-	}
-	
-	public void addVelocity(float x, float y) {
-		velocity.add(x, y);
-	}
+	public BodyType bodytype;
 }

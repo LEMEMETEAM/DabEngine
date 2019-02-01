@@ -20,12 +20,12 @@ public class NPC extends GameObject {
 		addComponent(new CTransform());
 		
 		CRender render = this.getComponent(CRender.class);
-		render.setTexture(texture);
-		render.setAnchorCenter(center_anchor);
-		render.setColor(color);
+		render.texture = texture;
+		render.center_anchor = center_anchor;
+		render.color = color;
 		
 		CTransform transform = this.getComponent(CTransform.class);
-		transform.setPos(x, y);
-		transform.setSize(width, height);
+		transform.pos.set(x, y);
+		transform.size.set(width, height);
 	}
 }
