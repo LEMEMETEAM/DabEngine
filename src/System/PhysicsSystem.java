@@ -22,7 +22,7 @@ public class PhysicsSystem extends System {
 	}
 	
 	private Vector2f computeGravityForce(GameObject object) {
-		return new Vector2f(0, object.getComponent(CPhysics.class).MASS); 
+		return new Vector2f(0, object.getComponent(CPhysics.class).MASS * GRAVITY); 
 	}
 	
 	private void reactToGravity(GameObject object) {

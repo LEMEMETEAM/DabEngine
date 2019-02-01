@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.Arrays;
 import java.util.List;
 
+import Graphics.Batch.IBatch;
 import Graphics.ProjectionMatrix;
 import Graphics.Shaders;
 import org.joml.Vector4f;
