@@ -16,9 +16,9 @@ import System.System;
 
 public class ParticleEmitter extends System {
 	
-	private int max_particles = 500;
+	private int max_particles = 2;
 	public Vector2f pos;
-	public static float OFFSET = 500;
+	public static float OFFSET = 5;
 	public static Texture GLOBAL_PARTICLE_TEXTURE;
 	
 	public ParticleEmitter() {
@@ -85,7 +85,7 @@ public class ParticleEmitter extends System {
 		float random = ((rng.nextFloat() * 100) - 50) / 10f;
 		float rColor = 0.5f + rng.nextFloat();
 		
-		trans.pos.set(this.pos.add(random, offset, new Vector2f()));
+		trans.pos.set(this.pos.add(random, random, new Vector2f()).add(offset, offset, new  Vector2f()));
 		render.color = new Vector4f(rColor, rColor, rColor, 1.0f);
 		p.LIFE = 1.0f; 
 	}

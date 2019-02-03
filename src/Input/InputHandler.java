@@ -7,7 +7,11 @@ import java.util.HashMap;
 import org.joml.Vector2d;
 import org.lwjgl.glfw.*;
 
-public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, GLFWMouseButtonCallbackI{
+import Observer.Subject;
+
+public class InputHandler extends Subject {
+	
+	public static final InputHandler INSTANCE = new InputHandler();
 	
 	//private boolean[] keys = new boolean[65536];
 	private HashMap<Integer, Integer> keys = new HashMap<>() {{
@@ -20,32 +24,47 @@ public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, G
 	private double xpos, ypos, dx, dy, lastx, lasty;
 	private int last_button;
 	
-	@Override
-	public void invoke(long arg0, int arg1, int arg2, int arg3, int arg4) {
-		// TODO Auto-generated method stub
-		keys.put(arg1, arg3);
-		/*keys[arg1] = arg3 != GLFW_RELEASE;
-		last_key = arg1;*/
+	public class Keyboard extends GLFWKeyCallback {
+
+		@Override
+		public void invoke(long arg0, int arg1, int arg2, int arg3, int arg4) {
+			// TODO Auto-generated method stub
+			keys.put(arg1, arg3);
+			/*keys[arg1] = arg3 != GLFW_RELEASE;
+			last_key = arg1;*/
+			dispatchKeyEvent(new KeyEvent(INSTANCE, arg1, arg2, arg3, arg4));
+		}
+		
 	}
 	
-	@Override
-	public void invoke(long arg0, double arg1, double arg2) {
-		// TODO Auto-generated method stub
-		xpos = arg1;
-		ypos = arg2;
+	public class MousePos extends GLFWCursorPosCallback {
+
+		@Override
+		public void invoke(long arg0, double arg1, double arg2) {
+			// TODO Auto-generated method stub
+			xpos = arg1;
+			ypos = arg2;
+			
+			dx = xpos - lastx;
+			dy = ypos - lasty;
+			
+			lastx = xpos;
+			lasty = ypos;
+		}
 		
-		dx = xpos - lastx;
-		dy = ypos - lasty;
-		
-		lastx = xpos;
-		lasty = ypos;
 	}
 	
-	@Override
-	public void invoke(long arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-		buttons[arg1] = arg3 != GLFW_RELEASE;
-		last_button = arg1;
+	public class MouseButton extends GLFWMouseButtonCallback {
+
+		@Override
+		public void invoke(long arg0, int arg1, int arg2, int arg3) {
+			// TODO Auto-generated method stub
+			buttons[arg1] = arg3 != GLFW_RELEASE;
+			last_button = arg1;
+			
+			dispatchMouseEvent(new MouseEvent(INSTANCE, arg1, arg2, arg3));
+		}
+		
 	}
 	
 	public boolean isKeyPressed(int keycode) {
@@ -70,17 +89,5 @@ public class InputHandler implements GLFWKeyCallbackI, GLFWCursorPosCallbackI, G
 	
 	public Vector2d getMouseDelta() {
 		return new Vector2d(dx, dy);
-	}
-
-	@Override
-	public String getSignature() {
-		// TODO Auto-generated method stub
-		return GLFWKeyCallbackI.super.getSignature();
-	}
-
-	@Override
-	public void callback(long args) {
-		// TODO Auto-generated method stub
-		GLFWKeyCallbackI.super.callback(args);
 	}
 }

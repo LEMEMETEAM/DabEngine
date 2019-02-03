@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import Entities.GameObject;
-import States.State;
+import States.Scene;
 
 public abstract class System {
 	
-	public WeakReference<State> state;
+	public WeakReference<Scene> state;
 	protected ArrayList<WeakReference<GameObject>> obj = new ArrayList<>();
 	protected ArrayList<Class<?>> types = new ArrayList<>();
 	protected static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -19,7 +19,21 @@ public abstract class System {
 		g.addedToSystem(this);
 	}
 	
-	public void addedToState(State state) {
+	public void addGameObject(int index, GameObject g) {
+		obj.add(index, new WeakReference<>(g));
+		g.addedToSystem(this);
+	}
+	
+	public <T> T getGameObject(Class<T> clazz) {
+		for(WeakReference<GameObject> obj : obj) {
+			if(clazz.isAssignableFrom(obj.get().getClass())) {
+				return clazz.cast(obj.get());
+			}
+		}
+		return null;
+	}
+	
+	public void addedToState(Scene state) {
 		this.state = new WeakReference<>(state);
 	}
 	

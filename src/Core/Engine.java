@@ -11,7 +11,6 @@ import Input.InputHandler;
 public class Engine {
 	
     private Window mainWindow = null;
-    private InputHandler inputhandler;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private App app;
     
@@ -61,10 +60,10 @@ public class Engine {
         mainWindow = new Window(app.WIDTH, app.HEIGHT, app.TITLE, app.hints, app.fullscreen);
         
         if(mainWindow.isLoaded()) {
-		    inputhandler = new InputHandler();
 		
-		    glfwSetKeyCallback(mainWindow.getWin(), inputhandler);
-		    glfwSetCursorPosCallback(mainWindow.getWin(), inputhandler);
+		    glfwSetKeyCallback(mainWindow.getWin(), InputHandler.INSTANCE.new Keyboard());
+		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());
+		    glfwSetMouseButtonCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MouseButton());
 		
 		    glEnable(GL_BLEND);
 		    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

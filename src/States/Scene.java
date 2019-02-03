@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Input.InputHandler;
 import System.System;
 
-public abstract class State {
+public abstract class Scene {
 	private ArrayList<WeakReference<System>> sys = new ArrayList<>();
 	public void render() {
 		for(WeakReference<System> system : sys) {

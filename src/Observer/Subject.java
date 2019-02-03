@@ -2,6 +2,11 @@ package Observer;
 
 import java.util.ArrayList;
 
+import Input.KeyEvent;
+import Input.MouseEvent;
+
+import static org.lwjgl.glfw.GLFW.*;
+
 public abstract class Subject {
 	
 	private ArrayList<Observer> observers = new ArrayList<>();
@@ -12,9 +17,25 @@ public abstract class Subject {
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
-	public void notify(Object obj) {
+	public void dispatchKeyEvent(KeyEvent e) {
 		for(Observer o : observers) {
-			o.onNotify(obj);
+			switch(e.getAction()) {
+				case GLFW_PRESS:
+					o.onKeyPress(e);
+				case GLFW_RELEASE:
+					o.onKeyRelease(e);
+			}
+		}
+	}
+	
+	public void dispatchMouseEvent(MouseEvent e) {
+		for(Observer o : observers) {
+			switch(e.getAction()) {
+				case GLFW_PRESS:
+					o.onMousePress(e);
+				case GLFW_RELEASE:
+					o.onMouseRelease(e);
+			}
 		}
 	}
 
