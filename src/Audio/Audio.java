@@ -52,6 +52,13 @@ public class Audio {
 		}
 	}
 	
+	public long getSamplePos() {
+		if(clip.isOpen()) {
+			return clip.getMicrosecondPosition();
+		}
+		return 0;
+	}
+	
 	public void setLoop(int loop) {
 		this.loop = loop;
 	}

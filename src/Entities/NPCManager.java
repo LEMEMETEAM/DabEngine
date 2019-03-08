@@ -56,7 +56,7 @@ public class NPCManager {
 			npc.getComponent(CRender.class).render(batch);
 		}
 	}
-	public NPC closestNPC(GameObject entity) {
+	public NPC closestNPC(Entity entity) {
 		NPC closest_npc = null;
 		CTransform transform_e = (CTransform) entity.getComponent(CTransform.class);
 		float distance;

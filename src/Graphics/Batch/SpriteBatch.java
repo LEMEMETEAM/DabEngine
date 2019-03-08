@@ -10,6 +10,7 @@ import Graphics.ProjectionMatrix;
 import Graphics.Shaders;
 import org.joml.Vector4f;
 
+import DabEngineResources.DabEngineResources;
 import Graphics.Models.Texture;
 import Graphics.Models.VertexAttrib;
 import Graphics.Models.VertexBuffer;
@@ -22,7 +23,7 @@ public class SpriteBatch implements IBatch {
 	private Texture texture;
 	private VertexBuffer data;
 	private int maxsize = 1000*6;
-	private Shaders shader;
+	private Shaders shader = new Shaders(DabEngineResources.class, "Shaders/default.vs", "Shaders/textured.fs");
 	private static final List<VertexAttrib> ATTRIBUTES = 
 			Arrays.asList(new VertexAttrib(0, "position", 2),
 			new VertexAttrib(1, "color", 4),
@@ -31,6 +32,11 @@ public class SpriteBatch implements IBatch {
 	public SpriteBatch(Shaders shader) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
 		this.shader = shader;
+		updateUniforms();
+	}
+	
+	public SpriteBatch() {
+		data = new VertexBuffer(maxsize, ATTRIBUTES);
 		updateUniforms();
 	}
 	

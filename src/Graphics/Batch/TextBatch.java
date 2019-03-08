@@ -20,6 +20,8 @@ import org.lwjgl.stb.STBTTBitmap;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTruetype;
 
+import DabEngineResources.DabEngineResources;
+
 import static org.lwjgl.stb.STBTruetype.*;
 
 import Graphics.ProjectionMatrix;
@@ -31,20 +33,19 @@ import Graphics.Models.VertexBuffer;
 
 import static org.lwjgl.opengl.GL20.*;
 
-public class TextBatch {
+public class TextBatch implements IBatch {
 	
-	private STBTTFontinfo fontinfo = STBTTFontinfo.create();
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private LinkedHashMap<Character, FontCharacter> Characters = new LinkedHashMap<>();
 	private boolean drawing;
-	private Shaders shader;
+	private Shaders shader = new Shaders(DabEngineResources.class, "Shaders/default.vs", "Shaders/textured.fs");
 	private int idx;
 	private int renderCalls;
 	private int maxsize = 1000*6;
 	private VertexBuffer data;
 	private static final List<VertexAttrib> ATTRIBUTES = 
 			Arrays.asList(new VertexAttrib(0, "position", 2),
-					new VertexAttrib(1, "color", 3),
+					new VertexAttrib(1, "color", 4),
 					new VertexAttrib(2, "texCoords", 2));
 	private FontCharacter current_char;
 	private Texture texture;
@@ -60,7 +61,17 @@ public class TextBatch {
 		for(int i = 32; i < 127; i++) {
 			FontCharacter c = new FontCharacter();
 			c.uv = texture.getRegion().getTile(i + 1);
-			System.out.println((char) i);
+			Characters.put((char) i, c);
+		}
+		updateUniforms();
+	}
+	
+	public TextBatch(Texture texture) {
+		this.texture = texture;
+		data = new VertexBuffer(maxsize, ATTRIBUTES);
+		for(int i = 32; i < 127; i++) {
+			FontCharacter c = new FontCharacter();
+			c.uv = texture.getRegion().getTile(i + 1);
 			Characters.put((char) i, c);
 		}
 		updateUniforms();
@@ -122,7 +133,7 @@ public class TextBatch {
 		return shader;
 	}
 	
-	public void draw(char glyph, float x, float y, float scale, float r, float g, float b) {
+	public void draw(char glyph, float x, float y, float scale, float r, float g, float b, float a) {
 		
 		FontCharacter fc = Characters.get(glyph);
 		
@@ -146,33 +157,33 @@ public class TextBatch {
 		x4 = xpos + width;
 		y4 = ypos;
 		
-		vertex(x1, y1, r, g, b, fc.uv.x, fc.uv.y);
-		vertex(x2, y2, r, g, b, fc.uv.x, fc.uv.w);
-		vertex(x3, y3, r, g, b, fc.uv.z, fc.uv.w);
+		vertex(x1, y1, r, g, b, a, fc.uv.x, fc.uv.y);
+		vertex(x2, y2, r, g, b, a, fc.uv.x, fc.uv.w);
+		vertex(x3, y3, r, g, b, a, fc.uv.z, fc.uv.w);
 		
-		vertex(x1, y1, r, g, b, fc.uv.x, fc.uv.y);
-		vertex(x4, y4, r, g, b, fc.uv.z, fc.uv.y);
-		vertex(x3, y3, r, g, b, fc.uv.z, fc.uv.w);
+		vertex(x1, y1, r, g, b, a, fc.uv.x, fc.uv.y);
+		vertex(x4, y4, r, g, b, a, fc.uv.z, fc.uv.y);
+		vertex(x3, y3, r, g, b, a, fc.uv.z, fc.uv.w);
 	}
 	
-	public void draw(String s, float x, float y, float scale, float r, float g, float b) {
+	public void draw(String s, float x, float y, float scale, float r, float g, float b, float a) {
 		for(int c = 0; c < s.length(); c++) {
-			draw(s.charAt(c), x, y, scale, r, g, b);
+			draw(s.charAt(c), x, y, scale, r, g, b, a);
 			if(current_char != null)
 				x += ((current_char.uv.z - current_char.uv.x) * 10) * scale;
 		}
 	}
 	
-	public void draw(String s, float x, float y, float scale, Vector3f rgb) {
+	public void draw(String s, float x, float y, float scale, Vector4f rgba) {
 		for(int c = 0; c < s.length(); c++) {
-			draw(s.charAt(c), x, y, scale, rgb.x, rgb.y, rgb.z);
+			draw(s.charAt(c), x, y, scale, rgba.x, rgba.y, rgba.z, rgba.w);
 			if(current_char != null)
 				x += ((current_char.uv.z - current_char.uv.x) * 10) * scale;
 		}
 	}
 	
-	private VertexBuffer vertex(float x, float y, float r, float g, float b, float u, float v) {
-		data.put(x).put(y).put(r).put(g).put(b).put(u).put(v);
+	private VertexBuffer vertex(float x, float y, float r, float g, float b, float a, float u, float v) {
+		data.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
 		idx++;
 		return data;
 	}

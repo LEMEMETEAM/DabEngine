@@ -5,14 +5,20 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.sound.sampled.Clip;
+
 import Graphics.Window;
 import Input.InputHandler;
+import Utils.Timer;
 
 public class Engine {
 	
     private Window mainWindow = null;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private App app;
+    public static double TIMESCALE = 1;
+    public static double TARGET_FPS = 60 * TIMESCALE;
     
     public void end() {
     	glfwDestroyWindow(mainWindow.getWin());
@@ -21,9 +27,8 @@ public class Engine {
     }
 
     public void run() {
-
         long lastTime = System.nanoTime();
-        double ns = 1000000000.0 / 60.0;
+        double ns = 1000000000.0 / TARGET_FPS;
         long timer = System.currentTimeMillis();
         int updates = 0;
         int frames = 0;
@@ -34,13 +39,14 @@ public class Engine {
 	            glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
 	        }
             long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
+            delta += (now - lastTime);
             lastTime = now;
-            if (delta >= 1.0) {
+            while (delta >= ns) {
                 app.update();
                 glfwPollEvents();
                 updates++;
-                delta--;
+                delta-=ns;
+                Timer.update();
             }
             app.render();
             glfwSwapBuffers(mainWindow.getWin());

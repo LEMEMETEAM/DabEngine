@@ -1,13 +1,14 @@
-package States;
+package Scenes;
 
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
+import System.System;
 
 public abstract class SceneManager {
 	
 	private static Scene currentScene = null;
 	public static final ArrayList<Scene> scenes = new ArrayList<>();
+	private boolean in, out;
 	
 	public static Scene getCurrentScene() {
 		return currentScene;
@@ -28,23 +29,31 @@ public abstract class SceneManager {
 		return null;
 	}
 	
-	public static void setCurrentState(Scene newcurrentState) {
+	public static void setCurrentScene(Scene newcurrentState) {
 		setCurrentScene(newcurrentState, null);
-	}
-	
-	public static void initScenes() {
-		for(Scene scene : scenes) {
-			scene.init();
-		}
 	}
 	
 	public static void setCurrentScene(Scene newcurrentscene, Transition transition) {
 		if(transition != null) {
-			transition.in();
-			currentScene = newcurrentscene;
-			transition.out();
+			if(transition.in)
+				transition.in();
+			if(!transition.in && !transition.out) {
+				currentScene = newcurrentscene;
+				currentScene.init();
+			}
+			if(transition.out)
+				transition.out();
 		} else {
 			currentScene = newcurrentscene;
+			currentScene.init();
+		}
+	}
+	
+	public static void addSystemToAll(System... systems) {
+		for(Scene scene : scenes) {
+			for(System sys : systems) {
+				scene.addSystem(sys);
+			}
 		}
 	}
 }

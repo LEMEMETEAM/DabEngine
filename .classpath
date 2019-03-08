@@ -12,14 +12,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jbox2d-library-2.2.1.1"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/joml-1.9.13-SNAPSHOT"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lwjgl"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/jbox2d-library-2.2.1.1"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/joml-1.9.13-SNAPSHOT"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/lwjgl"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/DabEngineResources"/>
 	<classpathentry kind="lib" path="C:/Users/B/Downloads/slick-util.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

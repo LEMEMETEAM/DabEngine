@@ -2,10 +2,13 @@ package Utils;
 
 import org.lwjgl.BufferUtils;
 
+import DabEngineResources.DabEngineResources;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class ImageDecoder {
@@ -14,16 +17,29 @@ public class ImageDecoder {
     private int height;
     private String filename;
     private ByteBuffer pixels;
+    private InputStream stream;
+    private boolean resource;
 
     public ImageDecoder(String filename){
         this.filename = filename;
+        resource = false;
+    }
+    
+    public ImageDecoder(InputStream stream) {
+    	this.stream = stream;
+    	resource = true;
     }
 
     public ByteBuffer decode(){
         BufferedImage bi;
 
         try{
-            bi = ImageIO.read(new File(filename));
+        	if(resource) {
+        		bi = ImageIO.read(stream);
+        	}
+        	else {
+        		bi = ImageIO.read(new File(filename));
+        	}
             width = bi.getWidth();
             height = bi.getHeight();
 

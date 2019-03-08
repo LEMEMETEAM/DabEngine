@@ -7,7 +7,7 @@ import Entities.Components.CRender;
 import Entities.Components.CTransform;
 import Graphics.Models.Texture;
 
-public class NPC extends GameObject {
+public class NPC extends Entity {
 	
 	@SuppressWarnings("unused")
 	private String name;

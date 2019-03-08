@@ -3,6 +3,7 @@ package Input;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import org.joml.Vector2d;
 import org.lwjgl.glfw.*;
@@ -14,7 +15,7 @@ public class InputHandler extends Subject {
 	public static final InputHandler INSTANCE = new InputHandler();
 	
 	//private boolean[] keys = new boolean[65536];
-	private HashMap<Integer, Integer> keys = new HashMap<>() {{
+	private WeakHashMap<Integer, Integer> keys = new WeakHashMap<>() {{
 		for(int i = 0; i < 65536; i++) {
 			put(i, GLFW_RELEASE);
 		}

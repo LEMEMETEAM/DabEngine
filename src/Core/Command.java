@@ -1,9 +1,9 @@
 package Core;
 
-import Entities.GameObject;
+import Entities.Entity;
 
 public interface Command {
 	
 	public void execute();
-	public void execute(GameObject entity);
+	public void execute(Entity entity);
 }

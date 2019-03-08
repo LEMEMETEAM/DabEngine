@@ -1,10 +1,12 @@
 package System;
 
 import java.lang.ref.WeakReference;
+import java.util.Iterator;
 
 import org.joml.Vector2f;
 
-import Entities.GameObject;
+import Entities.Entity;
+import Entities.EntityManager;
 import Entities.Components.CCollision;
 import Entities.Components.CPhysics;
 import Entities.Components.CPhysics.BodyType;
@@ -15,17 +17,11 @@ public class PhysicsSystem extends System {
 	
 	public static float GRAVITY;
 	
-	public PhysicsSystem() {
-		types.add(CPhysics.class);
-		types.add(CCollision.class);
-		types.add(CTransform.class);
-	}
-	
-	private Vector2f computeGravityForce(GameObject object) {
+	private Vector2f computeGravityForce(Entity object) {
 		return new Vector2f(0, object.getComponent(CPhysics.class).MASS * GRAVITY); 
 	}
 	
-	private void reactToGravity(GameObject object) {
+	private void reactToGravity(Entity object) {
 		CPhysics phys = object.getComponent(CPhysics.class);
 		/*
 		 * FORCE = MASS * ACC
@@ -35,24 +31,24 @@ public class PhysicsSystem extends System {
 		phys.velocity.add(gravityforce.x / phys.MASS, gravityforce.y / phys.MASS);
 	}
 	
-	private void computeVelocity(GameObject object) {
+	private void computeVelocity(Entity object) {
 		CPhysics phys = object.getComponent(CPhysics.class);
 		CTransform trans = object.getComponent(CTransform.class);
 		
 		trans.pos.add(phys.velocity.x, phys.velocity.y);
 	}
 	
-	private void collisionDetection(int index, GameObject object1) {
-		for(int y = index + 1; y < obj.size(); y++) {
-			GameObject object2 = obj.get(y).get();
-			Pair<Boolean, Vector2f> info = object1.getComponent(CCollision.class).getBounds().intersects(object2.getComponent(CCollision.class).getBounds());
-			if(info.left) {
-				collisionResolution(object1, object2, info.right);
-			}
+	private void collisionDetection(Entity e2, Entity e1) {
+		if(e2 == null) {
+			return;
+		}
+		Pair<Boolean, Vector2f> info = e1.getComponent(CCollision.class).getBounds().intersects(e2.getComponent(CCollision.class).getBounds());
+		if(info.left) {
+			collisionResolution(e1, e2, info.right);
 		}
 	}
 	
-	private void collisionResolution(GameObject object1, GameObject object2, Vector2f cor) {
+	private void collisionResolution(Entity object1, Entity object2, Vector2f cor) {
 		CPhysics object1p = object1.getComponent(CPhysics.class);
 		CPhysics object2p = object2.getComponent(CPhysics.class);
 		
@@ -100,14 +96,17 @@ public class PhysicsSystem extends System {
 	}
 
 	@Override
-	public void update() {
+	public void update(double delta) {
 		// TODO Auto-generated method stub
-		for(int x = 0; x < obj.size(); x++) {
-			WeakReference<GameObject> object = obj.get(x);
-			reactToGravity(object.get());
-			collisionDetection(x, object.get());
-			computeVelocity(object.get());
+		Entity e1;
+		Entity e2 = null;
+		for(Entity e : EntityManager.entitiesWithComponents(CPhysics.class, CTransform.class, CCollision.class)) {
+			e1 = e;
+			reactToGravity(e1);
+			collisionDetection(e2, e1);
+			computeVelocity(e1);
 			//TODO implement acceleration
+			e2 = e;
 		}
 	}
 

@@ -6,10 +6,14 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
+import DabEngineResources.DabEngineResources;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,10 +78,49 @@ public class Shaders {
         glValidateProgram(program);
 
     }
+    
+    public Shaders(Class<DabEngineResources> cls, String filenamevs, String filenamefs) {
+    	program = glCreateProgram();
+
+        vs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vs, readFileFromStream(cls.getResourceAsStream(filenamevs)));
+        glCompileShader(vs);
+        if(glGetShaderi(vs, GL_COMPILE_STATUS) == 0){
+            LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
+            System.exit(0);
+        }
+        glAttachShader(program, vs);
+
+        fs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fs, readFileFromStream(cls.getResourceAsStream(filenamefs)));
+        glCompileShader(fs);
+        if(glGetShaderi(fs, GL_COMPILE_STATUS) == 0){
+        	LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
+            System.exit(0);
+        }
+        glAttachShader(program, fs);
+
+        glLinkProgram(program);
+        glValidateProgram(program);
+    }
 
     private String readFile(String filename){
         StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new FileReader(new File(filename)))){
+            String line;
+            while((line = br.readLine()) != null){
+                string.append(line);
+                string.append("\n");
+            }
+        }catch(IOException e){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return string.toString();
+    }
+    
+    private String readFileFromStream(InputStream stream) {
+    	StringBuilder string = new StringBuilder();
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
             String line;
             while((line = br.readLine()) != null){
                 string.append(line);

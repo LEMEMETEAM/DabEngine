@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import Entities.GameObject;
+import Entities.Entity;
 import Entities.Components.CPhysics;
 import Entities.Components.CRender;
 import Entities.Components.CTransform;
@@ -93,7 +93,7 @@ public class ParticleEmitter extends System {
 	@Override
 	public void render() {
 		// TODO Auto-generated method stub
-		for(WeakReference<GameObject> particle : obj) {
+		for(WeakReference<Entity> particle : obj) {
 			Particle p = (Particle) particle.get();
 			if(p.LIFE > 0.0f) {
 				RenderSystem renderer = this.state.get().getSystem(RenderSystem.class);
