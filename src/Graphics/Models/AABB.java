@@ -3,7 +3,7 @@ package Graphics.Models;
 import org.joml.Vector2f;
 
 import Entities.Components.CCollision;
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import Utils.Pair;
 

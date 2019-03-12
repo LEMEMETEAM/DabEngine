@@ -3,6 +3,7 @@ package GUI;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import GUI.Objects.Panel;
 import Graphics.Models.Texture;
 import Input.InputHandler;
 import Observer.Observer;
@@ -19,6 +20,11 @@ public abstract class GUIObject implements Observer {
 	public abstract void onHover();
 	
 	public abstract void onExit();
+	
+	public void onAddedToPanel(Panel p) {
+		pos.add(p.pos);
+		color.mul(p.color);
+	}
 	
 	public GUIObject() {
 		InputHandler.INSTANCE.addObserver(this);

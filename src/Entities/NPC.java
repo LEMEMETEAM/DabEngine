@@ -3,7 +3,7 @@ package Entities;
 import org.joml.Vector4f;
 
 import Entities.Components.CInteract;
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import Graphics.Models.Texture;
 
@@ -15,11 +15,11 @@ public class NPC extends Entity {
 	public NPC(String name, Texture texture, float x, float y, float width, float height, Vector4f color, boolean center_anchor) {
 		this.name = name;
 		
-		addComponent(new CRender());
+		addComponent(new CSprite());
 		addComponent(new CInteract());
 		addComponent(new CTransform());
 		
-		CRender render = this.getComponent(CRender.class);
+		CSprite render = this.getComponent(CSprite.class);
 		render.texture = texture;
 		render.center_anchor = center_anchor;
 		render.color = color;

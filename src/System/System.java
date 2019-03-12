@@ -2,6 +2,7 @@ package System;
 
 import java.util.logging.Logger;
 
+import Graphics.Graphics;
 import Scenes.Scene;
 
 public abstract class System {
@@ -15,5 +16,5 @@ public abstract class System {
 	
 	public abstract void update();
 	
-	public abstract void render();
+	public abstract void render(Graphics g);
 }

@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 import Entities.Entity;
 import Entities.EntityManager;
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import Graphics.Batch.SpriteBatch;
 
@@ -24,8 +24,8 @@ public class RenderSystem extends System {
 	public void render() {
 		// TODO Auto-generated method stub
 		batch.begin();
-		for(Entity e : EntityManager.entitiesWithComponents(CRender.class, CTransform.class)) {
-			CRender render = e.getComponent(CRender.class);
+		for(Entity e : EntityManager.entitiesWithComponents(CSprite.class, CTransform.class)) {
+			CSprite render = e.getComponent(CSprite.class);
 			CTransform trans = e.getComponent(CTransform.class);	
 			batch.draw(render.texture, trans.pos.x, trans.pos.y, trans.size.x, trans.size.y, render.color.x, render.color.y, render.color.z, render.color.w, render.center_anchor);
 		}

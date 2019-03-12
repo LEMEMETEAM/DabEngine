@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.sound.sampled.Clip;
 
+import Graphics.Graphics;
 import Graphics.Window;
 import Input.InputHandler;
 import Utils.Timer;
@@ -19,6 +20,7 @@ public class Engine {
     private App app;
     public static double TIMESCALE = 1;
     public static double TARGET_FPS = 60 * TIMESCALE;
+    private boolean graphics_init;
     
     public void end() {
     	glfwDestroyWindow(mainWindow.getWin());
@@ -83,6 +85,17 @@ public class Engine {
         	LOGGER.log(Level.SEVERE, "Window not loaded");
         }
 
+    }
+    
+    public Graphics createGraphics() {
+    	if(!graphics_init) {
+    		graphics_init = true;
+    		return new Graphics(this);
+    	}
+    	else {
+    		LOGGER.log(Level.SEVERE, "GRAPHICS ALREADY CREATED!");
+    		return null;
+    	}
     }
 
     public Window getMainWindow() {

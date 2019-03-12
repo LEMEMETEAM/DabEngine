@@ -17,7 +17,7 @@ public class CCollision extends Component {
 	}
 	
 	public void correctBounds() {
-    	CRender render = this.entity.getComponent(CRender.class);
+    	CSprite render = this.entity.getComponent(CSprite.class);
 		CTransform transform = this.entity.getComponent(CTransform.class);
 		if(render.center_anchor) {
 			this.entity.getComponent(CCollision.class).getBounds().setCenter(transform.pos);

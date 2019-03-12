@@ -9,7 +9,7 @@ import org.joml.Vector4f;
 
 import Entities.Entity;
 import Entities.Components.CPhysics;
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import System.RenderSystem;
 import System.System;
@@ -27,7 +27,7 @@ public class ParticleEmitter extends System {
 			addGameObject
 			(
 				new Particle() {{
-					CRender render = getComponent(CRender.class);
+					CSprite render = getComponent(CSprite.class);
 					render.center_anchor = true;
 					render.texture = GLOBAL_PARTICLE_TEXTURE;
 				}}
@@ -48,7 +48,7 @@ public class ParticleEmitter extends System {
 			p.LIFE -= 0.01f;
 			if(p.LIFE > 0) {
 				CTransform transform = p.getComponent(CTransform.class);
-				CRender render = p.getComponent(CRender.class);
+				CSprite render = p.getComponent(CSprite.class);
 				CPhysics physics = p.getComponent(CPhysics.class);
 				render.color.w -= 0.1f * 2.5f;
 				transform.pos = transform.pos.sub(physics.velocity);
@@ -79,7 +79,7 @@ public class ParticleEmitter extends System {
 	public void respawnParticle(Particle p, float offset) {
 		Random rng = new Random();
 		CTransform trans = p.getComponent(CTransform.class);
-		CRender render = p.getComponent(CRender.class);
+		CSprite render = p.getComponent(CSprite.class);
 		CPhysics physics = p.getComponent(CPhysics.class);
 		
 		float random = ((rng.nextFloat() * 100) - 50) / 10f;
@@ -97,7 +97,7 @@ public class ParticleEmitter extends System {
 			Particle p = (Particle) particle.get();
 			if(p.LIFE > 0.0f) {
 				RenderSystem renderer = this.state.get().getSystem(RenderSystem.class);
-				CRender render = p.getComponent(CRender.class);
+				CSprite render = p.getComponent(CSprite.class);
 				CTransform transform = p.getComponent(CTransform.class);
 				renderer.getBatch().begin();
 				renderer.getBatch().draw(render.texture, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color.x, render.color.y, render.color.z, render.color.w, render.center_anchor);

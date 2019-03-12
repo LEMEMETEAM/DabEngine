@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 import org.joml.Vector4f;
 
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import Graphics.Level2D;
 import Graphics.Batch.SpriteBatch;
@@ -53,7 +53,7 @@ public class NPCManager {
 	
 	public void renderAll(SpriteBatch batch) {
 		for(NPC npc : NPCs) {
-			npc.getComponent(CRender.class).render(batch);
+			npc.getComponent(CSprite.class).render(batch);
 		}
 	}
 	public NPC closestNPC(Entity entity) {

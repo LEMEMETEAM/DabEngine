@@ -3,14 +3,15 @@ package Scenes;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import Graphics.Graphics;
 import Input.InputHandler;
 import System.System;
 
 public abstract class Scene {
 	private HashSet<System> sys = new HashSet<>();
-	public void render() {
+	public void render(Graphics g) {
 		for(System system : sys) {
-			system.render();
+			system.render(g);
 		}
 	}
 	public void tick() {

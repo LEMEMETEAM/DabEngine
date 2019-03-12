@@ -1,15 +1,37 @@
 package GUI.Objects;
 
+import java.util.ArrayList;
+
+import org.joml.Vector2f;
+
 import GUI.GUIObject;
 import GUI.Components.CContainer;
+import Input.InputHandler;
 import Input.KeyEvent;
 import Input.MouseEvent;
 import Observer.Event;
 
 public class Panel extends GUIObject {
 	
+	protected boolean moveable, scaleable;
+	public final ArrayList<GUIObject> panel_objects = new ArrayList<>();
+	
+	public Panel(boolean moveable, boolean scaleable) {
+		this.moveable = moveable;
+		this.scaleable = scaleable;
+	}
+	
+	public Panel(boolean moveable) {
+		this(moveable, false);
+	}
+	
 	public Panel() {
-		addComponent(new CContainer());
+		this(false, false);
+	}
+	
+	public void addToPanel(GUIObject g) {
+		panel_objects.add(g);
+		g.onAddedToPanel(this);
 	}
 
 	@Override
@@ -33,7 +55,9 @@ public class Panel extends GUIObject {
 	@Override
 	public void onMousePress(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(hover && moveable) {
+			pos = new Vector2f().set(InputHandler.INSTANCE.getMouseDelta());
+		}
 	}
 
 	@Override
@@ -45,7 +69,13 @@ public class Panel extends GUIObject {
 	@Override
 	public void onHover() {
 		// TODO Auto-generated method stub
-		
+		hover = true;
+	}
+
+	@Override
+	public void onExit() {
+		// TODO Auto-generated method stub
+		hover = false;
 	}
 	
 }

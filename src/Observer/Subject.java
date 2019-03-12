@@ -18,7 +18,8 @@ public abstract class Subject {
 		observers.remove(o);
 	}
 	public void dispatchKeyEvent(KeyEvent e) {
-		for(Observer o : observers) {
+		for(int i = 0; i < observers.size(); i++) {
+			Observer o = observers.get(i);
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onKeyPress(e);
@@ -29,7 +30,8 @@ public abstract class Subject {
 	}
 	
 	public void dispatchMouseEvent(MouseEvent e) {
-		for(Observer o : observers) {
+		for(int i = 0; i < observers.size(); i++) {
+			Observer o = observers.get(i);
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onMousePress(e);

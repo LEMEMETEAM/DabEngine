@@ -16,7 +16,7 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import Entities.Components.CCollision;
-import Entities.Components.CRender;
+import Entities.Components.CSprite;
 import Entities.Components.CTransform;
 import Entities.Components.CPhysics.BodyType;
 import Graphics.Models.Texture;
@@ -200,7 +200,7 @@ public class LevelSystem extends System {
 		}
 		for(int x = 0; x < obj.size(); x++) {
 			if(obj.get(x) != null) {
-				CRender render = obj.get(x).get().getComponent(CRender.class);
+				CSprite render = obj.get(x).get().getComponent(CSprite.class);
 				CTransform trans = obj.get(x).get().getComponent(CTransform.class);
 				
 				renderer.getBatch().begin();

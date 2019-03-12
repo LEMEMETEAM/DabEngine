@@ -1,11 +1,15 @@
 package Graphics.Batch;
 
 import Graphics.Batch.IBatch;
-import Graphics.Models.Texture;
 import Graphics.Models.VertexAttrib;
 import Graphics.Models.VertexBuffer;
+import Graphics.ProjectionMatrix;
 import Graphics.Shaders;
+
+import org.joml.Vector2f;
 import org.joml.Vector4f;
+
+import DabEngineResources.DabEngineResources;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -20,15 +24,20 @@ public class PolygonBatch implements IBatch {
     private Polygon polygon;
     private VertexBuffer data;
     private int maxsize = 1000*6;
-    private Shaders shader;
+	private Shaders shader = new Shaders(DabEngineResources.class, "Shaders/default.vs", "Shaders/single_colour.fs");
     private static final List<VertexAttrib> ATTRIBUTES =
             Arrays.asList(new VertexAttrib(0, "position", 2),
-                    new VertexAttrib(1, "color", 4),
-                    new VertexAttrib(2, "texCoords", 2));
+                    new VertexAttrib(1, "color", 4));
 
     public PolygonBatch(Shaders shader) {
         data = new VertexBuffer(maxsize, ATTRIBUTES);
         this.shader = shader;
+        updateUniforms();
+    }
+    
+    public PolygonBatch() {
+    	data = new VertexBuffer(maxsize, ATTRIBUTES);
+    	updateUniforms();
     }
 
     public void begin() {
@@ -39,7 +48,7 @@ public class PolygonBatch implements IBatch {
         shader.bind();
         idx = 0;
         renderCalls = 0;
-        texture = null;
+        polygon = null;
     }
 
     public void end() {
@@ -50,129 +59,92 @@ public class PolygonBatch implements IBatch {
         flush();
     }
 
-    public void setShader(Shaders shader) {
-        if(shader == null) {
-            throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
-        }
-        if(drawing) {
-            flush();
-        }
-        this.shader = shader;
-
-        if(drawing) {
-            shader.bind();
-        }
-    }
+    public void updateUniforms() {
+		updateUniforms(shader);
+	}
+	
+	public void updateUniforms(Shaders shader) {
+		shader.bind();
+		
+		shader.setUniform("projectionMatrix", ProjectionMatrix.get());
+		
+		shader.setUniform("texture", 0);
+	}
+	
+	public void setShader(Shaders shader, boolean updateUniforms) {
+		if(shader == null) {
+			throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
+		}
+		if(drawing) {
+			flush();
+		}
+		this.shader = shader;
+		
+		if(updateUniforms) {
+			updateUniforms();
+		}
+		else if(drawing) {
+			this.shader.bind();
+		}
+	}
 
     public Shaders getShader() {
         return shader;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Polygon getPolygon() {
+        return polygon;
     }
 
-    //draws a texture with no tint, full opacity and texture wrapped fully
-    public void draw(Texture tex, float x, float y, float width, float height) {
-        draw(tex, x, y, width, height, 1, 1, 1, 1, true);
-    }
-
-    public void draw(Texture tex, float x, float y, float width, float height, boolean center_anchor) {
-        draw(tex, x, y, width, height, 1, 1, 1, 1, center_anchor);
+    //draws a polygon with no tint, full opacity and polyture wrapped fully
+    public void draw(Polygon poly, float x, float y, float width, float height) {
+        draw(poly, x, y, width, height, 1, 1, 1, 1);
     }
 
     //simplified version of above
-    public void draw(Texture tex, Vector4f xywh) {
-        draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, true);
+    public void draw(Polygon poly, Vector4f xywh) {
+        draw(poly, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1);
     }
 
-    public void draw(Texture tex, Vector4f xywh, boolean center_anchor) {
-        draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, center_anchor);
-    }
-
-    //draw a texture with full texture wrap
-    public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a) {
-        draw(tex, x, y, width, height, r, g, b, a, true);
-    }
 
     //simplified version of above
-    public void draw(Texture tex, Vector4f xywh, Vector4f rgba) {
-        draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), true);
-    }
-
-    public void draw(Texture tex, Vector4f xywh, Vector4f rgba, boolean center_anchor) {
-        draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), center_anchor);
+    public void draw(Polygon poly, Vector4f xywh, Vector4f rgba) {
+        draw(poly,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w());
     }
 
     //full draw method
-    public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a, boolean center_anchor) {
-        float x1,y1,x2,y2,x3,y3,x4,y4;
+    public void draw(Polygon poly, float x, float y, float width, float height, float r, float g, float b, float a) {
+        Vector2f[] verts = poly.verts;
 
-        checkFlush(tex);
-
-        if(!center_anchor) {
-            x1 = x;
-            y1 = y;
-
-            x2 = x;
-            y2 = y + height;
-
-            x3 = x + width;
-            y3 = y + height;
-
-            x4 = x + width;
-            y4 = y;
-        }
-        else{
-            x1 = x - (width/2f);
-            y1 = y - (height/2f);
-
-            x2 = x - (width/2f);
-            y2 = y + (height/2f);
-
-            x3 = x + (width/2f);
-            y3 = y + (height/2f);
-
-            x4 = x + (width/2f);
-            y4 = y - (height/2f);
-        }
-
-        Vector4f uv = tex.getRegion().getUV();
-        float u = uv.x(), v = uv.y(), u2 = uv.z, v2 = uv.w;
+        checkFlush(poly);
 
         //0, 1, 2
         //0, 3, 2
-        vertex(x1, y1, r, g, b, a, u, v);
-        vertex(x2, y2, r, g, b, a, u, v2);
-        vertex(x3, y3, r, g, b, a, u2, v2);
-
-        vertex(x1, y1, r, g, b, a, u, v);
-        vertex(x4, y4, r, g, b, a, u2, v);
-        vertex(x3, y3, r, g, b, a, u2, v2);
+        for(int i : poly.inds) {
+        	vertex((verts[i].x * width) + x, (verts[i].y * height) + y, r, g, b, a);
+        }
     }
 
-    private VertexBuffer vertex(float x, float y, float r, float g, float b, float a, float u, float v) {
-        data.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
+    private VertexBuffer vertex(float x, float y, float r, float g, float b, float a) {
+        data.put(x).put(y).put(r).put(g).put(b).put(a);
         idx++;
         return data;
     }
 
-    public void checkFlush(Texture tex) {
-        if(tex == null) {
-            throw new NullPointerException("null texture");
+    public void checkFlush(Polygon poly) {
+        if(poly == null) {
+            throw new NullPointerException("null polygon");
         }
-        if(tex != this.texture || idx >= maxsize) {
+        if(poly != this.polygon || idx >= maxsize) {
             flush();
-            this.texture = tex;
+            this.polygon = poly;
         }
     }
 
     public void flush() {
         if(idx > 0) {
             data.flip();
-            if(texture != null) {
-                texture.bind();
-            }
+            
             data.bind();
             data.draw(GL_TRIANGLES, 0, idx);
             data.unbind();
