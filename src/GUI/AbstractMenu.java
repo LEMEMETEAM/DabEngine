@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
+import GUI.Objects.Button;
+import GUI.Objects.Image;
 import GUI.Objects.Panel;
+import Graphics.Graphics;
+import Graphics.Batch.PolygonBatch;
 import Graphics.Batch.SpriteBatch;
+import Graphics.Batch.TextBatch;
 import Input.InputHandler;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -54,12 +59,22 @@ public abstract class AbstractMenu {
 
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		batch.begin();
-		for(var gui : obj) {
-			if(gui.tex != null) {
-				batch.draw(gui.tex, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w, true);
+		g.getBatch(SpriteBatch.class).begin();
+		g.getBatch(PolygonBatch.class).begin();
+		g.getBatch(TextBatch.class).begin();
+		for(var panel : obj) {
+			for(GUIObject gui : panel.panel_objects) {
+				if(gui instanceof Button) {
+					g.getBatch(PolygonBatch.class).draw(((Button) gui).poly, gui.pos.x, gui.pos.y, gui.size.x + 20, gui.size.y + 20, gui.color.x, gui.color.y, gui.color.z, gui.color.w);
+					g.getBatch(TextBatch.class).draw(((Button) gui).label, gui.pos.x + 10, gui.pos.y + 10, gui.size.x, gui.color);
+				}
+				if(gui instanceof Image) {
+					g.getBatch(SpriteBatch.class).draw(((Image) gui).image, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w, true);
+				}
 			}
 		}
-		batch.end();
+		g.getBatch(SpriteBatch.class).end();
+		g.getBatch(PolygonBatch.class).end();
+		g.getBatch(TextBatch.class).end();
 	}
 }

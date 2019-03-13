@@ -67,8 +67,6 @@ public class PolygonBatch implements IBatch {
 		shader.bind();
 		
 		shader.setUniform("projectionMatrix", ProjectionMatrix.get());
-		
-		shader.setUniform("texture", 0);
 	}
 	
 	public void setShader(Shaders shader, boolean updateUniforms) {

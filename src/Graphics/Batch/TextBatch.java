@@ -141,8 +141,8 @@ public class TextBatch implements IBatch {
 		
 		float xpos = x;
 		float ypos = y;
-		float width = ((fc.uv.z - fc.uv.x) * 10) * scale;
-		float height = ((fc.uv.w - fc.uv.y) * 20) * scale;
+		float width = ((fc.uv.z - fc.uv.x) * 1) * scale;
+		float height = ((fc.uv.w - fc.uv.y) * 2) * scale;
 		
 		float x1, y1, x2, y2, x3, y3, x4, y4;
 		x1 = xpos;

@@ -3,6 +3,7 @@ package System;
 import Entities.Entity;
 import Entities.EntityManager;
 import Entities.Components.CMenu;
+import Graphics.Graphics;
 
 public class MenuSystem extends System {
 	
@@ -13,10 +14,10 @@ public class MenuSystem extends System {
 		}
 	}
 	
-	public void render() {
+	public void render(Graphics g) {
 		for(Entity e : EntityManager.entitiesWithComponents(CMenu.class)) {
 			CMenu m = e.getComponent(CMenu.class);
-			m.menu.render();
+			m.menu.render(g);
 		}
 	}
 
