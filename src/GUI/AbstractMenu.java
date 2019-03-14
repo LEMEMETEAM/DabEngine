@@ -3,6 +3,7 @@ package GUI;
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 import GUI.Objects.Button;
 import GUI.Objects.Image;
@@ -59,22 +60,32 @@ public abstract class AbstractMenu {
 
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.getBatch(SpriteBatch.class).begin();
-		g.getBatch(PolygonBatch.class).begin();
-		g.getBatch(TextBatch.class).begin();
 		for(var panel : obj) {
+			g.getBatch(PolygonBatch.class).begin();
 			for(GUIObject gui : panel.panel_objects) {
 				if(gui instanceof Button) {
-					g.getBatch(PolygonBatch.class).draw(((Button) gui).poly, gui.pos.x, gui.pos.y, gui.size.x + 20, gui.size.y + 20, gui.color.x, gui.color.y, gui.color.z, gui.color.w);
-					g.getBatch(TextBatch.class).draw(((Button) gui).label, gui.pos.x + 10, gui.pos.y + 10, gui.size.x, gui.color);
+					g.getBatch(PolygonBatch.class).draw(((Button) gui).poly, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w);
 				}
+			}
+			g.getBatch(PolygonBatch.class).end();
+			
+			g.getBatch(TextBatch.class).begin();
+			for(GUIObject gui : panel.panel_objects) {
+				if(gui instanceof Button) {
+					if(!((Button) gui).label.isBlank()) {
+						g.getBatch(TextBatch.class).draw(((Button) gui).label, gui.pos.x - (gui.size.x / 2), gui.pos.y - (gui.size.y / 2), gui.size.x, ((Button) gui).label_color);
+					}
+				}
+			}
+			g.getBatch(TextBatch.class).end();
+			
+			g.getBatch(SpriteBatch.class).begin();
+			for(GUIObject gui : panel.panel_objects) {
 				if(gui instanceof Image) {
 					g.getBatch(SpriteBatch.class).draw(((Image) gui).image, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w, true);
 				}
 			}
+			g.getBatch(SpriteBatch.class).end();
 		}
-		g.getBatch(SpriteBatch.class).end();
-		g.getBatch(PolygonBatch.class).end();
-		g.getBatch(TextBatch.class).end();
 	}
 }

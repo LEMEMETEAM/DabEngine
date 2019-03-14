@@ -18,6 +18,7 @@ public class Button extends GUIObject {
 	
 	public Polygon poly;
 	public String label;
+	public Vector4f label_color;
 
 	@Override
 	public void onNotify(Event e) {

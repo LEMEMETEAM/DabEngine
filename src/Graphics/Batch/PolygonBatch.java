@@ -119,7 +119,7 @@ public class PolygonBatch implements IBatch {
         //0, 1, 2
         //0, 3, 2
         for(int i : poly.inds) {
-        	vertex((verts[i].x * width) + x, (verts[i].y * height) + y, r, g, b, a);
+        	vertex((verts[i].x * (width/2)) + x, (verts[i].y * (height/2)) + y, r, g, b, a);
         }
     }
 

@@ -141,8 +141,8 @@ public class TextBatch implements IBatch {
 		
 		float xpos = x;
 		float ypos = y;
-		float width = ((fc.uv.z - fc.uv.x) * 1) * scale;
-		float height = ((fc.uv.w - fc.uv.y) * 2) * scale;
+		float width = ((fc.uv.z - fc.uv.x) * 3) * scale;
+		float height = ((fc.uv.w - fc.uv.y) * 6) * scale;
 		
 		float x1, y1, x2, y2, x3, y3, x4, y4;
 		x1 = xpos;
@@ -170,7 +170,7 @@ public class TextBatch implements IBatch {
 		for(int c = 0; c < s.length(); c++) {
 			draw(s.charAt(c), x, y, scale, r, g, b, a);
 			if(current_char != null)
-				x += ((current_char.uv.z - current_char.uv.x) * 10) * scale;
+				x += ((current_char.uv.z - current_char.uv.x) * 3) * scale;
 		}
 	}
 	
@@ -178,7 +178,7 @@ public class TextBatch implements IBatch {
 		for(int c = 0; c < s.length(); c++) {
 			draw(s.charAt(c), x, y, scale, rgba.x, rgba.y, rgba.z, rgba.w);
 			if(current_char != null)
-				x += ((current_char.uv.z - current_char.uv.x) * 10) * scale;
+				x += ((current_char.uv.z - current_char.uv.x) * 3) * scale;
 		}
 	}
 	
