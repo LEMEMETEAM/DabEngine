@@ -12,6 +12,7 @@ import Observer.Event;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 public class Button extends GUIObject {
@@ -19,6 +20,9 @@ public class Button extends GUIObject {
 	public Polygon poly;
 	public String label;
 	public Vector4f label_color;
+	public boolean show_button = true, show_label = true;
+	public Vector2f label_pos;
+	public float label_size;
 
 	@Override
 	public void onNotify(Event e) {

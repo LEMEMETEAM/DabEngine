@@ -16,5 +16,6 @@ public class Timer  {
 	
 	public static void stop() {
 		running = false;
+		counter = 0;
 	}
 }

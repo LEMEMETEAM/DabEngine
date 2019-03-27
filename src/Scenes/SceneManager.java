@@ -2,6 +2,8 @@ package Scenes;
 
 import java.util.ArrayList;
 
+import Entities.EntityManager;
+import Input.InputHandler;
 import System.System;
 
 public abstract class SceneManager {
@@ -29,25 +31,13 @@ public abstract class SceneManager {
 		return null;
 	}
 	
-	public static void setCurrentScene(Scene newcurrentState) {
-		setCurrentScene(newcurrentState, null);
+	public static void setCurrentScene(Scene newcurrentScene) {
+		EntityManager.entities.clear();
+		InputHandler.INSTANCE.clearObservers();
+		currentScene = newcurrentScene;
+		currentScene.init();
 	}
 	
-	public static void setCurrentScene(Scene newcurrentscene, Transition transition) {
-		if(transition != null) {
-			if(transition.in)
-				transition.in();
-			if(!transition.in && !transition.out) {
-				currentScene = newcurrentscene;
-				currentScene.init();
-			}
-			if(transition.out)
-				transition.out();
-		} else {
-			currentScene = newcurrentscene;
-			currentScene.init();
-		}
-	}
 	
 	public static void addSystemToAll(System... systems) {
 		for(Scene scene : scenes) {

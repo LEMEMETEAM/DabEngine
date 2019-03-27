@@ -1,5 +1,6 @@
 package Observer;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import Input.KeyEvent;
@@ -9,17 +10,24 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public abstract class Subject {
 	
-	private ArrayList<Observer> observers = new ArrayList<>();
+	public ArrayList<WeakReference<Observer>> observers = new ArrayList<>();
 	
 	public void addObserver(Observer o) {
-		observers.add(o);
+		observers.add(new WeakReference<Observer>(o));
 	}
+	
+	/*DO NOT USE*/
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
+	
+	public void clearObservers() {
+		observers.clear();
+	}
+	
 	public void dispatchKeyEvent(KeyEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			Observer o = observers.get(i);
+			Observer o = observers.get(i).get();
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onKeyPress(e);
@@ -31,7 +39,7 @@ public abstract class Subject {
 	
 	public void dispatchMouseEvent(MouseEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			Observer o = observers.get(i);
+			Observer o = observers.get(i).get();
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onMousePress(e);
