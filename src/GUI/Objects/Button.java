@@ -1,11 +1,7 @@
 package GUI.Objects;
 
-import Entities.Components.CSprite;
-import Entities.Components.CTransform;
 import GUI.GUIObject;
-import GUI.Components.CClickable;
 import Graphics.Batch.Polygon;
-import Input.InputHandler;
 import Input.KeyEvent;
 import Input.MouseEvent;
 import Observer.Event;

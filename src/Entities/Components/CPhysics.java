@@ -1,12 +1,14 @@
 package Entities.Components;
 
-import org.joml.Vector2f;
-
-import Core.Engine;
+import org.joml.Vector3f;
 
 public class CPhysics extends Component {
 	
-	public Vector2f velocity = new Vector2f();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4832863488845120591L;
+	public Vector3f velocity = new Vector3f();
 	public float MASS = 6f;
 	public float MAX_VELOCITY = 10;
 	public enum BodyType {

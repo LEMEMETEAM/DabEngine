@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class CAnimation extends Component {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3196656268764668648L;
 	private int currentFrame;
 	private int texSheetFrame;
 	private boolean looped;

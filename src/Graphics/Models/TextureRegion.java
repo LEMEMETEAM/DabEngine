@@ -1,12 +1,12 @@
 package Graphics.Models;
 
-import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 public class TextureRegion {
 	
 	private float scalex, scaley;
 	private Vector4f uv;
+	@SuppressWarnings("unused")
 	private int tileNomX, tileNomY;
 	
 	public TextureRegion(int tileNomX, int tileNomY) {

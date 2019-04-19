@@ -5,7 +5,12 @@ import static org.lwjgl.opengl.GL40.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import Core.Engine;
+import Graphics.Batch.ModelBatch;
 import Graphics.Models.Mesh;
 public class FrameBuffer {
 	
@@ -46,22 +51,24 @@ public class FrameBuffer {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		
 		quad = new Mesh(
-				new float[] {
-						-1, 1, 0,
-						-1, -1, 0,
-						1, -1, 0,
-						1, 1, 0
-				},
-				new float[] {
-						0, 1,
-						0, 0, 
-						1, 0,
-						1, 1
-				},
-				new int[] {
-						0, 1, 2,
-						0, 3, 2
-				});
+			new Vector3f[] {
+				new Vector3f(-1, 1, 0),
+				new Vector3f(-1, -1, 0),
+				new Vector3f(1, -1, 0),
+				new Vector3f(1, 1, 0)
+			},
+			new Vector2f[] {
+					new Vector2f(0,0),
+					new Vector2f(0,1),
+					new Vector2f(1,1),
+					new Vector2f(1,0)
+			},
+			new int[] {
+				0, 1, 2,
+				0, 3, 2
+			} 
+		);
+		
 	}
 	
 	public void bind() {
@@ -76,8 +83,11 @@ public class FrameBuffer {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
-	public void renderQuad() {
-		quad.render();
+	public void renderQuad(Graphics g) {
+		ModelBatch model = g.getBatch(ModelBatch.class);
+		model.begin();
+		model.draw(quad, null, new Vector3f(0), new Vector3f(1), new Vector4f(1));
+		model.end();
 	}
 	
 	public void unbind() {

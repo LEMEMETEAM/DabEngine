@@ -1,16 +1,16 @@
 package Input;
 
 import Observer.Event;
-import Observer.Subject;
+import Observer.ActionEventSender;
 
 public class MouseEvent implements Event {
 	
 	private int button;
 	private int action;
 	private int modifier;
-	private Subject sub;
+	private ActionEventSender sub;
 	
-	public MouseEvent(Subject sub, int button, int action, int mod) {
+	public MouseEvent(ActionEventSender sub, int button, int action, int mod) {
 		this.sub = sub;
 		this.button = button;
 		this.action = action;
@@ -29,7 +29,7 @@ public class MouseEvent implements Event {
 		return action;
 	}
 	
-	public Subject getSubject() {
+	public ActionEventSender getSubject() {
 		return sub;
 	}
 }

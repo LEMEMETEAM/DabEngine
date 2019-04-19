@@ -1,30 +1,31 @@
 package Scenes;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
+import Graphics.Camera;
 import Graphics.Graphics;
-import Input.InputHandler;
-import System.System;
+import System.ComponentSystem;
 
 public abstract class Scene {
-	private HashSet<System> sys = new HashSet<>();
+	private HashSet<ComponentSystem> sys = new HashSet<>();
+	public Camera camera;
+	
 	public void render(Graphics g) {
-		for(System system : sys) {
+		for(ComponentSystem system : sys) {
 			system.render(g);
 		}
 	}
 	public void tick() {
-		for(System system : sys) {
+		for(ComponentSystem system : sys) {
 			system.update();
 		}
 	}
-	public void addSystem(System system) {
+	public void addSystem(ComponentSystem system) {
 		sys.add(system);
 		system.addedToScene(this);
 	}
 	public <T> T getSystem(Class<T> clazz) {
-		for(System system : sys) {
+		for(ComponentSystem system : sys) {
 			if(clazz.isAssignableFrom(system.getClass())) {
 				return clazz.cast(system);
 			}

@@ -4,26 +4,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Graphics.Batch.SpriteBatch;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import Entities.Entity;
 import Entities.Components.CCollision;
-import Entities.Components.CSprite;
-import Entities.Components.CTransform;
 import Entities.Components.CPhysics.BodyType;
 import Graphics.Models.Texture;
-import Graphics.Models.Tiles;
-import Utils.ResourceManager;
-import System.RenderSystem;
-import System.System;
+import Graphics.Models.TileFactory;
 
 /*
  * In each level file, their is a <header> section and a 
@@ -32,12 +26,11 @@ import System.System;
  * width and height and textures to use.
  */
 
-public class LevelSystem extends System {
+public class LevelSystem {
 	
 	public float levelwidth;
 	public float levelheight;
 	public float tilewidth, tileheight;
-	private char spawn_point;
 	public Vector2f spawnpos;
 	private HashMap<Character, String[]> info = new HashMap<>();
 	private char[][] level_info;
@@ -86,7 +79,6 @@ public class LevelSystem extends System {
 					}
 					if(header.equals("[General]")) {
 						String[] map = s.split(":");
-						String stringval = map[1];
 						switch(map[0]) {
 							case "TileWidth":
 								tilewidth = Float.parseFloat(map[1]);
@@ -158,21 +150,22 @@ public class LevelSystem extends System {
 						float posx = tilewidth * x;
 						float posy = tileheight * y;
 						if(entry.getValue()[0].equals("Tile")) {
-							Tiles tile = new Tiles(
-									ResourceManager.getTexture(entry.getValue()[1]),
+							Entity tile = TileFactory.spawnTile(
+									new Texture(entry.getValue()[1]),
 									posx,
 									posy,
+									0,
 									tilewidth,
 									tileheight,
+									0,
 									new Vector4f(1, 1, 1, 1),
 									false,
 									false,
 									BodyType.STATIC);
 							if(entry.getValue()[2].equals("1")) {
 								tile.addComponent(new CCollision());
-								tile.getComponent(CCollision.class).correctBounds();
+								tile.getComponent(CCollision.class).bounds.correctBounds(tile);
 							}
-							addGameObject(y*height+x, tile);
 						} else if(entry.getValue()[0].equals("Trigger")) {
 							
 						}
@@ -181,30 +174,6 @@ public class LevelSystem extends System {
 						}
 					}
 				}
-			}
-		}
-	}
-	
-	@Override
-	public void render() {
-		RenderSystem renderer = this.state.get().getSystem(RenderSystem.class);
-		for(int i = 0; i < backgrounds.size(); i++) {
-			Background bg = backgrounds.get(i);
-			bg.x = 0;
-			bg.y = 0;
-			bg.z = i * 5;
-			bg.width = levelwidth;
-			bg.height = levelheight;
-			bg.color = new Vector4f(1);
-			bg.draw(renderer.getBatch());
-		}
-		for(int x = 0; x < obj.size(); x++) {
-			if(obj.get(x) != null) {
-				CSprite render = obj.get(x).get().getComponent(CSprite.class);
-				CTransform trans = obj.get(x).get().getComponent(CTransform.class);
-				
-				renderer.getBatch().begin();
-				renderer.getBatch().draw(render.texture, trans.pos.x, trans.pos.y, trans.size.x, trans.size.y, render.color.x, render.color.y, render.color.z, render.color.w, render.center_anchor);
 			}
 		}
 	}
@@ -232,11 +201,5 @@ public class LevelSystem extends System {
 
 	public void setLevelName(String levelname) {
 		this.levelname = levelname;
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
 	}
 }

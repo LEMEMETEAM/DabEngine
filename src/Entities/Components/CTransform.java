@@ -1,15 +1,19 @@
 package Entities.Components;
 
-import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public class CTransform extends Component {
 	
-	public Vector2f pos;
-	public Vector2f size;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3042942043608586977L;
+	public Vector3f pos;
+	public Vector3f size;
 	
 	public CTransform() {
 		
-		pos = new Vector2f();
-		size = new Vector2f();
+		pos = new Vector3f();
+		size = new Vector3f();
 	}
 }

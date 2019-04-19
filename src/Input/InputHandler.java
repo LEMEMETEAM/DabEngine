@@ -2,15 +2,14 @@ package Input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import java.util.HashMap;
 import java.util.WeakHashMap;
 
 import org.joml.Vector2d;
 import org.lwjgl.glfw.*;
 
-import Observer.Subject;
+import Observer.ActionEventSender;
 
-public class InputHandler extends Subject {
+public class InputHandler extends ActionEventSender {
 	
 	public static final InputHandler INSTANCE = new InputHandler();
 	
@@ -21,6 +20,7 @@ public class InputHandler extends Subject {
 		}
 	}};
 	private boolean[] buttons = new boolean[3];
+	@SuppressWarnings("unused")
 	private int last_key;
 	private double xpos, ypos, dx, dy, lastx, lasty;
 	private int last_button;

@@ -6,8 +6,6 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sound.sampled.Clip;
-
 import Graphics.Graphics;
 import Graphics.Window;
 import Input.InputHandler;

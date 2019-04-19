@@ -3,7 +3,7 @@ package Utils;
 public class Timer  {
 	
 	private static boolean running;
-	public static int counter;
+	public static volatile int counter;
 	
 	public static void start() {
 		running = true;

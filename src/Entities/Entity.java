@@ -1,15 +1,9 @@
 package Entities;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.joml.*;
-
 import Entities.Components.Component;
-
-import System.System;
 
 public class Entity {
 	

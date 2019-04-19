@@ -1,13 +1,6 @@
 package Entities;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 import Entities.Components.Component;
@@ -15,22 +8,24 @@ import Entities.Components.Component;
 public class EntityManager {
 	
 	public static WeakHashMap<Integer, Entity> entities = new WeakHashMap<>();
-	private static int currentID = 0;
+	private static volatile int currentID = 0;
 	
 	public static Entity createEntity(Component... components) {
 		int IDToUse = 0;
+		boolean found = false;
 		if(entities.isEmpty()) {
 			IDToUse = nextID();
 		}
 		else {
-			for(Entry<Integer, Entity> e : entities.entrySet()) {
-				if(e.getKey() == 0 || e.getValue() == null) {
-					IDToUse = e.getKey();
+			for(int i = 1; i <= currentID; i++) {
+				if(!entities.containsKey(i) || entities.get(i) == null) {
+					IDToUse = i;
+					found = true;
+					break;
 				}
-				else {
-					IDToUse = nextID();
-				}
-				break;
+			}
+			if(!found) {
+				IDToUse = nextID();
 			}
 		}
 		int ID = IDToUse;
@@ -46,18 +41,20 @@ public class EntityManager {
 	
 	public static Entity createEntity() {
 		int IDToUse = 0;
+		boolean found = false;
 		if(entities.isEmpty()) {
 			IDToUse = nextID();
 		}
 		else {
-			for(Entry<Integer, Entity> e : entities.entrySet()) {
-				if(e.getKey() == 0 || e.getValue() == null) {
-					IDToUse = e.getKey();
+			for(int i = 1; i <= currentID; i++) {
+				if(!entities.containsKey(i) && entities.get(i) == null) {
+					IDToUse = i;
+					found = true;
+					break;
 				}
-				else {
-					IDToUse = nextID();
-				}
-				break;
+			}
+			if(!found) {
+				IDToUse = nextID();
 			}
 		}
 		int ID = IDToUse;
@@ -70,7 +67,18 @@ public class EntityManager {
 	
 	public static void deleteEntity(int id) {
 		entities.get(id).removeAllComponents();
-		entities.put(id, null);
+		entities.remove(id);
+		if(currentID == id) {
+			currentID -= 1;
+		}
+		else if(currentID == 0) {
+			return;
+		}
+	}
+	
+	public static void clearAllEntities() {
+		entities.clear();
+		currentID = 0;
 	}
 	
 	private static int nextID() {

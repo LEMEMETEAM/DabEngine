@@ -1,8 +1,7 @@
 package Input;
 
 import Observer.Event;
-import Observer.Observer;
-import Observer.Subject;
+import Observer.ActionEventSender;
 
 public class KeyEvent implements Event {
 	
@@ -10,9 +9,9 @@ public class KeyEvent implements Event {
 	private int action;
 	private int scancode;
 	private int modifier;
-	private Subject subject;
+	private ActionEventSender subject;
 	
-	public KeyEvent(Subject sub, int key, int scancode, int action, int mods) {
+	public KeyEvent(ActionEventSender sub, int key, int scancode, int action, int mods) {
 		subject = sub;
 		key_id = key;
 		this.scancode = scancode;
@@ -36,7 +35,7 @@ public class KeyEvent implements Event {
 		return scancode;
 	}
 	
-	public Subject getSubject() {
+	public ActionEventSender getSubject() {
 		return subject;
 	}
 }

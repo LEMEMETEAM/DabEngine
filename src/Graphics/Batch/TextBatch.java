@@ -1,33 +1,16 @@
 package Graphics.Batch;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTTBitmap;
-import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.stb.STBTruetype;
 
 import DabEngineResources.DabEngineResources;
-
-import static org.lwjgl.stb.STBTruetype.*;
 
 import Graphics.ProjectionMatrix;
 import Graphics.Shaders;
 import Graphics.Models.Texture;
-import Graphics.Models.TextureRegion;
 import Graphics.Models.VertexAttrib;
 import Graphics.Models.VertexBuffer;
 
@@ -35,12 +18,11 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class TextBatch implements IBatch {
 	
-	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private LinkedHashMap<Character, FontCharacter> Characters = new LinkedHashMap<>();
 	private boolean drawing;
 	private Shaders shader = new Shaders(DabEngineResources.class, "Shaders/default.vs", "Shaders/textured.fs");
 	private int idx;
-	private int renderCalls;
+	public static int renderCalls;
 	private int maxsize = 1000*6;
 	private VertexBuffer data;
 	private static final List<VertexAttrib> ATTRIBUTES = 

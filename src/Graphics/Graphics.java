@@ -1,12 +1,9 @@
 package Graphics;
 
-import org.joml.Vector2f;
-import org.joml.Vector4f;
 
 import Core.Engine;
 import DabEngineResources.DabEngineResources;
-import Graphics.Batch.IBatch;
-import Graphics.Batch.Polygon;
+import Graphics.Batch.ModelBatch;
 import Graphics.Batch.PolygonBatch;
 import Graphics.Batch.SpriteBatch;
 import Graphics.Batch.TextBatch;
@@ -17,6 +14,8 @@ public class Graphics {
 	private SpriteBatch sprite;
 	private TextBatch text;
 	private PolygonBatch polygon;
+	private ModelBatch model;
+	@SuppressWarnings("unused")
 	private Window window;
 	
 	public Graphics(Engine e) {
@@ -25,6 +24,7 @@ public class Graphics {
 		sprite = new SpriteBatch();
 		text = new TextBatch(new Texture(DabEngineResources.class, "Fonts/Consolas_font.png", 16, 16));
 		polygon = new PolygonBatch();
+		model = new ModelBatch();
 	}
 	
 	public <T> T getBatch(Class<T> cls) {
@@ -36,6 +36,9 @@ public class Graphics {
 		}
 		else if(cls.isInstance(polygon)){
 			return cls.cast(polygon);
+		}
+		else if(cls.isInstance(model)) {
+			return cls.cast(model);
 		}
 		return null;
 	}

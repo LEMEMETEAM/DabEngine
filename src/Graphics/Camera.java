@@ -9,29 +9,18 @@ public abstract class Camera {
     protected Vector3f position;
 
     public Camera(){
-        view = new Matrix4f().ortho(-1, 1, -1, 1, -1, 1);
-        position = new Vector3f(0, 0, 0);
-
-    }
-
-    public void setPosition(Vector3f position) {
-        this.position = position;
-    }
-
-    public void addPosition(Vector3f position){
-        this.position.add(position);
-    }
-
-    public Vector3f getPosition() {
-        return position;
+        position = new Vector3f(0);
+        view = new Matrix4f();
     }
     
     public abstract Matrix4f getProjection();
     
-    public void clampCamera(Vector2f minmaxx, Vector2f minmaxy) {
+    public void clampCamera(Vector2f minmaxx, Vector2f minmaxy, Vector2f minmaxz) {
     	float clamp_x = Math.max(minmaxx.x(), Math.min(minmaxx.y(), position.x()));
     	float clamp_y = Math.max(minmaxy.x(), Math.min(minmaxy.y(), position.y()));
+    	float clamp_z = Math.max(minmaxz.x(), Math.min(minmaxz.y(), position.y()));
     	position.x = clamp_x;
     	position.y = clamp_y;
+    	position.z = clamp_z;
     }
 }

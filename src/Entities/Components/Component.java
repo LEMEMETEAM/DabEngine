@@ -1,7 +1,6 @@
 package Entities.Components;
 
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
 
 import Entities.Entity;
 

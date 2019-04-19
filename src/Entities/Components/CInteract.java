@@ -1,5 +1,9 @@
 package Entities.Components;
 
 public class CInteract extends Component {
-	 public boolean interaction = false;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7541664611360583915L;
+	public boolean interaction = false;
 }

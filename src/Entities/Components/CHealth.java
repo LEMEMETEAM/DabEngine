@@ -1,13 +1,10 @@
 package Entities.Components;
 
 public class CHealth extends Component {
-	private float health;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7970744443668788266L;
+	public float health;
 
-	public void increaseHealth() {
-		health++;
-	}
-	
-	public void decreaseHealth() {
-		health--;
-	}
 }

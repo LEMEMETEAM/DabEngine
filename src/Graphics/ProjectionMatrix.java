@@ -13,6 +13,11 @@ public class ProjectionMatrix {
 		return null;
 	}
 	
+	public static ProjectionMatrix createProjectionMatrix3D(float FOV, float aspectRatio, float near, float far) {
+		projmatrix = new Matrix4f().perspective(FOV, aspectRatio, near, far);
+		return null;
+	}
+	
 	public static Matrix4f get() {
 		return projmatrix;
 	}

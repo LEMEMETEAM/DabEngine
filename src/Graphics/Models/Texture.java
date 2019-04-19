@@ -13,8 +13,8 @@ public class Texture {
 
     private int t_id;
     private ImageDecoder decoder;
-    private int width;
-    private int height;
+    public int width;
+    public int height;
     private TextureRegion region;
     
     public Texture(Class<DabEngineResources> resources, String filename, int tileNomX, int tileNomY) {

@@ -8,16 +8,17 @@ import Input.MouseEvent;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public abstract class Subject {
+public abstract class ActionEventSender {
 	
-	public ArrayList<WeakReference<Observer>> observers = new ArrayList<>();
+	public ArrayList<WeakReference<ActionEventListener>> observers = new ArrayList<>();
 	
-	public void addObserver(Observer o) {
-		observers.add(new WeakReference<Observer>(o));
+	public void addObserver(ActionEventListener o) {
+		observers.add(new WeakReference<ActionEventListener>(o));
 	}
 	
 	/*DO NOT USE*/
-	public void removeObserver(Observer o) {
+	@SuppressWarnings("unlikely-arg-type")
+	public void removeObserver(ActionEventListener o) {
 		observers.remove(o);
 	}
 	
@@ -27,7 +28,7 @@ public abstract class Subject {
 	
 	public void dispatchKeyEvent(KeyEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			Observer o = observers.get(i).get();
+			ActionEventListener o = observers.get(i).get();
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onKeyPress(e);
@@ -39,7 +40,7 @@ public abstract class Subject {
 	
 	public void dispatchMouseEvent(MouseEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			Observer o = observers.get(i).get();
+			ActionEventListener o = observers.get(i).get();
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onMousePress(e);

@@ -5,7 +5,7 @@ import Entities.EntityManager;
 import Entities.Components.CMenu;
 import Graphics.Graphics;
 
-public class MenuSystem extends System {
+public class MenuSystem extends ComponentSystem {
 	
 	public void update() {
 		for(Entity e : EntityManager.entitiesWithComponents(CMenu.class)) {

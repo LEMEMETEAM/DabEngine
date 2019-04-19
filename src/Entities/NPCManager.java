@@ -10,21 +10,16 @@ import java.util.logging.Logger;
 
 import org.joml.Vector4f;
 
-import Entities.Components.CSprite;
 import Entities.Components.CTransform;
-import Graphics.Level2D;
-import Graphics.Batch.SpriteBatch;
-import Utils.ResourceManager;
+import Graphics.Models.Texture;
 
 public class NPCManager {
 	
-	private Level2D level;
-	private ArrayList<NPC> NPCs;
+	private ArrayList<Entity> NPCs;
 	private static final float MAX_TALKING_DISTANCE = 150;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	public NPCManager(Level2D level, String npcinfo) {
-		this.level = level;
+	public NPCManager(String npcinfo) {
 		NPCs = new ArrayList<>();
 		initInfo(npcinfo);
 	}
@@ -35,14 +30,14 @@ public class NPCManager {
 			String[] lineInfo;
 			while((line = in.readLine()) != null) {
 				lineInfo = line.split(" ");
-				System.out.println(level.tilewidth);
-				NPCs.add(new NPC(
-						lineInfo[0],
-						ResourceManager.getTexture(lineInfo[1]),
-						level.tilewidth * Float.parseFloat(lineInfo[2]),
-						level.tileheight * Float.parseFloat(lineInfo[3]),
+				NPCs.add(NPCFactory.spawnNPC(lineInfo[0],
+						new Texture(lineInfo[1]),
+						Float.parseFloat(lineInfo[2]),
+						Float.parseFloat(lineInfo[3]),
+						0,
 						Float.parseFloat(lineInfo[4]),
 						Float.parseFloat(lineInfo[5]),
+						0,
 						new Vector4f(1, 1, 1, 1),
 						true));
 			}
@@ -51,13 +46,8 @@ public class NPCManager {
 		}
 	}
 	
-	public void renderAll(SpriteBatch batch) {
-		for(NPC npc : NPCs) {
-			npc.getComponent(CSprite.class).render(batch);
-		}
-	}
-	public NPC closestNPC(Entity entity) {
-		NPC closest_npc = null;
+	public Entity closestNPC(Entity entity) {
+		Entity closest_npc = null;
 		CTransform transform_e = (CTransform) entity.getComponent(CTransform.class);
 		float distance;
 		for(int a = 0; a < NPCs.size(); a++) {
@@ -74,7 +64,7 @@ public class NPCManager {
 		return closest_npc;
 	}
 	
-	public ArrayList<NPC> getNPCs() {
+	public ArrayList<Entity> getNPCs() {
 		return NPCs;
 	}
 }

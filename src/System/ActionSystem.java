@@ -5,7 +5,7 @@ import Entities.EntityManager;
 import Entities.Components.CAction;
 import Graphics.Graphics;
 
-public class ActionSystem extends System {
+public class ActionSystem extends ComponentSystem {
 
 	@Override
 	public void update() {

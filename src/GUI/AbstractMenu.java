@@ -3,7 +3,6 @@ package GUI;
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 
 import GUI.Objects.Button;
 import GUI.Objects.Image;
@@ -89,7 +88,7 @@ public abstract class AbstractMenu {
 		for(GUIObject gui : ((Panel)panel).panel_objects) {
 			if(gui instanceof Button) {
 				if(!((Button) gui).label.isBlank() && ((Button)gui).show_label) {
-					Vector2f final_pos = ((Button) gui).label_pos.mul(gui.size, new Vector2f()).add(gui.pos, new Vector2f());
+					Vector2f final_pos = ((Button) gui).label_pos.add(gui.pos, new Vector2f());
 					g.getBatch(TextBatch.class).draw(((Button) gui).label, final_pos.x, final_pos.y, ((Button) gui).label_size, ((Button) gui).label_color);
 				}
 			}

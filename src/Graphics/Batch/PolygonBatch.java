@@ -11,7 +11,6 @@ import org.joml.Vector4f;
 
 import DabEngineResources.DabEngineResources;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,8 +18,8 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 public class PolygonBatch implements IBatch {
     private boolean drawing;
-    private int idx;
-    public static int renderCalls = 0;
+    private volatile int idx;
+    public volatile static int renderCalls = 0;
     private Polygon polygon;
     private VertexBuffer data;
     private int maxsize = 1000*6;

@@ -1,37 +1,32 @@
 package Graphics.Models;
 
-import java.lang.ref.WeakReference;
 import java.util.Random;
-import java.util.logging.Level;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import Entities.Entity;
 import Entities.Components.CPhysics;
 import Entities.Components.CSprite;
 import Entities.Components.CTransform;
-import System.RenderSystem;
-import System.System;
+import Graphics.Graphics;
+import Graphics.Batch.Polygon;
+import Graphics.Batch.PolygonBatch;
+import Graphics.Models.ParticleFactory.CParticle;
+import System.ComponentSystem;
 
-public class ParticleEmitter extends System {
+public class ParticleEmitter extends ComponentSystem {
 	
-	private int max_particles = 2;
-	public Vector2f pos;
+	private int max_particles = 50;
+	public Vector3f pos;
 	public static float OFFSET = 5;
-	public static Texture GLOBAL_PARTICLE_TEXTURE;
+	private Entity[] particles = new Entity[max_particles];
 	
-	public ParticleEmitter() {
-		pos = new Vector2f();
+	public ParticleEmitter(float particleLife) {
+		pos = new Vector3f();
 		for(int i = 0; i < max_particles; i++) {
-			addGameObject
-			(
-				new Particle() {{
-					CSprite render = getComponent(CSprite.class);
-					render.center_anchor = true;
-					render.texture = GLOBAL_PARTICLE_TEXTURE;
-				}}
-			);
+			particles[i] = ParticleFactory.spawnParticle(particleLife);
 		}
 	}
 
@@ -41,12 +36,13 @@ public class ParticleEmitter extends System {
 		int new_particles = 2;
 		for(int i = 0; i < new_particles; i++) {
 			int unusedParticle = firstUnusedParticle();
-			respawnParticle((Particle) obj.get(unusedParticle).get(), OFFSET);
+			respawnParticle(particles[unusedParticle], OFFSET);
 		}
 		for(int i = 0; i < max_particles; i++) {
-			Particle p = (Particle) obj.get(i).get();
-			p.LIFE -= 0.01f;
-			if(p.LIFE > 0) {
+			Entity p = particles[i];
+			float life = p.getComponent(ParticleFactory.CParticle.class).LIFE;
+			life -= 0.01f;
+			if(life > 0) {
 				CTransform transform = p.getComponent(CTransform.class);
 				CSprite render = p.getComponent(CSprite.class);
 				CPhysics physics = p.getComponent(CPhysics.class);
@@ -59,14 +55,14 @@ public class ParticleEmitter extends System {
 	public int firstUnusedParticle() {
 		int lastUsedParticle = 0;
 		for(int i = lastUsedParticle; i < max_particles; i++) {
-			Particle p = (Particle) obj.get(i).get();
+			CParticle p = particles[i].getComponent(CParticle.class);
 			if(p.LIFE <= 0) {
 				lastUsedParticle = i;
 				return i;
 			}
 		}
 		for(int i = 0; i < lastUsedParticle; i++) {
-			Particle p = (Particle) obj.get(i).get();
+			CParticle p = particles[i].getComponent(CParticle.class);
 			if(p.LIFE <= 0) {
 				lastUsedParticle = i;
 				return i;
@@ -76,33 +72,45 @@ public class ParticleEmitter extends System {
 		return 0;
 	}
 	
-	public void respawnParticle(Particle p, float offset) {
+	public void respawnParticle(Entity p, float offset) {
 		Random rng = new Random();
 		CTransform trans = p.getComponent(CTransform.class);
 		CSprite render = p.getComponent(CSprite.class);
-		CPhysics physics = p.getComponent(CPhysics.class);
+		CParticle particle = p.getComponent(CParticle.class);
 		
 		float random = ((rng.nextFloat() * 100) - 50) / 10f;
 		float rColor = 0.5f + rng.nextFloat();
 		
-		trans.pos.set(this.pos.add(random, random, new Vector2f()).add(offset, offset, new  Vector2f()));
+		trans.pos.set(this.pos.add(random, random, 0, new Vector3f()).add(offset, offset, 0, new Vector3f()));
 		render.color = new Vector4f(rColor, rColor, rColor, 1.0f);
-		p.LIFE = 1.0f; 
+		particle.LIFE = 1.0f; 
 	}
 
 	@Override
-	public void render() {
+	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		for(WeakReference<Entity> particle : obj) {
-			Particle p = (Particle) particle.get();
+		PolygonBatch pb = g.getBatch(PolygonBatch.class);
+		pb.begin();
+		for(Entity particle : particles) {
+			CParticle p = particle.getComponent(CParticle.class);
 			if(p.LIFE > 0.0f) {
-				RenderSystem renderer = this.state.get().getSystem(RenderSystem.class);
-				CSprite render = p.getComponent(CSprite.class);
-				CTransform transform = p.getComponent(CTransform.class);
-				renderer.getBatch().begin();
-				renderer.getBatch().draw(render.texture, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color.x, render.color.y, render.color.z, render.color.w, render.center_anchor);
-				renderer.getBatch().end();
+				CSprite render = particle.getComponent(CSprite.class);
+				CTransform transform = particle.getComponent(CTransform.class);
+				Polygon poly = new Polygon(
+					new int[] {
+						0,1,2,
+						0,3,2
+					},
+					new Vector2f[] {
+						new Vector2f(-1, -1),
+						new Vector2f(-1, 1),
+						new Vector2f(1, 1),
+						new Vector2f(1, -1)
+					}
+				);
+				pb.draw(poly, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color.x, render.color.y, render.color.z, render.color.w);
 			}
 		}
+		pb.end();
 	}
 }

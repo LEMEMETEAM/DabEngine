@@ -4,11 +4,10 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import GUI.Objects.Panel;
-import Graphics.Models.Texture;
 import Input.InputHandler;
-import Observer.Observer;
+import Observer.ActionEventListener;
 
-public abstract class GUIObject implements Observer {
+public abstract class GUIObject implements ActionEventListener {
 	
 	protected boolean hover = false;
 	public Vector2f pos;
