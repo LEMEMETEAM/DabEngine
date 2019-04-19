@@ -6,18 +6,27 @@ import Observer.Event;
 
 public class EventManager {
 	
-	private HashSet<Event> event_stack = new HashSet<>();
+	private static HashSet<Event> event_stack = new HashSet<>();
 	
-	public void submitEvent(Event e) {
+	public static void submitEvent(Event e) {
 		event_stack.add(e);
 	}
 	
-	public <T> T receiveEvent(Class<T> clz) {
+	public static <T> T receiveEvent(Class<T> clz) {
 		for(Event e : event_stack) {
 			if(clz.isInstance(e)) {
 				return clz.cast(e);
 			}
 		}
 		return null;
+	}
+	
+	public static <T> boolean hasEvent(Class<T> clz) {
+		for(Event e  : event_stack) {
+			if(clz.isInstance(e)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

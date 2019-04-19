@@ -9,7 +9,6 @@ import Entities.Components.CPhysics;
 import Entities.Components.CPhysics.BodyType;
 import Entities.Components.CTransform;
 import Graphics.Graphics;
-import Utils.Pair;
 
 public class PhysicsSystem extends ComponentSystem {
 	
@@ -36,22 +35,15 @@ public class PhysicsSystem extends ComponentSystem {
 		trans.pos.add(phys.velocity.x, phys.velocity.y, phys.velocity.z);
 	}
 	
-	private void collisionDetection(Entity e2, Entity e1) {
-		if(e2 == null) {
-			return;
-		}
-		Pair<Boolean, Vector3f> info = e1.getComponent(CCollision.class).bounds.intersects(e2.getComponent(CCollision.class).bounds);
-		if(info.left) {
-			collisionResolution(e1, e2, info.right);
-		}
-	}
-	
-	private void collisionResolution(Entity object1, Entity object2, Vector3f cor) {
-		CPhysics object1p = object1.getComponent(CPhysics.class);
-		CPhysics object2p = object2.getComponent(CPhysics.class);
+	private void collisionResolution() {
+		CollisionEvent collision = EventManager.receiveEvent(CollisionEvent.class);
+		Vector3f cor = collision.diff;
 		
-		CCollision object1c = object1.getComponent(CCollision.class);
-		CCollision object2c = object2.getComponent(CCollision.class);
+		CPhysics object1p = collision.entities.left.getComponent(CPhysics.class);
+		CPhysics object2p = collision.entities.right.getComponent(CPhysics.class);
+		
+		CCollision object1c = collision.entities.left.getComponent(CCollision.class);
+		CCollision object2c = collision.entities.right.getComponent(CCollision.class);
 		
 		if(object1p.bodytype == BodyType.DYNAMIC && object2p.bodytype == BodyType.STATIC) {
 			Vector3f dir = object1c.bounds.getCenter().sub(object2c.bounds.getCenter());
@@ -112,15 +104,13 @@ public class PhysicsSystem extends ComponentSystem {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		Entity e1;
-		Entity e2 = null;
 		for(Entity e : EntityManager.entitiesWithComponents(CPhysics.class, CTransform.class, CCollision.class)) {
-			e1 = e;
-			reactToGravity(e1);
-			collisionDetection(e2, e1);
-			computeVelocity(e1);
+			reactToGravity(e);
+			computeVelocity(e);
 			//TODO implement acceleration
-			e2 = e;
+		}
+		if(EventManager.hasEvent(CollisionEvent.class)) {
+			collisionResolution();
 		}
 	}
 
