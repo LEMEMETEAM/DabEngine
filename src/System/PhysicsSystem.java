@@ -47,7 +47,7 @@ public class PhysicsSystem extends ComponentSystem {
 		
 		if(object1p.bodytype == BodyType.DYNAMIC && object2p.bodytype == BodyType.STATIC) {
 			Vector3f dir = object1c.bounds.getCenter().sub(object2c.bounds.getCenter());
-			if(cor.x > cor.y && cor.x > cor.y) {
+			if(cor.x > cor.y && cor.x > cor.z) {
 				if(dir.x > 0) {
 					object1p.velocity.x = cor.x;
 				}

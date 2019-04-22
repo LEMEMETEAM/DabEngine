@@ -66,7 +66,13 @@ public class InMemoryCache implements Cache {
 	@Override
 	public <T> T get(String filename) {
 		// TODO Auto-generated method stub
-		return (T) cache.get(filename).get().getValue();
+		CachedObject<T> t;
+		try {
+			t = cache.get(filename).get();
+		} catch(NullPointerException ex) {
+			return null;
+		}
+		return (T) t.getValue();
 	}
 
 	@Override

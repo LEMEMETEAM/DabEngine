@@ -36,13 +36,3 @@ public class CollisionSystem extends ComponentSystem {
 	}
 	
 }
-
-class CollisionEvent implements Event {
-	public Pair<Entity, Entity> entities;
-	public Vector3f diff;
-	
-	public CollisionEvent(Pair<Entity, Entity> entities, Vector3f diff) {
-		this.entities = entities;
-		this.diff = diff;
-	}
-}

@@ -2,6 +2,8 @@ package Input;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import org.joml.Vector2d;
@@ -76,6 +78,16 @@ public class InputHandler extends ActionEventSender {
 		return keys.get(keycode) == GLFW_RELEASE;
 	}
 	
+	public HashSet<Integer> lastPressedKeys() {
+		HashSet<Integer> k = new HashSet<>();
+		for(Entry<Integer, Integer> entry : keys.entrySet()) {
+			if(entry.getValue() != GLFW_RELEASE) {
+				k.add(entry.getKey());
+			}
+		}
+		return k;
+	}
+
 	public boolean isMousePressed(int buttoncode) {
 		return buttons[buttoncode];
 	}
@@ -89,6 +101,9 @@ public class InputHandler extends ActionEventSender {
 	}
 	
 	public Vector2d getMouseDelta() {
-		return new Vector2d(dx, dy);
+		Vector2d delta = new Vector2d(dx, dy);
+		dx = 0;
+		dy = 0;
+		return delta;
 	}
 }

@@ -19,6 +19,7 @@ public class Engine {
     public static double TIMESCALE = 1;
     public static double TARGET_FPS = 60 * TIMESCALE;
     private boolean graphics_init;
+    public int FRAMES, UPDATES;
     
     public void end() {
     	glfwDestroyWindow(mainWindow.getWin());
@@ -53,6 +54,8 @@ public class Engine {
             frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
+                FRAMES = frames;
+                UPDATES = updates;
                 System.out.println(updates + " ups, " + frames + " fps");
                 updates = 0;
                 frames = 0;

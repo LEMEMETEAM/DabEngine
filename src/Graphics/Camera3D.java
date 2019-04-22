@@ -5,43 +5,55 @@ import org.joml.Vector3f;
 
 public class Camera3D extends Camera{
 	
-	private Vector3f rotation = new Vector3f();
+	private Vector3f front = new Vector3f();
+	private Vector3f up = new Vector3f(0, 1, 0);
 	
 	public void setPosition(Vector3f position) {
         this.position = position;
     }
-
-    public void addPosition(Vector3f position){
-        if(position.z != 0) {
-        	this.position.x += (float)Math.sin(Math.toRadians(rotation.y)) * -1.0f * position.z;
-        	this.position.z += (float)Math.cos(Math.toRadians(rotation.y)) * position.z;
-        }
-        if(position.x != 0) {
-        	this.position.x += (float)Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * position.x;
-        	this.position.z += (float)Math.cos(Math.toRadians(rotation.y - 90)) * position.x;
-        }
-        this.position.y += position.y;
-    }
-
+	
     public Vector3f getPosition() {
         return position;
     }
     
-    public void setRotation(Vector3f rotation) {
-    	this.rotation = rotation;
+    public void setFront(Vector3f front) {
+    	this.front = front;
     }
     
-    public void addRotation(Vector3f rotation) {
-    	this.rotation.add(rotation);
+    public Vector3f getFront() {
+        return front;
+    }
+    
+    public void strafeLeft(float speed) {
+    	position.sub(front.cross(up, new Vector3f()).normalize().mul(speed, new Vector3f()));
+    }
+    
+    public void strafeRight(float speed) {
+    	position.add(front.cross(up, new Vector3f()).normalize().mul(speed, new Vector3f()));
+    }
+    
+    public void moveForward(float speed) {
+    	position.add(front.mul(speed, new Vector3f()));
+    }
+    
+    public void moveBackward(float speed) {
+    	position.sub(front.mul(speed, new Vector3f()));
+    }
+    
+    public void rotate(double yaw, double pitch) {
+    	Vector3f front = new Vector3f();
+    	
+    	front.x = (float) (Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+    	front.y = (float) Math.sin(Math.toRadians(pitch));
+    	front.z = (float) (Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+    	
+    	this.front = front.normalize(new Vector3f());
     }
 	
 	public Matrix4f getProjection() {
         view.identity();
         
-        view.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
-        .rotate((float)Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
-        
-        view.translate(position.negate(new Vector3f()));
+        view.lookAt(position, position.add(front, new Vector3f()), up);
         
         return view;
     }

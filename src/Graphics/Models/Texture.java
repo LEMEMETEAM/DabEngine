@@ -64,6 +64,10 @@ public class Texture {
     public TextureRegion getRegion() {
 		return region;
 	}
+    
+    public void setRegion(int tileNomX, int tileNomY) {
+    	region = new TextureRegion(tileNomX, tileNomY);
+    }
 
     public void bind(){
         glActiveTexture(GL_TEXTURE0);

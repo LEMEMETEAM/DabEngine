@@ -91,11 +91,12 @@ public class AABB {
     public void correctBounds(Entity e) {
     	CSprite sprite; //sprite only var
     	boolean center_anchor;
-    	if((sprite = e.getComponent(CSprite.class)) == null) {
+    	if(!e.hasComponent(CSprite.class)) {
     		center_anchor = false;
 
     	}
     	else {
+    		sprite = e.getComponent(CSprite.class);
     		center_anchor = sprite.center_anchor;
     	}
 		CTransform transform = e.getComponent(CTransform.class);

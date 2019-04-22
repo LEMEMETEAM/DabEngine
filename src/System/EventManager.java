@@ -15,7 +15,9 @@ public class EventManager {
 	public static <T> T receiveEvent(Class<T> clz) {
 		for(Event e : event_stack) {
 			if(clz.isInstance(e)) {
-				return clz.cast(e);
+				T cast = clz.cast(e);
+				event_stack.remove(e);
+				return cast;
 			}
 		}
 		return null;
