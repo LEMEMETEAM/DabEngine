@@ -3,6 +3,7 @@ package Core;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,7 +86,6 @@ public class Engine {
         else {
         	LOGGER.log(Level.SEVERE, "Window not loaded");
         }
-
     }
     
     public Graphics createGraphics() {
