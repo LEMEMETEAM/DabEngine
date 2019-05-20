@@ -1,5 +1,6 @@
 package Graphics.Models;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import Entities.Entity;
@@ -9,21 +10,21 @@ import Utils.Pair;
 
 public class AABB {
 
-    private Vector3f center, half_extent;
+    public Vector2f center, half_extent;
 
     public AABB(){
-        this.center = new Vector3f(0);
-        this.half_extent = new Vector3f(0);
+        this.center = new Vector2f(0);
+        this.half_extent = new Vector2f(0);
     }
 
-    public AABB(Vector3f center, Vector3f half_extent){
+    public AABB(Vector2f center, Vector2f half_extent){
         this.center = center;
         this.half_extent = half_extent;
     }
 
-    public AABB(Vector3f center){
+    public AABB(Vector2f center){
         this.center = center;
-        this.half_extent = new Vector3f(0);
+        this.half_extent = new Vector2f(0);
     }
 
     /*public Tuple3<Boolean, Direction, Vector2f> intersects(AABB bounds2){
@@ -78,58 +79,24 @@ public class AABB {
     	return new Tuple3<>(false, Direction.UP, new Vector2f(0));
     }*/
     
-    public Pair<Boolean, Vector3f> intersects(AABB bounds2){
+    /*public Pair<Boolean, Vector3f> intersects(AABB bounds2){
     	Vector3f distance = bounds2.center.sub(center, new Vector3f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
+        distance.z = (float) Math.abs(distance.z);
 
         distance.sub(half_extent.add(bounds2.half_extent, new Vector3f()));
         
         return new Pair<>(distance.x < 0 && distance.y < 0 && distance.z < 0, distance);
-    }
+    }*/
     
-    public void correctBounds(Entity e) {
-    	CSprite sprite; //sprite only var
-    	boolean center_anchor;
-    	if(!e.hasComponent(CSprite.class)) {
-    		center_anchor = false;
+    public Pair<Boolean, Vector2f> intersects(AABB bounds2){
+    	Vector2f distance = bounds2.center.sub(center, new Vector2f());
+        distance.x = (float) Math.abs(distance.x);
+        distance.y = (float) Math.abs(distance.y);
 
-    	}
-    	else {
-    		sprite = e.getComponent(CSprite.class);
-    		center_anchor = sprite.center_anchor;
-    	}
-		CTransform transform = e.getComponent(CTransform.class);
-		if(center_anchor) {
-			center = transform.pos;
-		} else {
-			center = new Vector3f(transform.pos.x() + (transform.size.x()/2),
-					transform.pos.y() + (transform.size.y()/2), transform.pos.z() + (transform.size.z()/2));
-		}
-		half_extent = new Vector3f(transform.size.x()/2, transform.size.y()/2, transform.size.z()/2);
-    }
-
-    public Vector3f getCenter() {
-        return center;
-    }
-
-    public Vector3f getHalf_extent() {
-        return half_extent;
-    }
-
-    public void setCenter(Vector3f center) {
-        this.center = center;
-    }
-
-    public void setHalf_extent(Vector3f half_extent) {
-        this.half_extent = half_extent;
-    }
-
-    public void addToCenter(Vector3f center) {
-        this.center.add(center);
-    }
-
-    public void addToHalf_extent(Vector3f half_extent) {
-        this.half_extent.add(half_extent);
+        distance.sub(half_extent.add(bounds2.half_extent, new Vector2f()));
+        
+        return new Pair<>(distance.x < 0 && distance.y < 0, distance);
     }
 }

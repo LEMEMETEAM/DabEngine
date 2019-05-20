@@ -1,5 +1,6 @@
 package System;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import Entities.Entity;
@@ -21,7 +22,7 @@ public class CollisionSystem extends ComponentSystem {
 				}
 				CCollision c = e.getComponent(CCollision.class);
 				CCollision c2 = e2.getComponent(CCollision.class);
-				Pair<Boolean, Vector3f> info = c2.bounds.intersects(c.bounds);
+				Pair<Boolean, Vector2f> info = c2.bounds.intersects(c.bounds);
 				if(info.left) {
 					EventManager.submitEvent(new CollisionEvent(new Pair<>(e, e2), info.right));
 				}

@@ -1,6 +1,7 @@
 package Graphics;
 
 
+import Cache.ResourceManager;
 import Core.Engine;
 import DabEngineResources.DabEngineResources;
 import Graphics.Batch.ModelBatch;
@@ -22,7 +23,7 @@ public class Graphics {
 		window = e.getMainWindow();
 		
 		sprite = new SpriteBatch();
-		text = new TextBatch(new Texture(DabEngineResources.class, "Fonts/Consolas_font.png", 16, 16));
+		text = new TextBatch(ResourceManager.getTextureFromResource(DabEngineResources.class, "Fonts/Consolas_font.png").setRegion(16, 16));
 		polygon = new PolygonBatch();
 		model = new ModelBatch();
 	}

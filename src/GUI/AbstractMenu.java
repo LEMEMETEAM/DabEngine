@@ -74,11 +74,11 @@ public abstract class AbstractMenu {
 			}
 		}
 		
-		g.getBatch(PolygonBatch.class).begin();
+		g.getBatch(PolygonBatch.class).begin(GL_TRIANGLES);
 		for(GUIObject gui : ((Panel)panel).panel_objects) {
 			if(gui instanceof Button) {
 				if(((Button) gui).show_button) {
-					g.getBatch(PolygonBatch.class).draw(((Button) gui).poly, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w);
+					g.getBatch(PolygonBatch.class).draw(((Button) gui).poly, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color);
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public abstract class AbstractMenu {
 		for(GUIObject gui : ((Panel)panel).panel_objects) {
 			if(gui instanceof Image) {
 				if(((Image) gui).image != null) {
-					g.getBatch(SpriteBatch.class).draw(((Image) gui).image, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color.x, gui.color.y, gui.color.z, gui.color.w, true);
+					g.getBatch(SpriteBatch.class).draw(((Image) gui).image, gui.pos.x, gui.pos.y, gui.size.x, gui.size.y, gui.color);
 				}
 			}
 		}

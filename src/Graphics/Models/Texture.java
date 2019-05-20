@@ -2,6 +2,7 @@ package Graphics.Models;
 
 import Utils.ImageDecoder;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import DabEngineResources.DabEngineResources;
@@ -17,7 +18,7 @@ public class Texture {
     public int height;
     private TextureRegion region;
     
-    public Texture(Class<DabEngineResources> resources, String filename, int tileNomX, int tileNomY) {
+    public Texture(Class<DabEngineResources> resources, String filename, int tileNomX, int tileNomY) throws IOException {
     	decoder = new ImageDecoder(resources.getResourceAsStream(filename));
 
         ByteBuffer pixels = decoder.decode();
@@ -35,7 +36,7 @@ public class Texture {
         region = new TextureRegion(tileNomX, tileNomY);
     }
     
-    public Texture(String filename, int tileNomX, int tileNomY){
+    public Texture(String filename, int tileNomX, int tileNomY) throws IOException{
         decoder = new ImageDecoder(filename);
 
         ByteBuffer pixels = decoder.decode();
@@ -53,11 +54,11 @@ public class Texture {
         region = new TextureRegion(tileNomX, tileNomY);
     }
     
-    public Texture(String filename) {
+    public Texture(String filename) throws IOException {
     	this(filename, 1, 1);
     }
     
-    public Texture(Class<DabEngineResources> resource, String filename) {
+    public Texture(Class<DabEngineResources> resource, String filename) throws IOException {
     	this(resource, filename, 1, 1);
     }
     
@@ -65,8 +66,9 @@ public class Texture {
 		return region;
 	}
     
-    public void setRegion(int tileNomX, int tileNomY) {
+    public Texture setRegion(int tileNomX, int tileNomY) {
     	region = new TextureRegion(tileNomX, tileNomY);
+    	return this;
     }
 
     public void bind(){

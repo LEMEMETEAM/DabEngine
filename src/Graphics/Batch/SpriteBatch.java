@@ -102,43 +102,77 @@ public class SpriteBatch implements IBatch {
 	
 	//draws a texture with no tint, full opacity and texture wrapped fully
 	public void draw(Texture tex, float x, float y, float width, float height) {
-		draw(tex, x, y, width, height, 1, 1, 1, 1, true);
+		draw(tex, x, y, width, height, 0, x, y, 1, 1, 1, 1);
 	}
 	
-	public void draw(Texture tex, float x, float y, float width, float height, boolean center_anchor) {
-		draw(tex, x, y, width, height, 1, 1, 1, 1, center_anchor);
+	public void draw(Texture tex, float x, float y, float width, float height, float rotation) {
+		draw(tex, x, y, width, height, rotation, x, y, 1, 1, 1, 1);
 	}
 	
-	//simplified version of above
-	public void draw(Texture tex, Vector4f xywh) {
-		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, true);
+	public void draw(Texture tex, float x, float y, float width, float height, Vector4f color) {
+		draw(tex, x, y, width, height, 0, x, y, color.x, color.y, color.z, color.w);
 	}
 	
-	public void draw(Texture tex, Vector4f xywh, boolean center_anchor) {
-		draw(tex, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1, center_anchor);
+	public void draw(Texture tex, float x, float y, float width, float height, float rotation, Vector4f color) {
+		draw(tex, x, y, width, height, rotation, x, y, color.x, color.y, color.z, color.w);
 	}
 	
-	//draw a texture with full texture wrap
-	public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a) {
-		draw(tex, x, y, width, height, r, g, b, a, true);
+	public void draw(Texture tex, float x, float y, float width, float height, float ox, float oy) {
+		draw(tex, x, y, width, height, 0, ox, oy, 1, 1, 1, 1);
 	}
 	
-	//simplified version of above
-	public void draw(Texture tex, Vector4f xywh, Vector4f rgba) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), true);
-	}
-	
-	public void draw(Texture tex, Vector4f xywh, Vector4f rgba, boolean center_anchor) {
-		draw(tex,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w(), center_anchor);
+	public void draw(Texture tex, float x, float y, float width, float height, float ox, float oy, float rotation) {
+		draw(tex, x, y, width, height, rotation, ox, oy, 1, 1, 1, 1);
 	}
 	
 	//full draw method
-	public void draw(Texture tex, float x, float y, float width, float height, float r, float g, float b, float a, boolean center_anchor) {
+	//rotation in degrees
+	public void draw(Texture tex, float x, float y, float width, float height, float rotation, float originX, float originY, float r, float g, float b, float a) {
 		float x1,y1,x2,y2,x3,y3,x4,y4;
 		
 		checkFlush(tex);
 		
-		if(!center_anchor) {
+		final float cx = originX;
+		final float cy = originY;
+		
+		final float px,py,px2,py2;
+		
+		px = -cx;
+		py = -cy;
+		px2 = width - cx;
+		py2 = height - cy;
+		
+		if(rotation != 0) {
+			
+			final float cos = (float)Math.cos(Math.toRadians(rotation));
+			final float sin = (float)Math.sin(Math.toRadians(rotation));
+			
+			x1 = x + (cos * px - sin * py) + cx;
+			y1 = y + (sin * px + cos * py) + cy;
+			
+			x2 = x + (cos * px - sin * py2) + cx;
+			y2 = y + (sin * px + cos * py2) + cy;
+			
+			x3 = x + (cos * px2 - sin * py2) + cx;
+			y3 = y + (sin * px2 + cos * py2) + cy;
+			
+			x4 = x + (cos * px2 - sin * py) + cx;
+			y4 = y + (sin * px2 + cos * py) + cy;
+		}
+		else {
+			x1 = x + px + cx;
+			y1 = y + py + cy;
+			
+			x2 = x + px + cx;
+			y2 = y + py2 + cy;
+			
+			x3 = x + px2 + cx;
+			y3 = y + py2 + cy;
+			
+			x4 = x + px2 + cx;
+			y4 = y + py + cy;
+		}
+		/*if(!center_anchor) {
 			x1 = x;
 			y1 = y;
 			
@@ -163,7 +197,7 @@ public class SpriteBatch implements IBatch {
 			
 			x4 = x + (width/2f);
 			y4 = y - (height/2f);
-		}
+		}*/
 		
 		Vector4f uv = tex.getRegion().getUV();
 		float u = uv.x(), v = uv.y(), u2 = uv.z, v2 = uv.w;

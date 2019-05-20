@@ -2,6 +2,7 @@ package System;
 
 import java.util.Objects;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import Entities.Entity;
@@ -12,7 +13,7 @@ public class CollisionEvent implements Event {
 	public Pair<Entity, Entity> entities;
 	public Vector3f diff;
 	
-	public CollisionEvent(Pair<Entity, Entity> entities, Vector3f diff) {
+	public CollisionEvent(Pair<Entity, Entity> entities, Vector2f diff) {
 		this.entities = entities;
 		this.diff = diff;
 	}

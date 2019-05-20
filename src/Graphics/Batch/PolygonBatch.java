@@ -14,9 +14,8 @@ import DabEngineResources.DabEngineResources;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-
 public class PolygonBatch implements IBatch {
+	private int TYPE;
     private boolean drawing;
     private volatile int idx;
     public volatile static int renderCalls = 0;
@@ -39,6 +38,18 @@ public class PolygonBatch implements IBatch {
     	updateUniforms();
     }
 
+    public void begin(int type) {
+        if(drawing) {
+            throw new IllegalStateException("must not be drawing before calling begin()");
+        }
+        TYPE = type;
+        drawing = true;
+        shader.bind();
+        idx = 0;
+        renderCalls = 0;
+        polygon = null;
+    }
+    
     public void begin() {
         if(drawing) {
             throw new IllegalStateException("must not be drawing before calling begin()");
@@ -54,6 +65,7 @@ public class PolygonBatch implements IBatch {
         if(!drawing) {
             throw new IllegalStateException("must be drawing before calling end()");
         }
+        TYPE = 0;
         drawing = false;
         flush();
     }
@@ -92,25 +104,40 @@ public class PolygonBatch implements IBatch {
     public Polygon getPolygon() {
         return polygon;
     }
+    
+    public void setPrimitiveType(int type) {
+    	if(type == 0) {
+    		throw new IllegalStateException("type cannot be 0");
+    	}
+    	if(drawing) {
+    		flush();
+    	}
+    	TYPE = type;
+    }
 
     //draws a polygon with no tint, full opacity and polyture wrapped fully
     public void draw(Polygon poly, float x, float y, float width, float height) {
-        draw(poly, x, y, width, height, 1, 1, 1, 1);
+        draw(poly, x, y, width, height, x, y, 0, 1, 1, 1, 1);
     }
-
-    //simplified version of above
-    public void draw(Polygon poly, Vector4f xywh) {
-        draw(poly, xywh.x(), xywh.y(), xywh.z(), xywh.w(), 1, 1, 1, 1);
+    
+    public void draw(Polygon poly, float x, float y, float width, float height, float rotation) {
+        draw(poly, x, y, width, height, x, y, rotation, 1, 1, 1, 1);
     }
-
-
-    //simplified version of above
-    public void draw(Polygon poly, Vector4f xywh, Vector4f rgba) {
-        draw(poly,  xywh.x(), xywh.y(), xywh.z(), xywh.w(), rgba.x(), rgba.y(), rgba.z(), rgba.w());
+    
+    public void draw(Polygon poly, float x, float y, float width, float height, float ox, float oy, float rotation) {
+        draw(poly, x, y, width, height, ox, oy, rotation, 1, 1, 1, 1);
+    }
+    
+    public void draw(Polygon poly, float x, float y, float width, float height, Vector4f color) {
+        draw(poly, x, y, width, height, x, y, 0, color.x, color.y, color.z, color.w);
+    }
+    
+    public void draw(Polygon poly, float x, float y, float width, float height, Vector4f color, float rotation) {
+        draw(poly, x, y, width, height, x, y, rotation, color.x, color.y, color.z, color.w);
     }
 
     //full draw method
-    public void draw(Polygon poly, float x, float y, float width, float height, float r, float g, float b, float a) {
+    public void draw(Polygon poly, float x, float y, float width, float height, float originX, float originY, float rotation, float r, float g, float b, float a) {
         Vector2f[] verts = poly.verts;
 
         checkFlush(poly);
@@ -118,7 +145,21 @@ public class PolygonBatch implements IBatch {
         //0, 1, 2
         //0, 3, 2
         for(int i : poly.inds) {
-        	vertex((verts[i].x * (width/2)) + x, (verts[i].y * (height/2)) + y, r, g, b, a);
+        	float x1,y1,x2,y2,x3,y3,x4,y4;
+        	
+        	final float cx = originX;
+        	final float cy = originY;
+        	
+        	float px,py,px2,py2;
+        	
+        	px = verts[i].x*width-cx;
+        	py = verts[i].y*height-cy;
+        	
+        	final float cos = (float)Math.cos(Math.toRadians(rotation));
+        	final float sin = (float)Math.sin(Math.toRadians(rotation));
+        	
+        	vertex(x + (cos * px - sin * py) + cx, y + (sin * px + cos * py) + cy, r, g, b, a);
+        	//vertex((verts[i].x * (width/2)) + x, (verts[i].y * (height/2)) + y, r, g, b, a);
         }
     }
 
@@ -143,7 +184,7 @@ public class PolygonBatch implements IBatch {
             data.flip();
             
             data.bind();
-            data.draw(GL_TRIANGLES, 0, idx);
+            data.draw(TYPE, 0, idx);
             data.unbind();
             renderCalls++;
 

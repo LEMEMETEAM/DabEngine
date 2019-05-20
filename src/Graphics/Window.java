@@ -113,6 +113,10 @@ public class Window {
     public long getWin(){
         return win;
     }
+    
+    public void setTitle(String title) {
+    	glfwSetWindowTitle(win, title);
+    }
 
     public void showWindow(){
         glfwShowWindow(win);

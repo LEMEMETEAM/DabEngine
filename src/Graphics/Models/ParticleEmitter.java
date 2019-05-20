@@ -5,6 +5,7 @@ import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 import Entities.Entity;
 import Entities.Components.CPhysics;
@@ -90,7 +91,7 @@ public class ParticleEmitter extends ComponentSystem {
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		PolygonBatch pb = g.getBatch(PolygonBatch.class);
-		pb.begin();
+		pb.begin(GL11.GL_TRIANGLES);
 		for(Entity particle : particles) {
 			CParticle p = particle.getComponent(CParticle.class);
 			if(p.LIFE > 0.0f) {
@@ -108,7 +109,7 @@ public class ParticleEmitter extends ComponentSystem {
 						new Vector2f(1, -1)
 					}
 				);
-				pb.draw(poly, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color.x, render.color.y, render.color.z, render.color.w);
+				pb.draw(poly, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color);
 			}
 		}
 		pb.end();

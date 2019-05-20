@@ -21,7 +21,11 @@ public class InputHandler extends ActionEventSender {
 			put(i, GLFW_RELEASE);
 		}
 	}};
-	private boolean[] buttons = new boolean[3];
+	private WeakHashMap<Integer, Integer> buttons = new WeakHashMap<>() {{
+		for(int i = 0; i < 65536; i++) {
+			put(i, GLFW_RELEASE);
+		}
+	}};
 	@SuppressWarnings("unused")
 	private int last_key;
 	private double xpos, ypos, dx, dy, lastx, lasty;
@@ -62,8 +66,7 @@ public class InputHandler extends ActionEventSender {
 		@Override
 		public void invoke(long arg0, int arg1, int arg2, int arg3) {
 			// TODO Auto-generated method stub
-			buttons[arg1] = arg3 != GLFW_RELEASE;
-			last_button = arg1;
+			buttons.put(arg1, arg3);
 			
 			dispatchMouseEvent(new MouseEvent(INSTANCE, arg1, arg2, arg3));
 		}
@@ -89,11 +92,11 @@ public class InputHandler extends ActionEventSender {
 	}
 
 	public boolean isMousePressed(int buttoncode) {
-		return buttons[buttoncode];
+		return buttons.get(buttoncode) != GLFW_RELEASE;
 	}
 	
 	public boolean isMouseReleased(int buttoncode) {
-		return buttoncode == last_button && buttons[buttoncode] == false;
+		return buttons.get(buttoncode) == GLFW_RELEASE;
 	}
 	
 	public Vector2d getMousePos() {
