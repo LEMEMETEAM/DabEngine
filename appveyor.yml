@@ -5,5 +5,6 @@ install:
   - cmd: SET PATH=%JAVA_HOME%\bin;%PATH%
 build_script:
   - gradlew assemble
+  - gradlew sonarqube
 test_script:
   - gradlew test
