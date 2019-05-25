@@ -3,13 +3,13 @@ package DabEngine.Graphics.Models;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import Entities.Entity;
-import Entities.EntityManager;
-import Entities.Components.CPhysics;
-import Entities.Components.CPhysics.BodyType;
-import Entities.Components.CSprite;
-import Entities.Components.CTile;
-import Entities.Components.CTransform;
+import DabEngine.Entities.Entity;
+import DabEngine.Entities.EntityManager;
+import DabEngine.Entities.Components.CPhysics;
+import DabEngine.Entities.Components.CPhysics.BodyType;
+import DabEngine.Entities.Components.CSprite;
+import DabEngine.Entities.Components.CTile;
+import DabEngine.Entities.Components.CTransform;
 
 public class TileFactory extends Entity {
 	

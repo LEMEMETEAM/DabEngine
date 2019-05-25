@@ -1,11 +1,11 @@
 package DabEngine.Graphics.Models;
 
-import Entities.Entity;
-import Entities.EntityManager;
-import Entities.Components.CPhysics;
-import Entities.Components.CSprite;
-import Entities.Components.CTransform;
-import Entities.Components.Component;
+import DabEngine.Entities.Entity;
+import DabEngine.Entities.EntityManager;
+import DabEngine.Entities.Components.CPhysics;
+import DabEngine.Entities.Components.CSprite;
+import DabEngine.Entities.Components.CTransform;
+import DabEngine.Entities.Components.Component;
 
 public class ParticleFactory {
 	

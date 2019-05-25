@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.Components.CCollision;
 import DabEngine.Entities.Components.CPhysics.BodyType;
 import DabEngine.Graphics.Models.Texture;
@@ -101,7 +102,8 @@ public class LevelSystem {
 								(
 										new Background() 
 										{{
-											texture = new Texture(level_dir.toPath().resolve(map[1]).toString());
+											//TODO change later to resource manager
+											texture = new Texture(new File(level_dir.toPath().resolve(map[1]).toString()));
 										}}
 								);
 								break;
@@ -130,7 +132,7 @@ public class LevelSystem {
 		LOGGER.log(Level.INFO, "Level '" + level_dir.toString() + "' loaded");
 	}
 	
-	public void init(Texture spawn_texture) {
+	public void init(Texture spawn_texture) throws IOException {
 		int height = level_info.length;
 		int width = level_info[0].length;
 		
@@ -150,7 +152,8 @@ public class LevelSystem {
 						float posy = tileheight * y;
 						if(entry.getValue()[0].equals("Tile")) {
 							Entity tile = TileFactory.spawnTile(
-									new Texture(entry.getValue()[1]),
+									//TODO Cchange to resource manager
+									new Texture(new File(entry.getValue()[1])),
 									posx,
 									posy,
 									0,
@@ -163,7 +166,7 @@ public class LevelSystem {
 									BodyType.STATIC);
 							if(entry.getValue()[2].equals("1")) {
 								tile.addComponent(new CCollision());
-								tile.getComponent(CCollision.class).bounds.correctBounds(tile);
+								//tile.getComponent(CCollision.class).bounds.correctBounds(tile);
 							}
 						} else if(entry.getValue()[0].equals("Trigger")) {
 							

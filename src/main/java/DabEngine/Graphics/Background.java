@@ -16,6 +16,6 @@ public class Background {
 	public float z;
 	
 	public void draw(SpriteBatch batch) {
-		batch.draw(texture, x, y, width, height, color.x, color.y, color.z, color.w, false);
+		batch.draw(texture, x, y, width, height, 0, 0, 0, color.x, color.y, color.z,color.w);
 	}
 }

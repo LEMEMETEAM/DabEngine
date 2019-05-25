@@ -1,4 +1,4 @@
-package DabEngine.System;
+/* package DabEngine.System;
 
 import org.joml.Vector3f;
 
@@ -20,10 +20,7 @@ public class PhysicsSystem extends ComponentSystem {
 	
 	private void reactToGravity(Entity object) {
 		CPhysics phys = object.getComponent(CPhysics.class);
-		/*
-		 * FORCE = MASS * ACC
-		 * ACC = FORCE / MASS
-		 */
+		
 		Vector3f gravityforce = computeGravityForce(object);
 		phys.velocity.add(gravityforce.x / phys.MASS, gravityforce.y / phys.MASS, gravityforce.z / phys.MASS);
 	}
@@ -121,3 +118,4 @@ public class PhysicsSystem extends ComponentSystem {
 	}
 	
 }
+ */
