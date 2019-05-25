@@ -1,184 +1,0 @@
-
-LUtils.Utils#ioResourceToByteBuffer(Ljava/lang/String;I)Ljava/nio/ByteBuffer;
-__unknown_file ("24*Å
-12E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (I≠
-™
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (I,
-rbc%java.nio.channels.ReadableByteChannel"__id*-
-+
-%6%java.nio.channels.ReadableByteChannel*
-11*ñ
-24E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (v
-t
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (
-bufferjava.nio.ByteBuffer"__id*
-""Ò
-Ó
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ('
-%0java.nio.file.Path"Rjava.nio.file.Paths#get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;*"
-java.nio.file.Paths*
-
-resourcejava.lang.Stringà
-Ö
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ((
-pathjava.nio.file.Path"__id*
-
-%0java.nio.file.Path«
-ƒ
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java ("
-%1boolean"5java.nio.file.Files#isReadable(Ljava/nio/file/Path;)Z*"
-java.nio.file.Files*
-
-pathjava.nio.file.Path*
-14
-22*Ä
-13E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Rå
-â
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (R
-sourcejava.io.InputStream"__id*
-
-%5java.io.InputStreamù
-ö
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java. (I+
-%6%java.nio.channels.ReadableByteChannel"cjava.nio.channels.Channels#newChannel(Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;*"
-java.nio.channels.Channels*
-
-sourcejava.io.InputStream*
-12*ÿ
-14E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java) (4ÑÅ
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java) (R
-%5java.io.InputStream"Ljava.lang.Class#getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;*
-""*
-
-resourcejava.lang.String2'getResourceAsStream(Ljava/lang/String;)*
-13*›
-18E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (ÜÉ
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (&	
-%4int"Bjava.nio.channels.SeekableByteChannel#read(Ljava/nio/ByteBuffer;)I*-
-+
-fc%java.nio.channels.SeekableByteChannel*
-
-bufferjava.nio.ByteBuffer2read(Ljava/nio/ByteBuffer;)*
-18
-1*…
-19E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Jv
-t
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (J
-bufferjava.nio.ByteBuffer"__id*
-""*
-18*˜
-1E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java, ,(¿Ω
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java, ,(
-%11java.nio.ByteBuffer"/java.nio.ByteBuffer#flip()Ljava/nio/ByteBuffer;*
-
-bufferjava.nio.ByteBuffer2flip()"h
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java- -(
-
-bufferjava.nio.ByteBuffer*‚
-2E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java& &(Lç
-ä
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java& &(L
-bufferjava.nio.ByteBuffer"__id*
-
-%10java.nio.ByteBuffer*
-9
-1*π
-3E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&J &(KÁ
-‰
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&! &(L
-%10java.nio.ByteBuffer"EUtils.Utils#resizeBuffer(Ljava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;*"
-Utils.Utils*
-
-bufferjava.nio.ByteBuffer*
-""*
-2*Ò
-4E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&! &(-üú
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java&6 &(G	
-%9int"java.nio.Buffer#capacity()I*
-
-bufferjava.nio.ByteBuffer2
-capacity()*
-3*˘
-6E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java% %(°û
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java% %(*	
-%8int"java.nio.Buffer#remaining()I*
-
-bufferjava.nio.ByteBuffer2remaining()*	
-4
-9
-1*‹
-9E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java!  !(#áÑ
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java!  !(0	
-%7int"Bjava.nio.channels.ReadableByteChannel#read(Ljava/nio/ByteBuffer;)I*.
-,
-rbc%java.nio.channels.ReadableByteChannel*
-
-bufferjava.nio.ByteBuffer2read(Ljava/nio/ByteBuffer;)*
-6
-1*ø
-21E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (D¨
-©
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (D+
-fc%java.nio.channels.SeekableByteChannel"__id*-
-+
-%2%java.nio.channels.SeekableByteChannelºπ
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java< (E
-
-%3long"-java.nio.channels.SeekableByteChannel#size()J*-
-+
-fc%java.nio.channels.SeekableByteChannel2size()*
-19*˛
-22E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java* (/™
-ß
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java* (D+
-%2%java.nio.channels.SeekableByteChannel"zjava.nio.file.Files#newByteChannel(Ljava/nio/file/Path;[Ljava/nio/file/OpenOption;)Ljava/nio/channels/SeekableByteChannel;*"
-java.nio.file.Files*
-
-pathjava.nio.file.Path*
-21*À
-11E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (Av
-t
-E
-;C:\Users\B\eclipse-workspace\DabEngine\src\Utils\Utils.java (A
-bufferjava.nio.ByteBuffer"__id*
-""*
-9
-1:
-resourcejava.lang.String:
-""B"
-Utils.Utils

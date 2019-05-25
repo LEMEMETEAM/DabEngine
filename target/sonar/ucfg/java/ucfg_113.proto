@@ -1,30 +1,0 @@
-
-DGraphics.Shaders#errorMessage(Ljava/lang/String;I)Ljava/lang/String;
-__unknown_file (uniformName"""1*≥
-1L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.java£ £($é
-ã
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.java£ £(2
-%0"__concat*
-Could not set uniform *
-
-uniformNameÑ
-Å
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.java£ £(L
-%1"__concat*
-
-%0*
- because location is p
-n
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.java£ £(W
-%2"__concat*
-
-%1*
-"""V
-L
-@C:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Shaders.java£ £(X
-
-%2

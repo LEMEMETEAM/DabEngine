@@ -1,22 +1,0 @@
-
-AGraphics.Models.VertexBuffer#put(F)LGraphics/Models/VertexBuffer;
-__unknown_file ("1*à
-1V
-LC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\VertexBuffer.java+ +(«
-¨
-V
-LC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\VertexBuffer.java+ +(
-%0java.nio.FloatBuffer"__id*,**
-Graphics.Models.VertexBuffer"
-bufferØÕ
-V
-LC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\VertexBuffer.java+ +(
-%1java.nio.FloatBuffer"1java.nio.FloatBuffer#put(F)Ljava/nio/FloatBuffer;*
-
-%0java.nio.FloatBuffer*
-""2put(F)"z
-V
-LC:\Users\B\eclipse-workspace\DabEngine\src\Graphics\Models\VertexBuffer.java, ,( 
-Graphics.Models.VertexBuffer:
-""B 
-Graphics.Models.VertexBuffer

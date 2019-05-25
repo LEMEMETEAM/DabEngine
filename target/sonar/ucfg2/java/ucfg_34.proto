@@ -1,34 +1,0 @@
-
-UDeprecated3D.Model#collision(LGraphics/Models/AABB;LGraphics/Models/AABB$Direction;)Z
-__unknown_file ("3*©
-1L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.java\ \("V
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.java\ \(
-""*©
-2L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaZ Z("V
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaZ Z(
-""*‚
-3L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaY Y(—
-”
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaY Y(
-%0Graphics.Models.AABB"__id*"* 
-Deprecated3D.Model"
-boundsŒ‰
-L
-BC:\Users\B\eclipse-workspace\DabEngine\src\Deprecated3D\Model.javaY Y()
-%1
-Utils.Pair"CGraphics.Models.AABB#intersects(LGraphics/Models/AABB;)LUtils/Pair;*
-
-%0Graphics.Models.AABB* 
-
-boundsGraphics.Models.AABB2"intersects(LGraphics/Models/AABB;)*
-2
-1:
-boundsGraphics.Models.AABB:%
-dirGraphics.Models.AABB$DirectionB
-Deprecated3D.Model
