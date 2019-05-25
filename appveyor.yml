@@ -4,7 +4,7 @@ install:
   - cmd: SET JAVA_HOME=C:\Program Files\Java\jdk11
   - cmd: SET PATH=%JAVA_HOME%\bin;%PATH%
 build_script:
-  -gradlew assemble
-  -gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679
+  - gradlew assemble
+  - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679
 test_script:
   - gradlew test
