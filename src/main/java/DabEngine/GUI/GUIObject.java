@@ -3,6 +3,7 @@ package DabEngine.GUI;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import DabEngine.GUI.Objects.Panel;
 import DabEngine.Input.InputHandler;
 import DabEngine.Observer.ActionEventListener;
 

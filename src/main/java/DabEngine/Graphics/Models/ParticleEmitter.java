@@ -7,15 +7,15 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import Entities.Entity;
-import Entities.Components.CPhysics;
-import Entities.Components.CSprite;
-import Entities.Components.CTransform;
-import Graphics.Graphics;
-import Graphics.Batch.Polygon;
-import Graphics.Batch.PolygonBatch;
-import Graphics.Models.ParticleFactory.CParticle;
-import System.ComponentSystem;
+import DabEngine.Entities.Entity;
+import DabEngine.Entities.Components.CPhysics;
+import DabEngine.Entities.Components.CSprite;
+import DabEngine.Entities.Components.CTransform;
+import DabEngine.Graphics.Graphics;
+import DabEngine.Graphics.Batch.Polygon;
+import DabEngine.Graphics.Batch.PolygonBatch;
+import DabEngine.Graphics.Models.ParticleFactory.CParticle;
+import DabEngine.System.ComponentSystem;
 
 public class ParticleEmitter extends ComponentSystem {
 	

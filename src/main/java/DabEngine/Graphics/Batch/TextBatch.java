@@ -1,21 +1,18 @@
 package DabEngine.Graphics.Batch;
 
-import java.io.File;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.joml.Vector4f;
 
-import DabEngineResources.DabEngineResources;
-
-import Graphics.ProjectionMatrix;
-import Graphics.Shaders;
-import Graphics.Models.Texture;
-import Graphics.Models.VertexAttrib;
-import Graphics.Models.VertexBuffer;
-
-import static org.lwjgl.opengl.GL20.*;
+import DabEngine.Graphics.ProjectionMatrix;
+import DabEngine.Graphics.Shaders;
+import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.Models.VertexAttrib;
+import DabEngine.Graphics.Models.VertexBuffer;
 
 public class TextBatch implements IBatch {
 	

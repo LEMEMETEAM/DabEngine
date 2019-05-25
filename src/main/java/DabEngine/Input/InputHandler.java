@@ -1,13 +1,15 @@
 package DabEngine.Input;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import org.joml.Vector2d;
-import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import DabEngine.Observer.ActionEventSender;
 

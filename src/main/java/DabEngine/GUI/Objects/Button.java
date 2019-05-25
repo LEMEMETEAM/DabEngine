@@ -1,15 +1,15 @@
 package DabEngine.GUI.Objects;
 
-import GUI.GUIObject;
-import Graphics.Batch.Polygon;
-import Input.KeyEvent;
-import Input.MouseEvent;
-import Observer.Event;
-
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+
+import DabEngine.GUI.GUIObject;
+import DabEngine.Graphics.Batch.Polygon;
+import DabEngine.Input.KeyEvent;
+import DabEngine.Input.MouseEvent;
+import DabEngine.Observer.Event;
 
 public class Button extends GUIObject {
 	

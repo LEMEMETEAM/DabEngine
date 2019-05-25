@@ -12,6 +12,7 @@ import org.joml.Vector4f;
 import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.Shaders;
 import DabEngine.Graphics.Models.Mesh;
+import DabEngine.Graphics.Models.Texture;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
 

@@ -1,9 +1,10 @@
 package DabEngine.GUI.Objects;
 
-import GUI.GUIObject;
-import Input.KeyEvent;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
-import static org.lwjgl.glfw.GLFW.*;
+import DabEngine.GUI.GUIObject;
+import DabEngine.Input.KeyEvent;
 
 public class HorizontalScrollPanel extends Panel {
 	

@@ -2,6 +2,8 @@ package DabEngine.System;
 
 import java.util.HashSet;
 
+import DabEngine.Observer.Event;
+
 public class EventManager {
 	
 	private static HashSet<Event> event_stack = new HashSet<>();

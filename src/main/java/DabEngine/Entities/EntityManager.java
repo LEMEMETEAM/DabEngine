@@ -3,6 +3,8 @@ package DabEngine.Entities;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
+import DabEngine.Entities.Components.Component;
+
 public class EntityManager {
 	
 	public static WeakHashMap<Integer, Entity> entities = new WeakHashMap<>();

@@ -2,7 +2,7 @@ package DabEngine.Entities.Components;
 
 import java.io.Serializable;
 
-import Entities.Entity;
+import DabEngine.Entities.Entity;
 
 public abstract class Component implements Serializable {
 	/**

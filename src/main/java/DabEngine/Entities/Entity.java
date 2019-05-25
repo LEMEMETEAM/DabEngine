@@ -3,6 +3,8 @@ package DabEngine.Entities;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import DabEngine.Entities.Components.Component;
+
 public class Entity {
 	
 	public HashSet<Component> comps = new HashSet<>();

@@ -2,8 +2,11 @@ package DabEngine.System;
 
 import org.python.util.PythonInterpreter;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CScript;
+import DabEngine.Graphics.Graphics;
+
 
 public class ScriptSystem extends ComponentSystem {
 	

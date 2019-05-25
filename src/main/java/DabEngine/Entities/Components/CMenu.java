@@ -1,6 +1,6 @@
 package DabEngine.Entities.Components;
 
-import GUI.AbstractMenu;
+import DabEngine.GUI.AbstractMenu;
 
 public class CMenu extends Component{
 	/**

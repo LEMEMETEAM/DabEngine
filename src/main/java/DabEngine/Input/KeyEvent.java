@@ -1,6 +1,7 @@
 package DabEngine.Input;
 
 import DabEngine.Observer.ActionEventSender;
+import DabEngine.Observer.Event;
 
 public class KeyEvent implements Event {
 	

@@ -3,6 +3,7 @@ package DabEngine.Scenes;
 import java.util.HashSet;
 
 import DabEngine.Graphics.Camera;
+import DabEngine.Graphics.Graphics;
 import DabEngine.System.ComponentSystem;
 
 public abstract class Scene {

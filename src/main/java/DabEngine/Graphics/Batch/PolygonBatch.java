@@ -1,19 +1,15 @@
 package DabEngine.Graphics.Batch;
 
-import Graphics.Batch.IBatch;
-import Graphics.Models.VertexAttrib;
-import Graphics.Models.VertexBuffer;
-import Graphics.ProjectionMatrix;
-import Graphics.Shaders;
+import java.util.Arrays;
+import java.util.List;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import DabEngineResources.DabEngineResources;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import DabEngine.Graphics.ProjectionMatrix;
+import DabEngine.Graphics.Shaders;
+import DabEngine.Graphics.Models.VertexAttrib;
+import DabEngine.Graphics.Models.VertexBuffer;
 
 public class PolygonBatch implements IBatch {
 	private int TYPE;

@@ -1,7 +1,9 @@
 package DabEngine.System;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CAction;
+import DabEngine.Graphics.Graphics;
 
 public class ActionSystem extends ComponentSystem {
 

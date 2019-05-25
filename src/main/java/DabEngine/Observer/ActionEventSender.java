@@ -1,9 +1,13 @@
 package DabEngine.Observer;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+
+import DabEngine.Input.KeyEvent;
+import DabEngine.Input.MouseEvent;
 
 public abstract class ActionEventSender {
 	

@@ -2,11 +2,13 @@ package DabEngine.System;
 
 import org.joml.Vector3f;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CCollision;
 import DabEngine.Entities.Components.CPhysics;
 import DabEngine.Entities.Components.CPhysics.BodyType;
 import DabEngine.Entities.Components.CTransform;
+import DabEngine.Graphics.Graphics;
 
 public class PhysicsSystem extends ComponentSystem {
 	

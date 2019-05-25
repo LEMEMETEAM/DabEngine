@@ -5,9 +5,13 @@ import java.util.Objects;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import DabEngine.Entities.Entity;
+import DabEngine.Observer.Event;
+import DabEngine.Utils.Pair;
+
 public class CollisionEvent implements Event {
 	public Pair<Entity, Entity> entities;
-	public Vector3f diff;
+	public Vector2f diff;
 	
 	public CollisionEvent(Pair<Entity, Entity> entities, Vector2f diff) {
 		this.entities = entities;

@@ -2,6 +2,7 @@ package DabEngine.System;
 
 import java.util.logging.Logger;
 
+import DabEngine.Graphics.Graphics;
 import DabEngine.Scenes.Scene;
 
 public abstract class ComponentSystem {

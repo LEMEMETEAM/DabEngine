@@ -1,10 +1,10 @@
 package DabEngine.GUI.Objects;
 
-import GUI.GUIObject;
-import Graphics.Models.Texture;
-import Input.KeyEvent;
-import Input.MouseEvent;
-import Observer.Event;
+import DabEngine.GUI.GUIObject;
+import DabEngine.Graphics.Models.Texture;
+import DabEngine.Input.KeyEvent;
+import DabEngine.Input.MouseEvent;
+import DabEngine.Observer.Event;
 
 public class Image extends GUIObject {
 	

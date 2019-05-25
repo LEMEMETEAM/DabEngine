@@ -1,7 +1,9 @@
 package DabEngine.System;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CMenu;
+import DabEngine.Graphics.Graphics;
 
 public class MenuSystem extends ComponentSystem {
 	

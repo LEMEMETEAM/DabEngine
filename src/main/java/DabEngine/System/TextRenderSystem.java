@@ -1,8 +1,10 @@
 package DabEngine.System;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CText;
 import DabEngine.Entities.Components.CTransform;
+import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.TextBatch;
 
 public class TextRenderSystem extends ComponentSystem {

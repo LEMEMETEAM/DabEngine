@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.joml.Vector4f;
 
+import DabEngine.Cache.ResourceManager;
 import DabEngine.Entities.Components.CTransform;
 
 public class NPCManager {

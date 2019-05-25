@@ -2,8 +2,8 @@ package DabEngine.Entities.Components;
 
 import org.joml.Vector4f;
 
-import Graphics.Models.Mesh;
-import Graphics.Models.Texture;
+import DabEngine.Graphics.Models.Mesh;
+import DabEngine.Graphics.Models.Texture;
 
 public class CMesh extends Component {
 	

@@ -1,10 +1,10 @@
 package DabEngine.Utils.Primitives;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+
 import org.joml.Vector2f;
 
-import Graphics.Batch.Polygon;
-
-import static org.lwjgl.opengl.GL11.*;
+import DabEngine.Graphics.Batch.Polygon;
 
 public enum Primitives {
 	QUAD(

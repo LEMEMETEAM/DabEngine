@@ -2,7 +2,7 @@ package DabEngine.Entities.Components;
 
 import org.joml.Vector4f;
 
-import Graphics.Batch.Polygon;
+import DabEngine.Graphics.Batch.Polygon;
 
 public class CPolygon extends Component {
 	

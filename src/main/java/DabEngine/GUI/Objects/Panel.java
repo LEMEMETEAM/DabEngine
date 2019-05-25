@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
-import GUI.GUIObject;
-import Input.InputHandler;
-import Input.KeyEvent;
-import Input.MouseEvent;
-import Observer.Event;
+import DabEngine.GUI.GUIObject;
+import DabEngine.Input.InputHandler;
+import DabEngine.Input.KeyEvent;
+import DabEngine.Input.MouseEvent;
+import DabEngine.Observer.Event;
 
 public class Panel extends GUIObject {
 	

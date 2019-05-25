@@ -7,6 +7,7 @@ import DabEngine.Core.Engine;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Input.InputHandler;
 import DabEngine.System.ComponentSystem;
+import DabEngine.Utils.Timer;
 
 public abstract class SceneManager {
 	

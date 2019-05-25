@@ -1,11 +1,19 @@
 package DabEngine.GUI;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glScissor;
 
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
+import DabEngine.GUI.Objects.Button;
+import DabEngine.GUI.Objects.Image;
+import DabEngine.GUI.Objects.Panel;
+import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.PolygonBatch;
 import DabEngine.Graphics.Batch.SpriteBatch;
 import DabEngine.Graphics.Batch.TextBatch;

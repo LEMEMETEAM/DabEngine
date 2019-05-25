@@ -1,8 +1,10 @@
 package DabEngine.System;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CTransform;
+import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.SpriteBatch;
 
 public class SpriteRenderSystem extends ComponentSystem {

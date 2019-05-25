@@ -1,6 +1,6 @@
 package DabEngine.Entities.Components;
 
-import Graphics.Models.AABB;
+import DabEngine.Graphics.Models.AABB;
 
 public class CCollision extends Component {
 	

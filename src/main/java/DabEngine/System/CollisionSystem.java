@@ -2,8 +2,11 @@ package DabEngine.System;
 
 import org.joml.Vector2f;
 
+import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CCollision;
+import DabEngine.Graphics.Graphics;
+import DabEngine.Utils.Pair;
 
 public class CollisionSystem extends ComponentSystem {
 
