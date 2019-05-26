@@ -13,6 +13,10 @@ import DabEngine.Graphics.Models.Texture;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
 
+/**
+ * SpriteBatch used for batching many vertices so that they can all be sent to the GPU at the same time.
+ */
+
 public class SpriteBatch implements IBatch {
 	
 	private boolean drawing;
@@ -21,7 +25,8 @@ public class SpriteBatch implements IBatch {
 	private Texture texture;
 	private VertexBuffer data;
 	private int maxsize = 1000*6;
-	private Shaders shader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/textured.fs"));
+	public final Shaders defShader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/textured.fs"));
+	private Shaders shader;
 	private static final List<VertexAttrib> ATTRIBUTES = 
 			Arrays.asList(new VertexAttrib(0, "position", 2),
 			new VertexAttrib(1, "color", 4),
@@ -35,6 +40,7 @@ public class SpriteBatch implements IBatch {
 	
 	public SpriteBatch() {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
+		this.shader = defShader;
 		updateUniforms();
 	}
 	

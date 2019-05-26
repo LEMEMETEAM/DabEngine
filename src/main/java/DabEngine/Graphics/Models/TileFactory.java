@@ -14,13 +14,12 @@ import DabEngine.Entities.Components.CTransform;
 public class TileFactory extends Entity {
 	
 	@SuppressWarnings("serial")
-	public static Entity spawnTile(Texture tex, float x, float y, float z, float width, float height, float depth, Vector4f c, boolean bcenter_anchor, boolean b_destroyable, BodyType type) {
+	public static Entity spawnTile(Texture tex, float x, float y, float z, float width, float height, float depth, Vector4f c, boolean b_destroyable, BodyType type) {
 		return EntityManager.createEntity(
 			new CSprite() {
 				{
 					texture = tex;
 					color = c;
-					center_anchor = bcenter_anchor;
 				}
 			},
 			new CPhysics() {

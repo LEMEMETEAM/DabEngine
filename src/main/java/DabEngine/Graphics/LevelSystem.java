@@ -162,7 +162,6 @@ public class LevelSystem {
 									0,
 									new Vector4f(1, 1, 1, 1),
 									false,
-									false,
 									BodyType.STATIC);
 							if(entry.getValue()[2].equals("1")) {
 								tile.addComponent(new CCollision());

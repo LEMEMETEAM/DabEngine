@@ -19,7 +19,8 @@ public class PolygonBatch implements IBatch {
     private Polygon polygon;
     private VertexBuffer data;
     private int maxsize = 1000*6;
-	private Shaders shader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/single_colour.fs"));
+    public final Shaders defShader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/single_colour.fs"));
+    private Shaders shader;
     private static final List<VertexAttrib> ATTRIBUTES =
             Arrays.asList(new VertexAttrib(0, "position", 2),
                     new VertexAttrib(1, "color", 4));
@@ -31,7 +32,8 @@ public class PolygonBatch implements IBatch {
     }
     
     public PolygonBatch() {
-    	data = new VertexBuffer(maxsize, ATTRIBUTES);
+        data = new VertexBuffer(maxsize, ATTRIBUTES);
+        this.shader = defShader;
     	updateUniforms();
     }
 
@@ -92,7 +94,11 @@ public class PolygonBatch implements IBatch {
 		else if(drawing) {
 			this.shader.bind();
 		}
-	}
+    }
+    
+    public void setShader(Shaders shader){
+        this.setShader(shader, true);
+    }
 
     public Shaders getShader() {
         return shader;

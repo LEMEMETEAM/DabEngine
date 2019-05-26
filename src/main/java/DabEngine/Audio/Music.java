@@ -2,6 +2,7 @@ package DabEngine.Audio;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,9 +21,8 @@ public class Music {
 	private AudioInputStream ais;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	public Music(String filename) {
+	public Music(File file) {
 		try {
-			File file = new File(filename);
 			ais = AudioSystem.getAudioInputStream(file);
 			AudioFormat format = ais.getFormat();
 			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
@@ -36,6 +36,23 @@ public class Music {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
 	}
+
+	public Music(InputStream stream) {
+		try {
+			ais = AudioSystem.getAudioInputStream(stream);
+			AudioFormat format = ais.getFormat();
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+			
+			soundLine = (SourceDataLine) AudioSystem.getLine(info);
+			soundLine.open(format);
+			
+		} catch (UnsupportedAudioFileException | IOException e) {
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
+		} catch (LineUnavailableException e) {
+			LOGGER.log(Level.WARNING, e.getMessage(), e);
+		}
+	}
+	
 	
 	public void play() {
 		new Thread(new Runnable() {

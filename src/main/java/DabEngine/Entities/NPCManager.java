@@ -38,8 +38,8 @@ public class NPCManager {
 						Float.parseFloat(lineInfo[4]),
 						Float.parseFloat(lineInfo[5]),
 						0,
-						new Vector4f(1, 1, 1, 1),
-						true));
+						new Vector4f(1, 1, 1, 1)
+						));
 			}
 		} catch (IOException ex) {
 			LOGGER.log(Level.WARNING, "NPC info not found", ex);
