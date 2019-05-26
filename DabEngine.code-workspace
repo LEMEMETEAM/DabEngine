@@ -6,6 +6,7 @@
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "interactive"
+		"java.configuration.updateBuildConfiguration": "interactive",
+		"java.dependency.packagePresentation": "hierarchical"
 	}
 }
