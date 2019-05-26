@@ -25,7 +25,7 @@ public class ModelBatch implements IBatch {
 	private Mesh mesh;
 	private VertexBuffer data;
 	private int maxsize = 1000*6;
-	private Shaders shader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default3D.vs"), getClass().getResourceAsStream("/resources/Shaders/textured.fs"));
+	private Shaders shader = new Shaders(getClass().getResourceAsStream("/Shaders/default3D.vs"), getClass().getResourceAsStream("/Shaders/textured.fs"));
 	private static final List<VertexAttrib> ATTRIBUTES = 
 			Arrays.asList(new VertexAttrib(0, "position", 3),
 			new VertexAttrib(1, "color", 4),

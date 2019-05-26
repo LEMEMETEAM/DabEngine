@@ -25,7 +25,7 @@ public class SpriteBatch implements IBatch {
 	private Texture texture;
 	private VertexBuffer data;
 	private int maxsize = 1000*6;
-	public final Shaders defShader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/textured.fs"));
+	public final Shaders defShader = new Shaders(getClass().getResourceAsStream("/Shaders/default.vs"), getClass().getResourceAsStream("/Shaders/textured.fs"));
 	private Shaders shader;
 	private static final List<VertexAttrib> ATTRIBUTES = 
 			Arrays.asList(new VertexAttrib(0, "position", 2),

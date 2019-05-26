@@ -18,7 +18,7 @@ public class TextBatch implements IBatch {
 	
 	private LinkedHashMap<Character, FontCharacter> Characters = new LinkedHashMap<>();
 	private boolean drawing;
-	private Shaders shader = new Shaders(getClass().getResourceAsStream("/resources/Shaders/default.vs"), getClass().getResourceAsStream("/resources/Shaders/textured.fs"));
+	private Shaders shader = new Shaders(getClass().getResourceAsStream("/Shaders/default.vs"), getClass().getResourceAsStream("/Shaders/textured.fs"));
 	private int idx;
 	public static int renderCalls;
 	private int maxsize = 1000*6;

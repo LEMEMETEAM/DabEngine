@@ -16,7 +16,7 @@ public class ResourceManager {
 				resource = new Texture(new File(filename));
 			}catch(Exception e) {
 				try {
-					resource = new Texture(ResourceManager.class.getResourceAsStream("/resources/Textures/unavailable.jpg"));
+					resource = new Texture(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -34,7 +34,7 @@ public class ResourceManager {
 				resource = new Texture((InputStream)new FileInputStream(new File(filename)));
 			}catch(Exception e) {
 				try {
-					resource = new Texture(ResourceManager.class.getResourceAsStream("/resources/Textures/unavailable.jpg"));
+					resource = new Texture(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
