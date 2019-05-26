@@ -32,7 +32,8 @@ public class Shaders {
         glShaderSource(vs, readFile(filevs));
         glCompileShader(vs);
         if(glGetShaderi(vs, GL_COMPILE_STATUS) == 0){
-        	LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
+            LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(vs, glGetShaderi(vs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, vs);
@@ -41,7 +42,8 @@ public class Shaders {
         glShaderSource(fs,readFile(filefs));
         glCompileShader(fs);
         if(glGetShaderi(fs, GL_COMPILE_STATUS) == 0){
-        	LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
+            LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(fs, glGetShaderi(fs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, fs);
@@ -59,6 +61,7 @@ public class Shaders {
         glCompileShader(vs);
         if(glGetShaderi(vs, GL_COMPILE_STATUS) == 0){
         	LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(vs, glGetShaderi(vs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, vs);
@@ -68,6 +71,7 @@ public class Shaders {
         glCompileShader(fs);
         if(glGetShaderi(fs, GL_COMPILE_STATUS) == 0){
         	LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(fs, glGetShaderi(fs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, fs);
@@ -84,6 +88,7 @@ public class Shaders {
         glCompileShader(vs);
         if(glGetShaderi(vs, GL_COMPILE_STATUS) == 0){
         	LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(vs, glGetShaderi(vs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, vs);
@@ -93,6 +98,7 @@ public class Shaders {
         glCompileShader(fs);
         if(glGetShaderi(fs, GL_COMPILE_STATUS) == 0){
         	LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
+            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(fs, glGetShaderi(fs, GL_INFO_LOG_LENGTH)));
             System.exit(0);
         }
         glAttachShader(program, fs);
