@@ -38,7 +38,6 @@ public enum ResourceManager {
 				try {
 					resource = new Texture(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

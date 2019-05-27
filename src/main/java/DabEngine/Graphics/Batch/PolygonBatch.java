@@ -148,12 +148,11 @@ public class PolygonBatch implements IBatch {
         //0, 1, 2
         //0, 3, 2
         for(int i : poly.inds) {
-        	float x1,y1,x2,y2,x3,y3,x4,y4;
         	
         	final float cx = originX;
         	final float cy = originY;
         	
-        	float px,py,px2,py2;
+        	float px,py;
         	
         	px = verts[i].x*width-cx;
         	py = verts[i].y*height-cy;

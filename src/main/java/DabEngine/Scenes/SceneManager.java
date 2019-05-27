@@ -35,25 +35,26 @@ public abstract class SceneManager {
 	
 	public static void setCurrentScene(Scene newcurrentScene, Transition trans, boolean clearEntities) {
 		if(clearEntities == true) EntityManager.clearAllEntities();
-		InputHandler.INSTANCE.clearObservers();
+		InputHandler.INSTANCE.removeAll();
+		Timer timer = new Timer();
 		if(trans != null) {
 			CompletableFuture.runAsync(() -> {
-				Timer.start();
+				timer.start();
 				trans.initOut();
-				while(Timer.counter <= trans.out_transition_time * Engine.TARGET_FPS) {
-					trans.out(Timer.counter);
+				while(timer.counter <= trans.out_transition_time * Engine.TARGET_FPS) {
+					trans.out(timer.counter);
 				}
-				Timer.stop();
+				timer.stop();
 			}).thenRun(() -> {
 				currentScene = newcurrentScene;
 				currentScene.init();
 			}).thenRun(() -> {
-				Timer.start();
+				timer.start();
 				trans.initIn();
-				while(Timer.counter <= trans.in_transition_time * Engine.TARGET_FPS) {
-					trans.in(Timer.counter);
+				while(timer.counter <= trans.in_transition_time * Engine.TARGET_FPS) {
+					trans.in(timer.counter);
 				}
-				Timer.stop();
+				timer.stop();
 			}).thenRun(() -> trans.cleanUp());
 		}
 		else {

@@ -58,7 +58,6 @@ public class Music {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					soundLine.start();
 					byte[] sampledData = new byte[BUFFER_SIZE];

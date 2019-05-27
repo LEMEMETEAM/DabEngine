@@ -1,18 +1,20 @@
-package DabEngine.System;
+package DabEngine.Observer;
 
 import java.util.HashSet;
 
 import DabEngine.Observer.Event;
 
-public class EventManager {
+public enum EventManager {
+
+	INSTANCE;
 	
-	private static HashSet<Event> event_stack = new HashSet<>();
+	private HashSet<Event> event_stack = new HashSet<>();
 	
-	public static void submitEvent(Event e) {
+	public void submitEvent(Event e) {
 		event_stack.add(e);
 	}
 	
-	public static <T> T receiveEvent(Class<T> clz) {
+	public <T> T receiveEvent(Class<T> clz) {
 		for(Event e : event_stack) {
 			if(clz.isInstance(e)) {
 				T cast = clz.cast(e);
@@ -23,7 +25,7 @@ public class EventManager {
 		return null;
 	}
 	
-	public static <T> boolean hasEvent(Class<T> clz) {
+	public <T> boolean hasEvent(Class<T> clz) {
 		for(Event e  : event_stack) {
 			if(clz.isInstance(e)) {
 				return true;

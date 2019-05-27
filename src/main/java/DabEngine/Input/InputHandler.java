@@ -11,9 +11,10 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
+import DabEngine.Observer.ActionEventListener;
 import DabEngine.Observer.ActionEventSender;
 
-public class InputHandler extends ActionEventSender {
+public class InputHandler extends ActionEventSender<ActionEventListener> {
 	
 	public static final InputHandler INSTANCE = new InputHandler();
 	
@@ -28,10 +29,8 @@ public class InputHandler extends ActionEventSender {
 			put(i, GLFW_RELEASE);
 		}
 	}};
-	@SuppressWarnings("unused")
-	private int last_key;
+
 	private double xpos, ypos, dx, dy, lastx, lasty;
-	private int last_button;
 	
 	public class Keyboard extends GLFWKeyCallback {
 

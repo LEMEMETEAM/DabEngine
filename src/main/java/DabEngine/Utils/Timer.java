@@ -5,7 +5,7 @@ public class Timer  {
 	private static boolean running;
 	public static volatile int counter;
 	
-	public static void start() {
+	public void start() {
 		running = true;
 	}
 	
@@ -14,7 +14,7 @@ public class Timer  {
 			counter++;
 	}
 	
-	public static void stop() {
+	public void stop() {
 		running = false;
 		counter = 0;
 	}

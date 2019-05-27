@@ -9,27 +9,11 @@ import java.util.ArrayList;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 
-public abstract class ActionEventSender {
-	
-	public ArrayList<WeakReference<ActionEventListener>> observers = new ArrayList<>();
-	
-	public void addObserver(ActionEventListener o) {
-		observers.add(new WeakReference<ActionEventListener>(o));
-	}
-	
-	/*DO NOT USE*/
-	@SuppressWarnings("unlikely-arg-type")
-	public void removeObserver(ActionEventListener o) {
-		observers.remove(o);
-	}
-	
-	public void clearObservers() {
-		observers.clear();
-	}
+public abstract class ActionEventSender<T extends IEventListener> extends IEventSender<T> {
 	
 	public void dispatchKeyEvent(KeyEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			ActionEventListener o = observers.get(i).get();
+			ActionEventListener o = (ActionEventListener)observers.get(i);
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onKeyPress(e);
@@ -43,7 +27,7 @@ public abstract class ActionEventSender {
 	
 	public void dispatchMouseEvent(MouseEvent e) {
 		for(int i = 0; i < observers.size(); i++) {
-			ActionEventListener o = observers.get(i).get();
+			ActionEventListener o = (ActionEventListener)observers.get(i);
 			switch(e.getAction()) {
 				case GLFW_PRESS:
 					o.onMousePress(e);

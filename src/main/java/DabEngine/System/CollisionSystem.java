@@ -6,6 +6,7 @@ import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CCollision;
 import DabEngine.Graphics.Graphics;
+import DabEngine.Observer.EventManager;
 import DabEngine.Utils.Pair;
 
 public class CollisionSystem extends ComponentSystem {
@@ -22,7 +23,7 @@ public class CollisionSystem extends ComponentSystem {
 				CCollision c2 = e2.getComponent(CCollision.class);
 				Pair<Boolean, Vector2f> info = c2.bounds.intersects(c.bounds);
 				if(info.left) {
-					EventManager.submitEvent(new CollisionEvent(new Pair<>(e, e2), info.right));
+					EventManager.INSTANCE.submitEvent(new CollisionEvent(new Pair<>(e, e2), info.right));
 				}
 			}
 		}

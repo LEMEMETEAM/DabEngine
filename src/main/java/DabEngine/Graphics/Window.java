@@ -9,8 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+
+import DabEngine.Observer.*;
 
 public class Window {
 
@@ -22,7 +23,6 @@ public class Window {
     private boolean fullscreen;
     private long monitor;
     private HashMap<Integer, Integer> hints;
-    private boolean resized;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String WINDOW_NOT_CREATED = "Window Not Created";
     private boolean loaded;
@@ -100,13 +100,10 @@ public class Window {
     }
 
     private void windowCallback(){
-        glfwSetWindowSizeCallback(win, new GLFWWindowSizeCallback() {
-            @Override
-            public void invoke(long window, int argwidth, int argheight) {
-                width = argwidth;
-                height = argheight;
-                resized = true;
-            }
+        glfwSetWindowSizeCallback(win, (long window, int argwidth, int argheight) -> {
+            width = argwidth;
+            height = argheight;
+            EventManager.INSTANCE.submitEvent(new ResizeEvent());
         });
     }
 
@@ -140,9 +137,5 @@ public class Window {
     	else {
     		return height;
     	}
-    }
-
-    public boolean isResized() {
-        return resized;
     }
 }

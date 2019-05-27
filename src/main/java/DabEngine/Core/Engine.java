@@ -7,11 +7,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import DabEngine.Graphics.Graphics;
+import DabEngine.Graphics.ResizeEvent;
 import DabEngine.Graphics.Window;
 import DabEngine.Input.InputHandler;
-import DabEngine.Input.InputHandler.Keyboard;
-import DabEngine.Input.InputHandler.MouseButton;
-import DabEngine.Input.InputHandler.MousePos;
+import DabEngine.Observer.EventManager;
 import DabEngine.Utils.Timer;
 
 public class Engine {
@@ -39,7 +38,9 @@ public class Engine {
         double delta = 0.0;
         
 		while (!glfwWindowShouldClose(mainWindow.getWin())) {
-			if(mainWindow.isResized()){
+			if(EventManager.INSTANCE.hasEvent(ResizeEvent.class)){
+                //just remove it
+                EventManager.INSTANCE.receiveEvent(ResizeEvent.class);
 	            glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
 	        }
             long now = System.nanoTime();

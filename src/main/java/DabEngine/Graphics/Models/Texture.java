@@ -25,7 +25,7 @@ import DabEngine.Utils.ImageDecoder;
 public class Texture {
 
     private int t_id;
-    private ImageDecoder decoder;
+    private ImageDecoder<?> decoder;
     public int width;
     public int height;
     private TextureRegion region;
