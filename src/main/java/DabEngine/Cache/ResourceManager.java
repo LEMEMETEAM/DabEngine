@@ -7,11 +7,13 @@ import java.io.InputStream;
 
 import DabEngine.Graphics.Models.Texture;
 
-public class ResourceManager {
+public enum ResourceManager {
+
+	INSTANCE;
 	
-	public static Texture getTexture(String filename){
+	public Texture getTexture(String filename){
 		Texture resource;
-		if((resource = InMemoryCache.getInstance().<Texture>get(filename)) == null) {
+		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
 				resource = new Texture(new File(filename));
 			}catch(Exception e) {
@@ -27,9 +29,9 @@ public class ResourceManager {
 		return resource;
 	}
 	
-	public static Texture getTextureFromStream(String filename){
+	public Texture getTextureFromStream(String filename){
 		Texture resource;
-		if((resource = InMemoryCache.getInstance().<Texture>get(filename)) == null) {
+		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
 				resource = new Texture((InputStream)new FileInputStream(new File(filename)));
 			}catch(Exception e) {
@@ -46,6 +48,6 @@ public class ResourceManager {
 	}
 	
 	public static <T> void add(String filename, T resource) {
-		InMemoryCache.getInstance().add(filename, resource, 10000);
+		InMemoryCache.INSTANCE.add(filename, resource, 10000);
 	}
 }

@@ -1,16 +1,18 @@
 package DabEngine.Easing;
 
-public interface Easing {
-	
-	public float ease(float time, float from, float to, float duration);
-	
-	public static final Easing LINEAR = new Easing(){
+public enum Easing {
 
+	LINEAR{
 		@Override
-		public float ease(float time, float from, float to, float duration) {
-			// TODO Auto-generated method stub
+		public float ease(float from, float to, float time, float duration) {
 			return time * (to - from) / duration + from;
 		}
-		
 	};
+	
+	/**
+	 * Has to be overrided by each function
+	 */
+	public float ease(float from, float to, float time, float duration){ 
+		return 0;
+	}
 }	

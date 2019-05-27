@@ -5,14 +5,15 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryCache implements Cache {
+public enum InMemoryCache implements Cache {
 	
-	private static InMemoryCache INSTANCE;
+	INSTANCE;
+
 	public long CACHE_CLEANUP_SLEEP_TIME = 5;
 	@SuppressWarnings("rawtypes")
 	private ConcurrentHashMap<String, SoftReference<CachedObject>> cache = new ConcurrentHashMap<>();
 	
-	public InMemoryCache() {
+	InMemoryCache() {
 		Thread cleanUpThread = new Thread(() -> {
 			while(true) {
 				try {
@@ -28,13 +29,6 @@ public class InMemoryCache implements Cache {
 		
 		cleanUpThread.setDaemon(true);
 		cleanUpThread.start();
-	}
-	
-	public static InMemoryCache getInstance() {
-		if(INSTANCE == null) {
-			INSTANCE = new InMemoryCache();
-		}
-		return INSTANCE;
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class NPCManager {
 			while((line = in.readLine()) != null) {
 				lineInfo = line.split(" ");
 				NPCs.add(NPCFactory.spawnNPC(lineInfo[0],
-						ResourceManager.getTexture(lineInfo[1]),
+						ResourceManager.INSTANCE.getTexture(lineInfo[1]),
 						Float.parseFloat(lineInfo[2]),
 						Float.parseFloat(lineInfo[3]),
 						0,
