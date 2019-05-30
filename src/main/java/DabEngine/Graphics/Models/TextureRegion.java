@@ -30,7 +30,7 @@ public class TextureRegion {
 	}
 	
 	public void setTile(int tile) {
-		uv.x = (((tile % tileNomX) - 1) * scalex);
+		uv.x = (((tile - 1 % tileNomX)) * scalex);
 		uv.y = (((tile / tileNomX)) * scaley);
 		uv.z = uv.x + scalex;
 		uv.w = uv.y + scaley;
@@ -47,7 +47,7 @@ public class TextureRegion {
 	
 	public Vector4f getTile(int tile) {
 		Vector4f uv = new Vector4f();
-		uv.x = (((tile % tileNomX) - 1) * scalex);
+		uv.x = (((tile - 1 % tileNomX)) * scalex);
 		uv.y = (((tile / tileNomX)) * scaley);
 		uv.z = uv.x + scalex;
 		uv.w = uv.y + scaley;

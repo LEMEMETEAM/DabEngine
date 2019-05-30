@@ -22,16 +22,16 @@ import java.nio.ByteBuffer;
 
 import DabEngine.Utils.ImageDecoder;
 
-public class Texture {
+public class Texture implements Cloneable {
 
     private int t_id;
     private ImageDecoder<?> decoder;
     public int width;
     public int height;
     private TextureRegion region;
-    
+
     public Texture(InputStream stream, int tileNomX, int tileNomY) throws IOException {
-    	decoder = new ImageDecoder<InputStream>(stream);
+        decoder = new ImageDecoder<InputStream>(stream);
 
         ByteBuffer pixels = decoder.decode();
         width = decoder.getWidth();
@@ -44,11 +44,11 @@ public class Texture {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        
+
         region = new TextureRegion(tileNomX, tileNomY);
     }
-    
-    public Texture(File file, int tileNomX, int tileNomY) throws IOException{
+
+    public Texture(File file, int tileNomX, int tileNomY) throws IOException {
         decoder = new ImageDecoder<File>(file);
 
         ByteBuffer pixels = decoder.decode();
@@ -62,11 +62,11 @@ public class Texture {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        
+
         region = new TextureRegion(tileNomX, tileNomY);
     }
-    
-    public Texture(BufferedImage img, int tileNomX, int tileNomY) throws IOException{
+
+    public Texture(BufferedImage img, int tileNomX, int tileNomY) throws IOException {
         decoder = new ImageDecoder<BufferedImage>(img);
 
         ByteBuffer pixels = decoder.decode();
@@ -80,33 +80,43 @@ public class Texture {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-        
+
         region = new TextureRegion(tileNomX, tileNomY);
     }
-    
+
     public Texture(File file) throws IOException {
-    	this(file, 1, 1);
-    }
-    
-    public Texture(InputStream stream) throws IOException {
-    	this(stream, 1, 1);
-    }
-    
-    public Texture(BufferedImage img) throws IOException {
-    	this(img, 1, 1);
-    }
-    
-    public TextureRegion getRegion() {
-		return region;
-	}
-    
-    public Texture setRegion(int tileNomX, int tileNomY) {
-    	region = new TextureRegion(tileNomX, tileNomY);
-    	return this;
+        this(file, 1, 1);
     }
 
-    public void bind(){
+    public Texture(InputStream stream) throws IOException {
+        this(stream, 1, 1);
+    }
+
+    public Texture(BufferedImage img) throws IOException {
+        this(img, 1, 1);
+    }
+
+    public TextureRegion getRegion() {
+        return region;
+    }
+
+    public Texture setRegion(int tileNomX, int tileNomY) {
+        region = new TextureRegion(tileNomX, tileNomY);
+        return this;
+    }
+
+    public void bind() {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
+    }
+
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }
