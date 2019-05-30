@@ -80,7 +80,7 @@ public class TileMap {
         tex.getRegion().setTile(t.tileNum);
         return tex;
     }
-
+    
     public int getFinalTileWidth(int layer, int x, int y){
         int index = x + info.width*y;
         TileMapObject t = (TileMapObject)layers.get(layer).mOBjs.get(index);
