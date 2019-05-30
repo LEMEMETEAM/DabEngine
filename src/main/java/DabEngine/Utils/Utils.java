@@ -1,7 +1,13 @@
 package DabEngine.Utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -50,5 +56,54 @@ public class Utils {
         buffer.flip();
         newBuffer.put(buffer);
         return newBuffer;
+    }
+
+    public static Object byteArrayToObject(byte[] b){
+        ByteArrayInputStream bis = new ByteArrayInputStream(b);
+        ObjectInputStream in = null;
+        Object o = null;
+        try {
+            in = new ObjectInputStream(bis);
+            o = in.readObject(); 
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close(); 
+                    bis.close();
+                }
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+        }
+        return o;
+    }
+
+    public static byte[] objectToByteArray(Object o){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream out = null;
+        byte[] b = null;
+        try {
+            out = new ObjectOutputStream(bos);   
+            out.writeObject(o);
+            out.flush();
+            b = bos.toByteArray();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            try {
+                bos.close();
+                out.close();
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+        }
+        return b;
     }
 }
