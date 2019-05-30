@@ -34,4 +34,8 @@ dependencies {
     
     implementation name: 'jython-standalone-2.7.0'
     implementation fileTree('libs/lwjgl'){include '*.jar'}
+
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 }

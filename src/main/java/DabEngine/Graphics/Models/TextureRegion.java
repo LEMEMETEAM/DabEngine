@@ -7,7 +7,7 @@ public class TextureRegion {
 	private float scalex, scaley;
 	private Vector4f uv;
 	@SuppressWarnings("unused")
-	private int tileNomX, tileNomY;
+	public int tileNomX, tileNomY;
 	
 	public TextureRegion(int tileNomX, int tileNomY) {
 		scalex = 1.0f / (float) tileNomX;
