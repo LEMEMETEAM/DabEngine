@@ -1,6 +1,6 @@
 package DabEngine.Utils.Primitives;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.joml.Vector2f;
 
@@ -17,8 +17,7 @@ public enum Primitives {
 		new int[] {
 			0,1,2,
 			0,3,2
-		},
-		GL_TRIANGLES
+		}
 	),
 	TRI(
 		new Vector2f[] {
@@ -28,18 +27,23 @@ public enum Primitives {
 		},
 		new int[] {
 			0,1,2
+		}
+	),
+	POINT(
+		new Vector2f[] {
+			new Vector2f(1)
 		},
-		GL_TRIANGLES
+		new int[]{
+			0
+		}
 	);
 	
 	private Vector2f[] verts;
 	private int[] idx;
-	private int type;
 	
-	Primitives(Vector2f[] verts, int[] idx, int type){
+	Primitives(Vector2f[] verts, int[] idx){
 		this.verts = verts;
 		this.idx = idx;
-		this.type = type;
 	}
 	
 	public Polygon generate() {

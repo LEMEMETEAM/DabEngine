@@ -2,6 +2,16 @@
  "infinite":false,
  "layers":[
         {
+         "id":7,
+         "image":"..\/..\/..\/..\/..\/Pictures\/72cd26e14b7fcba028206a06f10548c0d5174cfc.jpg",
+         "name":"Image Layer 1",
+         "opacity":1,
+         "type":"imagelayer",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 1, 0, 1, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 5, 0, 5, 0, 5, 0, 6, 0],
          "height":10,
          "id":1,
@@ -36,9 +46,49 @@
          "width":10,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":9,
+         "name":"Object Layer 2",
+         "objects":[
+                {
+                 "height":32,
+                 "id":15,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Rect",
+                 "visible":true,
+                 "width":96,
+                 "x":160,
+                 "y":32
+                }, 
+                {
+                 "height":0,
+                 "id":16,
+                 "name":"",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"draw",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"point",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":5,
- "nextobjectid":4,
+ "nextlayerid":10,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

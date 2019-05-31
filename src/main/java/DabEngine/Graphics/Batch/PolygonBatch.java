@@ -109,9 +109,6 @@ public class PolygonBatch implements IBatch {
     }
     
     public void setPrimitiveType(int type) {
-    	if(type == 0) {
-    		throw new IllegalStateException("type cannot be 0");
-    	}
     	if(drawing) {
     		flush();
     	}
