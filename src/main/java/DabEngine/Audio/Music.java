@@ -69,7 +69,7 @@ public class Music {
 						}
 					}
 				} catch(IOException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.WARNING, "IO Error", e);
 				}
 				finally {
 					soundLine.drain();

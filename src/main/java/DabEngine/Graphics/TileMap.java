@@ -116,7 +116,7 @@ public class TileMap {
             return null;
         }
 
-        Texture tex = (Texture) getTextureFromId(t.tileNum).clone();
+        Texture tex = (Texture) getTextureFromId(t.tileNum);
         tex.getRegion().setTile(t.tileNum);
         return tex;
     }

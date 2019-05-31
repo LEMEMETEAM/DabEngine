@@ -99,7 +99,8 @@ public class Utils {
         } finally {
             try {
                 bos.close();
-                out.close();
+                if(out !=  null)
+                    out.close();
             } catch (IOException ex) {
                 // ignore close exception
             }

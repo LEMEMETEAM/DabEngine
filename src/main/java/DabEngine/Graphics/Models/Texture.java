@@ -109,14 +109,4 @@ public class Texture implements Cloneable {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, t_id);
     }
-
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

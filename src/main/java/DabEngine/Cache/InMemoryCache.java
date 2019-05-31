@@ -4,6 +4,8 @@ import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public enum InMemoryCache implements Cache {
 	
@@ -12,6 +14,7 @@ public enum InMemoryCache implements Cache {
 	public long CACHE_CLEANUP_SLEEP_TIME = 5;
 	@SuppressWarnings("rawtypes")
 	private ConcurrentHashMap<String, SoftReference<CachedObject>> cache = new ConcurrentHashMap<>();
+	private static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	InMemoryCache() {
 		Thread cleanUpThread = new Thread(() -> {
@@ -20,7 +23,7 @@ public enum InMemoryCache implements Cache {
 					Thread.sleep(CACHE_CLEANUP_SLEEP_TIME * 1000L);
 					cleanUp();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.WARNING, "Thread Error", e);
 					Thread.currentThread().interrupt();
 				}
 			}
