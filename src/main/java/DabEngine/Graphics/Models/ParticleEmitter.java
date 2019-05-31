@@ -23,6 +23,7 @@ public class ParticleEmitter extends ComponentSystem {
 	public Vector3f pos;
 	public static float OFFSET = 5;
 	private Entity[] particles = new Entity[max_particles];
+	private  Random rng = new Random();
 	
 	public ParticleEmitter(float particleLife) {
 		pos = new Vector3f();
@@ -74,7 +75,6 @@ public class ParticleEmitter extends ComponentSystem {
 	}
 	
 	public void respawnParticle(Entity p, float offset) {
-		Random rng = new Random();
 		CTransform trans = p.getComponent(CTransform.class);
 		CSprite render = p.getComponent(CSprite.class);
 		CParticle particle = p.getComponent(CParticle.class);
