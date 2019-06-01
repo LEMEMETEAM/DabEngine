@@ -20,7 +20,7 @@ public class TextRenderSystem extends ComponentSystem {
         for(Entity e : EntityManager.entitiesWithComponents(CTransform.class, CText.class)){
             CText text = e.getComponent(CText.class);
             CTransform transform = e.getComponent(CTransform.class);
-            g.getBatch(TextBatch.class).draw(text.text, transform.pos.x, transform.pos.y, transform.size.y, text.color);
+            g.getBatch(TextBatch.class).draw(text.text, transform.pos.x, transform.pos.y, transform.size.y, text.color.x, text.color.y, text.color.z, text.color.w);
         }
         g.getBatch(TextBatch.class).end();
     }

@@ -93,7 +93,7 @@ public abstract class AbstractMenu {
 			if(gui instanceof Button) {
 				if(!((Button) gui).label.isBlank() && ((Button)gui).show_label) {
 					Vector2f final_pos = ((Button) gui).label_pos.add(gui.pos, new Vector2f());
-					g.getBatch(TextBatch.class).draw(((Button) gui).label, final_pos.x, final_pos.y, ((Button) gui).label_size, ((Button) gui).label_color);
+					g.getBatch(TextBatch.class).draw(((Button) gui).label, final_pos.x, final_pos.y, ((Button) gui).label_size, ((Button) gui).label_color.x,  ((Button) gui).label_color.y, ((Button) gui).label_color.z, ((Button) gui).label_color.w);
 				}
 			}
 		}

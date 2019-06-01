@@ -15,6 +15,7 @@ import DabEngine.Graphics.OrthagonalMapRenderer;
 import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.TileMap;
 import DabEngine.Graphics.Batch.SpriteBatch;
+import DabEngine.Graphics.Batch.TextBatch;
 import DabEngine.Graphics.Models.Texture;
 
 public class TestCaseEngine extends App {
@@ -35,7 +36,12 @@ public class TestCaseEngine extends App {
     public void render() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-        omr.draw(g);
+        //omr.draw(g);
+
+        TextBatch t = g.getBatch(TextBatch.class);
+        t.begin();
+            t.draw("lolollololololo", 0, 0, 240, 1, 1, 1, 1);
+        t.end();
     }
 
     @Override

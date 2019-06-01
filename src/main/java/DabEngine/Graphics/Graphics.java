@@ -20,7 +20,7 @@ public class Graphics {
 		window = e.getMainWindow();
 		
 		sprite = new SpriteBatch();
-		text = new TextBatch(ResourceManager.INSTANCE.getTextureFromStream("/Fonts/Consolas_font.png").setRegion(16, 16));
+		text = new TextBatch("/Fonts/OpenSans-Regular.ttf");
 		polygon = new PolygonBatch();
 		model = new ModelBatch();
 	}
