@@ -12,11 +12,17 @@ body {
     z-index: 5;
 }
 
+.head-text{
+    position: relative;
+    transform: translate(0,25%);
+}
+
 .head-buttons{
     display: inline;
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 0;
+    transform: translate(0,-50%);
 }
 
 .button {
