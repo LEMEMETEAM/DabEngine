@@ -73,7 +73,10 @@ public class Engine {
         mainWindow = new Window(app.WIDTH, app.HEIGHT, app.TITLE, app.hints, app.fullscreen);
         
         if(mainWindow.isLoaded()) {
-		
+        
+            glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
+            glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
+            
 		    glfwSetKeyCallback(mainWindow.getWin(), InputHandler.INSTANCE.new Keyboard());
 		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());
 		    glfwSetMouseButtonCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MouseButton());
