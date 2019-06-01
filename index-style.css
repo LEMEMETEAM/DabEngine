@@ -3,18 +3,24 @@ body {
 }
 
 .head{
+    margin: 0 !important;
+    padding: 0 !important;
     position: sticky;
     top: 0;
-    border-bottom: 1px solid #eaecef
+    border-bottom: 3px solid #eaecef;
+    background-color: white;
+    z-index: 5;
 }
 
 .head-buttons{
+    display: inline;
     position: absolute;
     top: 0;
     right: 0;
 }
 
 .button {
+    display: inline;
     background-color: tomato;
     border: none;
     color: white;
@@ -22,6 +28,27 @@ body {
     text-align: center;
     font-size: 16px;
     cursor: pointer;
+}
+
+.what-bg{
+    background-image: url("res/code.PNG");
+
+    filter: blur(2.5px);
+
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.what-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
 }
 
 .button:hover {
