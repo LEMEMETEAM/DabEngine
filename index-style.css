@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.head{
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #eaecef
+}
+
+.head-buttons{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.button {
+    background-color: tomato;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: red;
+}
