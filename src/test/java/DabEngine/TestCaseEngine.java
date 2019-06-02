@@ -40,7 +40,8 @@ public class TestCaseEngine extends App {
 
         TextBatch t = g.getBatch(TextBatch.class);
         t.begin();
-            t.draw("lolollololololo", 0, 0, 240, 1, 1, 1, 1);
+            t.draw("The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, 3, 1, 1, 1, 1);
+            t.draw("!\"£$%^&*()|\\,.<>/?'@;:#~{{}}`¬¦_+abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 200, 200, 2, 3, 1, 0.5F, 1, 1);
         t.end();
     }
 
