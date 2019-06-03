@@ -21,7 +21,7 @@ public class TextRenderSystem extends ComponentSystem {
             CText text = e.getComponent(CText.class);
             CTransform transform = e.getComponent(CTransform.class);
             //change  later to add oversampling to component
-            g.getBatch(TextBatch.class).draw(text.text, transform.pos.x, transform.pos.y, transform.size.y, 0, text.color.x, text.color.y, text.color.z, text.color.w);
+            g.getBatch(TextBatch.class).draw(text.font, text.text, transform.pos.x, transform.pos.y, text.color.x, text.color.y, text.color.z, text.color.w);
         }
         g.getBatch(TextBatch.class).end();
     }

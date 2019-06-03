@@ -14,6 +14,7 @@ import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.OrthagonalMapRenderer;
 import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.TileMap;
+import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.SpriteBatch;
 import DabEngine.Graphics.Batch.TextBatch;
 import DabEngine.Graphics.Models.Texture;
@@ -23,6 +24,7 @@ public class TestCaseEngine extends App {
     private Graphics g;
     private TileMap map = null;
     private OrthagonalMapRenderer omr = null;
+    private Font font;
 
     {
         TITLE = "Test";
@@ -40,8 +42,8 @@ public class TestCaseEngine extends App {
 
         TextBatch t = g.getBatch(TextBatch.class);
         t.begin();
-            t.draw("The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, 3, 1, 1, 1, 1);
-            t.draw("!\"£$%^&*()|\\,.<>/?'@;:#~{{}}`¬¦_+abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 200, 200, 2, 3, 1, 0.5F, 1, 1);
+            t.draw(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, 1, 1, 1);
+            //t.draw("!\"£$%^&*()|\\,.<>/?'@;:#~{{}}`¬¦_+abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 200, 200, 2, 3, 1, 0.5F, 1, 1);
         t.end();
     }
 
@@ -63,6 +65,8 @@ public class TestCaseEngine extends App {
         }
 
         omr = new OrthagonalMapRenderer(map);
+
+        font = new Font("src/test/resources/OpenSans-Regular.ttf", 48, 3);
     }
 
     public static void main(String[] args) {

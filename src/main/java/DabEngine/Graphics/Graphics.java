@@ -20,7 +20,7 @@ public class Graphics {
 		window = e.getMainWindow();
 		
 		sprite = new SpriteBatch();
-		text = new TextBatch("/Fonts/OpenSans-Regular.ttf");
+		text = new TextBatch();
 		polygon = new PolygonBatch();
 		model = new ModelBatch();
 	}

@@ -237,7 +237,7 @@ public class SpriteBatch implements IBatch {
 		if(idx > 0) {
 			data.flip();
 			if(texture != null) {
-				texture.bind();
+				texture.bind(0);
 			}
 			data.bind();
 			data.draw(GL_TRIANGLES, 0, idx);

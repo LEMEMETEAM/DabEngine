@@ -105,8 +105,11 @@ public class Texture implements Cloneable {
         return this;
     }
 
-    public void bind() {
-        glActiveTexture(GL_TEXTURE0);
+    public void bind(int texture_sample) {
+        if(texture_sample > 32){
+            throw new IllegalStateException("Must be between 0 and 31");
+        }
+        glActiveTexture(GL_TEXTURE0 + texture_sample);
         glBindTexture(GL_TEXTURE_2D, t_id);
     }
 }

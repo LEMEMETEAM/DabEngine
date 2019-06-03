@@ -14,6 +14,7 @@ import DabEngine.GUI.Objects.Button;
 import DabEngine.GUI.Objects.Image;
 import DabEngine.GUI.Objects.Panel;
 import DabEngine.Graphics.Graphics;
+import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.PolygonBatch;
 import DabEngine.Graphics.Batch.SpriteBatch;
 import DabEngine.Graphics.Batch.TextBatch;
@@ -22,6 +23,7 @@ import DabEngine.Input.InputHandler;
 public abstract class AbstractMenu {
 	
 	public ArrayList<Panel> obj = new ArrayList<>();
+	public Font font;
 
 	public void update() {
 		// TODO Auto-generated method stub
@@ -93,7 +95,7 @@ public abstract class AbstractMenu {
 			if(gui instanceof Button) {
 				if(!((Button) gui).label.isBlank() && ((Button)gui).show_label) {
 					Vector2f final_pos = ((Button) gui).label_pos.add(gui.pos, new Vector2f());
-					g.getBatch(TextBatch.class).draw(((Button) gui).label, final_pos.x, final_pos.y, ((Button) gui).label_size, 3, ((Button) gui).label_color.x,  ((Button) gui).label_color.y, ((Button) gui).label_color.z, ((Button) gui).label_color.w);
+					g.getBatch(TextBatch.class).draw(font, ((Button) gui).label, final_pos.x, final_pos.y, ((Button) gui).label_color.x,  ((Button) gui).label_color.y, ((Button) gui).label_color.z, ((Button) gui).label_color.w);
 				}
 			}
 		}

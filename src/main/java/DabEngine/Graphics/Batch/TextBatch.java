@@ -36,7 +36,6 @@ import static org.lwjgl.system.MemoryStack.*;
 
 public class TextBatch implements IBatch {
 
-	private LinkedHashMap<Character, FontCharacter> Characters = new LinkedHashMap<>();
 	private boolean drawing;
 	private Shaders shader = new Shaders(getClass().getResourceAsStream("/Shaders/textDefault.vs"),
 			getClass().getResourceAsStream("/Shaders/text.fs"));
@@ -46,66 +45,17 @@ public class TextBatch implements IBatch {
 	private VertexBuffer data;
 	private static final List<VertexAttrib> ATTRIBUTES = Arrays.asList(new VertexAttrib(0, "position", 2),
 			new VertexAttrib(1, "color", 4), new VertexAttrib(2, "texCoords", 2));
-	private boolean integer_align;
-	private STBTTPackedchar.Buffer cData;
-	private int texID;
+	private Font font;
 
-	private class FontCharacter {
-		public Vector4f uv;
-	}
-
-	public TextBatch(String fontFile) {
+	public TextBatch() {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
 
-		texID = glGenTextures();
-		cData = STBTTPackedchar.malloc(6 * 128);
+		updateUniforms();
+	}
 
-		try(STBTTPackContext pc = STBTTPackContext.malloc()){
-			ByteBuffer font = null;
-			try {
-				font = Utils.ioResourceToByteBuffer(fontFile, 512 * 1024);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			ByteBuffer bitmap = BufferUtils.createByteBuffer(512 * 512);
-
-			float[] scale = {
-				24.0f,
-				14.0f
-			};
-
-			stbtt_PackBegin(pc, bitmap, 512, 512, 0, 1, NULL);
-			for (int i = 0; i < 2; i++) {
-                int p = (i * 3 + 0) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 1, 1);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-
-                p = (i * 3 + 1) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 2, 2);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-
-                p = (i * 3 + 2) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 3, 1);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-			}
-			cData.clear();
-			stbtt_PackEnd(pc);
-
-			glBindTexture(GL_TEXTURE_2D, texID);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-
-
+	public TextBatch(Shaders shader){
+		data = new VertexBuffer(maxsize, ATTRIBUTES);
+		this.shader = shader;
 		updateUniforms();
 	}
 	
@@ -164,66 +114,23 @@ public class TextBatch implements IBatch {
 		return shader;
 	}
 
-	public void setFont(String fontFile){
-		try(STBTTPackContext pc = STBTTPackContext.malloc()){
-			ByteBuffer font = null;
-			try {
-				font = Utils.ioResourceToByteBuffer(fontFile, 512 * 1024);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			ByteBuffer bitmap = BufferUtils.createByteBuffer(512 * 512);
-
-			float[] scale = {
-				24.0f,
-				14.0f
-			};
-
-			stbtt_PackBegin(pc, bitmap, 512, 512, 0, 1, NULL);
-			for (int i = 0; i < 2; i++) {
-                int p = (i * 3 + 0) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 1, 1);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-
-                p = (i * 3 + 1) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 2, 2);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-
-                p = (i * 3 + 2) * 128 + 32;
-                cData.limit(p + 95);
-                cData.position(p);
-                stbtt_PackSetOversampling(pc, 3, 1);
-                stbtt_PackFontRange(pc, font, 0, scale[i], 32, cData);
-			}
-			cData.clear();
-			stbtt_PackEnd(pc);
-
-			glBindTexture(GL_TEXTURE_2D, texID);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 512, 512, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-	}
+	private float scale(float center, float offset, float factor) {
+        return (offset - center) * factor + center;
+    }
 	
 	/**
 	 * <P>draw for single char
 	 * there is no scaling (will be fixed soon).</p>
 	 */
-	public void draw(char s, FloatBuffer x, FloatBuffer y, float scale, int oversampling, float r, float g, float b, float a) {
-		checkFlush(s);
+	public void draw(Font f, char s, FloatBuffer x, FloatBuffer y, float r, float g, float b, float a) {
+		checkFlush(f, s);
 		try(MemoryStack stack = stackPush()){
 
 			STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
 
-			cData.position(oversampling * 128);
-
-			stbtt_GetPackedQuad(cData, 512, 512, s, x, y, q, oversampling == 0 && integer_align);
+			f.getData().position(0);
+			
+			stbtt_GetPackedQuad(f.getData(), 512, 512, s, x, y, q, f.integer_align);
 
 			float x0, y0, x1, y1;
 			x0 = q.x0();
@@ -245,13 +152,13 @@ public class TextBatch implements IBatch {
 		}
 	}
 
-	public void draw(String s, float x, float y, float scale, int oversampling, float r, float g, float b, float a){
+	public void draw(Font f, String s, float x, float y, float r, float g, float b, float a){
 		try(MemoryStack stack = stackPush()){
 			FloatBuffer pX = stack.floats(x);
 			FloatBuffer pY = stack.floats(y);
 
 			for(int c = 0; c < s.length(); c++){
-				draw(s.charAt(c), pX, pY, scale, oversampling, r, g, b, a);
+				draw(f, s.charAt(c), pX, pY, r, g, b, a);
 			}
 		}
 	}
@@ -262,19 +169,25 @@ public class TextBatch implements IBatch {
 		return data;
 	}
 	
-	public void checkFlush(int cp) {
+	public void checkFlush(Font f, int cp) {
 		if(cp == 0) {
 			throw new NullPointerException("null Character");
 		}
 		if(cp == 32 || idx >= maxsize) {
 			flush();
+			return;
+		}
+		else if(f != font){
+			flush();
+			font = f;
+			return;
 		}
 	}
 	
 	public void flush() {
 		if(idx > 0) {
 			data.flip();
-			glBindTexture(GL_TEXTURE_2D, texID);
+			glBindTexture(GL_TEXTURE_2D, font.getTexture());
 			data.bind();
 			data.draw(GL_TRIANGLES, 0, idx);
 			data.unbind();
