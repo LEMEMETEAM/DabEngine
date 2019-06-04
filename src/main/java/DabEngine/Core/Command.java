@@ -4,6 +4,5 @@ import DabEngine.Entities.Entity;
 
 public interface Command {
 	
-	public void execute();
-	public void execute(Entity entity);
+	public void execute(Object object);
 }
