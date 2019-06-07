@@ -4,9 +4,8 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import DabEngine.Graphics.Batch.Polygon;
-import DabEngine.Graphics.Batch.PolygonBatch;
-import DabEngine.Graphics.Batch.SpriteBatch;
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Color;
 import DabEngine.Utils.Primitives.Primitives;
 
 public class OrthagonalMapRenderer {
@@ -21,16 +20,15 @@ public class OrthagonalMapRenderer {
         for(MapLayer layer : map.layers){
             switch (layer.type){
                 case "tilelayer":
-                    SpriteBatch s = g.getBatch(SpriteBatch.class);
-                    s.begin();
+                    g.begin();
                         for(int y = 0; y < map.info.height; y++){
                             for(int x = 0; x < map.info.width; x++){
                                 Texture t = map.getTile(layer, x, y);
                                 if(t != null)
-                                    s.draw(t, x * map.info.tileWidth, y * map.info.tileHeight, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, 1, 1, 1, 1);
+                                    g.drawTexture(t, x * map.info.tileWidth, y * map.info.tileHeight, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), Color.WHITE.color);
                             }
                         }
-                    s.end();
+                    g.end();
                     break;
                 
                 case "objectgroup":

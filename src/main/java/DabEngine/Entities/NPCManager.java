@@ -12,6 +12,7 @@ import org.joml.Vector4f;
 
 import DabEngine.Cache.ResourceManager;
 import DabEngine.Entities.Components.CTransform;
+import DabEngine.Utils.Colors;
 
 public class NPCManager {
 	
@@ -38,7 +39,7 @@ public class NPCManager {
 						Float.parseFloat(lineInfo[4]),
 						Float.parseFloat(lineInfo[5]),
 						0,
-						new Vector4f(1, 1, 1, 1)
+						Colors.WHITE.color
 						));
 			}
 		} catch (IOException ex) {

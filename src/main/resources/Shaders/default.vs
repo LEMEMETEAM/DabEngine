@@ -8,10 +8,10 @@ out vec2 outPosition;
 out vec2 outTexCord;
 out vec4 outColor;
 
-uniform mat4 projectionMatrix;
+uniform mat4 mvpMatrix;
 
 void main(){
-    gl_Position = projectionMatrix * vec4(position, 0.0, 1.0);
+    gl_Position = mvpMatrix * vec4(position, 0.0, 1.0);
     outPosition = position;
     outTexCord = texCoords;
     outColor = color;

@@ -4,11 +4,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import DabEngine.Entities.Components.Component;
+import DabEngine.States.EntityStateMachine;
 
 public class Entity {
 	
 	public HashSet<Component> comps = new HashSet<>();
 	public int entityID;
+	public EntityStateMachine esm = new EntityStateMachine(this);
 	
 	public void addComponent(Component c) {
 		comps.add(c);

@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.ResizeEvent;
-import DabEngine.Graphics.Window;
+import DabEngine.Graphics.OpenGL.ResizeEvent;
+import DabEngine.Graphics.OpenGL.Window;
 import DabEngine.Input.InputHandler;
 import DabEngine.Observer.EventManager;
 import DabEngine.Utils.Timer;
@@ -97,7 +97,7 @@ public class Engine {
     public Graphics createGraphics() {
     	if(!graphics_init) {
     		graphics_init = true;
-    		return new Graphics(this);
+    		return new Graphics();
     	}
     	else {
     		LOGGER.log(Level.SEVERE, "GRAPHICS ALREADY CREATED!");

@@ -1,6 +1,6 @@
 package DabEngine.Entities.Components;
 
-import DabEngine.Graphics.Shaders;
+import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 
 /**
  * Effect component that uses shaders

@@ -1,43 +1,121 @@
 package DabEngine.Graphics;
 
-import DabEngine.Cache.ResourceManager;
-import DabEngine.Core.Engine;
-import DabEngine.Graphics.Batch.ModelBatch;
-import DabEngine.Graphics.Batch.PolygonBatch;
-import DabEngine.Graphics.Batch.SpriteBatch;
-import DabEngine.Graphics.Batch.TextBatch;
+import java.nio.FloatBuffer;
+import java.util.Stack;
+
+import org.lwjgl.stb.STBTTAlignedQuad;
+import org.lwjgl.system.MemoryStack;
+
+import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.Batch.QuadBatch;
+import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Color;
+import DabEngine.Utils.Colors;
+
+import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryStack.*;
 
 public class Graphics {
-	
-	private SpriteBatch sprite;
-	private TextBatch text;
-	private PolygonBatch polygon;
-	private ModelBatch model;
-	@SuppressWarnings("unused")
-	private Window window;
-	
-	public Graphics(Engine e) {
-		window = e.getMainWindow();
-		
-		sprite = new SpriteBatch();
-		text = new TextBatch();
-		polygon = new PolygonBatch();
-		model = new ModelBatch();
-	}
-	
-	public <T> T getBatch(Class<T> cls) {
-		if(cls.isInstance(sprite)) {
-			return cls.cast(sprite);
+
+    public static final Texture WHITE_PIXEL = new Texture(1, 1, true);
+    /**
+     * The vertex batch to use
+     */
+    private QuadBatch batch;
+    /**
+     * Stack of shaders. Can push shaders to the stack to be 
+     * used by the {@see VertexBatch} and also pop them off to
+     * revert back to a previous shader.
+     */
+    private Stack<Shaders> shaderStack;
+
+    public Graphics(){
+        batch = new QuadBatch(QuadBatch.DEFAULT_SHADER);
+        shaderStack = new Stack<>();
+    }
+
+    public void pushShader(Shaders s){
+        batch.setShader(shaderStack.push(s));
+    }
+
+    public void popShader(){
+        batch.setShader(shaderStack.pop());
+    }
+
+    public void begin(){
+        batch.begin();
+    }
+    
+    public void drawLine(float x0, float y0, float x1, float y1, float thickness, Color c){
+        if(x1 < x0){
+            float temp = x0;
+            x0 = x1;
+            x1 = temp;
+            temp = y0;
+            y0 = y1;
+            y1 = temp;
+        }
+
+        float dx = x1 - x0, dy = y1 - y0;
+
+        float length = (float)Math.sqrt(dx * dx + dy * dy);
+
+        float wx = dx * (thickness / 2) / length;
+        float wy = dy * (thickness / 2) / length;
+
+        float rotation = (float)Math.toDegrees((float)Math.atan2(dy, dx));
+
+        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, length, thickness, 0, 0, rotation, c, 0, 1, 0, 1);
+    }
+
+    public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, Color col){
+        try(MemoryStack stack = stackPush()){
+
+			STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
+
+			f.getData().position(0);
+			
+			stbtt_GetPackedQuad(f.getData(), 512, 512, c, x, y, q, f.integer_align);
+
+			float x0, y0, x1, y1;
+			x0 = q.x0();
+			y0 = q.y0();
+			x1 = q.x1();
+            y1 = q.y1();
+
+            batch.addQuad(new Texture(f.getTexture()), x0, y0, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
+        }
+    }
+
+    public void drawText(Font f, String s, float x, float y, Color col){
+        try(MemoryStack stack = stackPush()){
+			FloatBuffer pX = stack.floats(x);
+			FloatBuffer pY = stack.floats(y);
+
+			for(int c = 0; c < s.length(); c++){
+				drawCharacter(f, s.charAt(c), pX, pY, col);
+			}
 		}
-		else if(cls.isInstance(text)) {
-			return cls.cast(text);
-		}
-		else if(cls.isInstance(polygon)){
-			return cls.cast(polygon);
-		}
-		else if(cls.isInstance(model)) {
-			return cls.cast(model);
-		}
-		return null;
-	}
+    }
+
+    public void drawRect(float x, float y, float width, float height, float thickness, Color c){
+        drawLine(x, y, x + width, y, thickness, c);
+        drawLine(x+width, y, x+ width, y+height, thickness, c);
+        drawLine(x+width,y+height, x, y+height, thickness, c);
+        drawLine(x, y+height, x, y, thickness, c);
+    }
+
+    public void fillRect(float x, float y, float width, float height, float ox, float oy, float rotation, Color c){
+        batch.addQuad(WHITE_PIXEL, x, y, width, height, ox, oy, rotation, c, 0, 1, 0, 1);
+    }
+
+    public void drawTexture(Texture tex, float x, float y, float width, float height, float ox, float oy, float rotation, Color c){
+        batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, 0, 1, 0, 1);
+    }
+
+    public void end(){
+        batch.end();
+    }
 }

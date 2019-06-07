@@ -3,7 +3,7 @@ package DabEngine.Entities.Components;
 import org.joml.Vector4f;
 
 import DabEngine.Graphics.Models.Mesh;
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
 
 public class CMesh extends Component {
 	

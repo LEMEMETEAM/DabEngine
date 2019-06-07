@@ -7,12 +7,13 @@ import DabEngine.Entities.Components.CInteract;
 import DabEngine.Entities.Components.CNPC;
 import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CTransform;
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Color;
 
 public class NPCFactory {
 	
 	@SuppressWarnings("serial")
-	public static Entity spawnNPC(String n, Texture tex, float x, float y, float z, float width, float height, float depth, Vector4f c) {
+	public static Entity spawnNPC(String n, Texture tex, float x, float y, float z, float width, float height, float depth, Color c) {
 		return EntityManager.createEntity(
 			new CSprite() {
 				{

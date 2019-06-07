@@ -1,0 +1,129 @@
+package DabEngine.Graphics.Batch;
+
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.io.*;
+import java.nio.*;
+
+import org.joml.Vector4f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.assimp.AIMeshAnim.Buffer;
+import org.lwjgl.stb.STBTTAlignedQuad;
+import org.lwjgl.stb.STBTTBakedChar;
+import org.lwjgl.stb.STBTTFontinfo;
+import org.lwjgl.stb.STBTTPackContext;
+import org.lwjgl.stb.STBTTPackedchar;
+import org.lwjgl.system.MemoryStack;
+
+import DabEngine.Graphics.ProjectionMatrix;
+import DabEngine.Graphics.Models.VertexAttrib;
+import DabEngine.Graphics.Models.VertexBuffer;
+import DabEngine.Utils.Utils;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryStack.*;
+
+public class TextBatch extends VertexBatch {
+
+	public TextBatch(Shaders shader) {
+		super(shader);
+		// TODO Auto-generated constructor stub
+	}
+
+	public static Shaders DEFAULT_SHADER = new Shaders(
+			TextBatch.class.getResourceAsStream("/Shaders/textDefault.vs"),
+			TextBatch.class.getResourceAsStream("/Shaders/text.fs"));
+	private Font font;
+	
+	@Override
+	public void begin() {
+		super.begin();
+		font = null;
+	}
+	
+	/**
+	 * <P>draw for single char
+	 * there is no scaling (will be fixed soon).</p>
+	 */
+	public void addText(Font f, char s, FloatBuffer x, FloatBuffer y, float r, float g, float b, float a) {
+		checkFlush(f, s);
+		try(MemoryStack stack = stackPush()){
+
+			STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
+
+			f.getData().position(0);
+			
+			stbtt_GetPackedQuad(f.getData(), 512, 512, s, x, y, q, f.integer_align);
+
+			float x0, y0, x1, y1;
+			x0 = q.x0();
+			y0 = q.y0();
+			x1 = q.x1();
+			y1 = q.y1();
+
+			/**
+			 * 0,1,2
+			 * 2,3,0
+			 */
+			add(x0, y0, r, g, b, a, q.s0(), q.t0());
+			add(x0, y1, r, g, b, a, q.s0(), q.t1());
+			add(x1, y1, r, g, b, a, q.s1(), q.t1());
+
+			add(x1, y1, r, g, b, a, q.s1(), q.t1());
+			add(x1, y0, r, g, b, a, q.s1(), q.t0());
+			add(x0, y0, r, g, b, a, q.s0(), q.t0());
+		}
+	}
+
+	public void addText(Font f, String s, float x, float y, float r, float g, float b, float a){
+		try(MemoryStack stack = stackPush()){
+			FloatBuffer pX = stack.floats(x);
+			FloatBuffer pY = stack.floats(y);
+
+			for(int c = 0; c < s.length(); c++){
+				addText(f, s.charAt(c), pX, pY, r, g, b, a);
+			}
+		}
+	}
+	
+	public void flush() {
+		if(idx > 0) {
+			data.flip();
+			glBindTexture(GL_TEXTURE_2D, font.getTexture());
+			data.bind();
+			data.draw(GL_TRIANGLES, 0, idx);
+			data.unbind();
+			renderCalls++;
+			
+			idx = 0;
+			data.clear();
+		}
+	}
+
+	@Override
+	public void checkFlush(Object... o) {
+		Font f = (Font)o[0];
+		int cp = (int)((char)o[1]);
+		if(cp == 0) {
+			throw new NullPointerException("null Character");
+		}
+		if(cp == 32 || idx >= maxsize) {
+			flush();
+			return;
+		}
+		else if(f != font){
+			flush();
+			font = f;
+			return;
+		}
+	}
+}

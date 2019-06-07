@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
 
 public class TileMap {
 
@@ -40,6 +40,7 @@ public class TileMap {
         for(int i = 0; i < tiles.size(); i++){
             JSONObject obj = (JSONObject)tiles.get(i);
             int imagewidth = ((Long)obj.get("imagewidth")).intValue(), imageheight = ((Long)obj.get("imageheight")).intValue(), tilewidth = ((Long)obj.get("tilewidth")).intValue(), tileheight = ((Long)obj.get("tileheight")).intValue();
+            TextureLoader loader = new TextureLoader(new File(dir + (String)obj.get("image")));
             Texture tex = new Texture(new File(dir + (String)obj.get("image")), imagewidth/tilewidth, imageheight/tileheight);
             tilesets.put(((Long)obj.get("firstgid")).intValue(), tex);
         }

@@ -15,6 +15,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.awt.Color;
 
 import org.lwjgl.BufferUtils;
 
@@ -49,6 +50,38 @@ public class Utils {
 
         buffer.flip();
         return buffer;
+    }
+
+    public static ByteBuffer colorToByteBuffer(float r, float g, float b, float a){
+        ByteBuffer buf =  BufferUtils.createByteBuffer(1 * 1 *4);
+        int rByte = Math.round(r*255);
+        int gByte = Math.round(g*255);
+        int bByte = Math.round(b*255);
+        int aByte = Math.round(a*255);
+
+        for(int y = 0; y < 1; y++){
+            for(int x = 0; x < 1; x++){
+                buf.put((byte) ((0xFFFF>> 16)&0xFF));
+                buf.put((byte) ((0xFFFF >> 8)&0xFF));
+                buf.put((byte) (0xFFFF & 0xFF));
+                buf.put((byte) ((0xFFFF >> 24)&0xFF));
+            }
+        }
+
+        return buf;
+    }
+
+    private static int toHex(Color col) {
+        String as = pad(Integer.toHexString(col.getAlpha()));
+        String rs = pad(Integer.toHexString(col.getRed()));
+        String gs = pad(Integer.toHexString(col.getGreen()));
+        String bs = pad(Integer.toHexString(col.getBlue()));
+        String hex = "0x" + as + rs + gs + bs;
+        return Integer.parseInt(hex, 16);
+    }
+    
+    private static final String pad(String s) {
+        return (s.length() == 1) ? "0" + s : s;
     }
 
     private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {

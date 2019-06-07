@@ -2,7 +2,8 @@ package DabEngine.Entities.Components;
 
 import org.joml.Vector4f;
 
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Color;
 
 public class CSprite extends Component {
 	
@@ -15,7 +16,7 @@ public class CSprite extends Component {
 	 */
 	public Texture texture;
 	/**
-	 * Color field, uses {@link org.joml.Vector4f}
+	 * Color field, uses {@link Utils.Color}
 	 */
-	public Vector4f color;
+	public Color color;
 }

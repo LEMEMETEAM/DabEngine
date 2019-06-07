@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import DabEngine.Graphics.Models.Texture;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
+
 
 public enum ResourceManager {
 
@@ -15,10 +17,12 @@ public enum ResourceManager {
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
-				resource = new Texture(new File(filename));
+				TextureLoader loader = new TextureLoader(new File(filename));
+				resource = new Texture(loader.pixels, loader.width, loader.height);
 			}catch(Exception e) {
 				try {
-					resource = new Texture(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+					resource = new Texture(loader.pixels, loader.width, loader.height);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -33,10 +37,12 @@ public enum ResourceManager {
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
-				resource = new Texture((InputStream)new FileInputStream(new File(filename)));
+				TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)));
+				resource = new Texture(loader.pixels, loader.width, loader.height);
 			}catch(Exception e) {
 				try {
-					resource = new Texture(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+					resource = new Texture(loader.pixels, loader.width, loader.height);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
