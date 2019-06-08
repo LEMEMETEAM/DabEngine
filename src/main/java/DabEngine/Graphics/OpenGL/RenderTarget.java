@@ -73,7 +73,7 @@ public class RenderTarget {
 	}
 	
 	public void bindTex() {
-		texture.bind(0);
+		glBindTexture(GL_TEXTURE_2D, texture.getID());
 	}
 	
 	public void unbindTex() {

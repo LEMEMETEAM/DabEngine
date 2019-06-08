@@ -24,37 +24,37 @@ public abstract class AbstractMenu {
 
 	public void update() {
 		// TODO Auto-generated method stub
-		var objs = unpackPanels();
+		ArrayList<GUIObject> objs = new ArrayList<>();
+		for(Panel p : obj){
+			objs.addAll(unpackPanel(p));
+		}
 		for(var g : objs){
 			checkHover(g);
 		}
 	}
 
-	private ArrayList<GUIObject> unpackPanels(){
-		ArrayList<GUIObject> objs = new ArrayList<>();
-		for(int i = 0; i < obj.size(); i++){
-			Panel p = obj.get(i);
-			for(var pan : p.panel_objects){
-				if(pan instanceof Panel){
-					p = (Panel)pan;
-				}
-				else{
-					objs.add(pan);
+	private ArrayList<GUIObject> unpackPanel(Panel p){
+		ArrayList<GUIObject> unpacked = new ArrayList<>();
+		for(var obj : p.panel_objects){
+			if(obj instanceof Panel){
+				var un = unpackPanel((Panel)obj);
+				for(GUIObject o : un){
+					unpacked.add(o);
 				}
 			}
-		}
-		int last_val;
-		for(var gui : objs){
-			for(var gui_2 : objs){
-
+			else{
+				unpacked.add(obj);
 			}
 		}
-		return objs;
+		return unpacked;
 	}
 
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		var objs = unpackPanels();
+		ArrayList<GUIObject> objs = new ArrayList<>();
+		for(Panel p : obj){
+			objs.addAll(unpackPanel(p));
+		}
 		g.begin();
 		for(var o : objs){
 			o.render(g);

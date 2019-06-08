@@ -4,6 +4,7 @@ import org.lwjgl.stb.STBTTPackContext;
 import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.BufferUtils;
 
+import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Utils.Utils;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -21,6 +22,9 @@ public class Font {
     public boolean integer_align;
     private STBTTPackedchar.Buffer cData;
     private int texID;
+    public static final Shaders TEXT_DEFAULT_SHADER = new Shaders(
+        Font.class.getResourceAsStream("/Shaders/textDefault.vs"),
+        Font.class.getResourceAsStream("/Shaders/text.fs"));
 
     public Font(String fontFile, float size, int oversampling) {
         texID = glGenTextures();
