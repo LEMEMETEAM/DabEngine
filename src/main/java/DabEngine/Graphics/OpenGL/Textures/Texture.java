@@ -35,7 +35,7 @@ public class Texture {
         t_id = glGenTextures();
 
         glBindTexture(GL_TEXTURE_2D, t_id);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
         for(Texture.Parameters p : params){
             switch(p){
                 case REPEAT:
@@ -74,6 +74,12 @@ public class Texture {
 
             }
         }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        
+
+        this.width = width;
+        this.height = height;
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -88,7 +94,6 @@ public class Texture {
         }
         t_id = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, t_id);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
         for(Texture.Parameters p : params){
             switch(p){
@@ -128,6 +133,8 @@ public class Texture {
 
             }
         }
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
         glBindTexture(GL_TEXTURE_2D, 0);
     }
