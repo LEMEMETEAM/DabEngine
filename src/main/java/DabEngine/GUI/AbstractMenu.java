@@ -55,9 +55,11 @@ public abstract class AbstractMenu {
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		var objs = unpackPanels();
+		g.begin();
 		for(var o : objs){
 			o.render(g);
 		}
+		g.end();
 	}
 	
 	private void checkHover(GUIObject g) {

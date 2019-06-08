@@ -7,6 +7,7 @@ import DabEngine.GUI.Objects.Panel;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Input.InputHandler;
 import DabEngine.Observer.ActionEventListener;
+import DabEngine.Utils.Color;
 
 public abstract class GUIObject implements ActionEventListener {
 	
@@ -15,7 +16,7 @@ public abstract class GUIObject implements ActionEventListener {
 	public Vector2f size;
 	public int z_index;
 	
-	public Vector4f color;
+	public Color color;
 	
 	public abstract void onHover();
 	

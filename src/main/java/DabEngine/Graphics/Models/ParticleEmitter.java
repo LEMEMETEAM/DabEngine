@@ -13,9 +13,9 @@ import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CTransform;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Polygon;
-import DabEngine.Graphics.Batch.PolygonBatch;
 import DabEngine.Graphics.Models.ParticleFactory.CParticle;
 import DabEngine.System.ComponentSystem;
+import DabEngine.Utils.Color;
 
 public class ParticleEmitter extends ComponentSystem {
 	
@@ -48,7 +48,10 @@ public class ParticleEmitter extends ComponentSystem {
 				CTransform transform = p.getComponent(CTransform.class);
 				CSprite render = p.getComponent(CSprite.class);
 				CPhysics physics = p.getComponent(CPhysics.class);
-				render.color.w -= 0.1f * 2.5f;
+				render.color.TL[3] -= 0.1f * 2.5f;
+				render.color.BL[3] -= 0.1f * 2.5f;
+				render.color.BR[3] -= 0.1f * 2.5f;
+				render.color.TR[3] -= 0.1f * 2.5f;
 				transform.pos = transform.pos.sub(physics.velocity);
 			}
 		}
@@ -83,35 +86,25 @@ public class ParticleEmitter extends ComponentSystem {
 		float rColor = 0.5f + rng.nextFloat();
 		
 		trans.pos.set(this.pos.add(random, random, 0, new Vector3f()).add(offset, offset, 0, new Vector3f()));
-		render.color = new Vector4f(rColor, rColor, rColor, 1.0f);
+		float[] col = new float[]{
+			rColor, rColor, rColor, 1.0f
+		};
+		render.color = new Color(col, col, col, col);
 		particle.LIFE = 1.0f; 
 	}
 
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		PolygonBatch pb = g.getBatch(PolygonBatch.class);
-		pb.begin(GL11.GL_TRIANGLES);
+		g.begin();
 		for(Entity particle : particles) {
 			CParticle p = particle.getComponent(CParticle.class);
 			if(p.LIFE > 0.0f) {
 				CSprite render = particle.getComponent(CSprite.class);
 				CTransform transform = particle.getComponent(CTransform.class);
-				Polygon poly = new Polygon(
-					new int[] {
-						0,1,2,
-						0,3,2
-					},
-					new Vector2f[] {
-						new Vector2f(-1, -1),
-						new Vector2f(-1, 1),
-						new Vector2f(1, 1),
-						new Vector2f(1, -1)
-					}
-				);
-				pb.draw(poly, transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, render.color);
+				g.fillRect(transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, transform.origin.x, transform.origin.y, transform.rotation.z, render.color);
 			}
 		}
-		pb.end();
+		g.end();
 	}
 }

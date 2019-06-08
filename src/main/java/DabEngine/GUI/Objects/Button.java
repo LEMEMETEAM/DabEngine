@@ -12,12 +12,12 @@ import DabEngine.Graphics.Batch.Polygon;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
+import DabEngine.Utils.Color;
 
 public class Button extends GUIObject {
 
-	public Polygon poly;
 	public String label;
-	public Vector4f label_color;
+	public Color label_color;
 	public boolean show_button = true, show_label = true;
 	public Vector2f label_pos;
 	public Font font;
@@ -71,7 +71,8 @@ public class Button extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		//g.fillRect
+		g.fillRect(pos.x, pos.y, size.x, size.y, 0, 0, 0, color);
+		g.drawText(font, label, pos.x + label_pos.x, pos.y + label_pos.y, label_color);
 	}
 	
 	

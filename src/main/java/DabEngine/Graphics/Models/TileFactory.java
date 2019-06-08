@@ -7,14 +7,15 @@ import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CPhysics;
 import DabEngine.Entities.Components.CPhysics.BodyType;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Color;
 import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CTile;
 import DabEngine.Entities.Components.CTransform;
 
 public class TileFactory extends Entity {
 	
-	@SuppressWarnings("serial")
-	public static Entity spawnTile(Texture tex, float x, float y, float z, float width, float height, float depth, Vector4f c, boolean b_destroyable, BodyType type) {
+	public static Entity spawnTile(Texture tex, float x, float y, float z, float width, float height, float depth, Color c, boolean b_destroyable, BodyType type) {
 		return EntityManager.createEntity(
 			new CSprite() {
 				{

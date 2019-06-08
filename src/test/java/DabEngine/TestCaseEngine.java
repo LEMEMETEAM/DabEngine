@@ -12,9 +12,7 @@ import org.lwjgl.opengl.GL11;
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.OrthagonalMapRenderer;
 import DabEngine.Graphics.ProjectionMatrix;
-import DabEngine.Graphics.TileMap;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.Batch.*;
@@ -23,7 +21,6 @@ import DabEngine.Utils.Colors;
 public class TestCaseEngine extends App {
     private static final Engine ENGINE = new Engine();
     private Graphics g;
-    private TileMap map = null;
     //private OrthagonalMapRenderer omr = null;
     private Font font;
     private QuadBatch u;
@@ -46,11 +43,11 @@ public class TestCaseEngine extends App {
 
         // omr.draw(g);
         g.begin();
-            g.drawLine(0, 0, 100, 100, 10);
+            g.drawLine(0, 0, 100, 100, 10, Colors.RED.color);
             g.pushShader(DEFAULT_SHADER);
             g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.WHITE.color);
             g.popShader();
-            g.drawRect(500, 200, 100, 100, 5);
+            g.drawRect(500, 200, 100, 100, 5, Colors.RED.color);
             g.fillRect(350, 400, 100, 100, 50, 50, rotation, Colors.RED.color);
         g.end();
     }

@@ -2,11 +2,11 @@ package DabEngine.GUI.Objects;
 
 import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
 import DabEngine.Utils.Colors;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
 
 public class Image extends GUIObject {
 

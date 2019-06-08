@@ -19,7 +19,6 @@ public class ParticleFactory {
 		public float LIFE;
 	}
 	
-	@SuppressWarnings("serial")
 	public static Entity spawnParticle(float life) {
 		return EntityManager.createEntity(new CSprite(), new CTransform(), new CPhysics(), new CParticle() {
 			{
