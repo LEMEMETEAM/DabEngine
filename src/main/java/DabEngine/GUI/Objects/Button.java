@@ -73,7 +73,7 @@ public class Button extends GUIObject {
 	public void render(Graphics g) {
 		g.fillRect(pos.x, pos.y, size.x, size.y, 0, 0, 0, color);
 		g.pushShader(Font.TEXT_DEFAULT_SHADER);
-		g.drawText(font, label, ((size.x - pos.x) * label_pos.x) + pos.x, ((size.y - pos.y) * label_pos.y) + pos.y, label_color);
+		g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, label_color);
 		g.popShader();
 	}
 	

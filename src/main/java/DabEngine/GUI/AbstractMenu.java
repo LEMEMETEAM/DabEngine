@@ -51,13 +51,9 @@ public abstract class AbstractMenu {
 
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		ArrayList<GUIObject> objs = new ArrayList<>();
-		for(Panel p : obj){
-			objs.addAll(unpackPanel(p));
-		}
 		g.begin();
-		for(var o : objs){
-			o.render(g);
+		for(Panel p : obj){
+			p.render(g);
 		}
 		g.end();
 	}

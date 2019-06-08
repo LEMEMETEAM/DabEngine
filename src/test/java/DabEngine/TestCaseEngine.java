@@ -9,12 +9,15 @@ import java.util.HashMap;
 import org.json.simple.parser.ParseException;
 import org.lwjgl.opengl.GL11;
 
+import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
 import DabEngine.Graphics.Batch.*;
 import DabEngine.Utils.Colors;
 
@@ -25,7 +28,7 @@ public class TestCaseEngine extends App {
     private Font font;
     private QuadBatch u;
     //private TextBatch text;
-    //private Texture t;
+    private Texture t;
     public static Shaders DEFAULT_SHADER;
     private float rotation = 0;
 
@@ -39,16 +42,18 @@ public class TestCaseEngine extends App {
 
     @Override
     public void render() {
+        GL11.glClearColor(1.0f,1.0f,1.0f,1.0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         // omr.draw(g);
         g.begin();
             g.drawLine(0, 0, 100, 100, 10, Colors.RED.color);
             g.pushShader(DEFAULT_SHADER);
-            g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.WHITE.color);
+            g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.BLACK.color);
             g.popShader();
             g.drawRect(500, 200, 100, 100, 5, Colors.RED.color);
             g.fillRect(350, 400, 100, 100, 50, 50, rotation, Colors.RED.color);
+            g.drawTexture(t, 500, 100, 500, 500, 0, 0, 0, Colors.WHITE.color);
         g.end();
     }
 
@@ -74,7 +79,14 @@ public class TestCaseEngine extends App {
 
         DEFAULT_SHADER = new Shaders(
 			App.class.getResourceAsStream("/Shaders/textDefault.vs"),
-			App.class.getResourceAsStream("/Shaders/text.fs"));
+            App.class.getResourceAsStream("/Shaders/text.fs"));
+            try{
+            TextureLoader loader = new TextureLoader(new File("src/test/resources/Tiles_64x64.png"));
+            t =new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.LINEAR);
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
     }
 
     public static void main(String[] args) {

@@ -34,6 +34,7 @@ public class Graphics {
     public Graphics(){
         batch = new QuadBatch(QuadBatch.DEFAULT_SHADER);
         shaderStack = new Stack<>();
+        shaderStack.push(QuadBatch.DEFAULT_SHADER);
     }
 
     public void pushShader(Shaders s){
@@ -41,7 +42,8 @@ public class Graphics {
     }
 
     public void popShader(){
-        batch.setShader(shaderStack.pop());
+        shaderStack.pop();
+        batch.setShader(shaderStack.peek());
     }
 
     public void begin(){
@@ -67,7 +69,7 @@ public class Graphics {
 
         float rotation = (float)Math.toDegrees((float)Math.atan2(dy, dx));
 
-        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, length, thickness, 0, 0, rotation, c, 0, 1, 0, 1);
+        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
     }
 
     public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, Color col){
@@ -85,7 +87,7 @@ public class Graphics {
 			x1 = q.x1();
             y1 = q.y1();
 
-            batch.addQuad(new Texture(f.getTexture()), x0, y0, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
+            batch.addQuad(f.getTexture(), x0, y0, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
         }
     }
 
@@ -108,11 +110,11 @@ public class Graphics {
     }
 
     public void fillRect(float x, float y, float width, float height, float ox, float oy, float rotation, Color c){
-        batch.addQuad(WHITE_PIXEL, x, y, width, height, ox, oy, rotation, c, 0, 1, 0, 1);
+        batch.addQuad(WHITE_PIXEL, x, y, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void drawTexture(Texture tex, float x, float y, float width, float height, float ox, float oy, float rotation, Color c){
-        batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, 0, 1, 0, 1);
+        batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void end(){

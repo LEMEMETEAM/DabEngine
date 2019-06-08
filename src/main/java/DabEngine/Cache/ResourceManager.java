@@ -18,11 +18,11 @@ public enum ResourceManager {
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
 				TextureLoader loader = new TextureLoader(new File(filename));
-				resource = new Texture(loader.pixels, loader.width, loader.height);
+				resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try {
 					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
-					resource = new Texture(loader.pixels, loader.width, loader.height);
+					resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -38,11 +38,11 @@ public enum ResourceManager {
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try{
 				TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)));
-				resource = new Texture(loader.pixels, loader.width, loader.height);
+				resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try {
 					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
-					resource = new Texture(loader.pixels, loader.width, loader.height);
+					resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

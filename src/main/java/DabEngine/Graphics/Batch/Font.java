@@ -5,6 +5,7 @@ import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.BufferUtils;
 
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Utils.Utils;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -21,13 +22,13 @@ public class Font {
 
     public boolean integer_align;
     private STBTTPackedchar.Buffer cData;
-    private int texID;
+    private Texture texture;
     public static final Shaders TEXT_DEFAULT_SHADER = new Shaders(
         Font.class.getResourceAsStream("/Shaders/textDefault.vs"),
         Font.class.getResourceAsStream("/Shaders/text.fs"));
 
     public Font(String fontFile, float size, int oversampling) {
-        texID = glGenTextures();
+        int texID = glGenTextures();
         cData = STBTTPackedchar.malloc(6 * 128);
 
         try (STBTTPackContext pc = STBTTPackContext.malloc()) {
@@ -54,11 +55,13 @@ public class Font {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glBindTexture(GL_TEXTURE_2D, 0);
+
+            texture = new Texture(texID);
 		}
     }
 
-    public int getTexture(){
-        return texID;
+    public Texture getTexture(){
+        return texture;
     }
 
     public STBTTPackedchar.Buffer getData(){
