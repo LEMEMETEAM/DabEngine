@@ -38,11 +38,6 @@ public class Engine {
         double delta = 0.0;
         
 		while (!glfwWindowShouldClose(mainWindow.getWin())) {
-			if(EventManager.INSTANCE.hasEvent(ResizeEvent.class)){
-                //just remove it
-                EventManager.INSTANCE.receiveEvent(ResizeEvent.class);
-	            glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
-	        }
             long now = System.nanoTime();
             delta += (now - lastTime);
             lastTime = now;
@@ -60,7 +55,7 @@ public class Engine {
                 timer += 1000;
                 FRAMES = frames;
                 UPDATES = updates;
-                System.out.println(updates + " ups, " + frames + " fps");
+                LOGGER.log(Level.INFO, updates + " ups, " + frames + " fps");
                 updates = 0;
                 frames = 0;
             }
@@ -75,7 +70,6 @@ public class Engine {
         if(mainWindow.isLoaded()) {
         
             glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
-            glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
             
 		    glfwSetKeyCallback(mainWindow.getWin(), InputHandler.INSTANCE.new Keyboard());
 		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());
@@ -83,7 +77,9 @@ public class Engine {
 		
 		    glEnable(GL_BLEND);
 		    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		    glEnable(GL_STENCIL_TEST);
+            glEnable(GL_STENCIL_TEST);
+            glEnable(GL_SCISSOR_TEST);
+            glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
 		    
 		    this.app = app;
 		    

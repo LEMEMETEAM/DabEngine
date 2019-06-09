@@ -61,7 +61,7 @@ public abstract class AbstractMenu {
 	private void checkHover(GUIObject g) {
 		Vector2f half_extent_g = new Vector2f(g.size.x/2, g.size.y/2);
 		Vector2f mouse_pos_g = new Vector2f((float)InputHandler.INSTANCE.getMousePos().x, (float) InputHandler.INSTANCE.getMousePos().y);
-		Vector2f distance_g = mouse_pos_g.sub(g.pos, new Vector2f());
+		Vector2f distance_g = mouse_pos_g.sub(g.pos.add(half_extent_g, new Vector2f()), new Vector2f());
 		
 		distance_g.x = (float) Math.abs(distance_g.x);
 		distance_g.y = (float) Math.abs(distance_g.y);

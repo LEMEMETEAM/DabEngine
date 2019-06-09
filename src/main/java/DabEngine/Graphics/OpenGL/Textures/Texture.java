@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import DabEngine.Core.IDisposable;
 import DabEngine.Utils.ImageDecoder;
 import DabEngine.Utils.Utils;
 
@@ -17,7 +18,7 @@ import DabEngine.Utils.Utils;
  * Essentially just a handle for the texture id, you can create one from a byte buffer
  * and a you can create a empty/blnk texture for framebuffers and other tings.
  */
-public class Texture {
+public class Texture implements IDisposable {
 
     private int t_id;
     public enum Parameters{
@@ -166,5 +167,10 @@ public class Texture {
      */
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public void dispose() {
+        glDeleteTextures(t_id);
     }
 }

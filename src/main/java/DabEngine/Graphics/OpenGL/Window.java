@@ -1,7 +1,7 @@
 package DabEngine.Graphics.OpenGL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,11 @@ import java.util.logging.Logger;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import DabEngine.Core.IDisposable;
+import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Observer.*;
 
-public class Window {
+public class Window implements IDisposable{
 
     private long win;
     private int width;
@@ -66,6 +68,7 @@ public class Window {
         GL.createCapabilities();
 
         windowCallback();
+        framebufferCallback();
         
         loaded = true;
     }
@@ -87,6 +90,7 @@ public class Window {
         GL.createCapabilities();
 
         windowCallback();
+        framebufferCallback();
         
         loaded = true;
     }
@@ -103,7 +107,14 @@ public class Window {
         glfwSetWindowSizeCallback(win, (long window, int argwidth, int argheight) -> {
             width = argwidth;
             height = argheight;
-            EventManager.INSTANCE.submitEvent(new ResizeEvent());
+        });
+    }
+
+    private void framebufferCallback(){
+        glfwSetFramebufferSizeCallback(win, (long window, int argwidth, int argheight) -> {
+            glViewport(0, 0, argwidth, argheight);
+            glScissor(0, 0, argwidth, argheight);
+            ProjectionMatrix.createProjectionMatrix2D(0, argwidth, argheight, 0);
         });
     }
 
@@ -137,5 +148,10 @@ public class Window {
     	else {
     		return height;
     	}
+    }
+
+    @Override
+    public void dispose() {
+        glfwDestroyWindow(win);
     }
 }

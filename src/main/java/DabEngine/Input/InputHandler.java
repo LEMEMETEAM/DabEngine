@@ -19,16 +19,8 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 	public static final InputHandler INSTANCE = new InputHandler();
 	
 	//private boolean[] keys = new boolean[65536];
-	private WeakHashMap<Integer, Integer> keys = new WeakHashMap<>() {{
-		for(int i = 0; i < 65536; i++) {
-			put(i, GLFW_RELEASE);
-		}
-	}};
-	private WeakHashMap<Integer, Integer> buttons = new WeakHashMap<>() {{
-		for(int i = 0; i < 65536; i++) {
-			put(i, GLFW_RELEASE);
-		}
-	}};
+	private int[] keys = new int[65536];
+	private int[] buttons = new int[65536];
 
 	private double xpos, ypos, dx, dy, lastx, lasty;
 	
@@ -37,7 +29,7 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 		@Override
 		public void invoke(long arg0, int arg1, int arg2, int arg3, int arg4) {
 			// TODO Auto-generated method stub
-			keys.put(arg1, arg3);
+			keys[arg1] = arg3;
 			/*keys[arg1] = arg3 != GLFW_RELEASE;
 			last_key = arg1;*/
 			dispatchKeyEvent(new KeyEvent(INSTANCE, arg1, arg2, arg3, arg4));
@@ -67,7 +59,7 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 		@Override
 		public void invoke(long arg0, int arg1, int arg2, int arg3) {
 			// TODO Auto-generated method stub
-			buttons.put(arg1, arg3);
+			buttons[arg1] = arg3;
 			
 			dispatchMouseEvent(new MouseEvent(INSTANCE, arg1, arg2, arg3));
 		}
@@ -75,29 +67,29 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 	}
 	
 	public boolean isKeyPressed(int keycode) {
-		return keys.get(keycode) != GLFW_RELEASE;
+		return keys[keycode] != GLFW_RELEASE;
 	}
 	
 	public boolean isKeyReleased(int keycode) {
-		return keys.get(keycode) == GLFW_RELEASE;
+		return keys[keycode] == GLFW_RELEASE;
 	}
 	
 	public HashSet<Integer> lastPressedKeys() {
 		HashSet<Integer> k = new HashSet<>();
-		for(Entry<Integer, Integer> entry : keys.entrySet()) {
-			if(entry.getValue() != GLFW_RELEASE) {
-				k.add(entry.getKey());
+		for(int i = 0; i < keys.length; i++) {
+			if(keys[i] != GLFW_RELEASE) {
+				k.add(i);
 			}
 		}
 		return k;
 	}
 
 	public boolean isMousePressed(int buttoncode) {
-		return buttons.get(buttoncode) != GLFW_RELEASE;
+		return buttons[buttoncode] != GLFW_RELEASE;
 	}
 	
 	public boolean isMouseReleased(int buttoncode) {
-		return buttons.get(buttoncode) == GLFW_RELEASE;
+		return buttons[buttoncode] == GLFW_RELEASE;
 	}
 	
 	public Vector2d getMousePos() {
