@@ -51,7 +51,7 @@ public abstract class AbstractMenu {
 
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.begin();
+		g.begin(null);
 		for(Panel p : obj){
 			p.render(g);
 		}

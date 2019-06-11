@@ -46,7 +46,7 @@ public class TestCaseEngine extends App {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         // omr.draw(g);
-        g.begin();
+        g.begin(null);
             g.drawLine(0, 0, 100, 100, 10, Colors.RED.color);
             g.pushShader(DEFAULT_SHADER);
             g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.BLACK.color);

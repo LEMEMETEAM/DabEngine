@@ -2,6 +2,7 @@ package DabEngine.System;
 
 import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
+import DabEngine.Entities.Components.CBuffered;
 import DabEngine.Entities.Components.CPolygon;
 import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CText;
@@ -17,9 +18,12 @@ public class RendererSystem extends ComponentSystem {
 
     @Override
     public void render(Graphics g) {
-        g.begin();
+        g.begin(null);
         for(Entity e : EntityManager.entitiesWithComponents(CTransform.class)){
             CTransform t = e.getComponent(CTransform.class);
+            if(e.hasComponent(CBuffered.class)){
+                g.setRenderTarget(e.getComponent(CBuffered.class).rt);
+            }
             if(e.hasComponent(CSprite.class) || e.hasComponent(CPolygon.class) || e.hasComponent(CText.class)){
                 if(e.hasComponent(CSprite.class)){
                     CSprite s = e.getComponent(CSprite.class);

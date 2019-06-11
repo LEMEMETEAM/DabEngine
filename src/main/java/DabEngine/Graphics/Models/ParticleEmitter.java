@@ -96,7 +96,7 @@ public class ParticleEmitter extends ComponentSystem {
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.begin();
+		g.begin(null);
 		for(Entity particle : particles) {
 			CParticle p = particle.getComponent(CParticle.class);
 			if(p.LIFE > 0.0f) {
