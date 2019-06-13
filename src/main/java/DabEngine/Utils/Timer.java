@@ -1,21 +1,28 @@
 package DabEngine.Utils;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 public class Timer  {
+
+	private static double lasttime = getTime();
+	private static double deltaTime = 0.0;
 	
-	private static boolean running;
-	public static volatile int counter;
-	
-	public void start() {
-		running = true;
+	/**
+	 * Get the time in milliseconds
+	 * 
+	 * @return The system time in milliseconds
+	 */
+	public static double getTime() {
+		return glfwGetTime();
 	}
-	
-	public static void update() {
-		if(running)
-			counter++;
+
+	public static void update(){
+		double time = getTime();
+		deltaTime = time - lasttime;
+		lasttime = time;
 	}
-	
-	public void stop() {
-		running = false;
-		counter = 0;
+
+	public static double getDelta() {
+		return deltaTime;
 	}
 }

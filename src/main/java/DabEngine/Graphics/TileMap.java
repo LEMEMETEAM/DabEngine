@@ -14,9 +14,14 @@ import org.json.simple.parser.ParseException;
 
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
+import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
+import DabEngine.Utils.Pair;
 
 public class TileMap {
 
+    /**
+     * Strcutthat holds info for the tilemap
+     */
     public class TileInfo {
         public int width, height;
         public int tileWidth, tileHeight;
@@ -24,7 +29,7 @@ public class TileMap {
     }
 
     public TileInfo info = new TileInfo();
-    public HashMap<Integer, Texture> tilesets = new HashMap<>();
+    public HashMap<Integer, Pair<Texture, TextureRegion>> tilesets = new HashMap<>();
     public ArrayList<MapLayer> layers = new ArrayList<MapLayer>();
 
     public TileMap(String dir, String jsonFile) throws ParseException, IOException {
@@ -43,8 +48,8 @@ public class TileMap {
             int imagewidth = ((Long)obj.get("imagewidth")).intValue(), imageheight = ((Long)obj.get("imageheight")).intValue(), tilewidth = ((Long)obj.get("tilewidth")).intValue(), tileheight = ((Long)obj.get("tileheight")).intValue();
             TextureLoader loader = new TextureLoader(new File(dir + (String)obj.get("image")));
             Texture tex = new Texture(loader.pixels, loader.width, loader.height);
-            //imagewidth/tilewidth, imageheight/tileheight
-            tilesets.put(((Long)obj.get("firstgid")).intValue(), tex);
+            TextureRegion r = new TextureRegion(imagewidth / tilewidth, imageheight / tileheight);
+            tilesets.put(((Long)obj.get("firstgid")).intValue(), new Pair<>(tex, r));
         }
 
         //get tile layers
@@ -65,9 +70,9 @@ public class TileMap {
                         else{
                             var tMOBJ = new TileMapObject();
                             tMOBJ.tileNum = id;
-                            Texture tex = getTextureFromId(id);
-                            tMOBJ.widthInTiles = (tex.width/tex.getRegion().tileNomX) / info.tileWidth;
-                            tMOBJ.heightInTiles= (tex.height/tex.getRegion().tileNomY) / info.tileHeight;
+                            var pair = getTextureFromId(id);
+                            tMOBJ.widthInTiles = (pair.left.getWidth()/pair.right.tileNomX) / info.tileWidth;
+                            tMOBJ.heightInTiles= (pair.left.getHeight()/pair.right.tileNomY) / info.tileHeight;
         
                             layers.get(i).mOBjs.add(tMOBJ);
                         }
@@ -112,16 +117,16 @@ public class TileMap {
         }
     }
 
-    public Texture getTile(MapLayer layer, int x, int y){
+    public Pair<Texture, TextureRegion> getTile(MapLayer layer, int x, int y){
         int index = x + info.width*y;
         TileMapObject t = (TileMapObject)layer.mOBjs.get(index);
         if(t == null){
             return null;
         }
 
-        Texture tex = (Texture) getTextureFromId(t.tileNum);
-        tex.getRegion().setTile(t.tileNum);
-        return tex;
+        Pair<Texture, TextureRegion> pair = (Pair<Texture, TextureRegion>) getTextureFromId(t.tileNum);
+        pair.right.setTile(t.tileNum);
+        return pair;
     }
 
     public int getFinalTileWidth(MapLayer layer, int x, int y){
@@ -144,8 +149,8 @@ public class TileMap {
         return info.tileHeight * t.heightInTiles;
     }
 
-    public Texture getTextureFromId(int id){
-        Texture tex = null;
+    public Pair<Texture, TextureRegion> getTextureFromId(int id){
+        Pair<Texture, TextureRegion> tex = null;
         if(tilesets.size() < 2){
             tex = tilesets.get(1);
         }

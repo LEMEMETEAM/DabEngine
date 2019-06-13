@@ -30,29 +30,26 @@ public class Engine {
     }
 
     public void run() {
-        long lastTime = System.nanoTime();
-        double ns = 1000000000.0 / TARGET_FPS;
-        long timer = System.currentTimeMillis();
+        double ns = 1.0 / TARGET_FPS;
         int updates = 0;
         int frames = 0;
-        double delta = 0.0;
+        double acc = 0.0;
+        double timer = Timer.getTime();
         
 		while (!glfwWindowShouldClose(mainWindow.getWin())) {
-            long now = System.nanoTime();
-            delta += (now - lastTime);
-            lastTime = now;
-            while (delta >= ns) {
+            Timer.update();
+            acc += Timer.getDelta();
+            while (acc >= ns) {
                 app.update();
                 glfwPollEvents();
                 updates++;
-                delta-=ns;
-                Timer.update();
+                acc-=ns;
             }
             app.render();
             glfwSwapBuffers(mainWindow.getWin());
             frames++;
-            if (System.currentTimeMillis() - timer > 1000) {
-                timer += 1000;
+            if (Timer.getTime() - timer > 1.0) {
+                timer ++;
                 FRAMES = frames;
                 UPDATES = updates;
                 LOGGER.log(Level.INFO, updates + " ups, " + frames + " fps");

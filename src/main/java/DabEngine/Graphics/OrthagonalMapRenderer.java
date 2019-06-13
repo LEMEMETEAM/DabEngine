@@ -5,7 +5,10 @@ import org.lwjgl.opengl.GL11;
 
 import DabEngine.Graphics.Batch.Polygon;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Utils.Color;
+import DabEngine.Utils.Colors;
+import DabEngine.Utils.Pair;
 import DabEngine.Utils.Primitives.Primitives;
 
 public class OrthagonalMapRenderer {
@@ -20,18 +23,19 @@ public class OrthagonalMapRenderer {
         for(MapLayer layer : map.layers){
             switch (layer.type){
                 case "tilelayer":
-                    g.begin();
+                    //TODO: add render target stuff for effects on tile layer
+                    g.begin(null);
                         for(int y = 0; y < map.info.height; y++){
                             for(int x = 0; x < map.info.width; x++){
-                                Texture t = map.getTile(layer, x, y);
+                                Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
                                 if(t != null)
-                                    g.drawTexture(t, x * map.info.tileWidth, y * map.info.tileHeight, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), Color.WHITE.color);
+                                    g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Colors.WHITE.color);
                             }
                         }
                     g.end();
                     break;
                 
-                case "objectgroup":
+                /* case "objectgroup":
                     PolygonBatch poly = g.getBatch(PolygonBatch.class);
                     poly.begin();
                         for(MapObject o : layer.mOBjs){
@@ -63,7 +67,7 @@ public class OrthagonalMapRenderer {
                             }
                         }
                     poly.end();
-                    break;
+                    break; */
             }
         }
     }

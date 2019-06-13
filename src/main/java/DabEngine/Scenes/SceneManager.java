@@ -1,65 +1,45 @@
 package DabEngine.Scenes;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.CompletableFuture;
 
 import DabEngine.Core.Engine;
 import DabEngine.Entities.EntityManager;
+import DabEngine.Graphics.Graphics;
 import DabEngine.Input.InputHandler;
+import DabEngine.States.State;
 import DabEngine.System.ComponentSystem;
 import DabEngine.Utils.Timer;
 
 public abstract class SceneManager {
 	
-	private static Scene currentScene = null;
-	public static final ArrayList<Scene> scenes = new ArrayList<>();
+	private static Stack<Scene> sceneStack = new Stack<>();
+	private  enum TransitionState implements State {
+		TRANS_IN,
+		CHANGE_SCENE,
+		TRANS_OUT,
+		END;
+	}
+	private static TransitionState transState;
+	private static Stack<Transition> transitionStack = new Stack<>();
+	private static Scene sceneToChangeTo;
 	
 	public static Scene getCurrentScene() {
-		return currentScene;
-	}
-	
-	public static void addScene(Scene scene) {
-		if(!scenes.contains(scene)) {
-			scenes.add(scene);
-		}
-	}
-	
-	public static <T> T getScene(Class<T> clazz) {
-		for(Scene scene : scenes) {
-			if(clazz.isAssignableFrom(scene.getClass())) {
-				return clazz.cast(scene);
-			}
-		}
-		return null;
+		return sceneStack.peek();
 	}
 	
 	public static void setCurrentScene(Scene newcurrentScene, Transition trans, boolean clearEntities) {
 		if(clearEntities == true) EntityManager.clearAllEntities();
 		InputHandler.INSTANCE.removeAll();
-		Timer timer = new Timer();
 		if(trans != null) {
-			CompletableFuture.runAsync(() -> {
-				timer.start();
-				trans.initOut();
-				while(timer.counter <= trans.out_transition_time * Engine.TARGET_FPS) {
-					trans.out(timer.counter);
-				}
-				timer.stop();
-			}).thenRun(() -> {
-				currentScene = newcurrentScene;
-				currentScene.init();
-			}).thenRun(() -> {
-				timer.start();
-				trans.initIn();
-				while(timer.counter <= trans.in_transition_time * Engine.TARGET_FPS) {
-					trans.in(timer.counter);
-				}
-				timer.stop();
-			}).thenRun(() -> trans.cleanUp());
+			transState = TransitionState.TRANS_IN;
+			transitionStack.push(trans);
+			sceneToChangeTo = newcurrentScene;
 		}
 		else {
-			currentScene = newcurrentScene;
-			currentScene.init();
+			sceneStack.pop();
+			sceneStack.push(newcurrentScene).init();
 		}
 	}
 	
@@ -74,13 +54,43 @@ public abstract class SceneManager {
 	public static void setCurrentScene(Scene newcurrentScene) {
 		setCurrentScene(newcurrentScene, null, false);
 	}
-	
-	
-	public static void addSystemToAll(ComponentSystem... systems) {
-		for(Scene scene : scenes) {
-			for(ComponentSystem sys : systems) {
-				scene.addSystem(sys);
+
+	static double timer = 0.0;
+	public static void renderScenes(Graphics g){
+		if(transState != TransitionState.END){
+			timer += Timer.getDelta();
+			switch(transState){
+				case TRANS_IN:
+					if(timer > transitionStack.peek().in_transition_time){
+						transState = TransitionState.CHANGE_SCENE;
+						timer = 0.0;
+					}
+					else{
+						transitionStack.peek().in(g, timer);
+					}
+
+				case CHANGE_SCENE:
+					sceneStack.pop();
+					sceneStack.push(sceneToChangeTo);
+					sceneToChangeTo = null;
+					transState = TransitionState.TRANS_OUT;
+
+				case TRANS_OUT:
+					if(timer > transitionStack.peek().out_transition_time){
+						transState = TransitionState.END;
+						timer = 0.0;
+					}
+					else{
+						transitionStack.peek().out(g, timer);
+					}
+
+				case END:
+					transitionStack.peek().cleanUp();
+					transitionStack.pop(); 
 			}
+		}
+		for(Scene s : sceneStack){
+			s.render(g);
 		}
 	}
 }

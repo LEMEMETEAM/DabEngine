@@ -27,7 +27,7 @@ public class RendererSystem extends ComponentSystem {
             if(e.hasComponent(CSprite.class) || e.hasComponent(CPolygon.class) || e.hasComponent(CText.class)){
                 if(e.hasComponent(CSprite.class)){
                     CSprite s = e.getComponent(CSprite.class);
-                    g.drawTexture(s.texture, t.pos.x, t.pos.y, t.size.x, t.size.y, t.origin.x, t.origin.y, t.rotation.z, s.color);
+                    g.drawTexture(s.texture, null, t.pos.x, t.pos.y, t.size.x, t.size.y, t.origin.x, t.origin.y, t.rotation.z, s.color);
                 }
                 else if(e.hasComponent(CText.class)){
                     CText text = e.getComponent(CText.class);

@@ -10,6 +10,7 @@ import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.QuadBatch;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Colors;
 import DabEngine.Graphics.OpenGL.*;
@@ -131,9 +132,12 @@ public class Graphics {
         batch.addQuad(WHITE_PIXEL, x, y, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
-    public void drawTexture(Texture tex, float x, float y, float width, float height, float ox, float oy,
+    public void drawTexture(Texture tex, TextureRegion region, float x, float y, float width, float height, float ox, float oy,
             float rotation, Color c) {
-        batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
+        if(region != null)
+            batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
+        else
+            batch.addQuad(tex, x, y, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void end() {

@@ -56,7 +56,7 @@ public class Image extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawTexture(image, pos.x, pos.y, size.x, size.y, 0, 0, 0, Colors.WHITE.color);
+		g.drawTexture(image, null, pos.x, pos.y, size.x, size.y, 0, 0, 0, Colors.WHITE.color);
 	}
 
 }

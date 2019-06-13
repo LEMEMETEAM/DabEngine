@@ -53,7 +53,10 @@ public class TestCaseEngine extends App {
             g.popShader();
             g.drawRect(500, 200, 100, 100, 5, Colors.RED.color);
             g.fillRect(350, 400, 100, 100, 50, 50, rotation, Colors.RED.color);
-            g.drawTexture(t, 500, 100, 500, 500, 0, 0, 0, Colors.WHITE.color);
+            g.drawTexture(t, null, 500, 100, 500, 500, 0, 0, 0, Colors.WHITE.color);
+            g.pushShader(DEFAULT_SHADER);
+            g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, Colors.BLACK.color);
+            g.popShader();
         g.end();
     }
 
