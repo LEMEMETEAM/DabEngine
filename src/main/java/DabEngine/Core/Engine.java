@@ -75,8 +75,8 @@ public class Engine {
 		    glEnable(GL_BLEND);
 		    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glEnable(GL_STENCIL_TEST);
-            glEnable(GL_SCISSOR_TEST);
-            glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
+            //glEnable(GL_SCISSOR_TEST);
+            //glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
 		    
 		    this.app = app;
 		    
@@ -90,7 +90,7 @@ public class Engine {
     public Graphics createGraphics() {
     	if(!graphics_init) {
     		graphics_init = true;
-    		return new Graphics();
+    		return new Graphics(this);
     	}
     	else {
     		LOGGER.log(Level.SEVERE, "GRAPHICS ALREADY CREATED!");

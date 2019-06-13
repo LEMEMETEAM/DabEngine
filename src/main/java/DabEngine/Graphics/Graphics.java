@@ -6,6 +6,7 @@ import java.util.Stack;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
+import DabEngine.Core.Engine;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.QuadBatch;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
@@ -38,10 +39,13 @@ public class Graphics {
      */
     private RenderTarget RenderTarget;
 
-    public Graphics(){
+    private Engine engine;
+
+    public Graphics(Engine engine){
         batch = new QuadBatch(QuadBatch.DEFAULT_SHADER);
         shaderStack = new Stack<>();
         shaderStack.push(QuadBatch.DEFAULT_SHADER);
+        this.engine = engine;
     }
 
     public void pushShader(Shaders s){
@@ -144,6 +148,7 @@ public class Graphics {
         batch.end();
         if (RenderTarget != null) {
             RenderTarget.unbind();
+            glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
             RenderTarget.blit();
         }
     }

@@ -135,6 +135,9 @@ public class Texture implements IDisposable {
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
+        this.width = width;
+        this.height = height;
+
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

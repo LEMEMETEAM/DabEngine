@@ -12,6 +12,7 @@ import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Observer.EventManager;
 public class RenderTarget {
 	
 	private int f_id;
@@ -22,6 +23,19 @@ public class RenderTarget {
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	public RenderTarget(Texture renderToTexture, int width, int height) {
+		generateFBO(renderToTexture, width, height);
+		
+		List<VertexAttrib> ATTRIBUTES = Arrays.asList(new VertexAttrib(0, "pos", 2), new VertexAttrib(1, "uv", 2));
+		quad = new VertexBuffer(6, ATTRIBUTES);
+		vertex(-1,-1,0,0);
+		vertex(-1,1,0,1);
+		vertex(1,1,1,1);
+		vertex(1,1,1,1);
+		vertex(1,-1,1,0);
+		vertex(-1,-1,0,0);
+	}
+
+	private void generateFBO(Texture renderToTexture, int width, int height){
 		f_id = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, f_id);
 		
@@ -42,15 +56,6 @@ public class RenderTarget {
 		texture = renderToTexture;
 		
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
-		List<VertexAttrib> ATTRIBUTES = Arrays.asList(new VertexAttrib(0, "pos", 2), new VertexAttrib(1, "uv", 2));
-		quad = new VertexBuffer(6, ATTRIBUTES);
-		vertex(-1,-1,0,0);
-		vertex(-1,1,0,1);
-		vertex(1,1,1,1);
-		vertex(1,1,1,1);
-		vertex(1,-1,1,0);
-		vertex(-1,-1,0,0);
 	}
 
 	public RenderTarget(int width, int height){
@@ -70,6 +75,7 @@ public class RenderTarget {
 	
 	public void bind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, f_id);
+		glViewport(0, 0, texture.getWidth(), texture.getHeight());
 	}
 	
 	public void bindTex() {
@@ -98,5 +104,17 @@ public class RenderTarget {
 
 	public Shaders getShader(){
 		return fboShader;
+	}
+
+	public void onResize(){
+		if(EventManager.INSTANCE.hasEvent(ResizeEvent.class)){
+			ResizeEvent re = EventManager.INSTANCE.receiveEvent(ResizeEvent.class);
+			unbind();
+			unbindTex();
+			glDeleteFramebuffers(f_id);
+			glDeleteRenderbuffers(r_id);
+			glDeleteTextures(texture.getID());
+			generateFBO(new Texture(re.fbWidth, re.fbHeight, false, Texture.Parameters.LINEAR), re.fbWidth, re.fbHeight);
+		}
 	}
 }

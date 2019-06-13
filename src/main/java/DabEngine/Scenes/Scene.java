@@ -10,7 +10,7 @@ import DabEngine.System.ComponentSystem;
 public abstract class Scene {
 	private HashSet<ComponentSystem> sys = new HashSet<>();
 	public Camera camera;
-	public Stack<Scene> overlays;
+	public Stack<Scene> overlays = new Stack<>();
 	
 	public void render(Graphics g) {
 		for(ComponentSystem system : sys) {
@@ -42,7 +42,7 @@ public abstract class Scene {
 	}
 
 	public void addOverlay(Scene overlay){
-		overlays.add(overlay);
+		overlays.push(overlay).init();
 	}
 	public abstract void init();
 }

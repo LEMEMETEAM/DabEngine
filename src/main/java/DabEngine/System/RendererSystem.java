@@ -31,7 +31,9 @@ public class RendererSystem extends ComponentSystem {
                 }
                 else if(e.hasComponent(CText.class)){
                     CText text = e.getComponent(CText.class);
+                    g.pushShader(text.textShader);
                     g.drawText(text.font, text.text, t.pos.x, t.pos.y, text.color);
+                    g.popShader();
                 }
                 else if(e.hasComponent(CPolygon.class)){
                     //implement polygon rnedering

@@ -15,6 +15,7 @@ import DabEngine.Core.Engine;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
@@ -31,6 +32,7 @@ public class TestCaseEngine extends App {
     private Texture t;
     public static Shaders DEFAULT_SHADER;
     private float rotation = 0;
+    private RenderTarget rt;
 
     {
         TITLE = "Test";
@@ -42,22 +44,29 @@ public class TestCaseEngine extends App {
 
     @Override
     public void render() {
-        GL11.glClearColor(1.0f,1.0f,1.0f,1.0f);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        rt.onResize();
+        rt.bind();
+        {
+            GL11.glClearColor(1.0f,1.0f,1.0f,1.0f);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-        // omr.draw(g);
-        g.begin(null);
-            g.drawLine(0, 0, 100, 100, 10, Colors.RED.color);
-            g.pushShader(DEFAULT_SHADER);
-            g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.BLACK.color);
-            g.popShader();
-            g.drawRect(500, 200, 100, 100, 5, Colors.RED.color);
-            g.fillRect(350, 400, 100, 100, 50, 50, rotation, Colors.RED.color);
-            g.drawTexture(t, null, 500, 100, 500, 500, 0, 0, 0, Colors.WHITE.color);
-            g.pushShader(DEFAULT_SHADER);
-            g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, Colors.BLACK.color);
-            g.popShader();
-        g.end();
+            // omr.draw(g);
+            g.begin(null);
+                g.drawLine(0, 0, 100, 100, 10, Colors.RED.color);
+                g.pushShader(DEFAULT_SHADER);
+                g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, Colors.BLACK.color);
+                g.popShader();
+                g.drawRect(500, 200, 100, 100, 5, Colors.RED.color);
+                g.fillRect(350, 400, 100, 100, 50, 50, rotation, Colors.RED.color);
+                g.drawTexture(t, null, 500, 100, 500, 500, 0, 0, 0, Colors.WHITE.color);
+                g.pushShader(DEFAULT_SHADER);
+                g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, Colors.BLACK.color);
+                g.popShader();
+            g.end();
+        }
+        rt.unbind();
+        GL11.glViewport(0,0,ENGINE.getMainWindow().getFramebufferWidth(),ENGINE.getMainWindow().getFramebufferHeight());
+        rt.blit();
     }
 
     @Override
@@ -89,6 +98,10 @@ public class TestCaseEngine extends App {
             }catch(IOException e){
                 e.printStackTrace();
             }
+        
+        rt = new RenderTarget(ENGINE.getMainWindow().getWidth(), ENGINE.getMainWindow().getHeight());
+        Shaders fboShader = new Shaders(new File("src/test/resources/fbo.vs"), new File("src/test/resources/fbo.fs"));
+        rt.setShader(fboShader);
 
     }
 

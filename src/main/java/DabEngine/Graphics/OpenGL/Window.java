@@ -28,10 +28,11 @@ public class Window implements IDisposable{
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String WINDOW_NOT_CREATED = "Window Not Created";
     private boolean loaded;
+    private int fbWidth, fbHeight;
 
     public Window(int width, int height, String title, HashMap<Integer, Integer> hints, boolean fullscreen){
-        this.width = width;
-        this.height = height;
+        this.fbWidth = this.width = width;
+        this.fbHeight = this.height = height;
         this.title = title;
         this.hints = hints;
         this.fullscreen = fullscreen;
@@ -112,9 +113,12 @@ public class Window implements IDisposable{
 
     private void framebufferCallback(){
         glfwSetFramebufferSizeCallback(win, (long window, int argwidth, int argheight) -> {
+            EventManager.INSTANCE.submitEvent(new ResizeEvent(argwidth, argheight));
             glViewport(0, 0, argwidth, argheight);
-            glScissor(0, 0, argwidth, argheight);
+            //glScissor(0, 0, argwidth, argheight);
             ProjectionMatrix.createProjectionMatrix2D(0, argwidth, argheight, 0);
+            fbWidth = argwidth;
+            fbHeight = argheight;
         });
     }
 
@@ -148,6 +152,14 @@ public class Window implements IDisposable{
     	else {
     		return height;
     	}
+    }
+
+    public int getFramebufferWidth(){
+        return fbWidth;
+    }
+
+    public int getFramebufferHeight(){
+        return fbHeight;
     }
 
     @Override

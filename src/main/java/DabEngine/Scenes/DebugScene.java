@@ -1,33 +1,45 @@
 package DabEngine.Scenes;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CText;
+import DabEngine.Entities.Components.CTransform;
 import DabEngine.Entities.Components.Component;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.System.ComponentSystem;
 import DabEngine.System.RendererSystem;
 import DabEngine.Utils.Colors;
+import DabEngine.Utils.Timer;
 
 public class DebugScene extends Scene {
     
     public Engine engine;
+    private Font f;
 
-    public DebugScene(Engine e){
+    public DebugScene(Engine e, Font f){
         this.engine = e;
+        this.f = f;
     }
 
     @Override
     public void init() {
         // fps counter
+        CTransform tr = new CTransform();
+        tr.pos = new Vector3f(0, f.size, 0);
+
         CText t = new CText();
-        t.font = new Font("src/main/resources/Fonts/OpenSans-Light.ttf", 8, 3);
+        t.font = f;
         t.color = Colors.WHITE.color;
         t.text = "";
-        Entity text = EntityManager.createEntity(t, new CDebug());
+        t.textShader = Font.TEXT_DEFAULT_SHADER;
+        
+        Entity text = EntityManager.createEntity(tr, t, new CDebug());
 
         addSystem(new DebugSystem(engine));
         addSystem(new RendererSystem());
@@ -50,7 +62,7 @@ class DebugSystem extends ComponentSystem {
     public void update() {
         for(Entity e  : EntityManager.entitiesWithComponents(CDebug.class)){
             if(e.hasComponent(CText.class)){
-                e.getComponent(CText.class).text = "UPS: " + engine.UPDATES + ", FPS: " + engine.FRAMES;
+                e.getComponent(CText.class).text = "UPS: " + engine.UPDATES + ", FPS: " + engine.FRAMES + ",  LATENCY: " + Timer.getDelta();
             }
         }
     }

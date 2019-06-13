@@ -23,6 +23,7 @@ public class Font {
     public boolean integer_align;
     private STBTTPackedchar.Buffer cData;
     private Texture texture;
+    public float size;
     public static final Shaders TEXT_DEFAULT_SHADER = new Shaders(
         Font.class.getResourceAsStream("/Shaders/textDefault.vs"),
         Font.class.getResourceAsStream("/Shaders/text.fs"));
@@ -57,6 +58,8 @@ public class Font {
             glBindTexture(GL_TEXTURE_2D, 0);
 
             texture = new Texture(texID);
+
+            this.size = size;
 		}
     }
 

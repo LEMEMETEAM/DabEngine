@@ -38,7 +38,9 @@ public abstract class SceneManager {
 			sceneToChangeTo = newcurrentScene;
 		}
 		else {
-			sceneStack.pop();
+			if(!sceneStack.empty()){
+				sceneStack.pop();
+			}
 			sceneStack.push(newcurrentScene).init();
 		}
 	}
