@@ -5,7 +5,7 @@ import DabEngine.Graphics.Graphics;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
-import DabEngine.Utils.Colors;
+import DabEngine.Utils.Color;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 
 public class Image extends GUIObject {
@@ -56,7 +56,7 @@ public class Image extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawTexture(image, null, pos.x, pos.y, size.x, size.y, 0, 0, 0, Colors.WHITE.color);
+		g.drawTexture(image, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
 	}
 
 }

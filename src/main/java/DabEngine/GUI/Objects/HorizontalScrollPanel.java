@@ -45,12 +45,12 @@ public class HorizontalScrollPanel extends Panel {
 		}
 		if(e.getKey() == scroll_key_down) {
 			for(GUIObject g : panel_objects) {
-				g.pos.sub(0, 10);
+				g.pos.sub(0, 10, 0);
 			}
 		}
 		else if(e.getKey() == scroll_key_up) {
 			for(GUIObject g : panel_objects) {
-				g.pos.add(0, 10);
+				g.pos.add(0, 10, 0);
 			}
 		}
 	}

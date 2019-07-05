@@ -1,99 +1,83 @@
 package DabEngine.Graphics.OpenGL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.GLFWVidMode.Buffer;
 import org.lwjgl.opengl.GL;
 
+import DabEngine.Core.App;
 import DabEngine.Core.IDisposable;
-import DabEngine.Graphics.ProjectionMatrix;
-import DabEngine.Observer.*;
 
 public class Window implements IDisposable{
 
     private long win;
-    private int width;
-    private int height;
-    private static int reswidth, resheight;
-    private String title;
-    private boolean fullscreen;
-    private long monitor;
-    private HashMap<Integer, Integer> hints;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private final String WINDOW_NOT_CREATED = "Window Not Created";
     private boolean loaded;
-    private int fbWidth, fbHeight;
+    private App app;
+    private LinkedHashMap<Long, Buffer> monitors = new LinkedHashMap<>();
 
-    public Window(int width, int height, String title, HashMap<Integer, Integer> hints, boolean fullscreen){
-        this.fbWidth = this.width = width;
-        this.fbHeight = this.height = height;
-        this.title = title;
-        this.hints = hints;
-        this.fullscreen = fullscreen;
+    public Window(App app){
         
         if (!glfwInit()) {
             LOGGER.log(Level.SEVERE, "Window not initialized");
             System.exit(1);
         }
         
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-    	reswidth = vidmode.width();
-    	resheight = vidmode.height();
+        this.app = app;
         
-        if(fullscreen) {
-        	createFullScreenWindow(glfwGetPrimaryMonitor());
+        PointerBuffer ms = glfwGetMonitors();
+        for(int i = 0; i < ms.limit(); i++){
+            long m = ms.get(i);
+            monitors.put(m, glfwGetVideoModes(m));
         }
-        else {
-        	createWindow();
+
+        Entry<Long, Buffer> primary = monitors.entrySet().stream().findFirst().get();
+
+        if(app.MAXIMISED) {
+            glfwWindowHint(GLFW_RED_BITS, primary.getValue().get(0).redBits());
+            glfwWindowHint(GLFW_GREEN_BITS, primary.getValue().get(0).greenBits());
+            glfwWindowHint(GLFW_BLUE_BITS, primary.getValue().get(0).blueBits());
+            glfwWindowHint(GLFW_REFRESH_RATE, primary.getValue().get(0).refreshRate());
+            win = glfwCreateWindow(primary.getValue().get(0).width(), primary.getValue().get(0).height(), app.TITLE, primary.getKey(), 0);
         }
-    }
-    
-    public void createWindow() {
-    	for(Map.Entry<Integer, Integer> entry : hints.entrySet()) {
-        	glfwWindowHint(entry.getKey(), entry.getValue());
+        else{
+            for(Entry<Integer, Integer> hints : app.hints.entrySet()){
+                glfwWindowHint(hints.getKey(), hints.getValue());
+            }
+            win = glfwCreateWindow(app.WIDTH, app.HEIGHT, app.TITLE, 0, 0);
         }
-        
-        win = glfwCreateWindow(width, height, title, 0, 0);
-        if(win == GL_FALSE){
-            LOGGER.log(Level.SEVERE, WINDOW_NOT_CREATED);
-            glfwTerminate();
-            System.exit(1);
-        }
+
+        loaded = true;
+
         glfwMakeContextCurrent(win);
         GL.createCapabilities();
 
-        windowCallback();
-        framebufferCallback();
-        
-        loaded = true;
-    }
-    
-    public void createFullScreenWindow(long monitor) {
-    	this.monitor = monitor;
-    	
-    	for(Map.Entry<Integer, Integer> entry : hints.entrySet()) {
-        	glfwWindowHint(entry.getKey(), entry.getValue());
-        }
+        glfwSetFramebufferSizeCallback(win, (long window, int argwidth, int argheight) -> {
+            app.resize(argwidth, argheight);
+            app.WIDTH = argwidth;
+            app.HEIGHT = argheight;
+            app.render();
+            glfwSwapBuffers(win);
+        });
 
-        win = glfwCreateWindow(reswidth, resheight, title, monitor, 0);
-        if(win == GL_FALSE){
-            LOGGER.log(Level.SEVERE, WINDOW_NOT_CREATED);
-            glfwTerminate();
-            System.exit(1);
-        }
-        glfwMakeContextCurrent(win);
-        GL.createCapabilities();
-
-        windowCallback();
-        framebufferCallback();
-        
-        loaded = true;
+        glfwSetWindowMaximizeCallback(win, (long window, boolean maximised) -> {
+            if(app.fullscreenOnMaximise){
+                if(maximised){
+                    app.MAXIMISED = true;
+                    glfwSetWindowMonitor(win, app.currentMonitor, 0, 0, app.currentVidMode.width(), app.currentVidMode.height(), app.currentVidMode.refreshRate());
+                }
+                else{
+                    app.MAXIMISED = false;
+                    glfwSetWindowMonitor(win, 0, 0, 0, app.WIDTH, app.HEIGHT, GLFW_DONT_CARE);
+                }
+            }
+        });
     }
     
     public void changeResolution(int dwidth, int dheight) {
@@ -102,24 +86,6 @@ public class Window implements IDisposable{
     
     public boolean isLoaded() {
     	return loaded;
-    }
-
-    private void windowCallback(){
-        glfwSetWindowSizeCallback(win, (long window, int argwidth, int argheight) -> {
-            width = argwidth;
-            height = argheight;
-        });
-    }
-
-    private void framebufferCallback(){
-        glfwSetFramebufferSizeCallback(win, (long window, int argwidth, int argheight) -> {
-            EventManager.INSTANCE.submitEvent(new ResizeEvent(argwidth, argheight));
-            glViewport(0, 0, argwidth, argheight);
-            //glScissor(0, 0, argwidth, argheight);
-            ProjectionMatrix.createProjectionMatrix2D(0, argwidth, argheight, 0);
-            fbWidth = argwidth;
-            fbHeight = argheight;
-        });
     }
 
     public long getWin(){
@@ -132,34 +98,6 @@ public class Window implements IDisposable{
 
     public void showWindow(){
         glfwShowWindow(win);
-    }
-
-    public int getWidth(){
-    	if(fullscreen) {
-    		GLFWVidMode vidmode = glfwGetVideoMode(monitor);
-    		return vidmode.width();
-    	}
-    	else {
-    		return width;
-    	}
-    }
-
-    public int getHeight() {
-    	if(fullscreen) {
-    		GLFWVidMode vidmode = glfwGetVideoMode(monitor);
-    		return vidmode.height();
-    	}
-    	else {
-    		return height;
-    	}
-    }
-
-    public int getFramebufferWidth(){
-        return fbWidth;
-    }
-
-    public int getFramebufferHeight(){
-        return fbHeight;
     }
 
     @Override

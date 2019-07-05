@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL40.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,17 +13,19 @@ import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Observer.EventManager;
 public class RenderTarget {
 	
 	private int f_id;
 	private int r_id;
 	private VertexBuffer quad;
-	private Shaders fboShader;
+	private Stack<Shaders> fboShader = new Stack<>();
 	private Texture texture;
+	private Viewport vp;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	public RenderTarget(Texture renderToTexture, int width, int height) {
+	public RenderTarget(Texture renderToTexture, int width, int height, Viewport vp) {
 		generateFBO(renderToTexture, width, height);
 		
 		List<VertexAttrib> ATTRIBUTES = Arrays.asList(new VertexAttrib(0, "pos", 2), new VertexAttrib(1, "uv", 2));
@@ -33,6 +36,8 @@ public class RenderTarget {
 		vertex(1,1,1,1);
 		vertex(1,-1,1,0);
 		vertex(-1,-1,0,0);
+
+		this.vp = vp;
 	}
 
 	private void generateFBO(Texture renderToTexture, int width, int height){
@@ -58,8 +63,8 @@ public class RenderTarget {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	public RenderTarget(int width, int height){
-		this(new Texture(width, height, false, Texture.Parameters.LINEAR), width, height);
+	public RenderTarget(int width, int height, Viewport vp){
+		this(new Texture(width, height, false, Texture.Parameters.LINEAR), width, height, vp);
 	}
 	
 	private void vertex(float x, float y, float u, float v) {
@@ -88,33 +93,35 @@ public class RenderTarget {
 	
 	public void unbind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		vp.apply();
 	}
 
 	public void blit(){
 		bindTex();
-		fboShader.bind();
+		fboShader.peek().bind();
 		draw();
-		fboShader.unbind();
+		fboShader.peek().unbind();
 		unbindTex();
 	}
 
-	public void setShader(Shaders shaders){
-		this.fboShader = shaders;
+	public void pushShader(Shaders shaders){
+		this.fboShader.push(shaders);
+	}
+
+	public void popShader(){
+		this.fboShader.pop();
 	}
 
 	public Shaders getShader(){
-		return fboShader;
+		return fboShader.peek();
 	}
 
-	public void onResize(){
-		if(EventManager.INSTANCE.hasEvent(ResizeEvent.class)){
-			ResizeEvent re = EventManager.INSTANCE.receiveEvent(ResizeEvent.class);
+	public void onResize(int width, int height){
 			unbind();
 			unbindTex();
 			glDeleteFramebuffers(f_id);
 			glDeleteRenderbuffers(r_id);
 			glDeleteTextures(texture.getID());
-			generateFBO(new Texture(re.fbWidth, re.fbHeight, false, Texture.Parameters.LINEAR), re.fbWidth, re.fbHeight);
-		}
+			generateFBO(new Texture(width, height, false, Texture.Parameters.LINEAR), width, height);
 	}
 }

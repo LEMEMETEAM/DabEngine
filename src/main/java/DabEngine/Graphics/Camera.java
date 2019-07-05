@@ -7,20 +7,29 @@ import org.joml.Vector3f;
 public abstract class Camera {
 	protected Matrix4f view;
     protected Vector3f position;
+    protected Vector3f front;
+    protected Vector3f up;
+    protected float zoom = 1;
 
-    public Camera(){
-        position = new Vector3f(0);
+    public Camera(Vector3f position, Vector3f front, Vector3f up){
+        this.position = position;
+        this.front = front;
+        this.up = up;
         view = new Matrix4f();
     }
+
+    public Camera(){
+        this(new Vector3f(0, 0, 0), new Vector3f(0,0,-1), new Vector3f(0,1,0));
+    }
     
-    public abstract Matrix4f getProjection();
-    
-    public void clampCamera(Vector2f minmaxx, Vector2f minmaxy, Vector2f minmaxz) {
-    	float clamp_x = Math.max(minmaxx.x(), Math.min(minmaxx.y(), position.x()));
-    	float clamp_y = Math.max(minmaxy.x(), Math.min(minmaxy.y(), position.y()));
-    	float clamp_z = Math.max(minmaxz.x(), Math.min(minmaxz.y(), position.y()));
-    	position.x = clamp_x;
-    	position.y = clamp_y;
-    	position.z = clamp_z;
+    public Matrix4f getProjection(){
+
+        view.identity();
+        
+        view.lookAt(position, position.add(front, new Vector3f()), up);
+
+        view.scale(zoom);
+        
+        return view;
     }
 }

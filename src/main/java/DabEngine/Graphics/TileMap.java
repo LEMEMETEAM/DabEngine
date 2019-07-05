@@ -28,6 +28,33 @@ public class TileMap {
         public boolean infinite;
     }
 
+    public class MapLayer{
+        public ArrayList<MapObject> mOBjs = new ArrayList<>();
+        public String type;
+    }
+    
+    public class MapObject {
+        public int widthInTiles, heightInTiles;
+        public boolean draw;
+        public HashMap<String, Pair<Class<?>, Object>> props = new HashMap<>();
+    }
+    
+    public class RectangleMapObject extends MapObject {
+        public float x, y, width, height, rotation;
+    }
+    
+    public class SpawnerMapObject extends RectangleMapObject {
+    
+    }
+    
+    public class PointMapObject extends MapObject {
+        public float x, y;
+    }
+    
+    public class TileMapObject extends MapObject {
+        public int tileNum;
+    }
+
     public TileInfo info = new TileInfo();
     public HashMap<Integer, Pair<Texture, TextureRegion>> tilesets = new HashMap<>();
     public ArrayList<MapLayer> layers = new ArrayList<MapLayer>();
@@ -47,7 +74,7 @@ public class TileMap {
             JSONObject obj = (JSONObject)tiles.get(i);
             int imagewidth = ((Long)obj.get("imagewidth")).intValue(), imageheight = ((Long)obj.get("imageheight")).intValue(), tilewidth = ((Long)obj.get("tilewidth")).intValue(), tileheight = ((Long)obj.get("tileheight")).intValue();
             TextureLoader loader = new TextureLoader(new File(dir + (String)obj.get("image")));
-            Texture tex = new Texture(loader.pixels, loader.width, loader.height);
+            Texture tex = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.LINEAR);
             TextureRegion r = new TextureRegion(imagewidth / tilewidth, imageheight / tileheight);
             tilesets.put(((Long)obj.get("firstgid")).intValue(), new Pair<>(tex, r));
         }
@@ -73,6 +100,28 @@ public class TileMap {
                             var pair = getTextureFromId(id);
                             tMOBJ.widthInTiles = (pair.left.getWidth()/pair.right.tileNomX) / info.tileWidth;
                             tMOBJ.heightInTiles= (pair.left.getHeight()/pair.right.tileNomY) / info.tileHeight;
+                            JSONArray props = (JSONArray)obj.get("properties");
+                            if(props != null){
+                                for(int k = 0; k < props.size(); k++){
+                                    JSONObject prop = (JSONObject)props.get(k);
+                                    Class<?> type = null;
+                                    switch((String)prop.get("type")){
+                                        case "bool":
+                                            type = Boolean.class;
+                                            break;
+                                        case "int":
+                                            type = Integer.class;
+                                            break;
+                                        case "float":
+                                            type = Float.class;
+                                            break;
+                                        case "string":
+                                            type = String.class;
+                                            break;
+                                    }
+                                    tMOBJ.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                                }
+                            }
         
                             layers.get(i).mOBjs.add(tMOBJ);
                         }
@@ -82,6 +131,7 @@ public class TileMap {
                     JSONArray objects = (JSONArray)obj.get("objects");
                     for(int j = 0; j < objects.size(); j++){
                         JSONObject o = (JSONObject)objects.get(j);
+                        JSONArray props = (JSONArray)obj.get("properties");
                         switch((String)o.get("type")){
                             case "rect":
                             case "Rect":
@@ -96,6 +146,28 @@ public class TileMap {
                                 r.height = ((Long)o.get("height")).intValue();
                                 r.draw = (boolean)o.get("visible");
 
+                                if(props != null){
+                                    for(int k = 0; k < props.size(); k++){
+                                        JSONObject prop = (JSONObject)props.get(k);
+                                        Class<?> type = null;
+                                        switch((String)prop.get("type")){
+                                            case "bool":
+                                                type = Boolean.class;
+                                                break;
+                                            case "int":
+                                                type = Integer.class;
+                                                break;
+                                            case "float":
+                                                type = Float.class;
+                                                break;
+                                            case "string":
+                                                type = String.class;
+                                                break;
+                                        }
+                                        r.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                                    }
+                                }
+
                                 layers.get(i).mOBjs.add(r);
                                 break;
                             
@@ -108,7 +180,67 @@ public class TileMap {
                                 p.y = ((Long)o.get("y")).intValue();
                                 p.draw = (boolean)o.get("visible");
 
+                                if(props != null){
+                                    for(int k = 0; k < props.size(); k++){
+                                        JSONObject prop = (JSONObject)props.get(k);
+                                        Class<?> type = null;
+                                        switch((String)prop.get("type")){
+                                            case "bool":
+                                                type = Boolean.class;
+                                                break;
+                                            case "int":
+                                                type = Integer.class;
+                                                break;
+                                            case "float":
+                                                type = Float.class;
+                                                break;
+                                            case "string":
+                                                type = String.class;
+                                                break;
+                                        }
+                                        p.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                                    }
+                                }
+
                                 layers.get(i).mOBjs.add(p);
+                                break;
+
+                            case "s":
+                            case "spawn":
+                            case "SPAWN":
+                            case "SPAWN_POINT":
+                            case "spawn_point":
+                            case "spawnP":
+                                SpawnerMapObject s = new SpawnerMapObject();
+                                s.x = ((Long)o.get("x")).intValue();
+                                s.y = ((Long)o.get("y")).intValue();
+                                s.width = ((Long)o.get("width")).intValue();
+                                s.height = ((Long)o.get("height")).intValue();
+                                s.draw = (boolean)o.get("visible");
+
+                                if(props != null){
+                                    for(int k = 0; k < props.size(); k++){
+                                        JSONObject prop = (JSONObject)props.get(k);
+                                        Class<?> type = null;
+                                        switch((String)prop.get("type")){
+                                            case "bool":
+                                                type = Boolean.class;
+                                                break;
+                                            case "int":
+                                                type = Integer.class;
+                                                break;
+                                            case "float":
+                                                type = Float.class;
+                                                break;
+                                            case "string":
+                                                type = String.class;
+                                                break;
+                                        }
+                                        s.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                                    }
+                                }
+
+                                layers.get(i).mOBjs.add(s);
                                 break;
                         }
                     }
@@ -168,26 +300,4 @@ public class TileMap {
         }
         return tex;
     }
-}
-
-class MapLayer{
-    public ArrayList<MapObject> mOBjs = new ArrayList<>();
-    public String type;
-}
-
-class MapObject {
-    public int widthInTiles, heightInTiles;
-    public boolean draw;
-}
-
-class RectangleMapObject extends MapObject {
-    public float x, y, width, height, rotation;
-}
-
-class PointMapObject extends MapObject {
-    public float x, y;
-}
-
-class TileMapObject extends MapObject {
-    public int tileNum;
 }

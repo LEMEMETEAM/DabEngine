@@ -48,10 +48,10 @@ public class ParticleEmitter extends ComponentSystem {
 				CTransform transform = p.getComponent(CTransform.class);
 				CSprite render = p.getComponent(CSprite.class);
 				CPhysics physics = p.getComponent(CPhysics.class);
-				render.color.TL[3] -= 0.1f * 2.5f;
-				render.color.BL[3] -= 0.1f * 2.5f;
-				render.color.BR[3] -= 0.1f * 2.5f;
-				render.color.TR[3] -= 0.1f * 2.5f;
+				render.color.getColor()[3] -= 0.1f * 2.5f;
+				render.color.getColor()[6] -= 0.1f * 2.5f;
+				render.color.getColor()[9] -= 0.1f * 2.5f;
+				render.color.getColor()[12] -= 0.1f * 2.5f;
 				transform.pos = transform.pos.sub(physics.velocity);
 			}
 		}
@@ -89,7 +89,7 @@ public class ParticleEmitter extends ComponentSystem {
 		float[] col = new float[]{
 			rColor, rColor, rColor, 1.0f
 		};
-		render.color = new Color(col, col, col, col);
+		render.color = new Color(col);
 		particle.LIFE = 1.0f; 
 	}
 
@@ -102,7 +102,7 @@ public class ParticleEmitter extends ComponentSystem {
 			if(p.LIFE > 0.0f) {
 				CSprite render = particle.getComponent(CSprite.class);
 				CTransform transform = particle.getComponent(CTransform.class);
-				g.fillRect(transform.pos.x, transform.pos.y, transform.size.x, transform.size.y, transform.origin.x, transform.origin.y, transform.rotation.z, render.color);
+				g.fillRect(transform.pos.x, transform.pos.y, transform.pos.z, transform.size.x, transform.size.y, transform.origin.x, transform.origin.y, transform.rotation.z, render.color);
 			}
 		}
 		g.end();

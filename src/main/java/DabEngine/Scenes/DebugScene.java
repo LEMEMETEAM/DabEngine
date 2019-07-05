@@ -12,19 +12,23 @@ import DabEngine.Entities.Components.CTransform;
 import DabEngine.Entities.Components.Component;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.System.ComponentSystem;
 import DabEngine.System.RendererSystem;
-import DabEngine.Utils.Colors;
+import DabEngine.Utils.Color;
 import DabEngine.Utils.Timer;
 
 public class DebugScene extends Scene {
     
     public Engine engine;
     private Font f;
+    private Viewport vp;
 
-    public DebugScene(Engine e, Font f){
+    public DebugScene(App app, Engine e, Font f, Viewport vp){
+        super(app, vp, false);
         this.engine = e;
         this.f = f;
+        this.vp = vp;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class DebugScene extends Scene {
 
         CText t = new CText();
         t.font = f;
-        t.color = Colors.WHITE.color;
+        t.color = Color.WHITE;
         t.text = "";
         t.textShader = Font.TEXT_DEFAULT_SHADER;
         

@@ -1,5 +1,7 @@
 package DabEngine.Graphics.Batch;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
@@ -15,11 +17,11 @@ public class QuadBatch extends IBatch {
         super(shader);
     }
 
-    public void addVertex(float x, float y, float u, float v, float r, float g, float b, float a){
-        vertex(x, y, r, g, b, a, u, v);
+    public void addVertex(float x, float y, float z, float u, float v, float r, float g, float b, float a, float nx, float ny, float nz){
+        vertex(x, y, z, r, g, b, a, u, v, nx, ny, nz);
     }
 
-    public void addQuad(Texture tex, float x, float y, float width, float height, float ox, float oy, float rotation,
+    public void addQuad(Texture tex, float x, float y, float z, float width, float height, float ox, float oy, float rotation,
             Color c, float u, float v, float u2, float v2) {
         float x1,y1,x2,y2,x3,y3,x4,y4;
 
@@ -64,21 +66,31 @@ public class QuadBatch extends IBatch {
 			
 			x4 = x + px2 + cx;
 			y4 = y + py + cy;
-        }
-
-        float[] tl = c.TL;
-        float[] bl = c.BL;
-        float[] br = c.BR;
-        float[] tr = c.TR;
-        
-        vertex(x1, y1, tl[0], tl[1], tl[2], tl[3], u, v);
-		vertex(x2, y2, bl[0], bl[1], bl[2], bl[3], u, v2);
-		vertex(x3, y3, br[0], br[1], br[2], br[3], u2, v2);
+		}
 		
-		vertex(x3, y3, br[0], br[1], br[2], br[3], u2, v2);
-		vertex(x4, y4, tr[0], tr[1], tr[2], tr[3], u2, v);
-		vertex(x1, y1, tl[0], tl[1], tl[2], tl[3], u, v);
-    }
+		float[] col = c.getColor();
+
+		Vector3f faceNormals1 = calcNormals(x1,y1,z,x2,y2,z,x3,y3,z);
+		Vector3f faceNormals2 = calcNormals(x3,y3,z,x4,y4,z,x1,y1,z);
+		
+		
+		//x+width*y
+        vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		vertex(x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		
+		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+		vertex(x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+		vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+	}
+	
+	private Vector3f calcNormals(float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, float p3x, float p3y, float p3z){
+		Vector3f U = new Vector3f(p2x - p1x, p2y - p1y, p2z - p1z);
+		Vector3f V = new Vector3f(p3x - p1x, p3y - p1y, p3z - p1z);
+
+		Vector3f N = U.cross(V, new Vector3f());
+		return N.normalize();
+	}
 
     public void checkFlush(Texture t) {
         if(t != tex || idx > maxsize){

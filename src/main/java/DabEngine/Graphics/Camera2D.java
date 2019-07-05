@@ -16,13 +16,14 @@ public class Camera2D extends Camera{
     public Vector3f getPosition() {
         return position;
     }
-	
-	public Matrix4f getProjection() {
-        view.identity();
-        
-        view.translate(position.negate(new Vector3f()));
-        
-        return view;
+
+    public void rotate(Vector3f axis, float angle){
+        front.rotateAxis(angle, axis.x, axis.y, axis.z);
+        up.rotateAxis(angle, axis.x, axis.y, axis.z);
+    }
+
+    public void zoom(float zoom){
+        this.zoom = zoom;
     }
     
 }

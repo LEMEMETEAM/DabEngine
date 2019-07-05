@@ -1,6 +1,7 @@
 package DabEngine.GUI;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import DabEngine.GUI.Objects.Panel;
@@ -12,7 +13,7 @@ import DabEngine.Utils.Color;
 public abstract class GUIObject implements ActionEventListener {
 	
 	protected boolean hover = false;
-	public Vector2f pos;
+	public Vector3f pos;
 	public Vector2f size;
 	public int z_index;
 	

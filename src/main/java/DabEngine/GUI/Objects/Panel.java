@@ -2,7 +2,9 @@ package DabEngine.GUI.Objects;
 
 import java.util.ArrayList;
 
+import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
@@ -56,7 +58,8 @@ public class Panel extends GUIObject {
 	public void onMousePress(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (hover && moveable) {
-			pos = new Vector2f().set(InputHandler.INSTANCE.getMouseDelta());
+			Vector2d m = InputHandler.INSTANCE.getMouseDelta();
+			pos = new Vector3f().set((float)m.x, (float)m.y, pos.z);
 		}
 	}
 

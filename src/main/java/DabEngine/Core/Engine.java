@@ -37,6 +37,8 @@ public class Engine {
         double timer = Timer.getTime();
         
 		while (!glfwWindowShouldClose(mainWindow.getWin())) {
+
+            //update
             Timer.update();
             acc += Timer.getDelta();
             while (acc >= ns) {
@@ -45,9 +47,12 @@ public class Engine {
                 updates++;
                 acc-=ns;
             }
+
+            //render
             app.render();
             glfwSwapBuffers(mainWindow.getWin());
             frames++;
+
             if (Timer.getTime() - timer > 1.0) {
                 timer ++;
                 FRAMES = frames;
@@ -62,11 +67,9 @@ public class Engine {
 
     public void init(App app) {
         
-        mainWindow = new Window(app.WIDTH, app.HEIGHT, app.TITLE, app.hints, app.fullscreen);
+        mainWindow = new Window(app);
         
         if(mainWindow.isLoaded()) {
-        
-            glViewport(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
             
 		    glfwSetKeyCallback(mainWindow.getWin(), InputHandler.INSTANCE.new Keyboard());
 		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());

@@ -9,6 +9,7 @@ import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.Polygon;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
@@ -21,6 +22,8 @@ public class Button extends GUIObject {
 	public boolean show_button = true, show_label = true;
 	public Vector2f label_pos;
 	public Font font;
+	//optional
+	public Texture buttonTexture;
 
 	@Override
 	public void onNotify(Event e) {
@@ -71,10 +74,15 @@ public class Button extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.fillRect(pos.x, pos.y, size.x, size.y, 0, 0, 0, color);
-		g.pushShader(Font.TEXT_DEFAULT_SHADER);
-		g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, label_color);
-		g.popShader();
+		if(buttonTexture != null){
+			g.drawTexture(buttonTexture, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
+		}
+		else{
+			g.fillRect(pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, color);
+			g.pushShader(Font.TEXT_DEFAULT_SHADER);
+			g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, pos.z, label_color);
+			g.popShader();
+		}
 	}
 	
 	

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
+import DabEngine.Core.App;
 import DabEngine.GUI.Objects.Button;
 import DabEngine.GUI.Objects.Image;
 import DabEngine.GUI.Objects.Panel;
@@ -20,6 +21,11 @@ import DabEngine.Input.InputHandler;
 public abstract class AbstractMenu {
 	
 	public ArrayList<Panel> obj = new ArrayList<>();
+	private App app;
+
+	public AbstractMenu(App app){
+		this.app = app;
+	}
 	
 
 	public void update() {
@@ -61,7 +67,7 @@ public abstract class AbstractMenu {
 	private void checkHover(GUIObject g) {
 		Vector2f half_extent_g = new Vector2f(g.size.x/2, g.size.y/2);
 		Vector2f mouse_pos_g = new Vector2f((float)InputHandler.INSTANCE.getMousePos().x, (float) InputHandler.INSTANCE.getMousePos().y);
-		Vector2f distance_g = mouse_pos_g.sub(g.pos.add(half_extent_g, new Vector2f()), new Vector2f());
+		Vector2f distance_g = mouse_pos_g.sub(g.pos.x + half_extent_g.x, g.pos.y + half_extent_g.y, new Vector2f());
 		
 		distance_g.x = (float) Math.abs(distance_g.x);
 		distance_g.y = (float) Math.abs(distance_g.y);

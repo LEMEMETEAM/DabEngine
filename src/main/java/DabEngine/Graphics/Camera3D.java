@@ -5,9 +5,6 @@ import org.joml.Vector3f;
 
 public class Camera3D extends Camera{
 	
-	private Vector3f front = new Vector3f();
-	private Vector3f up = new Vector3f(0, 1, 0);
-	
 	public void setPosition(Vector3f position) {
         this.position = position;
     }
@@ -48,14 +45,6 @@ public class Camera3D extends Camera{
     	front.z = (float) (Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
     	
     	this.front = front.normalize(new Vector3f());
-    }
-	
-	public Matrix4f getProjection() {
-        view.identity();
-        
-        view.lookAt(position, position.add(front, new Vector3f()), up);
-        
-        return view;
     }
     
 }

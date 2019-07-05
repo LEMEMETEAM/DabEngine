@@ -21,9 +21,10 @@ public abstract class IBatch {
 	protected Shaders shader;
 	protected Texture tex;
 	protected static final List<VertexAttrib> ATTRIBUTES = 
-								Arrays.asList(new VertexAttrib(0, "position", 2),
+								Arrays.asList(new VertexAttrib(0, "position", 3),
 								new VertexAttrib(1, "color", 4),
-								new VertexAttrib(2, "texCoords", 2));
+								new VertexAttrib(2, "texCoords", 2),
+								new VertexAttrib(3, "normals", 3));
 
 	public IBatch(Shaders shader) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
@@ -87,13 +88,16 @@ public abstract class IBatch {
 		return shader;
 	}
 
-    protected VertexBuffer vertex(float x, float y, float r, float g, float b, float a, float u, float v) {
-        data.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
+    protected VertexBuffer vertex(float x, float y, float z, float r, float g, float b, float a, float u, float v, float nx, float ny, float nz) {
+        data.put(x).put(y).put(z).put(r).put(g).put(b).put(a).put(u).put(v).put(nx).put(ny).put(nz);
         idx++;
         return data;
 	}
     
     public void flush() {
+
+		if(drawing)
+			updateUniforms();
 		
 		if(idx > 0){
 			data.flip();

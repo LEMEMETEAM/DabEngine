@@ -6,8 +6,8 @@ import org.lwjgl.opengl.GL11;
 import DabEngine.Graphics.Batch.Polygon;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
+import DabEngine.Graphics.TileMap.MapLayer;
 import DabEngine.Utils.Color;
-import DabEngine.Utils.Colors;
 import DabEngine.Utils.Pair;
 import DabEngine.Utils.Primitives.Primitives;
 
@@ -20,7 +20,9 @@ public class OrthagonalMapRenderer {
     }
 
     public void draw(Graphics g){
+        int i =0;
         for(MapLayer layer : map.layers){
+            i++;
             switch (layer.type){
                 case "tilelayer":
                     //TODO: add render target stuff for effects on tile layer
@@ -29,7 +31,7 @@ public class OrthagonalMapRenderer {
                             for(int x = 0; x < map.info.width; x++){
                                 Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
                                 if(t != null)
-                                    g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Colors.WHITE.color);
+                                    g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
                             }
                         }
                     g.end();

@@ -1,6 +1,8 @@
 package DabEngine.Graphics;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class ProjectionMatrix {
 	
@@ -29,9 +31,21 @@ public class ProjectionMatrix {
 		modelmatrix = model;
 		return null;
 	}
+
+	public static Vector4f worldToNDC(Vector3f pos){
+		Vector4f p = new Vector4f(pos.x, pos.y,pos.z, 1.0f);
+		p.mulProject(get());
+		p.x /= p.w;
+		p.y /= p.w;
+		p.z /= p.w;
+
+		p.z = p.z * 0.5f + 0.5f;
+		System.out.println(p.toString());
+		return p;
+	}
 	
 	public static Matrix4f get() {
-		return projectionmatrix.mul(viewmatrix).mul(modelmatrix);
+		return projectionmatrix.mul(viewmatrix, new Matrix4f()).mul(modelmatrix, new Matrix4f());
 	}
 
 }
