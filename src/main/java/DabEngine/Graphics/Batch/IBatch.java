@@ -3,9 +3,9 @@ package DabEngine.Graphics.Batch;
 import java.util.Arrays;
 import java.util.List;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
-import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
@@ -25,10 +25,12 @@ public abstract class IBatch {
 								new VertexAttrib(1, "color", 4),
 								new VertexAttrib(2, "texCoords", 2),
 								new VertexAttrib(3, "normals", 3));
+	public Matrix4f projectionMatrix = new Matrix4f();
 
-	public IBatch(Shaders shader) {
+	public IBatch(Shaders shader, Matrix4f proj) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
 		this.shader = shader;
+		projectionMatrix.set(proj);
 		updateUniforms();
 	}
 
@@ -54,11 +56,17 @@ public abstract class IBatch {
 	public void updateUniforms() {
 		updateUniforms(shader);
 	}
+
+	public void setProjectionMatrix(Matrix4f p){
+		if(drawing)flush();
+		projectionMatrix.set(p);
+		if(drawing)updateUniforms();
+	}
 	
 	public void updateUniforms(Shaders shader) {
 		shader.bind();
 		
-		shader.setUniform("mvpMatrix", ProjectionMatrix.get());
+		shader.setUniform("mvpMatrix", projectionMatrix);
 		
 		shader.setUniform("texture", 0);
 	}

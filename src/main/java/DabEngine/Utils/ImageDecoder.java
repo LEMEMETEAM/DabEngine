@@ -72,4 +72,14 @@ public class ImageDecoder<T> {
     public int getWidth() {
         return width;
     }
+
+    public void close() throws IOException {
+        pixels.clear();
+        if(resource instanceof InputStream){
+            ((InputStream)resource).close();
+        }
+        else if(resource instanceof BufferedImage){
+            ((BufferedImage)resource).flush();
+        }
+    }
 }

@@ -22,13 +22,11 @@ public class DebugScene extends Scene {
     
     public Engine engine;
     private Font f;
-    private Viewport vp;
 
-    public DebugScene(App app, Engine e, Font f, Viewport vp){
-        super(app, vp, false);
+    public DebugScene(App app, Engine e, Font f){
+        super(app, false);
         this.engine = e;
         this.f = f;
-        this.vp = vp;
     }
 
     @Override

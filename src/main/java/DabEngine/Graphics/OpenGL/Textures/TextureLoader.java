@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 
 import DabEngine.Utils.ImageDecoder;
 
-public class TextureLoader {
+public class TextureLoader implements AutoCloseable {
 
     private ImageDecoder<?> decoder;
     public int width;
@@ -44,5 +44,11 @@ public class TextureLoader {
         height = decoder.getHeight();
 
         this.pixels = pixels;
+    }
+
+    @Override
+    public void close() throws Exception {
+        decoder.close();
+        pixels.clear();
     }
 }

@@ -90,10 +90,10 @@ public class Engine {
         }
     }
     
-    public Graphics createGraphics() {
+    public Graphics createGraphics(App app) {
     	if(!graphics_init) {
     		graphics_init = true;
-    		return new Graphics(this);
+    		return new Graphics(app);
     	}
     	else {
     		LOGGER.log(Level.SEVERE, "GRAPHICS ALREADY CREATED!");

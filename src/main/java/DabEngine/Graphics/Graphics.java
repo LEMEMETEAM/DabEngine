@@ -3,9 +3,13 @@ package DabEngine.Graphics;
 import java.nio.FloatBuffer;
 import java.util.Stack;
 
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
+import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.QuadBatch;
@@ -39,14 +43,13 @@ public class Graphics {
      * The {@see RenderTarget} to render to.
      */
     private RenderTarget RenderTarget;
+    private App app;
 
-    private Engine engine;
-
-    public Graphics(Engine engine){
-        batch = new QuadBatch(QuadBatch.DEFAULT_SHADER);
+    public Graphics(App app){
+        batch = new QuadBatch(QuadBatch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
         shaderStack = new Stack<>();
         shaderStack.push(QuadBatch.DEFAULT_SHADER);
-        this.engine = engine;
+        this.app = app;
     }
 
     public void pushShader(Shaders s){
@@ -63,6 +66,10 @@ public class Graphics {
             end();
             begin(r);
         }
+    }
+
+    public void setCamera(Camera camera){
+        batch.setProjectionMatrix(camera.getProjection());
     }
 
     public void begin(RenderTarget r){
@@ -151,6 +158,7 @@ public class Graphics {
             RenderTarget.unbind();
             //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
             RenderTarget.blit();
+            RenderTarget = null;
         }
     }
 

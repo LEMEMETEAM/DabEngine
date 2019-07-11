@@ -89,10 +89,12 @@ public class Texture implements IDisposable {
     public Texture(int width, int height, boolean white, Texture.Parameters... params){
         ByteBuffer buf = BufferUtils.createByteBuffer(width * height * 4);
         for(int i = 0; i < buf.limit(); i++){
-            if(white)
+            if(white){
                 buf.put(i, (byte)(255 & 0xFF));
-            else
+            }
+            else{
                 buf.put(i, (byte)(0 & 0xFF));
+            }
         }
         t_id = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, t_id);

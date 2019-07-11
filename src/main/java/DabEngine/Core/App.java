@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.lwjgl.glfw.GLFWVidMode;
 
+import DabEngine.Graphics.OpenGL.Viewport.Viewport;
+
 public abstract class App {
 	
 	public int WIDTH, HEIGHT;
@@ -13,6 +15,7 @@ public abstract class App {
 	public long currentMonitor;
 	public GLFWVidMode currentVidMode;
 	public boolean fullscreenOnMaximise;
+	public Viewport vp;
 	
 	public abstract void render();
 	public abstract void update();

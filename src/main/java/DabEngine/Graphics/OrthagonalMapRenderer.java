@@ -20,21 +20,19 @@ public class OrthagonalMapRenderer {
     }
 
     public void draw(Graphics g){
-        int i =0;
+        int i =1;
         for(MapLayer layer : map.layers){
-            i++;
+            
             switch (layer.type){
                 case "tilelayer":
                     //TODO: add render target stuff for effects on tile layer
-                    g.begin(null);
-                        for(int y = 0; y < map.info.height; y++){
-                            for(int x = 0; x < map.info.width; x++){
-                                Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
-                                if(t != null)
-                                    g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
-                            }
+                    for(int y = 0; y < map.info.height; y++){
+                        for(int x = 0; x < map.info.width; x++){
+                            Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
+                            if(t != null)
+                                g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
                         }
-                    g.end();
+                    }
                     break;
                 
                 /* case "objectgroup":
@@ -71,6 +69,7 @@ public class OrthagonalMapRenderer {
                     poly.end();
                     break; */
             }
+            i++;
         }
     }
 }

@@ -24,9 +24,9 @@ void main(){
         vec3 ambient = ambientStrength * lights[i].color;
 
         vec3 normal = normalize(outNormal);
-        vec3 lightDir = normalize(lights.position - outPosition);
+        vec3 lightDir = normalize(lights[i].position - outPosition);
         float diff = max(dot(normal, lightDir), 0.0);
-        vec3 diffuse = diff * lights.color ;
+        vec3 diffuse = diff * lights[i].color ;
 
         color += (ambient + diffuse);
     }

@@ -46,5 +46,10 @@ public class Camera3D extends Camera{
     	
     	this.front = front.normalize(new Vector3f());
     }
+
+    @Override
+    public Matrix4f getProjection() {
+        return null;
+    }
     
 }

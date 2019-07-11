@@ -19,7 +19,6 @@ import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.ProjectionMatrix;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light2D;
@@ -30,6 +29,7 @@ import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Input.InputHandler;
 import DabEngine.Graphics.Batch.*;
 import DabEngine.Utils.Color;
+import DabEngine.Utils.Timer;
 
 public class TestCaseEngine extends App {
     private static final Engine ENGINE = new Engine();
@@ -62,13 +62,14 @@ public class TestCaseEngine extends App {
             GL11.glClearColor(1,1,1,1.0f);
             // omr.draw(g);
             g.begin(rt);
-                g.pushShader(light_shaders);
+                g.setCamera(cam);
+                g.pushShader(Light2D.LIGHT_SHADER);
                 {
-                    g.getCurrentShader().setUniform("light.position", light1.pos);
-                    g.getCurrentShader().setUniform("light.color", light1.color);
-                    g.getCurrentShader().setUniform("ambientStrength", 0.0f);
-                    //g.fillRect(0, 0, -1, WIDTH, HEIGHT, 0, 0, 0, Color.RED);
-                    g.drawLine(0, 0, 0, 100, 100, 10, Color.RED);
+                    g.getCurrentShader().setUniform("lights[0].position", light1.pos);
+                    g.getCurrentShader().setUniform("lights[0].color", light1.color);
+                    g.getCurrentShader().setUniform("ambientStrength", 0.75f);
+                    //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.RED);
+                    g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
                     g.pushShader(DEFAULT_SHADER);
                     {
                         g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 0, Color.BLACK);
@@ -89,26 +90,26 @@ public class TestCaseEngine extends App {
 
     @Override
     public void update() {
-        ProjectionMatrix.addViewMatrix(cam.getProjection());
+        //rotation+=(float)Timer.getDelta() * 0.25f;
         Vector2d m = InputHandler.INSTANCE.getMousePos();
-        light1.pos.x = (float)m.x;
-        light1.pos.y = (float)m.y;
+        Vector2f mScreen = cam.screenToWorld(new Vector2f((float)m.x, (float)m.y), vp.width, vp.height);
+        light1.pos.x = mScreen.x;
+        light1.pos.y = mScreen.y;
         if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_MINUS)){
             light1.pos.z -= 0.1;
         }
         if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_EQUAL)){
             light1.pos.z += 0.1;
         }
+        cam.rotate(new Vector3f(0,1,0), (float)Math.toRadians(rotation));
     }
 
     @Override
     public void init() {
-        ProjectionMatrix.createProjectionMatrix2D(0, WIDTH, HEIGHT, 0);
 
         fullscreenOnMaximise = false;
         
-        u = new QuadBatch(QuadBatch.DEFAULT_SHADER);
-        g = ENGINE.createGraphics();
+        g = ENGINE.createGraphics(this);
 
             //map = new TileMap("C:/Users/B/Documents/DabEngine/src/test/resources/", "untitled..json");
 
@@ -137,7 +138,7 @@ public class TestCaseEngine extends App {
             App.class.getResourceAsStream("/Shaders/defaultFBO.fs"));
         rt.pushShader(fboShader);
 
-        cam = new Camera2D();
+        cam = new Camera2D(WIDTH, HEIGHT);
 
         
 

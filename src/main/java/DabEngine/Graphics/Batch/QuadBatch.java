@@ -1,5 +1,6 @@
 package DabEngine.Graphics.Batch;
 
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -13,8 +14,8 @@ public class QuadBatch extends IBatch {
     public static Shaders DEFAULT_SHADER = new Shaders(QuadBatch.class.getResourceAsStream("/Shaders/default.vs"),
     QuadBatch.class.getResourceAsStream("/Shaders/textured.fs"));
 
-    public QuadBatch(Shaders shader){
-        super(shader);
+    public QuadBatch(Shaders shader, Matrix4f proj){
+        super(shader, proj);
     }
 
     public void addVertex(float x, float y, float z, float u, float v, float r, float g, float b, float a, float nx, float ny, float nz){

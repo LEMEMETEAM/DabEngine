@@ -24,6 +24,10 @@ public class RenderTarget {
 	private Texture texture;
 	private Viewport vp;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	public static final Shaders RENDERTARGET_SHADER_DEFAULT = new Shaders(
+		RenderTarget.class.getResourceAsStream("/Shaders/defaultFBO.vs"),
+		RenderTarget.class.getResourceAsStream("/Shaders/defaultFBO.fs"));
 	
 	public RenderTarget(Texture renderToTexture, int width, int height, Viewport vp) {
 		generateFBO(renderToTexture, width, height);
@@ -38,6 +42,8 @@ public class RenderTarget {
 		vertex(-1,-1,0,0);
 
 		this.vp = vp;
+
+		pushShader(RENDERTARGET_SHADER_DEFAULT);
 	}
 
 	private void generateFBO(Texture renderToTexture, int width, int height){
