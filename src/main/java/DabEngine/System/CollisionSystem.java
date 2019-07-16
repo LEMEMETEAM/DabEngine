@@ -1,29 +1,59 @@
 package DabEngine.System;
 
-import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import DabEngine.Entities.Entity;
 import DabEngine.Entities.EntityManager;
-import DabEngine.Entities.Components.CCollision;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Observer.EventManager;
 import DabEngine.Utils.Pair;
 
+import DabEngine.Entities.Components.*;
+
 public class CollisionSystem extends ComponentSystem {
+
+	public final float CHECK_THRESHOLD = 50f;
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		for(Entity e : EntityManager.entitiesWithComponents(CCollision.class)) {
-			for(Entity e2 : EntityManager.entitiesWithComponents(CCollision.class)) {
-				if(e2 == e) {
-					continue;
-				}
+		var entt = EntityManager.entitiesWithComponents(CCollision.class);
+		for(int i = 0; i < entt.size(); i++){
+			for(int j = i + 1; j < entt.size(); j++) {
+				Entity e = entt.get(i);
+				Entity e2 = entt.get(j);
+
 				CCollision c = e.getComponent(CCollision.class);
 				CCollision c2 = e2.getComponent(CCollision.class);
-				Pair<Boolean, Vector2f> info = c2.bounds.intersects(c.bounds);
-				if(info.left) {
-					EventManager.INSTANCE.submitEvent(new CollisionEvent(new Pair<>(e, e2), info.right));
+				if(c.bounds.center.distance(c2.bounds.center) > CHECK_THRESHOLD) {
+					continue;
+				}
+				Vector3f corr;
+				if((corr = c2.bounds.intersects(c.bounds)).isFinite()){
+					if(corr.get(corr.maxComponent()) == corr.x){
+						if(c2.bounds.center.sub(c.bounds.center, new Vector3f()).x < 0){
+							e.getComponent(CTransform.class).pos.add(-corr.x, 0, 0);
+						}
+						else{
+							e.getComponent(CTransform.class).pos.add(corr.x, 0, 0);
+						}
+					}
+					else if(corr.get(corr.maxComponent()) == corr.y){
+						if(c2.bounds.center.sub(c.bounds.center, new Vector3f()).y < 0){
+							e.getComponent(CTransform.class).pos.add(0, -corr.y, 0);
+						}
+						else{
+							e.getComponent(CTransform.class).pos.add(0, corr.y, 0);
+						}
+					}
+					else if(corr.get(corr.maxComponent()) == corr.z){
+						if(c2.bounds.center.sub(c.bounds.center, new Vector3f()).z < 0){
+							e.getComponent(CTransform.class).pos.add(0, 0, -corr.z);
+						}
+						else{
+							e.getComponent(CTransform.class).pos.add(0, 0, corr.z);
+						}
+					}
 				}
 			}
 		}

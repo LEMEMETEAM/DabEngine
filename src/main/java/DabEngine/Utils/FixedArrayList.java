@@ -7,12 +7,13 @@ public class FixedArrayList<E> extends ArrayList<E>{
     private int maxsize;
 
     public FixedArrayList(int maxsize){
+        super();
         this.maxsize = maxsize;
     }
 
     @Override
     public boolean add(E e) {
-        if(this.size() > maxsize)
+        if(this.size() < maxsize)
             return super.add(e);
         else
             throw new IllegalStateException();

@@ -30,6 +30,7 @@ import DabEngine.Input.InputHandler;
 import DabEngine.Graphics.Batch.*;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Timer;
+import java.util.*;
 
 public class TestCaseEngine extends App {
     private static final Engine ENGINE = new Engine();
@@ -47,6 +48,9 @@ public class TestCaseEngine extends App {
     private Light2D light1;
     private Light2D light2;
     private Shaders light_shaders;
+    float pow;
+    Random rng = new Random();
+    float posx, posy;
 
     {
         TITLE = "Test";
@@ -60,34 +64,39 @@ public class TestCaseEngine extends App {
     public void render() {
 
             GL11.glClearColor(1,1,1,1.0f);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
             // omr.draw(g);
-            g.begin(rt);
+            g.begin(null);
                 g.setCamera(cam);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
-                    g.getCurrentShader().setUniform("lights[0].position", light1.pos);
+                    /* g.getCurrentShader().setUniform("lights[0].position", light1.pos);
                     g.getCurrentShader().setUniform("lights[0].color", light1.color);
-                    g.getCurrentShader().setUniform("ambientStrength", 0.75f);
-                    //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.RED);
-                    g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
-                    g.pushShader(DEFAULT_SHADER);
+                    g.getCurrentShader().setUniform("ambientStrength", 0.9f); */
+                    /* g.pushShader(DEFAULT_SHADER);
                     {
-                        g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 0, Color.BLACK);
+                        g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, Color.BLACK);
                     }
-                    g.popShader();
-                    g.drawRect(500, 200, 0, 100, 100, 5, Color.RED);
-                    g.fillRect(350, 400, 0, 100, 100, 50, 50, rotation, Color.RED);
-                    g.drawTexture(t, null, 500, 100, 0, 500, 500, 0, 0, 0, Color.WHITE);
-                    g.pushShader(DEFAULT_SHADER);
+                    g.popShader(); */
+                    //g.drawRect(500, 200, 0, 100, 100, 5, Color.RED);
+                    //g.fillRect(350, 400, 0, 100, 100, 50, 50, rotation, Color.RED);
+                    //g.drawTexture(t, null, 500, 100, 0.5f, 500, 500, 0, 0, 0, Color.WHITE);
+                    /* g.pushShader(DEFAULT_SHADER);
                     {
-                        g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 1, Color.BLACK);
+                        g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 0, Color.BLACK);
+                    } 
+                    g.popShader();*/
+                    //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.GREEN);
+                    //g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
+                    for(int i =0; i < 1000; i++){
+                        g.fillRect(posx+rng.nextInt(400), posy+rng.nextInt(300), 0.5f, 10,10,0,0,0,Color.RED);
                     }
-                    g.popShader();
                 }
                 g.popShader();
             g.end();
     }
 
+    float timer;
     @Override
     public void update() {
         //rotation+=(float)Timer.getDelta() * 0.25f;
@@ -101,7 +110,11 @@ public class TestCaseEngine extends App {
         if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_EQUAL)){
             light1.pos.z += 0.1;
         }
-        cam.rotate(new Vector3f(0,1,0), (float)Math.toRadians(rotation));
+        //cam.rotate(new Vector3f(0,1,0), (float)Math.toRadians(rotation));
+        cam.setPosition(new Vector3f(WIDTH/2, HEIGHT/2, 1));
+        
+    
+
     }
 
     @Override
@@ -142,7 +155,10 @@ public class TestCaseEngine extends App {
 
         
 
-        light1 = new Light2D(new Vector3f(400f, 300, 0.5f), 0, new Vector3f(1,0,1));
+        light1 = new Light2D(new Vector3f(400f, 300, 0.5f), 0, new Vector3f(1,1,1));
+
+        posx = rng.nextFloat()*WIDTH;
+        posy = rng.nextFloat()*HEIGHT;
 
     }
 

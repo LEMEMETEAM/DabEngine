@@ -81,7 +81,7 @@ public class Graphics {
         batch.begin();
     }
 
-    public void drawLine(float x0, float y0, float x1, float y1, float z, float thickness, Color c) {
+    public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
         if (x1 < x0) {
             float temp = x0;
             x0 = x1;
@@ -100,10 +100,10 @@ public class Graphics {
 
         float rotation = (float) Math.toDegrees((float) Math.atan2(dy, dx));
 
-        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, z, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
+        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, depth, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
     }
 
-    public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, float z, Color col) {
+    public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, float depth, Color col) {
         try (MemoryStack stack = stackPush()) {
 
             STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
@@ -118,38 +118,38 @@ public class Graphics {
             x1 = q.x1();
             y1 = q.y1();
 
-            batch.addQuad(f.getTexture(), x0, y0, z, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
+            batch.addQuad(f.getTexture(), x0, y0, depth, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
         }
     }
 
-    public void drawText(Font f, String s, float x, float y, float z, Color col) {
+    public void drawText(Font f, String s, float x, float y, float depth, Color col) {
         try (MemoryStack stack = stackPush()) {
             FloatBuffer pX = stack.floats(x);
             FloatBuffer pY = stack.floats(y);
 
             for (int c = 0; c < s.length(); c++) {
-                drawCharacter(f, s.charAt(c), pX, pY, z, col);
+                drawCharacter(f, s.charAt(c), pX, pY, depth, col);
             }
         }
     }
 
-    public void drawRect(float x, float y, float z, float width, float height, float thickness, Color c) {
-        drawLine(x, y, x + width, y, z, thickness, c);
-        drawLine(x + width, y, x + width, y + height, z, thickness, c);
-        drawLine(x + width, y + height, x, y + height, z, thickness, c);
-        drawLine(x, y + height, x, y, z, thickness, c);
+    public void drawRect(float x, float y, float depth, float width, float height, float thickness, Color c) {
+        drawLine(x, y, x + width, y, depth, thickness, c);
+        drawLine(x + width, y, x + width, y + height, depth, thickness, c);
+        drawLine(x + width, y + height, x, y + height, depth, thickness, c);
+        drawLine(x, y + height, x, y, depth, thickness, c);
     }
 
-    public void fillRect(float x, float y, float z, float width, float height, float ox, float oy, float rotation, Color c) {
-        batch.addQuad(WHITE_PIXEL, x, y, z, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
+    public void fillRect(float x, float y, float depth, float width, float height, float ox, float oy, float rotation, Color c) {
+        batch.addQuad(WHITE_PIXEL, x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
-    public void drawTexture(Texture tex, TextureRegion region, float x, float y, float z, float width, float height, float ox, float oy,
+    public void drawTexture(Texture tex, TextureRegion region, float x, float y, float depth, float width, float height, float ox, float oy,
             float rotation, Color c) {
         if(region != null)
-            batch.addQuad(tex, x, y, z, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
+            batch.addQuad(tex, x, y, depth, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
         else
-            batch.addQuad(tex, x, y, z, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
+            batch.addQuad(tex, x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void end() {

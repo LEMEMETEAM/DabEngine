@@ -74,10 +74,9 @@ public class Engine {
 		    glfwSetKeyCallback(mainWindow.getWin(), InputHandler.INSTANCE.new Keyboard());
 		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());
 		    glfwSetMouseButtonCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MouseButton());
-		
-		    glEnable(GL_BLEND);
-		    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glEnable(GL_STENCIL_TEST);
+        
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             //glEnable(GL_SCISSOR_TEST);
             //glScissor(0, 0, mainWindow.getWidth(), mainWindow.getHeight());
 		    

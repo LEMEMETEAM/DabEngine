@@ -1,7 +1,10 @@
 package DabEngine.Entities.Components;
 
-public class CScript {
+public class CScript extends Component {
 	
-	public String fileName = "";
-	public String scriptSource = "";
+	public String moduleName;
+	public Class<?> type;
+	public String className;
+	public String functionName;
+	public Object[] args;
 }

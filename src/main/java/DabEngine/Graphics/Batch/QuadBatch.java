@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL11;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Utils.Color;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class QuadBatch extends IBatch {
 
@@ -18,15 +20,10 @@ public class QuadBatch extends IBatch {
         super(shader, proj);
     }
 
-    public void addVertex(float x, float y, float z, float u, float v, float r, float g, float b, float a, float nx, float ny, float nz){
-        vertex(x, y, z, r, g, b, a, u, v, nx, ny, nz);
-    }
-
     public void addQuad(Texture tex, float x, float y, float z, float width, float height, float ox, float oy, float rotation,
             Color c, float u, float v, float u2, float v2) {
         float x1,y1,x2,y2,x3,y3,x4,y4;
 
-        checkFlush(tex);
 
         final float cx = ox;
 		final float cy = oy;
@@ -76,13 +73,15 @@ public class QuadBatch extends IBatch {
 		
 		
 		//x+width*y
-        vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z);
-		vertex(x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
-		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
-		
-		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals2.x, faceNormals2.y, faceNormals2.z);
-		vertex(x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
-		vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+        VertexInfo TL = new VertexInfo(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo BL = new VertexInfo(x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo BR = new VertexInfo(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo TR = new VertexInfo(x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+		vertex(TL, BL, BR, TR, tex);
+
+		Arrays.sort(vInfo, 0, vertexArrayPosition>vInfo.length?vInfo.length:vertexArrayPosition);
+
+		int dab = 0;
 	}
 	
 	private Vector3f calcNormals(float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, float p3x, float p3y, float p3z){
@@ -93,11 +92,5 @@ public class QuadBatch extends IBatch {
 		return N.normalize();
 	}
 
-    public void checkFlush(Texture t) {
-        if(t != tex || idx > maxsize){
-            flush();
-            this.tex = t;
-        }
-    }
     
 }

@@ -1,34 +1,35 @@
 package DabEngine.Graphics.Models;
 
-import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import DabEngine.Utils.Pair;
 
+
 public class AABB {
 
-    public Vector2f center, half_extent;
+    public Vector3f center, half_extent;
 
     public AABB(){
-        this.center = new Vector2f(0);
-        this.half_extent = new Vector2f(0);
+        this.center = new Vector3f(0);
+        this.half_extent = new Vector3f(0);
     }
 
-    public AABB(Vector2f center, Vector2f half_extent){
+    public AABB(Vector3f center, Vector3f half_extent){
         this.center = center;
         this.half_extent = half_extent;
     }
 
-    public AABB(Vector2f center){
+    public AABB(Vector3f center){
         this.center = center;
-        this.half_extent = new Vector2f(0);
+        this.half_extent = new Vector3f(0);
     }
 
-    /*public Tuple3<Boolean, Direction, Vector2f> intersects(AABB bounds2){
-        Vector2f distance = bounds2.center.sub(center, new Vector2f());
+    /*public Tuple3<Boolean, Direction, Vector3f> intersects(AABB bounds2){
+        Vector3f distance = bounds2.center.sub(center, new Vector3f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
 
-        distance.sub(half_extent.add(bounds2.half_extent, new Vector2f()));
+        distance.sub(half_extent.add(bounds2.half_extent, new Vector3f()));
         float max = 0f;
         int best_match = -1;
         
@@ -47,12 +48,12 @@ public class AABB {
 	        return Direction.values()[best_match];
         }
         return null;
-    	Vector2f distance = bounds2.center.sub(center, new Vector2f());
-    	Vector2f bounds2_negative = bounds2.half_extent.negate(new Vector2f());
+    	Vector3f distance = bounds2.center.sub(center, new Vector3f());
+    	Vector3f bounds2_negative = bounds2.half_extent.negate(new Vector3f());
     	float clampx = Math.max(bounds2_negative.x, Math.min(bounds2.half_extent.x, distance.x));
     	float clampy = Math.max(bounds2_negative.y, Math.min(bounds2.half_extent.y, distance.y));
-    	Vector2f clamped = new Vector2f(clampx, clampy);
-    	Vector2f closest = bounds2.center.sub(clamped, new Vector2f());
+    	Vector3f clamped = new Vector3f(clampx, clampy);
+    	Vector3f closest = bounds2.center.sub(clamped, new Vector3f());
     	distance = closest.sub(center);
     	
     	float max = 0f;
@@ -67,32 +68,36 @@ public class AABB {
 	        	}
 	        }
     		if(best_match == -1) {
-    			return new Tuple3<>(false, Direction.UP, new Vector2f(0));
+    			return new Tuple3<>(false, Direction.UP, new Vector3f(0));
     		}else {
     			return new Tuple3<>(true, Direction.values()[best_match], distance);
     		}
     	}
-    	return new Tuple3<>(false, Direction.UP, new Vector2f(0));
+    	return new Tuple3<>(false, Direction.UP, new Vector3f(0));
     }*/
     
-    /*public Pair<Boolean, Vector3f> intersects(AABB bounds2){
+    public Vector3f intersects(AABB bounds2){
     	Vector3f distance = bounds2.center.sub(center, new Vector3f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
         distance.z = (float) Math.abs(distance.z);
 
         distance.sub(half_extent.add(bounds2.half_extent, new Vector3f()));
+
+        if(!(distance.x < 0 && distance.y < 0 && distance.z < 0)){
+            return new Vector3f(Float.NaN);
+        }
         
-        return new Pair<>(distance.x < 0 && distance.y < 0 && distance.z < 0, distance);
-    }*/
+        return distance;
+    }
     
-    public Pair<Boolean, Vector2f> intersects(AABB bounds2){
-    	Vector2f distance = bounds2.center.sub(center, new Vector2f());
+    /*public Pair<Boolean, Vector3f> intersects(AABB bounds2){
+    	Vector3f distance = bounds2.center.sub(center, new Vector3f());
         distance.x = (float) Math.abs(distance.x);
         distance.y = (float) Math.abs(distance.y);
 
-        distance.sub(half_extent.add(bounds2.half_extent, new Vector2f()));
+        distance.sub(half_extent.add(bounds2.half_extent, new Vector3f()));
         
         return new Pair<>(distance.x < 0 && distance.y < 0, distance);
-    }
+    }*/
 }

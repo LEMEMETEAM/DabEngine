@@ -4,29 +4,32 @@ import org.python.core.Py;
 import org.python.core.PyObject;
 import org.python.core.PySystemState;
 
-public class ScriptRunner<T> {
+public class ScriptRunner {
 	
-	private PyObject module;
-	private Class<T> type;
-	
-	public ScriptRunner(PySystemState state, Class<T> returnType, String moduleName) {
-		this.type = returnType;
-		PyObject importer = state.getBuiltins().__getitem__(Py.newString("__import__"));
-		module = importer.__call__(Py.newString(moduleName));
+	PySystemState state;
+
+	public ScriptRunner(PySystemState state) {
+		this.state = state;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T runFunction(String funcName, Object... args) {
+	public <T> T runFunction(String moduleName, String funcName, Class<T> returnType, Object... args) {
+		PyObject importer = state.getBuiltins().__getitem__(Py.newString("__import__"));
+		PyObject module = importer.__call__(Py.newString(moduleName));
+
 		PyObject convertedArgs[] = new PyObject[args.length];
 	     for (int i = 0; i < args.length; i++) {
 	         convertedArgs[i] = Py.java2py(args[i]);
 	     }
 
-	     return (T) module.invoke(funcName, convertedArgs).__tojava__(type);
+	     return (T) module.invoke(funcName, convertedArgs).__tojava__(returnType);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T runFunctionFromClass(String className, String funcName, Object... args) {
+	public <T> T runFunctionFromClass(String moduleName, String className, String funcName, Class<T> returnType, Object... args) {
+		PyObject importer = state.getBuiltins().__getitem__(Py.newString("__import__"));
+		PyObject module = importer.__call__(Py.newString(moduleName));
+
 		PyObject convertedArgs[] = new PyObject[args.length];
 	     for (int i = 0; i < args.length; i++) {
 	         convertedArgs[i] = Py.java2py(args[i]);
@@ -34,6 +37,13 @@ public class ScriptRunner<T> {
 	     
 	     PyObject clz = module.__getattr__(className);
 
-	     return (T) clz.invoke(funcName, convertedArgs).__tojava__(type);
+	     return (T) clz.invoke(funcName, convertedArgs).__tojava__(returnType);
+	}
+
+	public void runMain(String moduleName) {
+		PyObject importer = state.getBuiltins().__getitem__(Py.newString("__import__"));
+		PyObject module = importer.__call__(Py.newString(moduleName));
+
+		module.__call__();
 	}
 }

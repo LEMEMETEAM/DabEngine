@@ -3,6 +3,8 @@ package DabEngine.Entities;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
+import java.util.function.*;
+
 import DabEngine.Entities.Components.Component;
 
 public class EntityManager {
@@ -100,5 +102,29 @@ public class EntityManager {
 			entitiesWithComponents.add(e);
 		}
 		return entitiesWithComponents;
+	}
+
+	public interface Sorting{
+		boolean sort(Entity e1, Entity e2);
+	}
+
+	public static ArrayList<Entity> sort(Sorting sort, Class<?>... cls){
+		ArrayList<Entity> e = entitiesWithComponents(cls);
+		boolean swaped;
+		for(int i = 0; i < e.size()-1; i++){
+			swaped = false;
+			for(int j = 0; j < e.size()-i-1; j++){
+				if(sort.sort(e.get(j), e.get(j+1))){
+					Entity temp = e.get(j);
+					e.set(j, e.get(j+1));
+					e.set(j+1, temp);
+					swaped = true;
+				}
+			}
+			if(swaped == false){
+				break;
+			}
+		}
+		return e;
 	}
 }

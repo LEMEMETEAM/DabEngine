@@ -20,9 +20,9 @@ public class OrthagonalMapRenderer {
     }
 
     public void draw(Graphics g){
-        int i =1;
-        for(MapLayer layer : map.layers){
-            
+        int i = 1/map.layers.size();;
+        for(int l = 0; l < map.layers.size(); l++){
+            MapLayer layer = map.layers.get(l);
             switch (layer.type){
                 case "tilelayer":
                     //TODO: add render target stuff for effects on tile layer
@@ -30,7 +30,7 @@ public class OrthagonalMapRenderer {
                         for(int x = 0; x < map.info.width; x++){
                             Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
                             if(t != null)
-                                g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
+                                g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i * l, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
                         }
                     }
                     break;
