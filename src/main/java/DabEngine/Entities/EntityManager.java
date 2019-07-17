@@ -1,130 +1,151 @@
 package DabEngine.Entities;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.WeakHashMap;
-
+import java.util.Map.Entry;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
+import DabEngine.Entities.Components.CText;
+import DabEngine.Entities.Components.CTransform;
 import DabEngine.Entities.Components.Component;
+import DabEngine.Entities.Components.ComponentHandle;
+import DabEngine.Observer.EventManager;
 
-public class EntityManager {
+public enum EntityManager {
 	
-	public static WeakHashMap<Integer, Entity> entities = new WeakHashMap<>();
-	private static volatile int currentID = 0;
-	
-	public static Entity createEntity(Component... components) {
-		int IDToUse = 0;
-		boolean found = false;
-		if(entities.isEmpty()) {
-			IDToUse = nextID();
-		}
-		else {
-			for(int i = 1; i <= currentID; i++) {
-				if(!entities.containsKey(i) || entities.get(i) == null) {
-					IDToUse = i;
-					found = true;
-					break;
-				}
-			}
-			if(!found) {
-				IDToUse = nextID();
-			}
-		}
-		int ID = IDToUse;
-		Entity e = new Entity() {{
-			entityID = ID;
-			for(Component comp : components) {
-				addComponent(comp);
-			}
-		}};
-		entities.put(IDToUse, e);
-		return e;
-	}
-	
-	public static Entity createEntity() {
-		int IDToUse = 0;
-		boolean found = false;
-		if(entities.isEmpty()) {
-			IDToUse = nextID();
-		}
-		else {
-			for(int i = 1; i <= currentID; i++) {
-				if(!entities.containsKey(i) && entities.get(i) == null) {
-					IDToUse = i;
-					found = true;
-					break;
-				}
-			}
-			if(!found) {
-				IDToUse = nextID();
-			}
-		}
-		int ID = IDToUse;
-		Entity e = new Entity() {{;
-			entityID = ID;
-		}};
-		entities.put(IDToUse, e);
-		return e;
-	}
-	
-	public static void deleteEntity(int id) {
-		entities.get(id).removeAllComponents();
-		entities.remove(id);
-		if(currentID == id) {
-			currentID -= 1;
-		}
-		else if(currentID == 0) {
-			return;
-		}
-	}
-	
-	public static void clearAllEntities() {
-		entities.clear();
-		currentID = 0;
-	}
-	
-	private static int nextID() {
-		currentID += 1;
-		return currentID;
-	}
-	
-	public static ArrayList<Entity> entitiesWithComponents(Class<?>... comps) {
-		ArrayList<Entity> entitiesWithComponents = new ArrayList<>();
-		outerloop:for(Entity e : entities.values()) {
-			for(Class<?> cl : comps) {
-				if(e == null || !e.hasComponent(cl)) {
-					continue outerloop;
-				}
-				else {
-					continue;
-				}
-			}
-			entitiesWithComponents.add(e);
-		}
-		return entitiesWithComponents;
+	INSTANCE;
+
+	private HashMap<Class, ComponentHandle> usedComps = new HashMap<>();
+	private int[] entities = new int[32];
+	private int next;
+	private int highest;
+	private ArrayDeque<Integer> recycleBin = new ArrayDeque<>();
+
+	private void resize() {
+		int oldsize = entities.length;
+		int newsize = oldsize + oldsize / 2;
+
+		entities = Arrays.copyOf(entities, newsize);
 	}
 
-	public interface Sorting{
-		boolean sort(Entity e1, Entity e2);
+	public <T extends Component> void assign(int entity, T comp, Class<T> type){
+		ComponentHandle<T> hndl;
+		if((hndl = usedComps.get(type)) != null){
+			hndl.assign(entity, comp);
+		}
+		else{
+			hndl = new ComponentHandle<>(type);
+			hndl.assign(entity, comp);
+			usedComps.put(type, hndl);
+		}
 	}
 
-	public static ArrayList<Entity> sort(Sorting sort, Class<?>... cls){
-		ArrayList<Entity> e = entitiesWithComponents(cls);
-		boolean swaped;
-		for(int i = 0; i < e.size()-1; i++){
-			swaped = false;
-			for(int j = 0; j < e.size()-i-1; j++){
-				if(sort.sort(e.get(j), e.get(j+1))){
-					Entity temp = e.get(j);
-					e.set(j, e.get(j+1));
-					e.set(j+1, temp);
-					swaped = true;
-				}
+	public <T extends Component> T component(int entity, Class<T> type){
+		ComponentHandle<T> hndl;
+		if((hndl = usedComps.get(type)) != null){
+			return hndl.component(entity);
+		}
+		else{
+			return null;
+		}
+	}
+
+	public int create(){
+		int id;
+		if(highest == 0){
+			id = next;
+			highest++;
+		}
+		else{
+			if(!recycleBin.isEmpty()){
+				id = recycleBin.remove();
 			}
-			if(swaped == false){
-				break;
+			else{
+				id = next;
+				highest++;
 			}
 		}
-		return e;
+		if(next + 1 == entities.length){
+			resize();
+		}
+		entities[id] = id;
+		next++;
+		//Arrays.sort(entities, 0, highest);
+		return id;
+	}
+
+	public void destroy(int entity){
+		recycleBin.add(entity);
+		for(ComponentHandle s : usedComps.values()){
+			s.comps[entity] = null;
+		}
+		entities[entity] = 0;
+	}
+
+	public ArrayList<ComponentHandle> handles(Class... types){
+		ArrayList<ComponentHandle> temp = new ArrayList<>();
+		for(Class c : types){
+			temp.add(usedComps.get(c));
+		}
+		return temp;
+	}
+
+	public void each(EntityIterator itr, Class... types){
+		ArrayList<ComponentHandle> handles = handles(types);
+		ArrayList<Integer> ids = new ArrayList<>(Arrays.stream(entities).boxed().collect(Collectors.toList()));
+		for(ComponentHandle h : handles){
+			for(Iterator<Integer> it = ids.iterator(); it.hasNext(); ){
+				if(h.comps[it.next()] == null){
+					it.remove();
+				}
+			}
+		}
+		for(int id : ids){
+			itr.each(id);
+		}
+	}
+
+	public void destroyAll(){
+		for(int entity : entities){
+			destroy(entity);
+		}
+	}
+
+	public boolean has(int entity, Class type){
+		return usedComps.get(type).has(entity);
+	}
+
+	public static void main(String[] args) {
+		float start = System.nanoTime();
+		var entt = EntityManager.INSTANCE.create();
+		EntityManager.INSTANCE.assign(entt, new CTransform(), CTransform.class);
+
+		var entt2 = EntityManager.INSTANCE.create();
+		EntityManager.INSTANCE.assign(entt2, new CText(), CText.class);
+		EntityManager.INSTANCE.assign(entt2, new CTransform(), CTransform.class);
+
+		EntityManager.INSTANCE.each((e) -> {
+			EntityManager.INSTANCE.component(e, CTransform.class).pos.add(69, 69, 69);
+			EntityManager.INSTANCE.component(e, CText.class).text = "lol";
+		}, CTransform.class, CText.class);
+
+		CTransform t = EntityManager.INSTANCE.component(entt, CTransform.class);
+		CTransform t2 = EntityManager.INSTANCE.component(entt2, CTransform.class);
+		CText text = EntityManager.INSTANCE.component(entt2, CText.class);
+		float duration = System.nanoTime() - start;
+		System.out.println(duration);
+		System.out.println(t.pos);
+		System.out.println(t2.pos);
+		System.out.println(text.text);
 	}
 }

@@ -30,7 +30,7 @@ public abstract class SceneManager {
 	}
 	
 	public static void setCurrentScene(Scene newcurrentScene, Transition trans, boolean clearEntities) {
-		if(clearEntities == true) EntityManager.clearAllEntities();
+		if(clearEntities == true) EntityManager.INSTANCE.destroyAll();
 		InputHandler.INSTANCE.removeAll();
 		if(trans != null) {
 			transState = TransitionState.TRANS_IN;

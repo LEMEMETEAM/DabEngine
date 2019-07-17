@@ -1,21 +1,17 @@
 package DabEngine.States;
 
-import java.lang.ref.WeakReference;
-
-import DabEngine.Entities.Entity;
-
 public class EntityStateMachine {
 
-    private WeakReference<Entity> entity;
+    private int entity;
     public EntityState currentState;
     
-    public EntityStateMachine(Entity e){
-        this.entity = new WeakReference<>(e);
+    public EntityStateMachine(int e){
+        this.entity = e;
     }
 
     public void changeState(EntityState s){
         if(currentState != s) {
-            s.execute(entity.get());
+            s.execute(entity);
             this.currentState = s;
         }
         else{
