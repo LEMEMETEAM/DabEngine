@@ -33,23 +33,22 @@ public abstract class Scene {
 	public void render(Graphics g) {
 		g.begin(rt != null ? rt : null);
 			g.setCamera(camera);
+			if(!lights.isEmpty()){
+				g.pushShader(Light2D.LIGHT_SHADER);
+				int i = 0;
+				for(Light2D light : lights){
+					g.getCurrentShader().setUniform("lights["+i+"].position", light.pos);
+					g.getCurrentShader().setUniform("lights["+i+"].color", light.color);
+					g.getCurrentShader().setUniform("ambientStrength", ambientStrength);
+					i++;
+				}
+			}
+			else{
+				if(g.getCurrentShader() == Light2D.LIGHT_SHADER)
+					g.popShader();
+			}
 			for(ComponentSystem system : sys) {
-				
-					if(!lights.isEmpty()){
-						g.pushShader(Light2D.LIGHT_SHADER);
-						int i = 0;
-						for(Light2D light : lights){
-							g.getCurrentShader().setUniform("lights["+i+"].position", light.pos);
-							g.getCurrentShader().setUniform("lights["+i+"].color", light.color);
-							g.getCurrentShader().setUniform("ambientStrength", ambientStrength);
-							i++;
-						}
-					}
-					else{
-						if(g.getCurrentShader() == Light2D.LIGHT_SHADER)
-							g.popShader();
-					}
-					system.render(g);
+				system.render(g);
 			}
 		g.end();
 		for(Scene s : overlays){

@@ -70,9 +70,9 @@ public class TestCaseEngine extends App {
                 g.setCamera(cam);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
-                    /* g.getCurrentShader().setUniform("lights[0].position", light1.pos);
+                    g.getCurrentShader().setUniform("lights[0].position", light1.pos);
                     g.getCurrentShader().setUniform("lights[0].color", light1.color);
-                    g.getCurrentShader().setUniform("ambientStrength", 0.9f); */
+                    g.getCurrentShader().setUniform("ambientStrength", 0.9f); 
                     /* g.pushShader(DEFAULT_SHADER);
                     {
                         g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, Color.BLACK);
@@ -88,9 +88,13 @@ public class TestCaseEngine extends App {
                     g.popShader();*/
                     //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.GREEN);
                     //g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
-                    for(int i =0; i < 1000; i++){
-                        g.fillRect(posx+rng.nextInt(400), posy+rng.nextInt(300), 0.5f, 10,10,0,0,0,Color.RED);
+                    for(int y =0; y < 30; y++){
+                        for(int x = 0; x < 60; x++){
+                            g.drawTexture(t, null, x * 64, y * 64, 0.5f, 64,64,0,0,0,Color.GREEN);
+                        }
                     }
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 0, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
                 }
                 g.popShader();
             g.end();

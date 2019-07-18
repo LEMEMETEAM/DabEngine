@@ -122,7 +122,11 @@ public enum EntityManager {
 	}
 
 	public boolean has(int entity, Class type){
-		return usedComps.get(type).has(entity);
+		ComponentHandle hndl;
+		if((hndl = usedComps.get(type)) != null){
+			return hndl.has(entity);
+		}
+		return false;
 	}
 
 	public static void main(String[] args) {
