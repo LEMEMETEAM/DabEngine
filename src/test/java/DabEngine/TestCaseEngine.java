@@ -68,6 +68,7 @@ public class TestCaseEngine extends App {
             // omr.draw(g);
             g.begin(null);
                 g.setCamera(cam);
+                g.setSortingMode(SortType.BACK_TO_FRONT);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
                     g.getCurrentShader().setUniform("lights[0].position", light1.pos);
@@ -97,6 +98,7 @@ public class TestCaseEngine extends App {
                     g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
                 }
                 g.popShader();
+                g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
             g.end();
     }
 

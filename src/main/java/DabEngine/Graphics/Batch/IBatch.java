@@ -14,206 +14,133 @@ import DabEngine.Graphics.OpenGL.Textures.Texture;
 
 public abstract class IBatch {
 
-    protected boolean drawing;
-	protected int idx;
-	public static int renderCalls = 0;
-	protected VertexBuffer data;
-	protected int maxsize = 1000;
-	protected Shaders shader;
+	protected class SpriteInfo implements Comparable<SpriteInfo>{
+		public Vertex topLeft = new Vertex();
+		public Vertex bottomLeft = new Vertex();
+		public Vertex bottomRight = new Vertex();
+		public Vertex topRight = new Vertex();
+
+		public Texture texture;
+		public Float sortingKey;
+
+		@Override
+		public int compareTo(SpriteInfo o) {
+			return Float.compare(sortingKey, o.sortingKey);
+		}
+	}
+	protected Shaders currentShader;
+	public static Shaders DEFAULT_SHADER;
+
 	protected static final List<VertexAttrib> ATTRIBUTES = 
 								Arrays.asList(new VertexAttrib(0, "position", 3),
 								new VertexAttrib(1, "color", 4),
 								new VertexAttrib(2, "texCoords", 2),
 								new VertexAttrib(3, "normals", 3));
-	protected VertexInfoQuad[] vInfo;
-	public Matrix4f projectionMatrix = new Matrix4f();
-	protected SortType sortType;
-	protected int vertexArrayPosition;
-	protected int bufferCount;
+	private final int maxsize = 1000;
+	protected SpriteInfo[] sprites;
+	protected int spriteNum;
+	protected Texture currentTexture;
+	protected Matrix4f projection;
+	protected SortType sorting;
+	private boolean drawing;
 
-	public IBatch(Shaders shader, Matrix4f proj) {
-		data = new VertexBuffer(maxsize*6, ATTRIBUTES);
-		vInfo = new VertexInfoQuad[maxsize];
-		this.shader = shader;
-		projectionMatrix.set(proj);
+	public IBatch(){
+		sprites = new SpriteInfo[maxsize];
+	}
+
+	public void begin(SortType sorting, Shaders shader, Matrix4f projection){
+		if (drawing)
+			throw new IllegalStateException("must not be drawing before calling begin()");
+		drawing = true;
+		this.currentShader = shader;
+		this.sorting = sorting;
+		this.projection = projection;
+		currentShader.bind();
 		updateUniforms();
 	}
-
-    public void begin() {
-		if(drawing) {
-			throw new IllegalStateException("must not be drawing before calling begin()");
-		}
-		drawing = true;
-		shader.bind();
-		idx = 0;
-		renderCalls = 0;
-		sortType = SortType.BACK_TO_FRONT;
-	}
 	
-	public void end() {
-		if(!drawing) {
+	private void updateUniforms(){
+
+		currentShader.setUniform("mvpMatrix", projection);
+
+		currentShader.setUniform("texture", 0);
+	}
+	public void end(){
+		if (!drawing)
 			throw new IllegalStateException("must be drawing before calling end()");
-		}
-		drawing = false;
-		flush();
-	}
-	
-	public void updateUniforms() {
-		updateUniforms(shader);
+		drawing =false;
+		createVBO();
 	}
 
-	public void setProjectionMatrix(Matrix4f p){
-		if(drawing)flush();
-		projectionMatrix.set(p);
-		if(drawing)updateUniforms();
-	}
-	
-	public void updateUniforms(Shaders shader) {
-		shader.bind();
-		
-		shader.setUniform("mvpMatrix", projectionMatrix);
-		
-		shader.setUniform("texture", 0);
-	}
+	public void createVBO(){
+		if(spriteNum == 0){
+			return;
+		}
+		Arrays.sort(sprites, 0, spriteNum);
+		VertexBuffer vbo = new VertexBuffer(sprites.length * 6, ATTRIBUTES);
+		int batchIndex = 0;
+		int spriteCount = spriteNum;
 
-	public void setSort(SortType s){
-		if(drawing) flush();
-		sortType = s;
-	}
-	
-	public void setShader(Shaders shader, boolean updateUniforms) {
-		if(shader == null) {
-			throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
-		}
-		if(drawing) {
-			flush();
-		}
-		this.shader = shader;
-		
-		if(updateUniforms) {
-			updateUniforms();
-		}
-		else if(drawing) {
-			this.shader.bind();
-		}
-	}
-	
-	public void setShader(Shaders shader) {
-		setShader(shader, true);
-	}
-	
-	public Shaders getShader() {
-		return shader;
-	}
+		while(spriteCount > 0){
+			int offset = 0;
+			int idx = 0;
 
-    protected void vertex(VertexInfo TL, VertexInfo BL, VertexInfo BR, VertexInfo TR, Texture tex) {
-		VertexInfoQuad vi = new VertexInfoQuad(TL, BL, BR, TR);
-		switch(sortType){
-			case BACK_TO_FRONT:
-				vi.sortKey = -TL.z;
-				break;
-			case FRONT_TO_BACK:
-				vi.sortKey = TL.z;
-				break;
-		}
-		vi.tex = tex;
-		if(vertexArrayPosition >= vInfo.length){
-			int oldSize = vInfo.length;
-			int newSize = oldSize + oldSize/2; // grow by x1.5
-			newSize = (newSize + 63) & (~63); // grow in chunks of 64.
-			vInfo = Arrays.copyOf(vInfo, newSize);
-			data = new VertexBuffer(6*(Math.min(newSize, Short.MAX_VALUE/6)), ATTRIBUTES);
-		}
-		vInfo[vertexArrayPosition++] = vi;
-		
-		idx+=6;
-	}
-    
-    public void flush() {
+			int batchNum =spriteCount;
+			if(batchNum > maxsize){
+				batchNum = maxsize;
+			}
+			for(int i = 0; i < batchNum; i++, batchIndex++, idx += 6){
+				SpriteInfo info = sprites[batchIndex];
+				if(info.texture != currentTexture){
+					flush(vbo, offset, idx - offset);
 
-		if(drawing)
-			updateUniforms();
-		
-		if(idx > 0){
-			Texture tex = null;
-			for(int i = vertexArrayPosition - (idx/6); i < (vertexArrayPosition>vInfo.length?vInfo.length:vertexArrayPosition); i++){
-				VertexInfoQuad bi = vInfo[i];
-				if(bi != null){
-					if(bi.tex != tex){
-						pushToGPU(tex);
-
-						tex = bi.tex;
-					}
-					data.put(bi.vtx[0].x).put(bi.vtx[0].y).put(bi.vtx[0].z).put(bi.vtx[0].r).put(bi.vtx[0].g).put(bi.vtx[0].b).put(bi.vtx[0].a).put(bi.vtx[0].u).put(bi.vtx[0].v).put(bi.vtx[0].nx).put(bi.vtx[0].ny).put(bi.vtx[0].nz);
-					data.put(bi.vtx[1].x).put(bi.vtx[1].y).put(bi.vtx[1].z).put(bi.vtx[1].r).put(bi.vtx[1].g).put(bi.vtx[1].b).put(bi.vtx[1].a).put(bi.vtx[1].u).put(bi.vtx[1].v).put(bi.vtx[1].nx).put(bi.vtx[1].ny).put(bi.vtx[1].nz);
-					data.put(bi.vtx[2].x).put(bi.vtx[2].y).put(bi.vtx[2].z).put(bi.vtx[2].r).put(bi.vtx[2].g).put(bi.vtx[2].b).put(bi.vtx[2].a).put(bi.vtx[2].u).put(bi.vtx[2].v).put(bi.vtx[2].nx).put(bi.vtx[2].ny).put(bi.vtx[2].nz);
-
-					data.put(bi.vtx[3].x).put(bi.vtx[3].y).put(bi.vtx[3].z).put(bi.vtx[3].r).put(bi.vtx[3].g).put(bi.vtx[3].b).put(bi.vtx[3].a).put(bi.vtx[3].u).put(bi.vtx[3].v).put(bi.vtx[3].nx).put(bi.vtx[3].ny).put(bi.vtx[3].nz);
-					data.put(bi.vtx[4].x).put(bi.vtx[4].y).put(bi.vtx[4].z).put(bi.vtx[4].r).put(bi.vtx[4].g).put(bi.vtx[4].b).put(bi.vtx[4].a).put(bi.vtx[4].u).put(bi.vtx[4].v).put(bi.vtx[4].nx).put(bi.vtx[4].ny).put(bi.vtx[4].nz);
-					data.put(bi.vtx[5].x).put(bi.vtx[5].y).put(bi.vtx[5].z).put(bi.vtx[5].r).put(bi.vtx[5].g).put(bi.vtx[5].b).put(bi.vtx[5].a).put(bi.vtx[5].u).put(bi.vtx[5].v).put(bi.vtx[5].nx).put(bi.vtx[5].ny).put(bi.vtx[5].nz);
-					bufferCount++;
+					currentTexture = info.texture;
+					offset = idx = 0;
 				}
-			}
-			//vInfo.clear();
-			pushToGPU(tex);
-		}
-		idx = 0;
-		vertexArrayPosition = 0;
-	}
-	
-	private void pushToGPU(Texture tex){
-		if(bufferCount > 0){
-			if(tex!=null){
-				tex.bind(0);
-			}
-			data.flip();
-			data.bind();
-			data.draw(GL11.GL_TRIANGLES, 0, bufferCount*6);
-			data.unbind();
-			renderCalls++;
+				vbo.put(info.topLeft.x).put(info.topLeft.y).put(info.topLeft.z).put(info.topLeft.r).put(info.topLeft.g).put(info.topLeft.b).put(info.topLeft.a).put(info.topLeft.u).put(info.topLeft.v).put(info.topLeft.nx).put(info.topLeft.ny).put(info.topLeft.nz);
+				vbo.put(info.bottomLeft.x).put(info.bottomLeft.y).put(info.bottomLeft.z).put(info.bottomLeft.r).put(info.bottomLeft.g).put(info.bottomLeft.b).put(info.bottomLeft.a).put(info.bottomLeft.u).put(info.bottomLeft.v).put(info.bottomLeft.nx).put(info.bottomLeft.ny).put(info.bottomLeft.nz);
+				vbo.put(info.bottomRight.x).put(info.bottomRight.y).put(info.bottomRight.z).put(info.bottomRight.r).put(info.bottomRight.g).put(info.bottomRight.b).put(info.bottomRight.a).put(info.bottomRight.u).put(info.bottomRight.v).put(info.bottomRight.nx).put(info.bottomRight.ny).put(info.bottomRight.nz);
 
-			bufferCount = 0;
-			data.clear();
+				vbo.put(info.bottomRight.x).put(info.bottomRight.y).put(info.bottomRight.z).put(info.bottomRight.r).put(info.bottomRight.g).put(info.bottomRight.b).put(info.bottomRight.a).put(info.bottomRight.u).put(info.bottomRight.v).put(info.bottomRight.nx).put(info.bottomRight.ny).put(info.bottomRight.nz);
+				vbo.put(info.topRight.x).put(info.topRight.y).put(info.topRight.z).put(info.topRight.r).put(info.topRight.g).put(info.topRight.b).put(info.topRight.a).put(info.topRight.u).put(info.topRight.v).put(info.topRight.nx).put(info.topRight.ny).put(info.topRight.nz);
+				vbo.put(info.topLeft.x).put(info.topLeft.y).put(info.topLeft.z).put(info.topLeft.r).put(info.topLeft.g).put(info.topLeft.b).put(info.topLeft.a).put(info.topLeft.u).put(info.topLeft.v).put(info.topLeft.nx).put(info.topLeft.ny).put(info.topLeft.nz);
+				
+				info.texture = null;
+			}
+			flush(vbo, offset, idx - offset);
+			spriteCount -= batchNum;
+		}
+
+		spriteNum = 0;
+	}
+
+	public void flush(VertexBuffer buffer, int offset, int count){
+		if(count == 0){
+			return;
+		}
+		updateUniforms();
+		if(currentTexture != null){
+			currentTexture.bind(0);
+		}
+		buffer.flip();
+		buffer.bind();
+		buffer.draw(GL11.GL_TRIANGLES, offset, count);
+		buffer.unbind();
+
+		buffer.clear();
+	}
+
+	public void ensureCapacity(){
+		if(spriteNum >= sprites.length){
+			int oldsize = sprites.length;
+			int newsize = oldsize + oldsize/2;
+			newsize = (newsize + 63) & (~63);
+			sprites = Arrays.copyOf(sprites, newsize);
 		}
 	}
+
 }
 
-class VertexInfoQuad implements Comparable<VertexInfoQuad> {
-	public VertexInfo[] vtx  = new VertexInfo[6];
-	public float sortKey;
-	public Texture tex;
-
-	public VertexInfoQuad(VertexInfo TL, VertexInfo BL, VertexInfo BR, VertexInfo TR){
-		vtx[0] = TL;
-		vtx[1] = BL;
-		vtx[2] = BR;
-
-		vtx[3] = BR;
-		vtx[4] = TR;
-		vtx[5] = TL;
-	}
-
-	@Override
-	public int compareTo(VertexInfoQuad obj){
-		return ((Float)sortKey).compareTo(obj.sortKey);
-	}
-}
-
-class VertexInfo {
+class Vertex{
 	public float x, y, z, r, g, b, a, u, v, nx, ny, nz;
-
-	public VertexInfo(float x, float y, float z, float r, float g, float b, float a, float u, float v, float nx, float ny, float nz){
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = a;
-		this.u = u;
-		this.v = v;
-		this.nx = nx;
-		this.ny = ny;
-		this.nz = nz;
-	}
 }
