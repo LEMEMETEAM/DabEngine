@@ -13,10 +13,12 @@ import java.util.Collections;
 
 public class QuadBatch extends IBatch {
 
-	public QuadBatch(){
-		DEFAULT_SHADER = new Shaders(QuadBatch.class.getResourceAsStream("/Shaders/default.vs"),
+    public static Shaders DEFAULT_SHADER = new Shaders(QuadBatch.class.getResourceAsStream("/Shaders/default.vs"),
     QuadBatch.class.getResourceAsStream("/Shaders/textured.fs"));
-	}
+
+    public QuadBatch(Shaders shader, Matrix4f proj){
+        super(shader, proj);
+    }
 
     public void addQuad(Texture tex, float x, float y, float z, float width, float height, float ox, float oy, float rotation,
             Color c, float u, float v, float u2, float v2) {
@@ -71,76 +73,15 @@ public class QuadBatch extends IBatch {
 		
 		
 		//x+width*y
-		SpriteInfo info = new SpriteInfo();
+        VertexInfo TL = new VertexInfo(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo BL = new VertexInfo(x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo BR = new VertexInfo(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		VertexInfo TR = new VertexInfo(x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+		vertex(TL, BL, BR, TR, tex);
 
-		info.topLeft.x = x1; 
-		info.topLeft.y = y1; 
-		info.topLeft.z = z; 
-		info.topLeft.r = col[0+4*0]; 
-		info.topLeft.g = col[1+4*0]; 
-		info.topLeft.b = col[2+4*0]; 
-		info.topLeft.a = col[3+4*0]; 
-		info.topLeft.u = u; 
-		info.topLeft.v = v; 
-		info.topLeft.nx = faceNormals1.x;
-		info.topLeft.ny = faceNormals1.y; 
-		info.topLeft.nz = faceNormals1.z;
+		Arrays.sort(vInfo, 0, vertexArrayPosition>vInfo.length?vInfo.length:vertexArrayPosition);
 
-		info.bottomLeft.x = x2; 
-		info.bottomLeft.y = y2; 
-		info.bottomLeft.z = z; 
-		info.bottomLeft.r = col[0+4*1]; 
-		info.bottomLeft.g = col[1+4*1]; 
-		info.bottomLeft.b = col[2+4*1]; 
-		info.bottomLeft.a = col[3+4*1]; 
-		info.bottomLeft.u = u; 
-		info.bottomLeft.v = v2; 
-		info.bottomLeft.nx = faceNormals1.x;
-		info.bottomLeft.ny = faceNormals1.y; 
-		info.bottomLeft.nz = faceNormals1.z;
-
-		info.bottomRight.x = x3; 
-		info.bottomRight.y = y3; 
-		info.bottomRight.z = z; 
-		info.bottomRight.r = col[0+4*2]; 
-		info.bottomRight.g = col[1+4*2]; 
-		info.bottomRight.b = col[2+4*2]; 
-		info.bottomRight.a = col[3+4*2]; 
-		info.bottomRight.u = u2; 
-		info.bottomRight.v = v2; 
-		info.bottomRight.nx = faceNormals1.x;
-		info.bottomRight.ny = faceNormals1.y; 
-		info.bottomRight.nz = faceNormals1.z;
-
-		info.topRight.x = x4; 
-		info.topRight.y = y4; 
-		info.topRight.z = z; 
-		info.topRight.r = col[0+4*3]; 
-		info.topRight.g = col[1+4*3]; 
-		info.topRight.b = col[2+4*3]; 
-		info.topRight.a = col[3+4*3]; 
-		info.topRight.u = u2; 
-		info.topRight.v = v; 
-		info.topRight.nx = faceNormals2.x;
-		info.topRight.ny = faceNormals2.y; 
-		info.topRight.nz = faceNormals2.z;
-
-		info.texture = tex;
-
-		switch(sorting){
-			case BACK_TO_FRONT:
-				info.sortingKey = -z;
-				break;
-			case FRONT_TO_BACK:
-				info.sortingKey = z;
-				break;
-			case TEXTURE:
-				info.sortingKey = (float)tex.getID();
-		}
-
-		ensureCapacity();
-
-		sprites[spriteNum++] = info;
+		int dab = 0;
 	}
 	
 	private Vector3f calcNormals(float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, float p3x, float p3y, float p3z){
