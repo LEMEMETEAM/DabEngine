@@ -1,7 +1,6 @@
 package DabEngine.Graphics;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayDeque;
 import java.util.Stack;
 
 import org.joml.Matrix4f;
@@ -14,7 +13,6 @@ import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Batch.Font;
 import DabEngine.Graphics.Batch.QuadBatch;
-import DabEngine.Graphics.Batch.SortType;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
@@ -36,12 +34,11 @@ public class Graphics {
      */
     private QuadBatch batch;
     /**
-     * Stack of shaders. Can push shaders to the stack to be used by the
-     * {@see VertexBatch} and also pop them off to revert back to a previous shader.
+     * Stack of shaders. Can push shaders to the stack to be 
+     * used by the {@see VertexBatch} and also pop them off to
+     * revert back to a previous shader.
      */
-    private ArrayDeque<Shaders> shaderStack;
-    private Matrix4f projection;
-    private SortType sorting;
+    private Stack<Shaders> shaderStack;
     /**
      * The {@see RenderTarget} to render to.
      */
@@ -49,24 +46,19 @@ public class Graphics {
     private App app;
 
     public Graphics(App app){
-        batch = new QuadBatch();
-        shaderStack = new ArrayDeque<>();
+        batch = new QuadBatch(QuadBatch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
+        shaderStack = new Stack<>();
         shaderStack.push(QuadBatch.DEFAULT_SHADER);
-        projection = new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0);
-        sorting = SortType.TEXTURE;
         this.app = app;
     }
 
     public void pushShader(Shaders s){
-        batch.end();
-        shaderStack.addLast(s);
-        batch.begin(sorting, shaderStack.peekLast(), projection);
+        batch.setShader(shaderStack.push(s));
     }
 
     public void popShader(){
-        batch.end();
-        shaderStack.removeLast();
-        batch.begin(sorting, shaderStack.peekLast(), projection);
+        shaderStack.pop();
+        batch.setShader(shaderStack.peek());
     }
 
     public void setRenderTarget(RenderTarget r){
@@ -77,15 +69,7 @@ public class Graphics {
     }
 
     public void setCamera(Camera camera){
-        batch.end();
-        projection = camera.getProjection();
-        batch.begin(sorting, shaderStack.peekLast(), projection);
-    }
-
-    public void setSortingMode(SortType type){
-        batch.end();
-        sorting = type;
-        batch.begin(sorting, shaderStack.peekLast(), projection);
+        batch.setProjectionMatrix(camera.getProjection());
     }
 
     public void begin(RenderTarget r){
@@ -94,7 +78,7 @@ public class Graphics {
             RenderTarget = r;
             glClear(GL_COLOR_BUFFER_BIT);
         }
-        batch.begin(sorting, shaderStack.peekLast(), projection);
+        batch.begin();
     }
 
     public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
@@ -179,6 +163,6 @@ public class Graphics {
     }
 
     public Shaders getCurrentShader(){
-        return shaderStack.peekLast();
+        return shaderStack.peek();
     }
 }

@@ -38,6 +38,9 @@ public class RendererSystem extends ComponentSystem {
                 else if(EntityManager.INSTANCE.has(e, CPolygon.class)){
                     //implement polygon rnedering
                 }
+                else if(EntityManager.INSTANCE.has(e, CTileMap.class)){
+                    
+                }
             }
         }, CTransform.class);
     }

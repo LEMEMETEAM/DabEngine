@@ -9,6 +9,7 @@ import DabEngine.Core.App;
 import DabEngine.Graphics.Camera;
 import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
+import DabEngine.Graphics.Batch.SortType;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light2D;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
@@ -23,6 +24,7 @@ public abstract class Scene {
 	protected FixedArrayList<Light2D> lights = new FixedArrayList<>(32);
 	protected float ambientStrength;
 	protected RenderTarget rt;
+	public SortType sortingMode;
 	
 	public Scene(App app, boolean renderToTexture){
 		this.app = app;

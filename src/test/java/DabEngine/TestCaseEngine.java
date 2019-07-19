@@ -94,11 +94,11 @@ public class TestCaseEngine extends App {
                             g.drawTexture(t, null, x * 64, y * 64, 0.5f, 64,64,0,0,0,Color.GREEN);
                         }
                     }
-                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 0, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
-                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 0, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                 }
                 g.popShader();
-                g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.25F, 30, 30, 0, 0, 0, Color.WHITE);
+                g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
             g.end();
     }
 
