@@ -76,7 +76,8 @@ public class Graphics {
         if(r != null){
             r.bind();
             RenderTarget = r;
-            glClear(GL_COLOR_BUFFER_BIT);
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         batch.begin();
     }
@@ -156,6 +157,7 @@ public class Graphics {
         batch.end();
         if (RenderTarget != null) {
             RenderTarget.unbind();
+            glDisable(GL_DEPTH_TEST);
             //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
             RenderTarget.blit();
             RenderTarget = null;
@@ -164,5 +166,9 @@ public class Graphics {
 
     public Shaders getCurrentShader(){
         return shaderStack.peek();
+    }
+
+    public QuadBatch getBatch(){
+        return batch;
     }
 }

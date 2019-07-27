@@ -68,7 +68,6 @@ public class TestCaseEngine extends App {
             // omr.draw(g);
             g.begin(null);
                 g.setCamera(cam);
-                g.setSortingMode(SortType.BACK_TO_FRONT);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
                     g.getCurrentShader().setUniform("lights[0].position", light1.pos);

@@ -1,16 +1,24 @@
 package DabEngine.System;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CBuffered;
 import DabEngine.Entities.Components.CPolygon;
+import DabEngine.Entities.Components.CRenderable;
 import DabEngine.Entities.Components.CSprite;
 import DabEngine.Entities.Components.CText;
+import DabEngine.Entities.Components.CTileMap;
 import DabEngine.Entities.Components.CTransform;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 
 public class RendererSystem extends ComponentSystem {
+
+    private ArrayList<Integer> depth = new ArrayList<>();
 
     @Override
     public void update() {
@@ -20,11 +28,17 @@ public class RendererSystem extends ComponentSystem {
     @Override
     public void render(Graphics g) {
         EntityManager.INSTANCE.each(e -> {
-            CTransform t = EntityManager.INSTANCE.component(e, CTransform.class);
+            depth.add(e);
+        }, CTransform.class, CRenderable.class);
+
+        depth.sort((c1, c2) -> Float.compare(-(EntityManager.INSTANCE.component(c1, CTransform.class).pos.z), -(EntityManager.INSTANCE.component(c2, CTransform.class).pos.z)));
+
+        for(int e : depth){
+            CTransform  t = EntityManager.INSTANCE.component(e, CTransform.class);
             if(EntityManager.INSTANCE.has(e, CBuffered.class)){
                 g.setRenderTarget(EntityManager.INSTANCE.component(e, CBuffered.class).rt);
             }
-            if(EntityManager.INSTANCE.has(e, CSprite.class) || EntityManager.INSTANCE.has(e, CPolygon.class) || EntityManager.INSTANCE.has(e, CText.class)){
+            if(EntityManager.INSTANCE.has(e, CSprite.class) || EntityManager.INSTANCE.has(e, CPolygon.class) || EntityManager.INSTANCE.has(e, CText.class) || EntityManager.INSTANCE.has(e, CTileMap.class)){
                 if(EntityManager.INSTANCE.has(e, CSprite.class)){
                     CSprite s = EntityManager.INSTANCE.component(e, CSprite.class);
                     g.drawTexture(s.texture, s.region, t.pos.x, t.pos.y, t.pos.z, t.size.x, t.size.y, t.origin.x, t.origin.y, t.rotation.z, s.color);
@@ -39,10 +53,12 @@ public class RendererSystem extends ComponentSystem {
                     //implement polygon rnedering
                 }
                 else if(EntityManager.INSTANCE.has(e, CTileMap.class)){
-                    
+                    CTileMap m = EntityManager.INSTANCE.component(e, CTileMap.class);
+                    m.renderer.draw(g, t.pos.x, t.pos.y, t.pos.z);
                 }
             }
-        }, CTransform.class);
+        }
+        depth.clear();
     }
 
     

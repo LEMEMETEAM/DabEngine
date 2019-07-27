@@ -64,7 +64,9 @@ public abstract class IBatch {
 	}
 	
 	public void updateUniforms(Shaders shader) {
-		shader.bind();
+		if(drawing){
+			shader.bind();
+		}
 		
 		shader.setUniform("mvpMatrix", projectionMatrix);
 		
@@ -104,8 +106,7 @@ public abstract class IBatch {
     
     public void flush() {
 
-		if(drawing)
-			updateUniforms();
+		updateUniforms();
 		
 		if(idx > 0){
 			data.flip();

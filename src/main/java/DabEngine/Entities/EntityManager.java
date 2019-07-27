@@ -27,8 +27,8 @@ public enum EntityManager {
 
 	private HashMap<Class, ComponentHandle> usedComps = new HashMap<>();
 	private int[] entities = new int[32];
-	private int next;
-	private int highest;
+	private int next = 1;
+	private int highest = 1;
 	private ArrayDeque<Integer> recycleBin = new ArrayDeque<>();
 
 	private void resize() {
@@ -62,7 +62,7 @@ public enum EntityManager {
 
 	public int create(){
 		int id;
-		if(highest == 0){
+		if(highest == 1){
 			id = next;
 			highest++;
 		}
@@ -90,6 +90,7 @@ public enum EntityManager {
 			s.comps[entity] = null;
 		}
 		entities[entity] = 0;
+		highest = entities[next];
 	}
 
 	public ArrayList<ComponentHandle> handles(Class... types){

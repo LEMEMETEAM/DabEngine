@@ -19,7 +19,7 @@ public class OrthagonalMapRenderer {
         this.map = map;
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g, float x_offset, float y_offset, float z_offset){
         int i = 1/map.layers.size();;
         for(int l = 0; l < map.layers.size(); l++){
             MapLayer layer = map.layers.get(l);
@@ -30,7 +30,7 @@ public class OrthagonalMapRenderer {
                         for(int x = 0; x < map.info.width; x++){
                             Pair<Texture, TextureRegion> t = map.getTile(layer, x, y);
                             if(t != null)
-                                g.drawTexture(t.left, t.right, x * map.info.tileWidth, y * map.info.tileHeight, i * l, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
+                                g.drawTexture(t.left, t.right, (x * map.info.tileWidth) + x_offset, (y * map.info.tileHeight) + y_offset, (i * l) + z_offset, map.getFinalTileWidth(layer, x, y), map.getFinalTileHeight(layer, x, y), 0, 0, 0, Color.WHITE);
                         }
                     }
                     break;

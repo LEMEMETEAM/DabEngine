@@ -1,6 +1,9 @@
 package DabEngine.Observer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Observer;
 
 import DabEngine.Observer.Event;
 
@@ -8,29 +11,15 @@ public enum EventManager {
 
 	INSTANCE;
 	
-	private HashSet<Event> event_stack = new HashSet<>();
-	
-	public void submitEvent(Event e) {
-		event_stack.add(e);
-	}
-	
-	public <T> T receiveEvent(Class<T> clz) {
-		for(Event e : event_stack) {
-			if(clz.isInstance(e)) {
-				T cast = clz.cast(e);
-				event_stack.remove(e);
-				return cast;
-			}
+	private HashMap<Class, ArrayList<IEventListener>> listeners = new HashMap<>();
+
+	public void submit(Event e, Class clz){
+		for(var o : listeners.get(clz)){
+			o.onNotify(e);
 		}
-		return null;
 	}
-	
-	public <T> boolean hasEvent(Class<T> clz) {
-		for(Event e  : event_stack) {
-			if(clz.isInstance(e)) {
-				return true;
-			}
-		}
-		return false;
+
+	public void subscribe(Class eventType, IEventListener listener){
+		listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);
 	}
 }

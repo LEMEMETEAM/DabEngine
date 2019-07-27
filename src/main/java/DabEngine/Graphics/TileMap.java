@@ -31,6 +31,8 @@ public class TileMap {
     public class MapLayer{
         public ArrayList<MapObject> mOBjs = new ArrayList<>();
         public String type;
+        public String name;
+        public HashMap<String, Pair<Class<?>, Object>> props = new HashMap<>();
     }
     
     public class MapObject {
@@ -85,8 +87,31 @@ public class TileMap {
             MapLayer l = new MapLayer();
             JSONObject obj = (JSONObject)layersA.get(i);
             l.type = (String)obj.get("type");
+            l.name = (String)obj.get("name");
+            JSONArray lprops = (JSONArray)obj.get("properties");
+            if(lprops != null){
+                for(int k = 0; k < lprops.size(); k++){
+                    JSONObject prop = (JSONObject)lprops.get(k);
+                    Class<?> type = null;
+                    switch((String)prop.get("type")){
+                        case "bool":
+                            type = Boolean.class;
+                            break;
+                        case "int":
+                            type = Integer.class;
+                            break;
+                        case "float":
+                            type = Float.class;
+                            break;
+                        case "string":
+                            type = String.class;
+                            break;
+                    }
+                    l.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                }
+            }
             layers.add(l);
-            switch((String)obj.get("type")){
+            switch(l.type){
                 case "tilelayer":
                     JSONArray data = (JSONArray)obj.get("data");
                     for(int j = 0; j < data.size(); j++){
@@ -241,6 +266,34 @@ public class TileMap {
                                 }
 
                                 layers.get(i).mOBjs.add(s);
+                                break;
+                            
+                            default:
+                                MapObject mo = new MapObject();
+
+                                if(props != null){
+                                    for(int k = 0; k < props.size(); k++){
+                                        JSONObject prop = (JSONObject)props.get(k);
+                                        Class<?> type = null;
+                                        switch((String)prop.get("type")){
+                                            case "bool":
+                                                type = Boolean.class;
+                                                break;
+                                            case "int":
+                                                type = Integer.class;
+                                                break;
+                                            case "float":
+                                                type = Float.class;
+                                                break;
+                                            case "string":
+                                                type = String.class;
+                                                break;
+                                        }
+                                        mo.props.put((String)prop.get("name"), new Pair<>(type, prop.get("value")));
+                                    }
+                                }
+
+                                layers.get(i).mOBjs.add(mo);
                                 break;
                         }
                     }

@@ -2,7 +2,7 @@ package DabEngine.Scenes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Stack;
 
 import DabEngine.Core.App;
@@ -17,7 +17,7 @@ import DabEngine.System.ComponentSystem;
 import DabEngine.Utils.FixedArrayList;
 
 public abstract class Scene {
-	private HashSet<ComponentSystem> sys = new HashSet<>();
+	private LinkedHashSet<ComponentSystem> sys = new LinkedHashSet<>();
 	public Camera camera;
 	public Stack<Scene> overlays = new Stack<>();
 	public App app;
@@ -34,7 +34,8 @@ public abstract class Scene {
 	
 	public void render(Graphics g) {
 		g.begin(rt != null ? rt : null);
-			g.setCamera(camera);
+			if(camera != null)
+				g.setCamera(camera);
 			if(!lights.isEmpty()){
 				g.pushShader(Light2D.LIGHT_SHADER);
 				int i = 0;

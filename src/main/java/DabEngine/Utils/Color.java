@@ -2,7 +2,7 @@ package DabEngine.Utils;
 
 public class Color {
 
-    private float[] color = new float[4 * 4];
+    public float[] color = new float[4 * 4];
 
     public Color(){ }
 
@@ -14,9 +14,9 @@ public class Color {
 
     public Color setAlpha(float alpha){
         color[3] = alpha;
-        color[6] = alpha;
-        color[12] = alpha;
-        color[16] = alpha;
+        color[7] = alpha;
+        color[11] = alpha;
+        color[15] = alpha;
         return this;
     }
 

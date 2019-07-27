@@ -94,7 +94,7 @@ public class QuadBatch extends IBatch {
 	}
 
     public void checkFlush(Texture t) {
-        if(t != tex || idx > maxsize){
+        if(t != tex || idx >= maxsize){
             flush();
             this.tex = t;
         }
