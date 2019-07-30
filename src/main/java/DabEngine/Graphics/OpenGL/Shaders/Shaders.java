@@ -24,10 +24,10 @@ public class Shaders {
     private int vs;
     private int fs;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public String vs_source, fs_source;
     
     public Shaders(File filevs, File filefs){
         this(readFile(filevs), readFile(filefs));
-
     }
     
     public Shaders(String source_vs, String source_fs) {
@@ -54,11 +54,19 @@ public class Shaders {
         glAttachShader(program, fs);
 
         glLinkProgram(program);
+        if(glGetProgrami(program, GL_LINK_STATUS) == 0){
+        	LOGGER.log(Level.SEVERE, "Failed linking shaders to program " + program);
+            LOGGER.log(Level.SEVERE, glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
+            //System.exit(0);
+        }
         glValidateProgram(program);
+
+        this.vs_source = source_vs;
+        this.fs_source = source_fs;
     }
     
     public Shaders(InputStream stream_vs, InputStream stream_fs) {
-    	this(readFileFromStream(stream_vs), readFileFromStream(stream_fs));
+        this(readFileFromStream(stream_vs), readFileFromStream(stream_fs));
     }
 
     private static String readFile(File file){
@@ -66,6 +74,12 @@ public class Shaders {
         try(BufferedReader br = new BufferedReader(new FileReader(file))){
             String line;
             while((line = br.readLine()) != null){
+                if(line.contains("#include")){
+                    line.replaceAll("\\s", "");
+                    line.replace("#include", "");
+                    string.append(readFileFromStream(Shaders.class.getResourceAsStream(line)));
+                    continue;
+                }
                 string.append(line);
                 string.append("\n");
             }
@@ -76,10 +90,16 @@ public class Shaders {
     }
     
     private static String readFileFromStream(InputStream stream) {
-    	StringBuilder string = new StringBuilder();
+        StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
             String line;
             while((line = br.readLine()) != null){
+                if(line.contains("#include")){
+                    line = line.replaceAll("\\s", "");
+                    line = line.replace("#include", "");
+                    string.append(readFileFromStream(Shaders.class.getResourceAsStream(line)));
+                    continue;
+                }
                 string.append(line);
                 string.append("\n");
             }
@@ -95,6 +115,10 @@ public class Shaders {
 
     public void unbind(){
         glUseProgram(0);
+    }
+
+    public int getProgram(){
+        return program;
     }
 
     public void setUniform(String uniformName, Matrix4f value){

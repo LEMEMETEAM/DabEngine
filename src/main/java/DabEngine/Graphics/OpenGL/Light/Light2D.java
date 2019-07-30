@@ -15,7 +15,7 @@ public class Light2D {
 
     public static final Shaders LIGHT_SHADER = new Shaders(
         Light2D.class.getResourceAsStream("/Shaders/default.vs"),
-        Light2D.class.getResourceAsStream("/Shaders/textured_lighting.fs"));
+        Light2D.class.getResourceAsStream("/Shaders/lit.fs"));
 
     public Light2D(Vector3f pos, float radius, Vector3f color){
         this.pos = pos;

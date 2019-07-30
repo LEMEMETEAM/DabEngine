@@ -2,6 +2,7 @@ package DabEngine.Graphics.OpenGL;
 
 import static org.lwjgl.opengl.GL40.*;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
@@ -20,7 +21,7 @@ public class RenderTarget {
 	private int f_id;
 	private int r_id;
 	private VertexBuffer quad;
-	private Stack<Shaders> fboShader = new Stack<>();
+	private ArrayDeque<Shaders> fboShader = new ArrayDeque<>();
 	private Texture texture;
 	private Viewport vp;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

@@ -7,10 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.OpenGL.ResizeEvent;
 import DabEngine.Graphics.OpenGL.Window;
 import DabEngine.Input.InputHandler;
-import DabEngine.Observer.EventManager;
 import DabEngine.Utils.Timer;
 
 public class Engine {

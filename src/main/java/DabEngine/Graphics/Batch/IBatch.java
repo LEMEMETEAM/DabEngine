@@ -6,8 +6,11 @@ import java.util.List;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
+import DabEngine.Graphics.Models.UniformAttribs;
+import DabEngine.Graphics.Models.UniformBuffer;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
+import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 
@@ -19,18 +22,25 @@ public abstract class IBatch {
 	protected VertexBuffer data;
 	protected int maxsize = 1000*6;
 	protected Shaders shader;
+	protected UniformBuffer ubo;
 	protected Texture tex;
 	protected static final List<VertexAttrib> ATTRIBUTES = 
 								Arrays.asList(new VertexAttrib(0, "position", 3),
 								new VertexAttrib(1, "color", 4),
 								new VertexAttrib(2, "texCoords", 2),
 								new VertexAttrib(3, "normals", 3));
+	protected static final UniformAttribs[] uATTRIBUTES = new UniformAttribs[]{
+		new UniformAttribs(0, "mvpMatrix", 16)
+	};
 	public Matrix4f projectionMatrix = new Matrix4f();
+	public Blending blend;
 
 	public IBatch(Shaders shader, Matrix4f proj) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
+		ubo = new UniformBuffer("mvp", uATTRIBUTES);
 		this.shader = shader;
 		projectionMatrix.set(proj);
+		ubo.bindToShader(shader);
 		updateUniforms();
 	}
 
@@ -43,6 +53,7 @@ public abstract class IBatch {
 		idx = 0;
 		renderCalls = 0;
 		tex = null;
+		blend = Blending.MIX;
 	}
 	
 	public void end() {
@@ -64,13 +75,9 @@ public abstract class IBatch {
 	}
 	
 	public void updateUniforms(Shaders shader) {
-		if(drawing){
-			shader.bind();
-		}
-		
-		shader.setUniform("mvpMatrix", projectionMatrix);
-		
-		shader.setUniform("texture", 0);
+		float[] arr = new float[16];
+		projectionMatrix.get(arr);
+		ubo.put(0, arr);
 	}
 	
 	public void setShader(Shaders shader, boolean updateUniforms) {
@@ -81,11 +88,12 @@ public abstract class IBatch {
 			flush();
 		}
 		this.shader = shader;
+		ubo.bindToShader(shader);
 		
 		if(updateUniforms) {
 			updateUniforms();
 		}
-		else if(drawing) {
+		if(drawing) {
 			this.shader.bind();
 		}
 	}
@@ -98,6 +106,14 @@ public abstract class IBatch {
 		return shader;
 	}
 
+	public void setBlend(Blending blend){
+		if(drawing){
+			flush();
+		}
+		this.blend = blend;
+
+	}
+
     protected VertexBuffer vertex(float x, float y, float z, float r, float g, float b, float a, float u, float v, float nx, float ny, float nz) {
         data.put(x).put(y).put(z).put(r).put(g).put(b).put(a).put(u).put(v).put(nx).put(ny).put(nz);
         idx++;
@@ -107,6 +123,7 @@ public abstract class IBatch {
     public void flush() {
 
 		updateUniforms();
+		ubo.flush();
 		
 		if(idx > 0){
 			data.flip();
@@ -114,6 +131,7 @@ public abstract class IBatch {
 				tex.bind(0);
 			}
 			data.bind();
+			blend.apply();
 			data.draw(GL11.GL_TRIANGLES, 0, idx);
 			data.unbind();
 			renderCalls++;

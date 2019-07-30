@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import DabEngine.Graphics.Graphics;
+import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
 import static org.lwjgl.opengl.GL33.*;
 
@@ -105,45 +106,6 @@ public class AABB {
     }*/
 
     public void debugDraw(Graphics g){
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(g.getBatch().projectionMatrix.get(BufferUtils.createFloatBuffer(16)));
-        glUseProgram(0);
-        glColor3f(1,0,0);
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-        glEnd();
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-        glEnd();
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-        glEnd();
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z + half_extent.z);
-        glEnd();
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z + half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-        glEnd();
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(center.x + half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y - half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x - half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-            glVertex3f(center.x + half_extent.x, center.y + half_extent.y, center.z - half_extent.z);
-        glEnd();
+        g.drawRect(center.x - half_extent.x, center.y - half_extent.y, 0, half_extent.x * 2, half_extent.y*2, 1, Color.RED);
     }
 }

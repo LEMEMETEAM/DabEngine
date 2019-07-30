@@ -27,6 +27,13 @@ public class TextureRegion {
 		uv.z = uv.x + scalex;
 		uv.w = uv.y + scaley;
 	}
+
+	public void setTile(int tilexmin, int tilexmax, int tileymin, int tileymax){
+		uv.x = ((tilexmin - 1) * scalex);
+		uv.y = ((tileymin - 1) * scaley);
+		uv.z = ((tilexmax - 1) * scalex) + scalex;
+		uv.w = ((tileymax - 1) * scaley) + scaley;
+	}
 	
 	public void setTile(int tile) {
 		uv.x = (((tile - 1 % tileNomX)) * scalex);

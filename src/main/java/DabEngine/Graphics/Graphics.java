@@ -61,6 +61,10 @@ public class Graphics {
         batch.setShader(shaderStack.peek());
     }
 
+    public void setBlend(Blending blend){
+        batch.setBlend(blend);
+    }
+
     public void setRenderTarget(RenderTarget r){
         if(r != RenderTarget){
             end();
@@ -158,6 +162,7 @@ public class Graphics {
         if (RenderTarget != null) {
             RenderTarget.unbind();
             glDisable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT);
             //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
             RenderTarget.blit();
             RenderTarget = null;

@@ -19,12 +19,13 @@ import DabEngine.Utils.FixedArrayList;
 public abstract class Scene {
 	private LinkedHashSet<ComponentSystem> sys = new LinkedHashSet<>();
 	public Camera camera;
-	public Stack<Scene> overlays = new Stack<>();
+	public Stack<Overlay> overlays = new Stack<>();
 	public App app;
 	protected FixedArrayList<Light2D> lights = new FixedArrayList<>(32);
 	protected float ambientStrength;
 	protected RenderTarget rt;
 	public SortType sortingMode;
+	public boolean paused;
 	
 	public Scene(App app, boolean renderToTexture){
 		this.app = app;
@@ -54,17 +55,19 @@ public abstract class Scene {
 				system.render(g);
 			}
 		g.end();
-		for(Scene s : overlays){
+		for(Overlay s : overlays){
 			s.render(g);
 		}
 	}
 
-	public void tick() {
-		for(ComponentSystem system : sys) {
-			system.update();
+	public void update() {
+		if(!paused){
+			for(ComponentSystem system : sys) {
+				system.update();
+			}
 		}
-		for(Scene s : overlays){
-			s.tick();
+		for(Overlay s : overlays){
+			s.update();
 		}
 	}
 	public void addSystem(ComponentSystem system) {
@@ -80,8 +83,12 @@ public abstract class Scene {
 		return null;
 	}
 
-	public void addOverlay(Scene overlay){
-		overlays.push(overlay).init();
+	public void pushOverlay(Overlay overlay){
+		overlays.push(overlay);
+	}
+
+	public void popOverlay(){
+		overlays.pop();
 	}
 	
 	public abstract void init();

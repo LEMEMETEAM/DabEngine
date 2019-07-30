@@ -2,7 +2,6 @@ package DabEngine.Cache;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import DabEngine.Graphics.OpenGL.Textures.Texture;
@@ -16,14 +15,12 @@ public enum ResourceManager {
 	public Texture getTexture(String filename){
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
-			try{
-				TextureLoader loader = new TextureLoader(new File(filename));
+			try(TextureLoader loader = new TextureLoader(new File(filename))){
 				resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
-				try {
-					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
 					resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -36,14 +33,12 @@ public enum ResourceManager {
 	public Texture getTextureFromStream(String filename){
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
-			try{
-				TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)));
+			try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
 				resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
-				try {
-					TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"));
+				try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
 					resource = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.NEAREST_LINEAR);
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}

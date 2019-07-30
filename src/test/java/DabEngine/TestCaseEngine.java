@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.simple.parser.ParseException;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL43;
 
 import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
@@ -20,6 +20,7 @@ import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light2D;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
@@ -63,16 +64,16 @@ public class TestCaseEngine extends App {
     @Override
     public void render() {
 
-            GL11.glClearColor(1,1,1,1.0f);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+            GL43.glClearColor(0,0,0,1.0f);
+            //GL43.glClear(GL43.GL_COLOR_BUFFER_BIT);
             // omr.draw(g);
-            g.begin(null);
+            g.begin(rt);
                 g.setCamera(cam);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
                     g.getCurrentShader().setUniform("lights[0].position", light1.pos);
                     g.getCurrentShader().setUniform("lights[0].color", light1.color);
-                    g.getCurrentShader().setUniform("ambientStrength", 0.9f); 
+                    g.getCurrentShader().setUniform("ambientStrength", 0.9f);
                     /* g.pushShader(DEFAULT_SHADER);
                     {
                         g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, Color.BLACK);
@@ -81,11 +82,6 @@ public class TestCaseEngine extends App {
                     //g.drawRect(500, 200, 0, 100, 100, 5, Color.RED);
                     //g.fillRect(350, 400, 0, 100, 100, 50, 50, rotation, Color.RED);
                     //g.drawTexture(t, null, 500, 100, 0.5f, 500, 500, 0, 0, 0, Color.WHITE);
-                    /* g.pushShader(DEFAULT_SHADER);
-                    {
-                        g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 0, Color.BLACK);
-                    } 
-                    g.popShader();*/
                     //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.GREEN);
                     //g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
                     for(int y =0; y < 30; y++){
@@ -93,11 +89,17 @@ public class TestCaseEngine extends App {
                             g.drawTexture(t, null, x * 64, y * 64, 0.5f, 64,64,0,0,0,Color.GREEN);
                         }
                     }
+                    g.setBlend(Blending.MUL);
                     g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 0, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                     g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                 }
                 g.popShader();
                 g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
+                g.pushShader(DEFAULT_SHADER);
+                    {
+                        g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 1, Color.BLACK);
+                    } 
+                g.popShader();
             g.end();
     }
 
@@ -138,7 +140,7 @@ public class TestCaseEngine extends App {
         //text = new TextBatch(TextBatch.DEFAULT_SHADER);
 
         DEFAULT_SHADER = new Shaders(
-			App.class.getResourceAsStream("/Shaders/textDefault.vs"),
+			App.class.getResourceAsStream("/Shaders/default.vs"),
             App.class.getResourceAsStream("/Shaders/text.fs"));
             try{
             TextureLoader loader = new TextureLoader(new File("src/test/resources/Tiles_64x64.png"));
@@ -151,10 +153,7 @@ public class TestCaseEngine extends App {
         vp.apply();
 
         rt = new RenderTarget(WIDTH, HEIGHT, vp);
-        Shaders fboShader = new Shaders(
-            App.class.getResourceAsStream("/Shaders/defaultFBO.vs"),
-            App.class.getResourceAsStream("/Shaders/defaultFBO.fs"));
-        rt.pushShader(fboShader);
+        rt.pushShader(rt.RENDERTARGET_SHADER_DEFAULT);
 
         cam = new Camera2D(WIDTH, HEIGHT);
 

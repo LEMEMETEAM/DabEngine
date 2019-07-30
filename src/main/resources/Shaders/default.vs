@@ -10,7 +10,9 @@ out vec2 outTexCord;
 out vec4 outColor;
 out vec3 outNormal;
 
-uniform mat4 mvpMatrix;
+layout (std140) uniform mvp {
+    mat4 mvpMatrix;
+};
 
 void main(){
     gl_Position = mvpMatrix * vec4(position, 1.0);

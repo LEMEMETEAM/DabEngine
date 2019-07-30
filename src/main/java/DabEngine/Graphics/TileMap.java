@@ -156,7 +156,7 @@ public class TileMap {
                     JSONArray objects = (JSONArray)obj.get("objects");
                     for(int j = 0; j < objects.size(); j++){
                         JSONObject o = (JSONObject)objects.get(j);
-                        JSONArray props = (JSONArray)obj.get("properties");
+                        JSONArray props = (JSONArray)o.get("properties");
                         switch((String)o.get("type")){
                             case "rect":
                             case "Rect":

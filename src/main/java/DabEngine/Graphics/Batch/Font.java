@@ -25,7 +25,7 @@ public class Font {
     private Texture texture;
     public float size;
     public static final Shaders TEXT_DEFAULT_SHADER = new Shaders(
-        Font.class.getResourceAsStream("/Shaders/textDefault.vs"),
+        Font.class.getResourceAsStream("/Shaders/default.vs"),
         Font.class.getResourceAsStream("/Shaders/text.fs"));
 
     public Font(String fontFile, float size, int oversampling) {
