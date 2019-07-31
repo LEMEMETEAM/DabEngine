@@ -17,13 +17,13 @@ public enum ResourceManager {
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try(TextureLoader loader = new TextureLoader(new File(filename))){
-				if(params[0] != null)
+				if(params.length < 1)
 					resource = new Texture(loader.pixels, loader.width, loader.height, params);
 				else
 					resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
-					if(params[0] != null)
+					if(params.length < 1)
 						resource = new Texture(loader.pixels, loader.width, loader.height, params);
 					else
 						resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
@@ -41,13 +41,13 @@ public enum ResourceManager {
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
-				if(params[0] != null)
+				if(params[.length < 1)
 					resource = new Texture(loader.pixels, loader.width, loader.height, params);
 				else
 					resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))){
-					if(params[0] != null)
+					if(params.length < 1)
 						resource = new Texture(loader.pixels, loader.width, loader.height, params);
 					else
 						resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
