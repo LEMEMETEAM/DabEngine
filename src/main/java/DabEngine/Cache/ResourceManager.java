@@ -41,7 +41,7 @@ public enum ResourceManager {
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
-				if(params[.length < 1)
+				if(params.length < 1)
 					resource = new Texture(loader.pixels, loader.width, loader.height, params);
 				else
 					resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
