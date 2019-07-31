@@ -8,6 +8,7 @@ in vec3 outNormal;
 out vec4 fragColor;
 
 #include /Shaders/lighting.h
+#include /Shaders/Utils.h
 
 uniform sampler2D texture;
 
@@ -18,6 +19,8 @@ void main(){
         vec4 diffuse = calcDiffuse(i, outNormal, outPosition);
         color += (ambient + diffuse);
     }
-    fragColor = outColor * vec4(color.rgb, 1) * texture(texture, outTexCord);
+    vec4 tex = texture(texture, outTexCord);
+    alphaScissor(tex);
+    fragColor = outColor * vec4(color.rgb, 1) * tex;
 
 }

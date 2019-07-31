@@ -1,4 +1,5 @@
 #version 330
+#include /Shaders/Utils.h
 
 in vec3 outPosition;
 in vec2 outTexCord;
@@ -10,9 +11,7 @@ out vec4 fragColor;
 uniform sampler2D texture;
 
 void main(){
-    vec4 tex = texture2D(texture, outTexCord)
-    if(tex.a < 0.1){
-        discard;
-    }
+    vec4 tex = texture2D(texture, outTexCord);
+    alphaScissor(tex);
     fragColor = outColor * tex;
 }
