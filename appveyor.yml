@@ -5,6 +5,10 @@ install:
   - cmd: SET PATH=%JAVA_HOME%\bin;%PATH%
 build_script:
   - gradlew assemble
+<<<<<<< HEAD
   - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=src/test -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
+=======
+  - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=junit -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
+>>>>>>> master
 test_script:
   - gradlew test
