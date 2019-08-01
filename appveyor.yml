@@ -16,6 +16,3 @@ build_script:
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
   - git commit -a -m "javadoc commit"
   - git push origin gh-pages
-  - git checkout master
-test_script:
-  - gradlew test
