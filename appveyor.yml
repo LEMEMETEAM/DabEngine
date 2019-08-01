@@ -14,5 +14,8 @@ build_script:
   - git reset --hard
   - git checkout gh-pages
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
+  - git commit -a -m "javadoc commit"
+  - git push origin gh-pages
+  - git checkout master
 test_script:
   - gradlew test
