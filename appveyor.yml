@@ -14,5 +14,7 @@ build_script:
   - git reset --hard
   - git checkout gh-pages
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
+  - git config --global user.email "bms110403@gmail.com"
+  - git config --global user.name "LEMEMETEAM"
   - git commit -a -m "javadoc commit"
   - git push origin gh-pages
