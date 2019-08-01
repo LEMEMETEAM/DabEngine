@@ -13,4 +13,9 @@ public abstract class Component implements Serializable {
 	public int hashCode() {
 		return 31 * Objects.hashCode(serialVersionUID) + super.hashCode();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
 }

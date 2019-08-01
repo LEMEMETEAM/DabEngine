@@ -3,6 +3,7 @@ package DabEngine.Graphics.OpenGL;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,14 +38,22 @@ public class Window implements IDisposable{
             monitors.put(m, glfwGetVideoModes(m));
         }
 
-        Entry<Long, Buffer> primary = monitors.entrySet().stream().findFirst().get();
+        Optional<Entry<Long, Buffer>> op = monitors.entrySet().stream().findFirst();
+        Entry<Long, Buffer> primary = null;
+        
 
         if(app.MAXIMISED) {
-            glfwWindowHint(GLFW_RED_BITS, primary.getValue().get(0).redBits());
-            glfwWindowHint(GLFW_GREEN_BITS, primary.getValue().get(0).greenBits());
-            glfwWindowHint(GLFW_BLUE_BITS, primary.getValue().get(0).blueBits());
-            glfwWindowHint(GLFW_REFRESH_RATE, primary.getValue().get(0).refreshRate());
-            win = glfwCreateWindow(primary.getValue().get(0).width(), primary.getValue().get(0).height(), app.TITLE, primary.getKey(), 0);
+            if(op.isPresent()){
+                primary = op.get();
+                glfwWindowHint(GLFW_RED_BITS, primary.getValue().get(0).redBits());
+                glfwWindowHint(GLFW_GREEN_BITS, primary.getValue().get(0).greenBits());
+                glfwWindowHint(GLFW_BLUE_BITS, primary.getValue().get(0).blueBits());
+                glfwWindowHint(GLFW_REFRESH_RATE, primary.getValue().get(0).refreshRate());
+                win = glfwCreateWindow(primary.getValue().get(0).width(), primary.getValue().get(0).height(), app.TITLE, primary.getKey(), 0);
+            }
+            else{
+                LOGGER.log(Level.WARNING, "primary monitor not found");
+            }
         }
         else{
             for(Entry<Integer, Integer> hints : app.hints.entrySet()){

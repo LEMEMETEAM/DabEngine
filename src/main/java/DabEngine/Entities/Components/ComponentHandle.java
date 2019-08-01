@@ -62,9 +62,4 @@ public class ComponentHandle<T extends Component> {
     public boolean has(int entity){
         return comps[entity] != null;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return type != ((ComponentHandle<T>)obj).type;
-    }
 }

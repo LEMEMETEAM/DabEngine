@@ -42,7 +42,7 @@ public class UniformBuffer {
 
     private int getBindingPoint(){
         for(var e : binds.entrySet()){
-            if(e.getValue() == block_name){
+            if(e.getValue().equals(block_name)){
                 return e.getKey();
             }
         }

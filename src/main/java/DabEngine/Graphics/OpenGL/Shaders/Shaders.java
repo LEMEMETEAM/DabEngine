@@ -18,6 +18,9 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
+/**
+ * class that loads shaders, adds them to opengl and stores the id forthe program, vertex shader and fragment shader
+ */
 public class Shaders {
 
     private int program;
@@ -75,8 +78,8 @@ public class Shaders {
             String line;
             while((line = br.readLine()) != null){
                 if(line.contains("#include")){
-                    line.replaceAll("\\s", "");
-                    line.replace("#include", "");
+                    line = line.replaceAll("\\s", "");
+                    line = line.replace("#include", "");
                     string.append(readFileFromStream(Shaders.class.getResourceAsStream(line)));
                     continue;
                 }
