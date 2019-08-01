@@ -103,6 +103,7 @@ public class Music {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			musicThread.interrupt();
 		}
 	}
 	
