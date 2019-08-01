@@ -48,6 +48,11 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-javadoc {
-    javadoc.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
 }
