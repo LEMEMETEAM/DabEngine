@@ -41,7 +41,7 @@ public enum InMemoryCache implements Cache {
 	 * Adds an object to the cache.
 	 * @param refName reference name of the object to cache
 	 * @param objectToCache object to cache
-	 * @param lifetime life time of cache object in milliseconds
+	 * @param lifeTime life time of cache object in milliseconds
 	 */
 	@Override
 	public <T> void add(String refName, T objectToCache, long lifeTime) {
