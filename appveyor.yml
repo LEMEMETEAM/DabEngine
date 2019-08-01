@@ -6,11 +6,7 @@ install:
 build_script:
   - gradlew assemble
   - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=src/test -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
-<<<<<<< HEAD
   - gradlew javadoc --continue
-=======
-  - gradlew javadoc
->>>>>>> master
   - mkdir C:/temp
   - xcopy C:/projects/dabengine/build/docs C:/temp /O /X /E /H /K
   - git checkout gh-pages
