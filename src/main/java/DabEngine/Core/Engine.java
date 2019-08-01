@@ -11,6 +11,9 @@ import DabEngine.Graphics.OpenGL.Window;
 import DabEngine.Input.InputHandler;
 import DabEngine.Utils.Timer;
 
+/**
+ * Main Engine class
+ */
 public class Engine {
 	
     private Window mainWindow = null;
