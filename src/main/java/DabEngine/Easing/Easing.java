@@ -1,5 +1,8 @@
 package DabEngine.Easing;
 
+/**
+ * Provides easing functions that can be used to change a value over time.
+ */
 public enum Easing {
 
 	LINEAR{

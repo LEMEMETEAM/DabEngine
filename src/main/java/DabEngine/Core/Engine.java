@@ -11,6 +11,9 @@ import DabEngine.Graphics.OpenGL.Window;
 import DabEngine.Input.InputHandler;
 import DabEngine.Utils.Timer;
 
+/**
+ * Main Engine class
+ */
 public class Engine {
 	
     private Window mainWindow = null;
@@ -21,12 +24,21 @@ public class Engine {
     private boolean graphics_init;
     public int FRAMES, UPDATES;
     
+    /**
+     * Destroys the window and terminates the program
+     */
     public void end() {
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
         System.exit(0);
     }
 
+    /**
+     * The main game loop/
+     * Updates timers and uses the delta value from {@link Timer} to update the {@link App} update and render methods.
+     * Also prints an FPS counter to console.
+     * The loopends when the window is closed
+     */
     public void run() {
         double ns = 1.0 / TARGET_FPS;
         int updates = 0;
@@ -63,6 +75,10 @@ public class Engine {
         end();
     }
 
+    /**
+     * Main init method that initializes the window, opengl and the app.
+     * @param app the app to init
+     */
     public void init(App app) {
         
         mainWindow = new Window(app);
@@ -87,6 +103,10 @@ public class Engine {
         }
     }
     
+    /**
+     * creates the {@link Graphics} object. Can only be done once.
+     * @param app app which will be passed to Graphics
+     */
     public Graphics createGraphics(App app) {
     	if(!graphics_init) {
     		graphics_init = true;

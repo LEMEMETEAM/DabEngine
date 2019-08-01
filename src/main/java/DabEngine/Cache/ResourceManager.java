@@ -8,7 +8,9 @@ import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
 import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 
-
+/**
+ * Resource managerthat uses the {@link InMemoryCache} to cache textures.
+ */
 public enum ResourceManager {
 
 	INSTANCE;

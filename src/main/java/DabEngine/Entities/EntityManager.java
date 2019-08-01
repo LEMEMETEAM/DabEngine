@@ -21,6 +21,11 @@ import DabEngine.Entities.Components.Component;
 import DabEngine.Entities.Components.ComponentHandle;
 import DabEngine.Observer.EventManager;
 
+/**
+ * Main EntityManager class.
+ * Maps entities to components and checks if a component type has been used before.
+ * @see ComponentHandle 
+ */
 public enum EntityManager {
 	
 	INSTANCE;
@@ -31,6 +36,9 @@ public enum EntityManager {
 	private int highest = 1;
 	private ArrayDeque<Integer> recycleBin = new ArrayDeque<>();
 
+	/**
+	 * resizes  the entities array so that it can accomodate more entities.
+	 */
 	private void resize() {
 		int oldsize = entities.length;
 		int newsize = oldsize + oldsize / 2;
@@ -38,6 +46,13 @@ public enum EntityManager {
 		entities = Arrays.copyOf(entities, newsize);
 	}
 
+	/**
+	 * assigns a component to entity.
+	 * Checks to see if the component handle for the component has been used before and uses that component handle, else it creates a new one and adds it to usedComps.
+	 * @param entity entity id
+	 * @param comp the component to add
+	 * @param type the component class
+	 */
 	public <T extends Component> void assign(int entity, T comp, Class<T> type){
 		ComponentHandle<T> hndl;
 		if((hndl = usedComps.get(type)) != null){
@@ -50,6 +65,13 @@ public enum EntityManager {
 		}
 	}
 
+	/**
+	 * Gets a component of specified type for the specified entity.
+	 * @param <T> type
+	 * @param entity entity id
+	 * @param type component class
+	 * @return the component for that entity
+	 */
 	public <T extends Component> T component(int entity, Class<T> type){
 		ComponentHandle<T> hndl;
 		if((hndl = usedComps.get(type)) != null){
@@ -60,6 +82,10 @@ public enum EntityManager {
 		}
 	}
 
+	/**
+	 * creates an entity, either using thenext available entity id or reusing dead ones.
+	 * @return the new entity id
+	 */
 	public int create(){
 		int id;
 		if(highest == 1){
@@ -84,6 +110,10 @@ public enum EntityManager {
 		return id;
 	}
 
+	/**
+	 * destroys an entity
+	 * @param entity entity id
+	 */
 	public void destroy(int entity){
 		recycleBin.add(entity);
 		for(ComponentHandle s : usedComps.values()){
@@ -93,6 +123,11 @@ public enum EntityManager {
 		highest = entities[next];
 	}
 
+	/**
+	 * Gets the component handles for the specified component types
+	 * @param types component classes
+	 * @return an arraylist that contains the component handles
+	 */
 	public ArrayList<ComponentHandle> handles(Class... types){
 		ArrayList<ComponentHandle> temp = new ArrayList<>();
 		for(Class c : types){
@@ -101,6 +136,11 @@ public enum EntityManager {
 		return temp;
 	}
 
+	/**
+	 * Iterates over entities with specified component types and does something to them.
+	 * @param itr action to do to entities
+	 * @param types component types
+	 */
 	public void each(EntityIterator itr, Class... types){
 		ArrayList<ComponentHandle> handles = handles(types);
 		ArrayList<Integer> ids = new ArrayList<>(Arrays.stream(entities).boxed().collect(Collectors.toList()));
@@ -116,41 +156,26 @@ public enum EntityManager {
 		}
 	}
 
+	/**
+	 * destroy all entities
+	 */
 	public void destroyAll(){
 		for(int entity : entities){
 			destroy(entity);
 		}
 	}
 
+	/**
+	 * check if entity has component of specified type
+	 * @param entity entity id
+	 * @param type component class
+	 * @return
+	 */
 	public boolean has(int entity, Class type){
 		ComponentHandle hndl;
 		if((hndl = usedComps.get(type)) != null){
 			return hndl.has(entity);
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-		float start = System.nanoTime();
-		var entt = EntityManager.INSTANCE.create();
-		EntityManager.INSTANCE.assign(entt, new CTransform(), CTransform.class);
-
-		var entt2 = EntityManager.INSTANCE.create();
-		EntityManager.INSTANCE.assign(entt2, new CText(), CText.class);
-		EntityManager.INSTANCE.assign(entt2, new CTransform(), CTransform.class);
-
-		EntityManager.INSTANCE.each((e) -> {
-			EntityManager.INSTANCE.component(e, CTransform.class).pos.add(69, 69, 69);
-			EntityManager.INSTANCE.component(e, CText.class).text = "lol";
-		}, CTransform.class, CText.class);
-
-		CTransform t = EntityManager.INSTANCE.component(entt, CTransform.class);
-		CTransform t2 = EntityManager.INSTANCE.component(entt2, CTransform.class);
-		CText text = EntityManager.INSTANCE.component(entt2, CText.class);
-		float duration = System.nanoTime() - start;
-		System.out.println(duration);
-		System.out.println(t.pos);
-		System.out.println(t2.pos);
-		System.out.println(text.text);
 	}
 }

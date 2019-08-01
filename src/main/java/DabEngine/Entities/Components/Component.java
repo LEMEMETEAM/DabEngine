@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public abstract class Component implements Serializable {
 	/**
-	 * 
+	 * Base component class. All other components mustextend this.
 	 */
 	private static final long serialVersionUID = -1910311515690798240L;
 

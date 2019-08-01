@@ -20,7 +20,12 @@ public class Music {
 	private final int BUFFER_SIZE = 64*1024;
 	private AudioInputStream ais;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	
+	private Thread musicThread;
+	/**
+	 * A Buffered Audio stream  that reads from a file and can be played, stopped and looped.
+	 * Used mostly for large audio files like music that cannot be saved in memory.
+	 * @param file the file to read from.
+	 */
 	public Music(File file) {
 		try {
 			ais = AudioSystem.getAudioInputStream(file);
@@ -37,6 +42,11 @@ public class Music {
 		}
 	}
 
+	/**
+	 * A Buffered Audio stream  that reads from a file and can be played, stopped and looped.
+	 * Used mostly for large audio files like music that cannot be saved in memory.
+	 * @param stream the inputstream to read from.
+	 */
 	public Music(InputStream stream) {
 		try {
 			ais = AudioSystem.getAudioInputStream(stream);
@@ -53,9 +63,11 @@ public class Music {
 		}
 	}
 	
-	
+	/**
+	 * Plays the music in a new thread so it doesn't block other parts of code.
+	 */
 	public void play() {
-		new Thread(new Runnable() {
+		musicThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -76,18 +88,35 @@ public class Music {
 					soundLine.close();
 				}
 			}
-		}).start();
+		});
+		musicThread.start();
 	}
 	
+	/**
+	 * Stops the audio, flushes the data from the line and closes the thread
+	 */
 	public void stop() {
 		soundLine.stop();
 		soundLine.flush();
+		try {
+			musicThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	/**
+	 * Just stops the audio but doesn't flush the audio line so it can be started again
+	 */
 	public void pauseSample() {
 		soundLine.stop();
 	}
 	
+	/**
+	 * Get current position, in milliseconds, of audio.
+	 * @return position
+	 */
 	public long getSamplePos() {
 		if(soundLine.isOpen()) {
 			return soundLine.getMicrosecondPosition();

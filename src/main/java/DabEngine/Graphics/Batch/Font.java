@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
+/**
+ * class that creates a texture atlas from a given TrueType file.
+ */
 public class Font {
 
     public boolean integer_align;
@@ -28,6 +31,12 @@ public class Font {
         Font.class.getResourceAsStream("/Shaders/default.vs"),
         Font.class.getResourceAsStream("/Shaders/text.fs"));
 
+    /**
+     * creates the texture atlas for the specified ttf file.
+     * @param fontFile the file path of the font
+     * @param size the size of the glyphs
+     * @param oversampling oversampling value
+     */
     public Font(String fontFile, float size, int oversampling) {
         int texID = glGenTextures();
         cData = STBTTPackedchar.malloc(6 * 128);
@@ -63,10 +72,18 @@ public class Font {
 		}
     }
 
+    /**
+     * Gets the texture atlas for this font
+     * @return the texture
+     */
     public Texture getTexture(){
         return texture;
     }
 
+    /**
+     * Get the character data.
+     * @return the data
+     */
     public STBTTPackedchar.Buffer getData(){
         return cData;
     }

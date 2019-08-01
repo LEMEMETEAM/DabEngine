@@ -14,6 +14,9 @@ import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 
+/**
+ * Batch Renderer
+ */
 public abstract class IBatch {
 
     protected boolean drawing;
