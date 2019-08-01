@@ -12,6 +12,9 @@ plugins {
     id 'org.sonarqube' version '2.7.1'
 }
 
+apply plugin: 'java'
+apply plugin: 'java-library'
+
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -43,4 +46,8 @@ dependencies {
 task sourcesJar(type: Jar) {
     from sourceSets.main.output
     from sourceSets.main.allSource
+}
+
+javadoc {
+    javadoc.options.encoding = 'UTF-8'
 }
