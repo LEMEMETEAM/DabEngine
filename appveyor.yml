@@ -16,7 +16,8 @@ build_script:
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
   - git config --global user.email "bms110403@gmail.com"
   - git config --global user.name "LEMEMETEAM"
-  - git commit -a -m "javadoc commit"
+  - git add .
+  - git commit -m "javadoc commit"
   - git rm -r --cached .
   - git add .
   - git commit --ammend -m "javadoc commit"
