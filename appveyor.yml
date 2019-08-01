@@ -20,5 +20,5 @@ build_script:
   - git commit -m "javadoc commit"
   - git rm -r --cached .
   - git add .
-  - git commit --ammend -m "javadoc commit"
+  - git commit --amend -m "javadoc commit"
   - git push origin gh-pages
