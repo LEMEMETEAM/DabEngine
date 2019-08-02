@@ -1,0 +1,27 @@
+
+!DabEngine.Utils.Utils#clamp(FFF)FJ
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java ("1*ä
+1J
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java‘ ‘(™
+–
+J
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java‘ ‘(1
+%0float"java.lang.Math#min(FF)F*"
+java.lang.Math*
+""*
+"" 
+
+J
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java‘ ‘(2
+%1float"java.lang.Math#max(FF)F*"
+java.lang.Math*
+""*
+
+%0float"T
+J
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java‘ ‘(3
+"":
+"":
+"":
+""B"
+DabEngine.Utils.Utils

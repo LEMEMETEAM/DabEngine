@@ -1,0 +1,46 @@
+
+WDabEngine.Core.Engine#createGraphics(LDabEngine/Core/App;)LDabEngine/Graphics/Graphics;H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javan n(""2"1*¡
+2H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javap p(Š
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javaq q(!
+%0DabEngine.Graphics.Graphics"DabEngine.Graphics.GraphicsÐ
+Í
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javaq q(
+%1"9DabEngine.Graphics.Graphics#<init>(LDabEngine/Core/App;)V*#
+!
+%0DabEngine.Graphics.Graphics*
+
+appDabEngine.Core.App"o
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javaq q(#
+!
+%0DabEngine.Graphics.Graphics*Ô
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javat t(z
+x
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javat t(
+%2java.util.logging.Logger"__id*
+""y
+w
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javat t(
+%3java.util.logging.Level"__id*
+""¹¶
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javat t(;
+
+%4void"Jjava.util.logging.Logger#log(Ljava/util/logging/Level;Ljava/lang/String;)V* 
+
+%2java.util.logging.Logger*
+
+%3java.util.logging.Level*
+GRAPHICS ALREADY CREATED!20log(Ljava/util/logging/Level;Ljava/lang/String;)"R
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Core\Engine.javau u(
+"":
+appDabEngine.Core.AppB
+DabEngine.Core.Engine

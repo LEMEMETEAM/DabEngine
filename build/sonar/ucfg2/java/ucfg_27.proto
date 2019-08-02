@@ -1,0 +1,35 @@
+
+CDabEngine.Entities.Components.Component#equals(Ljava/lang/Object;)ZZ
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java ("paramAnnotations*«
+paramAnnotationsZ
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java ("¤
+¡
+Z
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java (
+
+%1"
+__annotate*
+java.lang.Override*
+
+objjava.lang.ObjectŽ
+‹
+Z
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java (!
+objjava.lang.Object"__annotation*
+
+%1*
+1*‡
+1Z
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java	 (¿
+¼
+Z
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java	 (
+%0boolean",java.lang.Object#equals(Ljava/lang/Object;)Z*
+""*
+
+objjava.lang.Object"d
+Z
+PC:\projects\dabengine\src\main\java\DabEngine\Entities\Components\Component.java (
+"":
+objjava.lang.ObjectB+)
+'DabEngine.Entities.Components.Component

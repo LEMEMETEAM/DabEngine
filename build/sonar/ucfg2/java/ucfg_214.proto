@@ -1,0 +1,28 @@
+
+RDabEngine.Utils.Primitives.Primitives#generate()LDabEngine/Graphics/Batch/Polygon;X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java1 1("1*¢
+1X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java2 2(§
+¤
+X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java2 2(
+%0$Array"__id*4*2'
+%DabEngine.Utils.Primitives.Primitives"
+verts§¤
+X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java2 2(&
+%1 DabEngine.Graphics.Batch.Polygon" DabEngine.Graphics.Batch.Polygonç
+ä
+X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java2	 2( 
+%2"@DabEngine.Graphics.Batch.Polygon#<init>([I[Lorg/joml/Vector2f;)V*(
+&
+%1 DabEngine.Graphics.Batch.Polygon*
+""*
+
+%0$Array"„
+X
+NC:\projects\dabengine\src\main\java\DabEngine\Utils\Primitives\Primitives.java2 2(!(
+&
+%1 DabEngine.Graphics.Batch.PolygonB)'
+%DabEngine.Utils.Primitives.Primitives

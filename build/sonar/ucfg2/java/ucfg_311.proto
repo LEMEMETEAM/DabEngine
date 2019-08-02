@@ -1,0 +1,52 @@
+
+9DabEngine.Entities.EntityManager#has(ILjava/lang/Class;)ZU
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java® ®("3*§
+2U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java±
+ ±(éæ
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java±
+ ±(
+%2boolean"5DabEngine.Entities.Components.ComponentHandle#has(I)Z*7
+5
+hndl-DabEngine.Entities.Components.ComponentHandle*
+""2has(I)"_
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java± ±(
+""*¤
+3U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java¯ ¯(Ÿ
+œ
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java¯ ¯(5
+hndl-DabEngine.Entities.Components.ComponentHandle"__id*
+""®
+«
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java° °(
+%0java.util.HashMap"__id*3*1"
+ DabEngine.Entities.EntityManager"
+	usedComps›˜
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java° °( 3
+%1-DabEngine.Entities.Components.ComponentHandle";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
+
+%0java.util.HashMap*
+
+typejava.lang.Class2get(Ljava/lang/Object;)Î
+Ë
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java° °( 5
+hndl-DabEngine.Entities.Components.ComponentHandle"__id*5
+3
+%1-DabEngine.Entities.Components.ComponentHandle*
+2
+1*»
+1U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java³	 ³("_
+U
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java³ ³(
+"":
+"":
+typejava.lang.ClassB$"
+ DabEngine.Entities.EntityManager

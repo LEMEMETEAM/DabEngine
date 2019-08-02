@@ -1,0 +1,109 @@
+
+2DabEngine.Utils.Tuple3#equals(Ljava/lang/Object;)ZI
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java ("paramAnnotations*¥
+2K
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaä (ëÜ
+É
+K
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaô (û
+%7C"__id*%*#
+DabEngine.Utils.Tuple3"
+thirdÉ
+Ä
+K
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java† (∫
+%8?"__id*"* 
+
+ojava.lang.Object"
+thirdÕ
+ 
+K
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaä (ª
+%9boolean"?java.util.Objects#equals(Ljava/lang/Object;Ljava/lang/Object;)Z*"
+java.util.Objects*	
+
+%7C*	
+
+%8?*
+1*≥
+4I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaS (ZÖ
+Ç
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javab (h
+%4B"__id*&*$
+DabEngine.Utils.Tuple3"
+secondÉ
+Ä
+J
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaj (Ö
+%5?"__id*#*!
+
+ojava.lang.Object"
+secondÃ
+…
+J
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaS (Ü
+%6boolean"?java.util.Objects#equals(Ljava/lang/Object;Ljava/lang/Object;)Z*"
+java.util.Objects*	
+
+%4B*	
+
+%5?*
+2
+1*±
+6I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (%Ñ
+Å
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java- (2
+%1A"__id*%*#
+DabEngine.Utils.Tuple3"
+firstÄ
+~
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java4 (N
+%2?"__id*"* 
+
+ojava.lang.Object"
+firstÀ
+»
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (O
+%3boolean"?java.util.Objects#equals(Ljava/lang/Object;Ljava/lang/Object;)Z*"
+java.util.Objects*	
+
+%1A*	
+
+%2?*	
+2
+4
+1*˚
+paramAnnotationsI
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java ( ë
+é
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (
+
+%0"
+__annotate*
+java.lang.Override*
+
+ojava.lang.Objectz
+x
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (
+ojava.lang.Object"__annotation*
+
+%0*
+2
+4
+6
+1*•
+1J
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (º"T
+J
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (º
+"":
+ojava.lang.ObjectB
+DabEngine.Utils.Tuple3

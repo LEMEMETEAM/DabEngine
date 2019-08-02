@@ -1,0 +1,15 @@
+
+)DabEngine.Cache.CachedObject#isExpired()ZO
+EC:\projects\dabengine\src\main\java\DabEngine\Cache\CachedObject.java ("1*œ
+1O
+EC:\projects\dabengine\src\main\java\DabEngine\Cache\CachedObject.java	 (ù
+ö
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Cache\CachedObject.java	 (#
+
+%0long"%java.lang.System#currentTimeMillis()J*"
+java.lang.System"Y
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Cache\CachedObject.java (/
+""B 
+DabEngine.Cache.CachedObject

@@ -1,0 +1,21 @@
+
+YDabEngine.Graphics.Graphics#getCurrentShader()LDabEngine/Graphics/OpenGL/Shaders/Shaders;P
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Graphics.java¬ ¬(#"1*Ø
+1P
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Graphics.java­ ­(¤
+¡
+P
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Graphics.java­ ­(
+%0java.util.Stack"__id*0*.
+DabEngine.Graphics.Graphics"
+shaderStackÑÎ
+P
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Graphics.java­ ­(!/
+%1)DabEngine.Graphics.OpenGL.Shaders.Shaders"(java.util.Stack#peek()Ljava/lang/Object;*
+
+%0java.util.Stack2peek()"…
+P
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Graphics.java­ ­("1
+/
+%1)DabEngine.Graphics.OpenGL.Shaders.ShadersB
+DabEngine.Graphics.Graphics

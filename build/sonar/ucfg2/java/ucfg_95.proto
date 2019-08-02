@@ -1,0 +1,105 @@
+
+WDabEngine.Script.ScriptObjectBuilder#buildObject([Ljava/lang/Object;)Ljava/lang/Object;W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java
+ ("paramAnnotations*≤
+3W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (ö
+ó
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java! ((
+%2java.lang.Object"
+__arrayGet*
+
+args$Array*
+""¯
+ı
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java ()
+%3org.python.core.PyObject"Horg.python.core.Py#java2py(Ljava/lang/Object;)Lorg/python/core/PyObject;*"
+org.python.core.Py*
+
+%2java.lang.Object≥
+∞
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java ()
+%4"
+__arraySet*
+
+convertedArgs$Array*
+""* 
+
+%3org.python.core.PyObject*
+3
+1*Â
+5W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java* (.qo
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (6
+%0$Array"$Arrayã
+à
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (7
+convertedArgs$Array"__id*
+
+%0$Array*
+3
+1*ó
+paramAnnotationsW
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (%†
+ù
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (
+%1"
+__annotate*
+java.lang.SuppressWarnings*
+
+args$ArrayÅ
+
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java  ($
+args$Array"__annotation*
+
+%1*
+5*¬
+
+1W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (∑
+¥
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (
+%5org.python.core.PyObject"__id*3*1&
+$DabEngine.Script.ScriptObjectBuilder"
+clazzw
+u
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java* (7
+%6$Array"__id*
+""Ì
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (8
+%7org.python.core.PyObject"korg.python.core.PyObject#__call__([Lorg/python/core/PyObject;[Ljava/lang/String;)Lorg/python/core/PyObject;* 
+
+%5org.python.core.PyObject*
+
+convertedArgs$Array*
+
+%6$Array28__call__([Lorg/python/core/PyObject;[Ljava/lang/String;)≠
+™
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.javaD (H
+%8java.lang.Class"__id*2*0&
+$DabEngine.Script.ScriptObjectBuilder"
+typeòï
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (I
+%9java.lang.Object"Horg.python.core.PyObject#__tojava__(Ljava/lang/Class;)Ljava/lang/Object;* 
+
+%7org.python.core.PyObject*
+
+%8java.lang.Class2__tojava__(Ljava/lang/Class;)"s
+W
+MC:\projects\dabengine\src\main\java\DabEngine\Script\ScriptObjectBuilder.java (J
+
+%9java.lang.Object:
+args$ArrayB(&
+$DabEngine.Script.ScriptObjectBuilder

@@ -1,0 +1,45 @@
+
+%DabEngine.Audio.Music#getSamplePos()JH
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.javay y("3*¥
+2H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java{
+ {(§
+¤
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java{
+ {((
+%2"javax.sound.sampled.SourceDataLine"__id*(*&
+DabEngine.Audio.Music"
+	soundLine×Ô
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java{
+ {(,
+
+%3long"6javax.sound.sampled.DataLine#getMicrosecondPosition()J**
+(
+%2"javax.sound.sampled.SourceDataLine2getMicrosecondPosition()"R
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java{ {(-
+""*¸
+3H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.javaz z(§
+¤
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.javaz z((
+%0"javax.sound.sampled.SourceDataLine"__id*(*&
+DabEngine.Audio.Music"
+	soundLine¶³
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.javaz z(
+%1boolean""javax.sound.sampled.Line#isOpen()Z**
+(
+%0"javax.sound.sampled.SourceDataLine2isOpen()*
+2
+1*¡
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java}	 }(
+"R
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Audio\Music.java} }(
+""B
+DabEngine.Audio.Music

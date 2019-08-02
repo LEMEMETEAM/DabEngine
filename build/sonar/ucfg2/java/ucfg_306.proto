@@ -1,0 +1,52 @@
+
+*DabEngine.Entities.EntityManager#create()IS
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javaY Y("2"6"1*–
+2S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javai i(	¶
+³
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javai i(
+
+%4void"*DabEngine.Entities.EntityManager#resize()V*$"
+ DabEngine.Entities.EntityManager*
+1*à
+5S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javaa	 a(°
+­
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javaa	 a(
+%2java.util.ArrayDeque"__id*4*2"
+ DabEngine.Entities.EntityManager"
+
+recycleBinÊÇ
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javaa	 a(
+%3java.lang.Integer"/java.util.ArrayDeque#remove()Ljava/lang/Object;*
+
+%2java.util.ArrayDeque2remove()*
+2
+1*Ê
+6S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java` `(°
+­
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java` `(
+%0java.util.ArrayDeque"__id*4*2"
+ DabEngine.Entities.EntityManager"
+
+recycleBin±®
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.java` `(
+%1boolean"java.util.ArrayDeque#isEmpty()Z*
+
+%0java.util.ArrayDeque2	isEmpty()*	
+2
+5
+1*·
+1S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javak k(
+"]
+S
+IC:\projects\dabengine\src\main\java\DabEngine\Entities\EntityManager.javan n(
+""B$"
+ DabEngine.Entities.EntityManager
