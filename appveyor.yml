@@ -16,11 +16,11 @@ on_success:
   - gradlew javadoc --continue
   - cd C:/
   - mkdir temp
-  - xcopy C:\projects\dabengine\build\docs C:\temp /O /X /E /H /K
+  - xcopy C:\projects\dabengine\build\docs C:\temp /O /X /E /H /K /Y
   - cd C:/projects/dabengine
   - git reset --hard
   - git checkout gh-pages
-  - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
+  - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i /Y
   - git config --global credential.helper store
   - ps: Add-Content "$HOME\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
   - git config --global user.email "bms110403@gmail.com"
@@ -36,7 +36,7 @@ before_deploy:
 deploy:
 - provider: GitHub
   release: DabEngine - v$(appveyor_build_version)
-  description: Automated release
+  description: $(appveyor_repo_commit_message) \n $(appveyor_repo_commit_message_extended)
   auth_token:
     secure: OUTYhMglLnU7WbZ6373KbVCBAMqGJRHE4rQXVXYWUT6BNRg5nJV6gH+qXcuZ3RBZ
   artifact: jar
