@@ -22,7 +22,7 @@ on_success:
   - git checkout gh-pages
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i
   - git config --global credential.helper store
-  - ps: Add-Content "%USERHOME%\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - ps: Add-Content "$HOME\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
   - git config --global user.email "bms110403@gmail.com"
   - git config --global user.name "LEMEMETEAM"
   - git add .
