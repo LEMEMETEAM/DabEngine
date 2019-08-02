@@ -1,6 +1,6 @@
 package DabEngine.Input;
 
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -29,6 +29,9 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 		@Override
 		public void invoke(long arg0, int arg1, int arg2, int arg3, int arg4) {
 			// TODO Auto-generated method stub
+			if(arg1 == GLFW_KEY_UNKNOWN){
+				return;
+			}
 			keys[arg1] = arg3;
 			/*keys[arg1] = arg3 != GLFW_RELEASE;
 			last_key = arg1;*/
@@ -59,6 +62,7 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 		@Override
 		public void invoke(long arg0, int arg1, int arg2, int arg3) {
 			// TODO Auto-generated method stub
+
 			buttons[arg1] = arg3;
 			
 			dispatchMouseEvent(new MouseEvent(INSTANCE, arg1, arg2, arg3));

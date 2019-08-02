@@ -9,7 +9,7 @@ import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 /**
  * Abstract class that every main game class must extend
  */
-public abstract class App {
+public abstract class App implements IDisposable{
 	
 	public int WIDTH, HEIGHT;
 	public String TITLE;
@@ -39,4 +39,6 @@ public abstract class App {
 	 * @param height
 	 */
 	public abstract void resize(int width, int height);
+
+
 }

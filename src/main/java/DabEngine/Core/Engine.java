@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.lwjgl.system.Configuration;
+
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.OpenGL.Window;
 import DabEngine.Input.InputHandler;
@@ -15,6 +17,10 @@ import DabEngine.Utils.Timer;
  * Main Engine class
  */
 public class Engine {
+
+    static{
+        Configuration.STACK_SIZE.set(512);
+    }
 	
     private Window mainWindow = null;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -30,6 +36,7 @@ public class Engine {
     public void end() {
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
+        app.dispose();
         System.exit(0);
     }
 

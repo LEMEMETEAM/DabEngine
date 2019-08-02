@@ -1,6 +1,7 @@
 package DabEngine.Graphics;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayDeque;
 import java.util.Stack;
 
 import org.joml.Matrix4f;
@@ -11,8 +12,9 @@ import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
+import DabEngine.Core.IDisposable;
+import DabEngine.Graphics.Batch.Batch;
 import DabEngine.Graphics.Batch.Font;
-import DabEngine.Graphics.Batch.QuadBatch;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
@@ -26,19 +28,19 @@ import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class Graphics {
+public class Graphics implements IDisposable{
 
     public static final Texture WHITE_PIXEL = new Texture(1, 1, true);
     /**
      * The vertex batch to use
      */
-    private QuadBatch batch;
+    private Batch batch;
     /**
      * Stack of shaders. Can push shaders to the stack to be 
      * used by the {@see VertexBatch} and also pop them off to
      * revert back to a previous shader.
      */
-    private Stack<Shaders> shaderStack;
+    private ArrayDeque<Shaders> shaderStack;
     /**
      * The {@see RenderTarget} to render to.
      */
@@ -46,19 +48,19 @@ public class Graphics {
     private App app;
 
     public Graphics(App app){
-        batch = new QuadBatch(QuadBatch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
-        shaderStack = new Stack<>();
-        shaderStack.push(QuadBatch.DEFAULT_SHADER);
+        batch = new Batch(Batch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
+        shaderStack = new ArrayDeque<>();
+        shaderStack.push(Batch.DEFAULT_SHADER);
         this.app = app;
     }
 
     public void pushShader(Shaders s){
-        batch.setShader(shaderStack.push(s));
+        shaderStack.push(s);
+        batch.setShader(shaderStack.peek());
     }
 
     public void popShader(){
-        shaderStack.pop();
-        batch.setShader(shaderStack.peek());
+        batch.setShader(shaderStack.pop());
     }
 
     public void setBlend(Blending blend){
@@ -173,7 +175,12 @@ public class Graphics {
         return shaderStack.peek();
     }
 
-    public QuadBatch getBatch(){
+    public Batch getBatch(){
         return batch;
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
     }
 }

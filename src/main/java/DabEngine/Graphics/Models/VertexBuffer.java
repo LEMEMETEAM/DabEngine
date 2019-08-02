@@ -7,8 +7,13 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
 
-public class VertexBuffer {
+import DabEngine.Core.IDisposable;
+
+import static org.lwjgl.system.MemoryUtil.*;
+
+public class VertexBuffer implements IDisposable {
 	
 	private VertexAttrib[] attribs;
 	private int totalComponents;
@@ -22,7 +27,7 @@ public class VertexBuffer {
 		}
 		this.vertcount = vertcount;
 		
-		buffer = BufferUtils.createFloatBuffer(vertcount * totalComponents);
+		buffer = memCallocFloat(vertcount * totalComponents);
 	}
 	
 	public VertexBuffer(int vertcount, List<VertexAttrib> attribs) {
@@ -79,5 +84,10 @@ public class VertexBuffer {
 			VertexAttrib attrib = attribs[i];
 			glDisableVertexAttribArray(attrib.location);
 		}
+	}
+
+	@Override
+	public void dispose() {
+		memFree(buffer);
 	}
 }

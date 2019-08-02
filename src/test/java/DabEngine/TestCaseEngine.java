@@ -26,11 +26,13 @@ import DabEngine.Graphics.OpenGL.Light.Light2D;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
+import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Input.InputHandler;
 import DabEngine.Graphics.Batch.*;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Timer;
+import DabEngine.Utils.Pair;
 import java.util.*;
 
 public class TestCaseEngine extends App {
@@ -38,7 +40,6 @@ public class TestCaseEngine extends App {
     private Graphics g;
     //private OrthagonalMapRenderer omr = null;
     private Font font;
-    private QuadBatch u;
     //private TextBatch text;
     private Texture t;
     public static Shaders DEFAULT_SHADER;
@@ -84,17 +85,17 @@ public class TestCaseEngine extends App {
                     //g.drawTexture(t, null, 500, 100, 0.5f, 500, 500, 0, 0, 0, Color.WHITE);
                     //g.fillRect(0, 0, 1, WIDTH, HEIGHT, 0, 0, 0, Color.GREEN);
                     //g.drawLine(0, 0, 100, 100, 0, 10, Color.RED);
-                    for(int y =0; y < 30; y++){
-                        for(int x = 0; x < 60; x++){
+                    for(int y =0; y < 7; y++){
+                        for(int x = 0; x < 15; x++){
                             g.drawTexture(t, null, x * 64, y * 64, 0.5f, 64,64,0,0,0,Color.GREEN);
                         }
                     }
-                    g.setBlend(Blending.MUL);
-                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 0, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
-                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
+                    //g.setBlend(Blending.MUL);
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab", Parameters.LINEAR), null, 0, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
+                    g.drawTexture(ResourceManager.INSTANCE.getTexture("dab", Parameters.LINEAR), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                 }
                 g.popShader();
-                g.drawTexture(ResourceManager.INSTANCE.getTexture("dab"), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
+                g.drawTexture(ResourceManager.INSTANCE.getTexture("dab", Parameters.LINEAR), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                 g.pushShader(DEFAULT_SHADER);
                     {
                         g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 1, Color.BLACK);
@@ -141,7 +142,7 @@ public class TestCaseEngine extends App {
 
         DEFAULT_SHADER = new Shaders(
 			App.class.getResourceAsStream("/Shaders/default.vs"),
-            App.class.getResourceAsStream("/Shaders/text.fs"));
+            App.class.getResourceAsStream("/Shaders/text.fs"), new Pair<>("LIT", "1"));
             try{
             TextureLoader loader = new TextureLoader(new File("src/test/resources/Tiles_64x64.png"));
             t =new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.LINEAR);
@@ -175,5 +176,10 @@ public class TestCaseEngine extends App {
     public void resize(int width, int height) {
         vp.update(width, height);
         vp.apply();
+    }
+
+    @Override
+    public void dispose() {
+        g.dispose();
     }
 }

@@ -18,6 +18,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
+import DabEngine.Utils.Pair;
+
 /**
  * class that loads shaders, adds them to opengl and stores the id forthe program, vertex shader and fragment shader
  */
@@ -29,8 +31,8 @@ public class Shaders {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public String vs_source, fs_source;
     
-    public Shaders(File filevs, File filefs){
-        this(readFile(filevs), readFile(filefs));
+    public Shaders(File filevs, File filefs, Pair<String, String>... defines){
+        this(readFile(filevs, defines), readFile(filefs, defines));
     }
     
     public Shaders(String source_vs, String source_fs) {
@@ -68,15 +70,23 @@ public class Shaders {
         this.fs_source = source_fs;
     }
     
-    public Shaders(InputStream stream_vs, InputStream stream_fs) {
-        this(readFileFromStream(stream_vs), readFileFromStream(stream_fs));
+    public Shaders(InputStream stream_vs, InputStream stream_fs, Pair<String, String>... defines) {
+        this(readFileFromStream(stream_vs, defines), readFileFromStream(stream_fs, defines));
     }
 
-    private static String readFile(File file){
+    private static String readFile(File file, Pair<String, String>... defines){
         StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new FileReader(file))){
             String line;
+            String prevLine = "";
             while((line = br.readLine()) != null){
+                if(defines != null){
+                    if((prevLine.contains("#version") || prevLine.contains("#extension")) && !line.contains("#extension")){
+                        for(var p : defines){
+                            string.append("#define ").append(p.left).append(" ").append(p.right);
+                        }
+                    }
+                }
                 if(line.contains("#include")){
                     line = line.replaceAll("\\s", "");
                     line = line.replace("#include", "");
@@ -85,6 +95,7 @@ public class Shaders {
                 }
                 string.append(line);
                 string.append("\n");
+                prevLine = line;
             }
         }catch(IOException e){
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -92,11 +103,19 @@ public class Shaders {
         return string.toString();
     }
     
-    private static String readFileFromStream(InputStream stream) {
+    private static String readFileFromStream(InputStream stream, Pair<String, String>... defines) {
         StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
             String line;
+            String prevLine = "";
             while((line = br.readLine()) != null){
+                if(defines != null){
+                    if((prevLine.contains("#version") || prevLine.contains("#extension")) && !line.contains("#")){
+                        for(var p : defines){
+                            string.append("\n").append("#define ").append(p.left).append(" ").append(p.right).append("\n");
+                        }
+                    }
+                }
                 if(line.contains("#include")){
                     line = line.replaceAll("\\s", "");
                     line = line.replace("#include", "");
@@ -105,6 +124,7 @@ public class Shaders {
                 }
                 string.append(line);
                 string.append("\n");
+                prevLine = line;
             }
         }catch(IOException e){
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

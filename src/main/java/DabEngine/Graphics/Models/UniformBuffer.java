@@ -6,10 +6,12 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
+import static org.lwjgl.system.MemoryUtil.*;
 
+import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 
-public class UniformBuffer {
+public class UniformBuffer implements IDisposable {
 
     private int ubo;
     private UniformAttribs[] attribs;
@@ -25,7 +27,9 @@ public class UniformBuffer {
         for(UniformAttribs attrib : attribs){
             totalComponents += attrib.numComponents;
         }
-        buffer = BufferUtils.createFloatBuffer(totalComponents);
+
+        buffer = memCallocFloat(totalComponents);
+
         ubo = glGenBuffers();
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferData(GL_UNIFORM_BUFFER, buffer, GL_STATIC_DRAW);
@@ -59,6 +63,11 @@ public class UniformBuffer {
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer.flip());
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    }
+
+    @Override
+    public void dispose() {
+        memFree(buffer);
     }
 
 }

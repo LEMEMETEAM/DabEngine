@@ -2,6 +2,7 @@ package DabEngine.Graphics.Batch;
 
 import org.lwjgl.stb.STBTTPackContext;
 import org.lwjgl.stb.STBTTPackedchar;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.BufferUtils;
 
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
@@ -50,7 +51,10 @@ public class Font {
 				e.printStackTrace();
 			}
 
-			ByteBuffer bitmap = BufferUtils.createByteBuffer(512 * 512);
+            ByteBuffer bitmap;
+            try(MemoryStack stack = stackPush()){
+                bitmap = stack.calloc(512 * 512);
+            }
 
 			stbtt_PackBegin(pc, bitmap, 512, 512, 0, 1, NULL);
 			    cData.limit(127);
