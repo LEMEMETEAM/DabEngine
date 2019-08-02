@@ -1,0 +1,120 @@
+
+DDabEngine.Graphics.TileMap#getTextureFromId(I)LDabEngine/Utils/Pair;O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÑ( Ñ(8"9*…
+4O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÚ Ú("¢
+Ÿ
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÚ Ú("
+%10java.util.HashMap"__id*,**
+DabEngine.Graphics.TileMap"
+
+tilesetsëè
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÚ Ú(-
+%11DabEngine.Utils.Pair";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
+
+%10java.util.HashMap*
+""2get(Ljava/lang/Object;)–
+“
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÚ Ú(-
+texDabEngine.Utils.Pair"__id*
+
+%11DabEngine.Utils.Pair*
+1*‚
+5O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaØ! Ø()¡
+ž
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaØ! Ø()
+%6java.util.HashMap"__id*,**
+DabEngine.Graphics.TileMap"
+
+tilesets¹¶
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaØ! Ø(2
+%7java.util.Set")java.util.HashMap#keySet()Ljava/util/Set;*
+
+%6java.util.HashMap2keySet()°­
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaØ! Ø(<
+%8$Array"*java.util.Set#toArray()[Ljava/lang/Object;*
+
+%7java.util.Set2	toArray()
+
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaØ! Ø(?
+%9java.lang.Object"
+__arrayGet*
+
+%8$Array*
+""*
+4
+6* 
+6O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.java× ×(¡
+ž
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.java× ×('
+%4java.util.HashMap"__id*,**
+DabEngine.Graphics.TileMap"
+
+tilesetsš
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.java× ×(.	
+%5int"java.util.HashMap#size()I*
+
+%4java.util.HashMap2size()*
+5
+1*ÿ
+8O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÔ Ô(¡
+ž
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÔ Ô(
+%2java.util.HashMap"__id*,**
+DabEngine.Graphics.TileMap"
+
+tilesetsçä
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÔ Ô(!
+%3DabEngine.Utils.Pair";java.util.HashMap#get(Ljava/lang/Object;)Ljava/lang/Object;*
+
+%2java.util.HashMap*22get(Ljava/lang/Object;)•
+’
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÔ Ô(!
+texDabEngine.Utils.Pair"__id*
+
+%3DabEngine.Utils.Pair*
+1* 
+9O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÒ+ Ò(/~
+|
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÒ Ò(0
+texDabEngine.Utils.Pair"__id*
+""¡
+ž
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÓ Ó(
+%0java.util.HashMap"__id*,**
+DabEngine.Graphics.TileMap"
+
+tilesetsš
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaÓ Ó(	
+%1int"java.util.HashMap#size()I*
+
+%0java.util.HashMap2size()*
+6
+8*Æ
+1O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaâ â("p
+O
+CC:\projects\dabengine\src\main\java\DabEngine\Graphics\TileMap.javaâ â(
+
+texDabEngine.Utils.Pair:
+""B
+DabEngine.Graphics.TileMap

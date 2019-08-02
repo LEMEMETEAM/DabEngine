@@ -1,0 +1,84 @@
+
+LDabEngine.Graphics.Batch.QuadBatch#calcNormals(FFFFFFFFF)Lorg/joml/Vector3f;U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaX X("1*À
+1U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaY Y(ÜÉ
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaY Y(
+%0org.joml.Vector3f"org.joml.Vector3f≥
+∞
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaY Y(<
+%1"org.joml.Vector3f#<init>(FFF)V*
+
+%0org.joml.Vector3f*
+""*
+""*
+""ì
+ê
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaY Y(=
+Uorg.joml.Vector3f"__id*
+
+%0org.joml.Vector3fÜÉ
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaZ Z(
+%2org.joml.Vector3f"org.joml.Vector3f≥
+∞
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaZ Z(<
+%3"org.joml.Vector3f#<init>(FFF)V*
+
+%2org.joml.Vector3f*
+""*
+""*
+""ì
+ê
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.javaZ Z(=
+Vorg.joml.Vector3f"__id*
+
+%2org.joml.Vector3fÜÉ
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java\ \(&
+%4org.joml.Vector3f"org.joml.Vector3fò
+ï
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java\ \((
+%5"org.joml.Vector3f#<init>()V*
+
+%4org.joml.Vector3f«ƒ
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java\ \()
+%6org.joml.Vector3f"Sorg.joml.Vector3f#cross(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)Lorg/joml/Vector3f;*
+
+Uorg.joml.Vector3f*
+
+Vorg.joml.Vector3f*
+
+%4org.joml.Vector3f2.cross(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)ì
+ê
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java\ \(*
+Norg.joml.Vector3f"__id*
+
+%6org.joml.Vector3fÃ…
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java]	 ](
+%7org.joml.Vector3f"0org.joml.Vector3f#normalize()Lorg/joml/Vector3f;*
+
+Norg.joml.Vector3f2normalize()"r
+U
+KC:\projects\dabengine\src\main\java\DabEngine\Graphics\Batch\QuadBatch.java] ](
+
+%7org.joml.Vector3f:
+"":
+"":
+"":
+"":
+"":
+"":
+"":
+"":
+""B&$
+"DabEngine.Graphics.Batch.QuadBatch

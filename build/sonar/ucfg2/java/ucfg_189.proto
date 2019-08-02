@@ -1,0 +1,276 @@
+
+*DabEngine.System.CollisionSystem#update()VS
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java ("10*ë
+5S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+ +(é
+ã
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+ +(&
+%18DabEngine.Observer.EventManager"__id*
+""ãà
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+9 +(?
+%19DabEngine.Utils.Pair"DabEngine.Utils.Pair˜
+Ù
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+5 +(F
+%20"BDabEngine.Utils.Pair#<init>(Ljava/lang/Object;Ljava/lang/Object;)V*
+
+%19DabEngine.Utils.Pair*
+
+ejava.lang.Integer*
+
+e2java.lang.Integer√
+¿
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+N +(W%
+%21DabEngine.Graphics.Models.AABB"__id*<*:
+.
+c2(DabEngine.Entities.Components.CCollision"
+bounds≠
+™
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+N +(^
+%22org.joml.Vector3f"__id*3*1
+%
+%21DabEngine.Graphics.Models.AABB"
+center¬
+ø
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+c +(k%
+%23DabEngine.Graphics.Models.AABB"__id*;*9
+-
+c(DabEngine.Entities.Components.CCollision"
+bounds≠
+™
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+c +(r
+%24org.joml.Vector3f"__id*3*1
+%
+%23DabEngine.Graphics.Models.AABB"
+centerÜÉ
+T
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+x +(Ä
+%25org.joml.Vector3f"org.joml.Vector3fô
+ñ
+T
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+t +(Ç
+%26"org.joml.Vector3f#<init>()V*
+
+%25org.joml.Vector3f»≈
+T
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+N +(É
+%27org.joml.Vector3f"Qorg.joml.Vector3f#sub(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)Lorg/joml/Vector3f;*
+
+%22org.joml.Vector3f*
+
+%24org.joml.Vector3f*
+
+%25org.joml.Vector3f2,sub(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)°û
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+& +(4&
+%28DabEngine.System.CollisionEvent"DabEngine.System.CollisionEvent…
+∆
+T
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+" +(Ñ
+%29"eDabEngine.System.CollisionEvent#<init>(LDabEngine/Utils/Pair;Lorg/joml/Vector3f;Lorg/joml/Vector3f;)V*(
+&
+%28DabEngine.System.CollisionEvent*
+
+%19DabEngine.Utils.Pair*
+
+corrorg.joml.Vector3f*
+
+%27org.joml.Vector3fÕ 
+T
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java+ +(õ
+%30void"TDabEngine.Observer.EventManager#submit(LDabEngine/Observer/Event;Ljava/lang/Class;)V*(
+&
+%18DabEngine.Observer.EventManager*(
+&
+%28DabEngine.System.CollisionEvent*
+""23submit(LDabEngine/Observer/Event;Ljava/lang/Class;)*
+7*Ñ
+6S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java$ $(®
+•
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java$ $(
+%6java.util.ArrayList"__id*-*+"
+ DabEngine.System.CollisionSystem"
+idsÃ…
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java$ $(
+%7java.lang.Integer",java.util.ArrayList#get(I)Ljava/lang/Object;*
+
+%6java.util.ArrayList*
+""2get(I)ë
+é
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java$ $(
+ejava.lang.Integer"__id*
+
+%7java.lang.Integer®
+•
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java% %(
+%8java.util.ArrayList"__id*-*+"
+ DabEngine.System.CollisionSystem"
+idsÃ…
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java% %(
+%9java.lang.Integer",java.util.ArrayList#get(I)Ljava/lang/Object;*
+
+%8java.util.ArrayList*
+""2get(I)í
+è
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java% %(
+e2java.lang.Integer"__id*
+
+%9java.lang.Integerè
+å
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java' '()'
+%10 DabEngine.Entities.EntityManager"__id*
+""ﬁ€
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java' '(H/
+%11(DabEngine.Entities.Components.CCollision"gDabEngine.Entities.EntityManager#component(ILjava/lang/Class;)LDabEngine/Entities/Components/Component;*)
+'
+%10 DabEngine.Entities.EntityManager*
+
+ejava.lang.Integer*
+""2component(ILjava/lang/Class;)¿
+Ω
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java' '(I-
+c(DabEngine.Entities.Components.CCollision"__id*1
+/
+%11(DabEngine.Entities.Components.CCollisionè
+å
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java( ((*'
+%12 DabEngine.Entities.EntityManager"__id*
+""ﬂ‹
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java( ((J/
+%13(DabEngine.Entities.Components.CCollision"gDabEngine.Entities.EntityManager#component(ILjava/lang/Class;)LDabEngine/Entities/Components/Component;*)
+'
+%12 DabEngine.Entities.EntityManager*
+
+e2java.lang.Integer*
+""2component(ILjava/lang/Class;)¡
+æ
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java( ((K.
+c2(DabEngine.Entities.Components.CCollision"__id*1
+/
+%13(DabEngine.Entities.Components.CCollisionÄ
+~
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java) )(
+corrorg.joml.Vector3f"__id*
+""√
+¿
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java* *(%
+%14DabEngine.Graphics.Models.AABB"__id*<*:
+.
+c2(DabEngine.Entities.Components.CCollision"
+bounds¬
+ø
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java*$ *(,%
+%15DabEngine.Graphics.Models.AABB"__id*;*9
+-
+c(DabEngine.Entities.Components.CCollision"
+bounds“œ
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java* *(-
+%16org.joml.Vector3f"^DabEngine.Graphics.Models.AABB#intersects(LDabEngine/Graphics/Models/AABB;)Lorg/joml/Vector3f;*'
+%
+%14DabEngine.Graphics.Models.AABB*'
+%
+%15DabEngine.Graphics.Models.AABB2,intersects(LDabEngine/Graphics/Models/AABB;)ï
+í
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java* *(-
+corrorg.joml.Vector3f"__id*
+
+%16org.joml.Vector3fõò
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java* *(9
+%17boolean"org.joml.Vector3f#isFinite()Z*
+""2
+isFinite()*
+5
+7*≥
+7S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java# #(®
+•
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java# #(
+%4java.util.ArrayList"__id*-*+"
+ DabEngine.System.CollisionSystem"
+ids•¢
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java# #($	
+%5int"java.util.ArrayList#size()I*
+
+%4java.util.ArrayList2size()*
+6
+9*∂
+9S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java" "(®
+•
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java" "(
+%2java.util.ArrayList"__id*-*+"
+ DabEngine.System.CollisionSystem"
+ids•¢
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java" "(	
+%3int"java.util.ArrayList#size()I*
+
+%2java.util.ArrayList2size()*	
+7
+0
+1*¥
+10S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java (é
+ã
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java (&
+%0 DabEngine.Entities.EntityManager"__id*
+""¬ø
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java  ((
+
+%1void"]DabEngine.Entities.EntityManager#each(LDabEngine/Entities/EntityIterator;[Ljava/lang/Class;)V*(
+&
+%0 DabEngine.Entities.EntityManager*
+""*
+""*
+""2;each(LDabEngine/Entities/EntityIterator;[Ljava/lang/Class;)*
+9*q
+0 "j
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java2 2(
+implicit return*ù
+1S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java0 0(©
+¶
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java0 0(
+%31java.util.ArrayList"__id*-*+"
+ DabEngine.System.CollisionSystem"
+idsë
+é
+S
+IC:\projects\dabengine\src\main\java\DabEngine\System\CollisionSystem.java0 0(
+%32void"__arrayClear*
+
+%31java.util.ArrayList*
+0B$"
+ DabEngine.System.CollisionSystem

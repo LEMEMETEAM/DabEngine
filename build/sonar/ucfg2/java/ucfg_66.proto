@@ -1,0 +1,82 @@
+
+BDabEngine.Utils.Utils#colorToByteBuffer(FFFF)Ljava/nio/ByteBuffer;H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java7 7(."8*ý
+4H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java@ @(ÇÄ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java@ @(4
+%5java.nio.ByteBuffer"/java.nio.ByteBuffer#put(B)Ljava/nio/ByteBuffer;*
+
+bufjava.nio.ByteBuffer*
+""2put(B)ÇÄ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaA A(4
+%6java.nio.ByteBuffer"/java.nio.ByteBuffer#put(B)Ljava/nio/ByteBuffer;*
+
+bufjava.nio.ByteBuffer*
+""2put(B)ÇÄ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaB B(/
+%7java.nio.ByteBuffer"/java.nio.ByteBuffer#put(B)Ljava/nio/ByteBuffer;*
+
+bufjava.nio.ByteBuffer*
+""2put(B)ÇÄ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaC C(5
+%8java.nio.ByteBuffer"/java.nio.ByteBuffer#put(B)Ljava/nio/ByteBuffer;*
+
+bufjava.nio.ByteBuffer*
+""2put(B)*
+4
+1*ö
+8H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java8 8(%Ë
+È
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java8 8(@
+%0java.nio.ByteBuffer">org.lwjgl.BufferUtils#createByteBuffer(I)Ljava/nio/ByteBuffer;*"
+org.lwjgl.BufferUtils*
+""Œ
+‰
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java8 8(A
+bufjava.nio.ByteBuffer"__id*
+
+%0java.nio.ByteBufferŽ
+‹
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java9 9(%	
+%1int"java.lang.Math#round(F)I*"
+java.lang.Math*
+""Ž
+‹
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java: :(%	
+%2int"java.lang.Math#round(F)I*"
+java.lang.Math*
+""Ž
+‹
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java; ;(%	
+%3int"java.lang.Math#round(F)I*"
+java.lang.Math*
+""Ž
+‹
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java< <(%	
+%4int"java.lang.Math#round(F)I*"
+java.lang.Math*
+""*
+4
+1*·
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaG G("h
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaG G(
+
+bufjava.nio.ByteBuffer:
+"":
+"":
+"":
+""B"
+DabEngine.Utils.Utils

@@ -1,0 +1,130 @@
+
+^DabEngine.Graphics.Models.AABB#intersects(LDabEngine/Graphics/Models/AABB;)Lorg/joml/Vector3f;Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaS S("7*Í
+2Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java\  \(%q
+o
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java\  \()
+%14float"__id*
+""ÉÄ
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java\ \(
+%15org.joml.Vector3f"org.joml.Vector3fß
+§
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java\ \(*
+%16"org.joml.Vector3f#<init>(F)V*
+
+%15org.joml.Vector3f*
+
+%14float"o
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java\ \(+
+
+%15org.joml.Vector3f*–
+7Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT T( Æ
+´
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT T('
+%0org.joml.Vector3f"__id*7*5
+)
+bounds2DabEngine.Graphics.Models.AABB"
+center•
+¢
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT, T(2
+%1org.joml.Vector3f"__id*.*, 
+DabEngine.Graphics.Models.AABB"
+centerÅ
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT8 T(@
+%2org.joml.Vector3f"org.joml.Vector3fî
+ë
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT4 T(B
+%3"org.joml.Vector3f#<init>()V*
+
+%2org.joml.Vector3f¡æ
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT T(C
+%4org.joml.Vector3f"Qorg.joml.Vector3f#sub(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)Lorg/joml/Vector3f;*
+
+%0org.joml.Vector3f*
+
+%1org.joml.Vector3f*
+
+%2org.joml.Vector3f2,sub(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)ñ
+ì
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaT T(D
+distanceorg.joml.Vector3f"__id*
+
+%4org.joml.Vector3fó
+î
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaU U(1
+%5float"java.lang.Math#abs(F)F*"
+java.lang.Math*
+""ó
+î
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaV V(1
+%6float"java.lang.Math#abs(F)F*"
+java.lang.Math*
+""ó
+î
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaW W(1
+%7float"java.lang.Math#abs(F)F*"
+java.lang.Math*
+""™
+ß
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY Y( 
+%8org.joml.Vector3f"__id*3*1 
+DabEngine.Graphics.Models.AABB"
+half_extent≥
+∞
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY% Y(8
+%9org.joml.Vector3f"__id*<*:
+)
+bounds2DabEngine.Graphics.Models.AABB"
+half_extentÉÄ
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY> Y(F
+%10org.joml.Vector3f"org.joml.Vector3fñ
+ì
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY: Y(H
+%11"org.joml.Vector3f#<init>()V*
+
+%10org.joml.Vector3f√¿
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY Y(I
+%12org.joml.Vector3f"Qorg.joml.Vector3f#add(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)Lorg/joml/Vector3f;*
+
+%8org.joml.Vector3f*
+
+%9org.joml.Vector3f*
+
+%10org.joml.Vector3f2,add(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)àÖ
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.javaY Y(J
+%13org.joml.Vector3f">org.joml.Vector3f#sub(Lorg/joml/Vector3fc;)Lorg/joml/Vector3f;*
+
+distanceorg.joml.Vector3f*
+
+%12org.joml.Vector3f2sub(Lorg/joml/Vector3fc;)*
+2
+1*Ã
+1Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java_ _("t
+Q
+GC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\AABB.java_ _(
+
+distanceorg.joml.Vector3f:)
+bounds2DabEngine.Graphics.Models.AABBB" 
+DabEngine.Graphics.Models.AABB

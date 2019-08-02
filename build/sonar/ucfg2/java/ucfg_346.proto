@@ -1,0 +1,16 @@
+
+KDabEngine.Input.KeyEvent#getSubject()LDabEngine/Observer/ActionEventSender;K
+AC:\projects\dabengine\src\main\java\DabEngine\Input\KeyEvent.java& &($"1*ý
+1K
+AC:\projects\dabengine\src\main\java\DabEngine\Input\KeyEvent.java'	 '(­
+ª
+K
+AC:\projects\dabengine\src\main\java\DabEngine\Input\KeyEvent.java'	 '(*
+%0$DabEngine.Observer.ActionEventSender"__id*)*'
+DabEngine.Input.KeyEvent"	
+subject"{
+K
+AC:\projects\dabengine\src\main\java\DabEngine\Input\KeyEvent.java' '(,
+*
+%0$DabEngine.Observer.ActionEventSenderB
+DabEngine.Input.KeyEvent

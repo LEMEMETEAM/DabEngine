@@ -1,0 +1,203 @@
+
+VDabEngine.Utils.Utils#ioResourceToByteBuffer(Ljava/lang/String;I)Ljava/nio/ByteBuffer;H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (3"24*¥
+24H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (y
+w
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (
+bufferjava.nio.ByteBuffer"__id*
+""ô
+ñ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java ('
+%0java.nio.file.Path"Rjava.nio.file.Paths#get(Ljava/lang/String;[Ljava/lang/String;)Ljava/nio/file/Path;*"
+java.nio.file.Paths*
+
+resourcejava.lang.String‹
+ˆ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java ((
+pathjava.nio.file.Path"__id*
+
+%0java.nio.file.PathÊ
+Ç
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java ("
+%1boolean"5java.nio.file.Files#isReadable(Ljava/nio/file/Path;)Z*"
+java.nio.file.Files*
+
+pathjava.nio.file.Path*
+14
+22*‰
+13H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java# #(R
+Œ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java# #(R
+sourcejava.io.InputStream"__id*
+
+%6java.io.InputStream 
+
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java$. $(I+
+%7%java.nio.channels.ReadableByteChannel"cjava.nio.channels.Channels#newChannel(Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;*"
+java.nio.channels.Channels*
+
+sourcejava.io.InputStream*
+12*Þ
+14H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java#) #(4‡„
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java#) #(R
+%6java.io.InputStream"Ljava.lang.Class#getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;*
+""*
+
+resourcejava.lang.String2'getResourceAsStream(Ljava/lang/String;)*
+13*ã
+18H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (‰†
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (&	
+%5int"Bjava.nio.channels.SeekableByteChannel#read(Ljava/nio/ByteBuffer;)I*-
++
+fc%java.nio.channels.SeekableByteChannel*
+
+bufferjava.nio.ByteBuffer2read(Ljava/nio/ByteBuffer;)*
+18
+1*æ
+19H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (J
+Œ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (J
+bufferjava.nio.ByteBuffer"__id*
+
+%4java.nio.ByteBuffer*
+18*€
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java3 3(ÃÀ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java3 3(
+%13java.nio.ByteBuffer"/java.nio.ByteBuffer#flip()Ljava/nio/ByteBuffer;*
+
+bufferjava.nio.ByteBuffer2flip()"k
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java4 4(
+
+bufferjava.nio.ByteBuffer*è
+2H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java- -(L
+
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java- -(L
+bufferjava.nio.ByteBuffer"__id*
+
+%12java.nio.ByteBuffer*
+9
+1*Ó
+3H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java-J -(Kþ
+û
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java-! -(L
+%12java.nio.ByteBuffer"ODabEngine.Utils.Utils#resizeBuffer(Ljava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;*"
+DabEngine.Utils.Utils*
+
+bufferjava.nio.ByteBuffer*
+""*
+2*ø
+4H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java-! -(-£ 
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java-6 -(G
+
+%11int"java.nio.Buffer#capacity()I*
+
+bufferjava.nio.ByteBuffer2
+capacity()*
+3*€
+6H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java, ,(¥¢
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java, ,(*
+
+%10int"java.nio.Buffer#remaining()I*
+
+bufferjava.nio.ByteBuffer2remaining()*	
+4
+9
+1*â
+9H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java(  ((#Š‡
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java(  ((0	
+%9int"Bjava.nio.channels.ReadableByteChannel#read(Ljava/nio/ByteBuffer;)I*.
+,
+rbc%java.nio.channels.ReadableByteChannel*
+
+bufferjava.nio.ByteBuffer2read(Ljava/nio/ByteBuffer;)*
+6
+1*¢
+20H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java6 (EË
+È
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (J
+%4java.nio.ByteBuffer">org.lwjgl.BufferUtils#createByteBuffer(I)Ljava/nio/ByteBuffer;*"
+org.lwjgl.BufferUtils*
+""*
+19*È
+21H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (D¯
+¬
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java (D+
+fc%java.nio.channels.SeekableByteChannel"__id*-
++
+%2%java.nio.channels.SeekableByteChannel¿¼
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java< (E
+
+%3long"-java.nio.channels.SeekableByteChannel#size()J*-
++
+fc%java.nio.channels.SeekableByteChannel2size()*
+20*„
+22H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java* (/­
+ª
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java* (D+
+%2%java.nio.channels.SeekableByteChannel"zjava.nio.file.Files#newByteChannel(Ljava/nio/file/Path;[Ljava/nio/file/OpenOption;)Ljava/nio/channels/SeekableByteChannel;*"
+java.nio.file.Files*
+
+pathjava.nio.file.Path*
+21*è
+11H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java% %(A
+Œ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java% %(A
+bufferjava.nio.ByteBuffer"__id*
+
+%8java.nio.ByteBuffer*
+9
+1*Õ
+12H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java$ $(I°
+­
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java$ $(I,
+rbc%java.nio.channels.ReadableByteChannel"__id*-
++
+%7%java.nio.channels.ReadableByteChannelË
+È
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java% %(A
+%8java.nio.ByteBuffer">org.lwjgl.BufferUtils#createByteBuffer(I)Ljava/nio/ByteBuffer;*"
+org.lwjgl.BufferUtils*
+""*
+11:
+resourcejava.lang.String:
+""B"
+DabEngine.Utils.Utils

@@ -1,0 +1,27 @@
+
+ODabEngine.Graphics.OpenGL.Textures.TextureRegion#getTile(II)Lorg/joml/Vector4f;c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java- -("1*Ð
+1c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java. .(”‘
+c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java. .(
+%0org.joml.Vector4f"org.joml.Vector4f¦
+£
+c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java. .(
+%1"org.joml.Vector4f#<init>()V*
+
+%0org.joml.Vector4f¢
+Ÿ
+c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java. .(
+uvorg.joml.Vector4f"__id*
+
+%0org.joml.Vector4f"€
+c
+YC:\projects\dabengine\src\main\java\DabEngine\Graphics\OpenGL\Textures\TextureRegion.java3 3(
+
+uvorg.joml.Vector4f:
+"":
+""B42
+0DabEngine.Graphics.OpenGL.Textures.TextureRegion

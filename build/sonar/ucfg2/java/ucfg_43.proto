@@ -1,0 +1,27 @@
+
+?DabEngine.Input.InputHandler#getMouseDelta()Lorg/joml/Vector2d;O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javac c("1*Å
+1O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javad  d("}
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javad d(
+%0org.joml.Vector2d"org.joml.Vector2d§
+°
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javad d('
+%1"org.joml.Vector2d#<init>(DD)V*
+
+%0org.joml.Vector2d*
+""*
+""ë
+é
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javad d((
+deltaorg.joml.Vector2d"__id*
+
+%0org.joml.Vector2d"o
+O
+EC:\projects\dabengine\src\main\java\DabEngine\Input\InputHandler.javag g(
+
+deltaorg.joml.Vector2dB 
+DabEngine.Input.InputHandler

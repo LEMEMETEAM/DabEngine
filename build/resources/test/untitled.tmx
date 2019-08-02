@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="17">
+ <tileset firstgid="1" name="Tiles_64x64" tilewidth="64" tileheight="64" tilecount="64" columns="8">
+  <image source="Tiles_64x64.png" width="512" height="512"/>
+ </tileset>
+ <imagelayer id="7" name="Image Layer 1">
+  <image source="../../../../../Pictures/72cd26e14b7fcba028206a06f10548c0d5174cfc.jpg" width="1920" height="800"/>
+ </imagelayer>
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+3,0,1,0,1,0,1,0,2,0,
+0,0,0,0,0,0,0,0,0,0,
+4,0,5,0,5,0,5,0,6,0
+</data>
+ </layer>
+ <layer id="2" name="Tile Layer 2" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,7,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,7,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Tile Layer 3" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+38,0,39,0,0,0,0,0,7,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,43,0,44,0,40,0,0,
+0,0,0,0,0,0,0,0,0,0,
+7,0,0,0,52,0,7,0,51,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+48,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,49,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="9" name="Object Layer 2">
+  <object id="15" type="Rect" x="160" y="32" width="96" height="32"/>
+  <object id="16" type="point" x="128" y="64">
+   <properties>
+    <property name="draw" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

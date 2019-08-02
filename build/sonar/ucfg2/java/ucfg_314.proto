@@ -1,0 +1,20 @@
+
+UDabEngine.Graphics.Models.VertexBuffer#flip()LDabEngine/Graphics/Models/VertexBuffer;Y
+OC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\VertexBuffer.java   ("1*ù
+1Y
+OC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\VertexBuffer.java! !(¸
+µ
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\VertexBuffer.java! !(
+%0java.nio.FloatBuffer"__id*6*4(
+&DabEngine.Graphics.Models.VertexBuffer"
+bufferÓÐ
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\VertexBuffer.java! !(
+%1java.nio.FloatBuffer"1java.nio.FloatBuffer#flip()Ljava/nio/FloatBuffer;*
+
+%0java.nio.FloatBuffer2flip()"‡
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\Graphics\Models\VertexBuffer.java" "(*(
+&DabEngine.Graphics.Models.VertexBufferB*(
+&DabEngine.Graphics.Models.VertexBuffer

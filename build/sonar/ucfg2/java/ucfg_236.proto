@@ -1,0 +1,22 @@
+
+GDabEngine.Scenes.SceneManager#getCurrentScene()LDabEngine/Scenes/Scene;P
+FC:\projects\dabengine\src\main\java\DabEngine\Scenes\SceneManager.java ($"1*²
+1P
+FC:\projects\dabengine\src\main\java\DabEngine\Scenes\SceneManager.java	 (¥
+¢
+P
+FC:\projects\dabengine\src\main\java\DabEngine\Scenes\SceneManager.java	 (
+%0java.util.Stack"__id*1*/
+DabEngine.Scenes.SceneManager"
+
+sceneStack¾»
+P
+FC:\projects\dabengine\src\main\java\DabEngine\Scenes\SceneManager.java	 (
+%1DabEngine.Scenes.Scene"(java.util.Stack#peek()Ljava/lang/Object;*
+
+%0java.util.Stack2peek()"r
+P
+FC:\projects\dabengine\src\main\java\DabEngine\Scenes\SceneManager.java (
+
+%1DabEngine.Scenes.SceneB!"
+DabEngine.Scenes.SceneManager

@@ -1,0 +1,36 @@
+
+ODabEngine.Utils.Utils#resizeBuffer(Ljava/nio/ByteBuffer;I)Ljava/nio/ByteBuffer;H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaW W(*"1*ö
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaX X(*Ë
+È
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaX X(H
+%0java.nio.ByteBuffer">org.lwjgl.BufferUtils#createByteBuffer(I)Ljava/nio/ByteBuffer;*"
+org.lwjgl.BufferUtils*
+""’
+
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaX X(I 
+	newBufferjava.nio.ByteBuffer"__id*
+
+%0java.nio.ByteBufferÂ¿
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaY Y(
+%1java.nio.ByteBuffer"/java.nio.ByteBuffer#flip()Ljava/nio/ByteBuffer;*
+
+bufferjava.nio.ByteBuffer2flip()Ž‹
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaZ Z(
+%2java.nio.ByteBuffer"Cjava.nio.ByteBuffer#put(Ljava/nio/ByteBuffer;)Ljava/nio/ByteBuffer;*"
+ 
+	newBufferjava.nio.ByteBuffer*
+
+bufferjava.nio.ByteBuffer2put(Ljava/nio/ByteBuffer;)"n
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.java[ [("
+ 
+	newBufferjava.nio.ByteBuffer:
+bufferjava.nio.ByteBuffer:
+""B"
+DabEngine.Utils.Utils

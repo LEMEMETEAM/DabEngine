@@ -1,0 +1,179 @@
+
+.DabEngine.Utils.Utils#toHex(Ljava/awt/Color;)IH
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaJ J("1*ï"
+1H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK K(w
+u
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK K(
+%0DabEngine.Utils.Utils"__id*
+""™–
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK, K(:	
+%1int"java.awt.Color#getAlpha()I*
+
+coljava.awt.Color2
+getAlpha()½
+º
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK K(;
+%2java.lang.String"2java.lang.Integer#toHexString(I)Ljava/lang/String;*"
+java.lang.Integer*
+	
+%1intÛ
+Ø
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK K(<
+%3java.lang.String"?DabEngine.Utils.Utils#pad(Ljava/lang/String;)Ljava/lang/String;*"
+DabEngine.Utils.Utils*
+
+%2java.lang.String…
+‚
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaK K(=
+asjava.lang.String"__id*
+
+%3java.lang.Stringw
+u
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaL L(
+%4DabEngine.Utils.Utils"__id*
+""•’
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaL, L(8	
+%5int"java.awt.Color#getRed()I*
+
+coljava.awt.Color2getRed()½
+º
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaL L(9
+%6java.lang.String"2java.lang.Integer#toHexString(I)Ljava/lang/String;*"
+java.lang.Integer*
+	
+%5intÛ
+Ø
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaL L(:
+%7java.lang.String"?DabEngine.Utils.Utils#pad(Ljava/lang/String;)Ljava/lang/String;*"
+DabEngine.Utils.Utils*
+
+%6java.lang.String…
+‚
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaL L(;
+rsjava.lang.String"__id*
+
+%7java.lang.Stringw
+u
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaM M(
+%8DabEngine.Utils.Utils"__id*
+""™–
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaM, M(:	
+%9int"java.awt.Color#getGreen()I*
+
+coljava.awt.Color2
+getGreen()¾
+»
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaM M(;
+%10java.lang.String"2java.lang.Integer#toHexString(I)Ljava/lang/String;*"
+java.lang.Integer*
+	
+%9intÝ
+Ú
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaM M(<
+%11java.lang.String"?DabEngine.Utils.Utils#pad(Ljava/lang/String;)Ljava/lang/String;*"
+DabEngine.Utils.Utils*
+
+%10java.lang.String†
+ƒ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaM M(=
+gsjava.lang.String"__id*
+
+%11java.lang.Stringx
+v
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaN N(
+%12DabEngine.Utils.Utils"__id*
+""˜•
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaN, N(9
+
+%13int"java.awt.Color#getBlue()I*
+
+coljava.awt.Color2	getBlue()¿
+¼
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaN N(:
+%14java.lang.String"2java.lang.Integer#toHexString(I)Ljava/lang/String;*"
+java.lang.Integer*
+
+
+%13intÝ
+Ú
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaN N(;
+%15java.lang.String"?DabEngine.Utils.Utils#pad(Ljava/lang/String;)Ljava/lang/String;*"
+DabEngine.Utils.Utils*
+
+%14java.lang.String†
+ƒ
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaN N(<
+bsjava.lang.String"__id*
+
+%15java.lang.String’
+
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaO O(
+%16java.lang.String"__concat*
+0x*
+
+asjava.lang.String¥
+¢
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaO O(#
+%17java.lang.String"__concat*
+
+%16java.lang.String*
+
+rsjava.lang.String¥
+¢
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaO O((
+%18java.lang.String"__concat*
+
+%17java.lang.String*
+
+gsjava.lang.String¥
+¢
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaO O(-
+%19java.lang.String"__concat*
+
+%18java.lang.String*
+
+bsjava.lang.String‡
+„
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaO O(.
+hexjava.lang.String"__id*
+
+%19java.lang.StringÃ
+À
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaP P((
+
+%20int"0java.lang.Integer#parseInt(Ljava/lang/String;I)I*"
+java.lang.Integer*
+
+hexjava.lang.String*2"R
+H
+>C:\projects\dabengine\src\main\java\DabEngine\Utils\Utils.javaP P()
+"":
+coljava.awt.ColorB"
+DabEngine.Utils.Utils

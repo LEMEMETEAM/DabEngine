@@ -1,0 +1,177 @@
+
+>DabEngine.Graphics.Camera2D#getProjection()Lorg/joml/Matrix4f;N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java) )(!"1*ã(
+1N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java* *(£
+†
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java* *(
+%0org.joml.Matrix4f"__id*/*-
+DabEngine.Graphics.Camera2D"
+
+projectionÄ˝
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java* *(n
+%1org.joml.Matrix4f"5org.joml.Matrix4f#setOrtho(FFFFFF)Lorg/joml/Matrix4f;*
+
+%0org.joml.Matrix4f*
+""*
+""*
+""*
+""*
+""*
+""2setOrtho(FFFFFF)ù
+ö
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+ +(
+%2org.joml.Matrix4f"__id*)*'
+DabEngine.Graphics.Camera2D"
+view°
+û
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+ +(
+%3org.joml.Vector3f"__id*-*+
+DabEngine.Graphics.Camera2D"
+
+position°
+û
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+! +()
+%4org.joml.Vector3f"__id*-*+
+DabEngine.Graphics.Camera2D"
+
+positionû
+õ
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+. +(3
+%5org.joml.Vector3f"__id***(
+DabEngine.Graphics.Camera2D"
+front~|
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+9 +(A
+%6org.joml.Vector3f"org.joml.Vector3fë
+é
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+5 +(C
+%7"org.joml.Vector3f#<init>()V*
+
+%6org.joml.Vector3fæª
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+! +(D
+%8org.joml.Vector3f"Qorg.joml.Vector3f#add(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)Lorg/joml/Vector3f;*
+
+%4org.joml.Vector3f*
+
+%5org.joml.Vector3f*
+
+%6org.joml.Vector3f2,add(Lorg/joml/Vector3fc;Lorg/joml/Vector3f;)õ
+ò
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+F +(H
+%9org.joml.Vector3f"__id*'*%
+DabEngine.Graphics.Camera2D"
+upêç
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java+ +(I
+%10org.joml.Matrix4f"lorg.joml.Matrix4f#setLookAt(Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;)Lorg/joml/Matrix4f;*
+
+%2org.joml.Matrix4f*
+
+%3org.joml.Vector3f*
+
+%8org.joml.Vector3f*
+
+%9org.joml.Vector3f2GsetLookAt(Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;)¢
+ü
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java, ,(
+%11org.joml.Matrix4f"__id*-*+
+DabEngine.Graphics.Camera2D"
+
+combined§
+°
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java, ,(
+%12org.joml.Matrix4f"__id*/*-
+DabEngine.Graphics.Camera2D"
+
+projectionû
+õ
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java,$ ,((
+%13org.joml.Matrix4f"__id*)*'
+DabEngine.Graphics.Camera2D"
+view}
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java,. ,(6
+%14org.joml.Matrix4f"org.joml.Matrix4fì
+ê
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java,* ,(8
+%15"org.joml.Matrix4f#<init>()V*
+
+%14org.joml.Matrix4f¬ø
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java, ,(9
+%16org.joml.Matrix4f"Qorg.joml.Matrix4f#mul(Lorg/joml/Matrix4fc;Lorg/joml/Matrix4f;)Lorg/joml/Matrix4f;*
+
+%12org.joml.Matrix4f*
+
+%13org.joml.Matrix4f*
+
+%14org.joml.Matrix4f2,mul(Lorg/joml/Matrix4fc;Lorg/joml/Matrix4f;)Ä˝
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java, ,(:
+%17org.joml.Matrix4f">org.joml.Matrix4f#set(Lorg/joml/Matrix4fc;)Lorg/joml/Matrix4f;*
+
+%11org.joml.Matrix4f*
+
+%16org.joml.Matrix4f2set(Lorg/joml/Matrix4fc;)¨
+©
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java. .(#
+%18org.joml.FrustumIntersection"__id*,**
+DabEngine.Graphics.Camera2D"	
+frustum¢
+ü
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java. .(
+%19org.joml.Matrix4f"__id*-*+
+DabEngine.Graphics.Camera2D"
+
+combined}
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java.( .(0
+%20org.joml.Matrix4f"org.joml.Matrix4fì
+ê
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java.$ .(2
+%21"org.joml.Matrix4f#<init>()V*
+
+%20org.joml.Matrix4fÑÅ
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java. .(3
+%22org.joml.Matrix4f"@org.joml.Matrix4f#invert(Lorg/joml/Matrix4f;)Lorg/joml/Matrix4f;*
+
+%19org.joml.Matrix4f*
+
+%20org.joml.Matrix4f2invert(Lorg/joml/Matrix4f;)¨©
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java. .(4#
+%23org.joml.FrustumIntersection"Torg.joml.FrustumIntersection#set(Lorg/joml/Matrix4fc;)Lorg/joml/FrustumIntersection;*%
+#
+%18org.joml.FrustumIntersection*
+
+%22org.joml.Matrix4f2set(Lorg/joml/Matrix4fc;)¢
+ü
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java0 0(
+%24org.joml.Matrix4f"__id*-*+
+DabEngine.Graphics.Camera2D"
+
+combined"l
+N
+DC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera2D.java0 0(
+
+%24org.joml.Matrix4fB
+DabEngine.Graphics.Camera2D

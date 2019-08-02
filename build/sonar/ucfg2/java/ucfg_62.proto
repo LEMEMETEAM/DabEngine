@@ -1,0 +1,109 @@
+
+QDabEngine.Graphics.Camera#screenToWorld(Lorg/joml/Vector2f;FF)Lorg/joml/Vector2f;L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java( ((!"1*¢
+1L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java) )($ÿ’
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java) )(&
+%0org.joml.Matrix4f"<DabEngine.Graphics.Camera#getProjection()Lorg/joml/Matrix4f;*
+DabEngine.Graphics.Camera2getProjection()|z
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java)2 )(:
+%1org.joml.Matrix4f"org.joml.Matrix4fè
+å
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java). )(<
+%2"org.joml.Matrix4f#<init>()V*
+
+%1org.joml.Matrix4fˇ¸
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java) )(=
+%3org.joml.Matrix4f"@org.joml.Matrix4f#invert(Lorg/joml/Matrix4f;)Lorg/joml/Matrix4f;*
+
+%0org.joml.Matrix4f*
+
+%1org.joml.Matrix4f2invert(Lorg/joml/Matrix4f;)å
+â
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java) )(>
+invorg.joml.Matrix4f"__id*
+
+%3org.joml.Matrix4f|z
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java+ +(#
+%4org.joml.Vector4f"org.joml.Vector4fè
+å
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java+ +(%
+%5"org.joml.Vector4f#<init>()V*
+
+%4org.joml.Vector4få
+â
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java+ +(&
+posorg.joml.Vector4f"__id*
+
+%4org.joml.Vector4f|z
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java, ,(#
+%6org.joml.Vector4f"org.joml.Vector4f≥
+∞
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java, 1(	
+%7"org.joml.Vector4f#<init>(FFFF)V*
+
+%6org.joml.Vector4f*
+""*
+""*
+""*
+""å
+â
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java, 1(
+
+NDCorg.joml.Vector4f"__id*
+
+%6org.joml.Vector4f|z
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java2 2('
+%8org.joml.Vector4f"org.joml.Vector4fè
+å
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java2 2()
+%9"org.joml.Vector4f#<init>()V*
+
+%8org.joml.Vector4føº
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java2 2(*
+%10org.joml.Vector4f"Qorg.joml.Vector4f#mul(Lorg/joml/Matrix4fc;Lorg/joml/Vector4f;)Lorg/joml/Vector4f;*
+
+NDCorg.joml.Vector4f*
+
+invorg.joml.Matrix4f*
+
+%8org.joml.Vector4f2,mul(Lorg/joml/Matrix4fc;Lorg/joml/Vector4f;)ç
+ä
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java2 2(*
+posorg.joml.Vector4f"__id*
+
+%10org.joml.Vector4f}{
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java9 9(
+%11org.joml.Vector2f"org.joml.Vector2f£
+†
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java9 9()
+%12"org.joml.Vector2f#<init>(FF)V*
+
+%11org.joml.Vector2f*
+""*
+"""j
+L
+BC:\projects\dabengine\src\main\java\DabEngine\Graphics\Camera.java9 9(*
+
+%11org.joml.Vector2f:
+sorg.joml.Vector2f:
+"":
+""B
+DabEngine.Graphics.Camera
