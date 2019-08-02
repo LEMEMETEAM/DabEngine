@@ -40,4 +40,6 @@ deploy:
   auth_token:
     secure: OUTYhMglLnU7WbZ6373KbVCBAMqGJRHE4rQXVXYWUT6BNRg5nJV6gH+qXcuZ3RBZ
   artifact: jar
+  on:
+    branch: master
   force_update: true
