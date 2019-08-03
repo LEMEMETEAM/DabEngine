@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 import org.joml.Vector2d;
@@ -12,7 +13,9 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.json.simple.parser.ParseException;
+import org.junit.Test;
 import org.lwjgl.opengl.GL43;
+import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
@@ -20,6 +23,8 @@ import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.Models.UniformAttribs;
+import DabEngine.Graphics.Models.UniformBuffer;
 import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light2D;
@@ -53,6 +58,7 @@ public class TestCaseEngine extends App {
     float pow;
     Random rng = new Random();
     float posx, posy;
+    UniformBuffer lighting;
 
     {
         TITLE = "Test";
@@ -72,9 +78,11 @@ public class TestCaseEngine extends App {
                 g.setCamera(cam);
                 g.pushShader(Light2D.LIGHT_SHADER);
                 {
-                    g.getCurrentShader().setUniform("lights[0].position", light1.pos);
+                    light1.lightbuffer.bindToShader(g.getCurrentShader());
+                    light1.lightbuffer.put(0, light1.toArray());
+                    /* g.getCurrentShader().setUniform("lights[0].position", light1.pos);
                     g.getCurrentShader().setUniform("lights[0].color", light1.color);
-                    g.getCurrentShader().setUniform("ambientStrength", 0.9f);
+                    g.getCurrentShader().setUniform("ambientStrength", 0.9f); */
                     /* g.pushShader(DEFAULT_SHADER);
                     {
                         g.drawText(font, "The Quick Brown Fox Jumped Over The Lazy Dog", 100, 100, 1, Color.BLACK);
@@ -98,9 +106,12 @@ public class TestCaseEngine extends App {
                 g.drawTexture(ResourceManager.INSTANCE.getTexture("dab", Parameters.LINEAR), null, 50, 10, 0.75F, 30, 30, 0, 0, 0, Color.WHITE);
                 g.pushShader(DEFAULT_SHADER);
                     {
+                        light1.lightbuffer.bindToShader(g.getCurrentShader());
+                        DEFAULT_SHADER.setUniform("lit", 1);
                         g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 1, Color.BLACK);
                     } 
                 g.popShader();
+                light1.lightbuffer.flush();
             g.end();
     }
 
@@ -160,7 +171,7 @@ public class TestCaseEngine extends App {
 
         
 
-        light1 = new Light2D(new Vector3f(400f, 300, 0.5f), 0, new Vector3f(1,1,1));
+        light1 = new Light2D(new Vector3f(400f, 300, 0.5f), new Vector3f(1,1,1));
 
         posx = rng.nextFloat()*WIDTH;
         posy = rng.nextFloat()*HEIGHT;

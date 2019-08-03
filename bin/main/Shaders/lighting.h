@@ -3,8 +3,10 @@ struct Light{
     vec3 color;
 };
 
-uniform Light[32] lights;
-uniform float ambientStrength = 1.0;
+layout (std140) uniform lighting{
+    Light[32] lights;
+};
+float ambientStrength = 1;
 
 vec4 calcAmbient(int current_light){
     return ambientStrength * lights[current_light].color;

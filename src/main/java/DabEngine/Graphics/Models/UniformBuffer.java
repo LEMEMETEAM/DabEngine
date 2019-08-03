@@ -15,7 +15,7 @@ public class UniformBuffer implements IDisposable {
 
     private int ubo;
     private UniformAttribs[] attribs;
-    private int totalComponents;
+    public int totalComponents;
     private String block_name;
     private static int bindingPoint;
     private static HashMap<Integer, String> binds = new HashMap<>();
@@ -53,8 +53,20 @@ public class UniformBuffer implements IDisposable {
         return bindingPoint++;
     }
 
-    public UniformBuffer put(int pos, float[] f){
-        buffer.position(pos);
+    public UniformBuffer put(int num, float f){
+        buffer.position(attribs[num].pos);
+        buffer.put(f);
+        return this;    
+    }
+
+    public UniformBuffer put(int num, FloatBuffer f){
+        buffer.position(attribs[num].pos);
+        buffer.put(f);
+        return this;    
+    }
+
+    public UniformBuffer put(int num, float[] f){
+        buffer.position(attribs[num].pos);
         buffer.put(f);
         return this;    
     }
