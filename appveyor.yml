@@ -20,7 +20,7 @@ on_success:
   - xcopy C:\projects\dabengine\build\docs C:\temp /O /X /E /H /K /Y
   - cd C:/projects/dabengine
   - git reset --hard
-  - git checkout gh-pages
+  - git checkout -f gh-pages
   - xcopy C:\temp\javadoc C:\projects\dabengine\javadoc /O /X /E /H /K /i /Y
   - git config --global credential.helper store
   - ps: Add-Content "$HOME\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
