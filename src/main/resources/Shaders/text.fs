@@ -11,9 +11,9 @@ out vec4 fragColor;
 
 uniform sampler2D texture;
 uniform int lit = 0;
-#define LIT lit
 
 void main(){
+	#define LIT lit
         #if LIT == 1
                 vec4 color;
                 for(int i = 0; i < lights.length(); i++){
@@ -21,10 +21,10 @@ void main(){
                         vec4 diffuse = calcDiffuse(i, outNormal, outPosition);
                         color += (ambient + diffuse);
                 }
-                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texture, outTexCord).r);
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture2D(texture, outTexCord).r);
 	        fragColor = vec4(outColor.rgb, 1.0) * sampled * vec4(color.rgb, 1.0);
         #else
-                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texture, outTexCord).r);
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture2D(texture, outTexCord).r);
 	        fragColor = vec4(outColor.rgb, 1.0) * sampled; 
         #endif
 }

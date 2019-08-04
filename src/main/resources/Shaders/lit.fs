@@ -19,7 +19,7 @@ void main(){
         vec4 diffuse = calcDiffuse(i, outNormal, outPosition);
         color += (ambient + diffuse);
     }
-    vec4 tex = texture(texture, outTexCord);
+    vec4 tex = texture2D(texture, outTexCord);
     alphaScissor(tex);
     fragColor = outColor * vec4(color.rgb, 1) * tex;
 
