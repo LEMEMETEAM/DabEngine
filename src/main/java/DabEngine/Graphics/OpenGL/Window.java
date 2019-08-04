@@ -31,6 +31,10 @@ public class Window implements IDisposable{
         }
         
         this.app = app;
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
         
         PointerBuffer ms = glfwGetMonitors();
         for(int i = 0; i < ms.limit(); i++){

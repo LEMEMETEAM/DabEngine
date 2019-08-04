@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 #include /Shaders/Utils.h
 
 in vec3 outPosition;

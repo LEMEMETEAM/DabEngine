@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 in vec2 outPosition;
 in vec2 outTexCord;
