@@ -2,6 +2,7 @@ package DabEngine.Graphics.Models;
 
 import static org.lwjgl.opengl.GL33.*;
 
+import java.nio.BufferOverflowException;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
@@ -32,13 +33,17 @@ public class UniformBuffer implements IDisposable {
 
         ubo = glGenBuffers();
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-        glBufferData(GL_UNIFORM_BUFFER, buffer, GL_STATIC_DRAW);
+        glBufferData(GL_UNIFORM_BUFFER, buffer, GL_DYNAMIC_DRAW);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 
     public void bindToShader(Shaders s){
-        int idx = glGetUniformBlockIndex(s.getProgram(), block_name);
         int point = getBindingPoint();
+        if(binds.get(point) != null){
+            return;
+        }
+
+        int idx = glGetUniformBlockIndex(s.getProgram(), block_name);
         glUniformBlockBinding(s.getProgram(), idx, point);
         glBindBufferBase(GL_UNIFORM_BUFFER, point, ubo); 
         binds.put(point, block_name);
@@ -54,24 +59,26 @@ public class UniformBuffer implements IDisposable {
     }
 
     public UniformBuffer put(int num, float f){
-        buffer.position(attribs[num].pos);
-        buffer.put(f);
+        buffer.put(attribs[num].pos, f);
+        flush();
         return this;    
     }
 
     public UniformBuffer put(int num, FloatBuffer f){
-        buffer.position(attribs[num].pos);
-        buffer.put(f);
+        int orig = buffer.position();
+        buffer.position(attribs[num].pos).put(f);
+        flush();
         return this;    
     }
 
     public UniformBuffer put(int num, float[] f){
-        buffer.position(attribs[num].pos);
-        buffer.put(f);
+        int orig = buffer.position();
+        buffer.position(attribs[num].pos).put(f);
+        flush();
         return this;    
     }
 
-    public void flush(){
+    private void flush(){
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer.flip());
         glBindBuffer(GL_UNIFORM_BUFFER, 0);

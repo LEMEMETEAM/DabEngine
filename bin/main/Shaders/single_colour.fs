@@ -1,4 +1,6 @@
 #version 330 core
+#extension all : warn
+
 
 in vec2 outPosition;
 in vec2 outTexCord;

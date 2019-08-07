@@ -3,10 +3,11 @@ package DabEngine.Scenes;
 import DabEngine.Graphics.Graphics;
 
 public abstract class Overlay {
-    private Scene scene;
+    protected Scene scene;
 
-    public void addedToScene(Scene s){
-        this.scene = scene;
+    public Overlay addedToScene(Scene s){
+        this.scene = s;
+        return this;
     }
 
     public abstract void update();

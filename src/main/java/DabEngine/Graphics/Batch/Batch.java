@@ -214,11 +214,11 @@ public class Batch implements IDisposable{
     public void flush() {
 
 		updateUniforms();
-		ubo.flush();
 		
 		if(idx > 0){
 			data.flip();
 			if(tex != null){
+				shader.setUniform("texture", 0);
 				tex.bind(0);
 			}
 			data.bind();

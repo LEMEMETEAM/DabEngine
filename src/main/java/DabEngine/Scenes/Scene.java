@@ -1,5 +1,6 @@
 package DabEngine.Scenes;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -19,7 +20,7 @@ import DabEngine.Utils.FixedArrayList;
 public abstract class Scene {
 	private LinkedHashSet<ComponentSystem> sys = new LinkedHashSet<>();
 	public Camera camera;
-	public Stack<Overlay> overlays = new Stack<>();
+	public ArrayDeque<Overlay> overlays = new ArrayDeque<>();
 	public App app;
 	protected FixedArrayList<Light2D> lights = new FixedArrayList<>(32);
 	protected float ambientStrength;
@@ -41,19 +42,16 @@ public abstract class Scene {
 				g.pushShader(Light2D.LIGHT_SHADER);
 				int i = 0;
 				for(Light2D light : lights){
-					g.getCurrentShader().setUniform("lights["+i+"].position", light.pos);
-					g.getCurrentShader().setUniform("lights["+i+"].color", light.color);
-					g.getCurrentShader().setUniform("ambientStrength", ambientStrength);
+					light.lightbuffer.bindToShader(g.getCurrentShader());
+					light.lightbuffer.put(0, light.toArray());
 					i++;
 				}
-			}
-			else{
-				if(g.getCurrentShader() == Light2D.LIGHT_SHADER)
-					g.popShader();
 			}
 			for(ComponentSystem system : sys) {
 				system.render(g);
 			}
+			if(g.getCurrentShader() == Light2D.LIGHT_SHADER)
+					g.popShader();
 		g.end();
 		for(Overlay s : overlays){
 			s.render(g);
@@ -84,11 +82,15 @@ public abstract class Scene {
 	}
 
 	public void pushOverlay(Overlay overlay){
-		overlays.push(overlay);
+		overlays.push(overlay.addedToScene(this));
 	}
 
 	public void popOverlay(){
 		overlays.pop();
+	}
+
+	public void removeOverlay(Overlay overlay){
+		overlays.remove(overlay);
 	}
 	
 	public abstract void init();

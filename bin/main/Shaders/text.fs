@@ -1,4 +1,5 @@
 #version 330 core
+#extension all : warn
 
 #include /Shaders/lighting.h
 
@@ -21,10 +22,10 @@ void main(){
                         vec4 diffuse = calcDiffuse(i, outNormal, outPosition);
                         color += (ambient + diffuse);
                 }
-                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texture, outTexCord).r);
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture2D(texture, outTexCord).r);
 	        fragColor = vec4(outColor.rgb, 1.0) * sampled * vec4(color.rgb, 1.0);
         #else
-                vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texture, outTexCord).r);
+                vec4 sampled = vec4(1.0, 1.0, 1.0, texture2D(texture, outTexCord).r);
 	        fragColor = vec4(outColor.rgb, 1.0) * sampled; 
         #endif
 }

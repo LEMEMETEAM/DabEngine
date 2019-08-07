@@ -1,4 +1,6 @@
 #version 330 core
+#extension all : warn
+
 #include /Shaders/Utils.h
 
 in vec3 outPosition;
@@ -11,7 +13,7 @@ out vec4 fragColor;
 uniform sampler2D texture;
 
 void main(){
-    vec4 tex = texture2D(texture, outTexCord);
+    vec4 tex = texture(texture, outTexCord);
     alphaScissor(tex);
     fragColor = outColor * tex;
 }

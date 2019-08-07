@@ -1,4 +1,5 @@
 #version 330 core
+#extension all : warn
 
 #include /Shaders/lighting.h
 
@@ -11,9 +12,9 @@ out vec4 fragColor;
 
 uniform sampler2D texture;
 uniform int lit = 0;
+#define LIT lit
 
 void main(){
-	#define LIT lit
         #if LIT == 1
                 vec4 color;
                 for(int i = 0; i < lights.length(); i++){

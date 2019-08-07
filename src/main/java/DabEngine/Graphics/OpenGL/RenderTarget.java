@@ -91,7 +91,7 @@ public class RenderTarget {
 	}
 	
 	public void bindTex() {
-		glBindTexture(GL_TEXTURE_2D, texture.getID());
+		texture.bind(0);
 	}
 	
 	public void unbindTex() {
@@ -106,6 +106,7 @@ public class RenderTarget {
 	public void blit(){
 		bindTex();
 		fboShader.peek().bind();
+		fboShader.peek().setUniform("texture", 0);
 		draw();
 		fboShader.peek().unbind();
 		unbindTex();
@@ -121,14 +122,5 @@ public class RenderTarget {
 
 	public Shaders getShader(){
 		return fboShader.peek();
-	}
-
-	public void onResize(int width, int height){
-			unbind();
-			unbindTex();
-			glDeleteFramebuffers(f_id);
-			glDeleteRenderbuffers(r_id);
-			glDeleteTextures(texture.getID());
-			generateFBO(new Texture(width, height, false, Texture.Parameters.LINEAR), width, height);
 	}
 }

@@ -1,4 +1,5 @@
 #version 330 core
+#extension all : warn
 
 in vec3 outPosition;
 in vec2 outTexCord;
@@ -19,7 +20,7 @@ void main(){
         vec4 diffuse = calcDiffuse(i, outNormal, outPosition);
         color += (ambient + diffuse);
     }
-    vec4 tex = texture2D(texture, outTexCord);
+    vec4 tex = texture(texture, outTexCord);
     alphaScissor(tex);
     fragColor = outColor * vec4(color.rgb, 1) * tex;
 

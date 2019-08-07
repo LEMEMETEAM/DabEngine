@@ -71,7 +71,7 @@ public class TestCaseEngine extends App {
     @Override
     public void render() {
 
-            GL43.glClearColor(0,0,0,1.0f);
+            GL43.glClearColor(1,0,0,1.0f);
             //GL43.glClear(GL43.GL_COLOR_BUFFER_BIT);
             // omr.draw(g);
             g.begin(rt);
@@ -111,7 +111,7 @@ public class TestCaseEngine extends App {
                         g.drawText(font, "UPS: " + String.valueOf(ENGINE.UPDATES) + ", FPS: " + String.valueOf(ENGINE.FRAMES), 0, 24, 1, Color.BLACK);
                     } 
                 g.popShader();
-                light1.lightbuffer.flush();
+                //light1.lightbuffer.flush();
             g.end();
     }
 
@@ -148,6 +148,7 @@ public class TestCaseEngine extends App {
         //omr = new OrthagonalMapRenderer(map);
 
         font = new Font("src/test/resources/OpenSans-Regular.ttf", 48, 3);
+        font.integer_align  = true;
 
         //text = new TextBatch(TextBatch.DEFAULT_SHADER);
 

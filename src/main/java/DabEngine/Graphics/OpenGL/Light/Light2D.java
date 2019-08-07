@@ -13,7 +13,7 @@ public class Light2D {
 
     public Vector3f pos;
     public Vector3f color;
-    public static UniformBuffer lightbuffer;
+    public static UniformBuffer lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 6));
     public boolean buffer_made;
 
     public static final Shaders LIGHT_SHADER = new Shaders(
@@ -23,10 +23,6 @@ public class Light2D {
     public Light2D(Vector3f pos, Vector3f color){
         this.pos = pos;
         this.color = color;
-        if(buffer_made == false){
-            lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 6));
-        }
-        buffer_made = true;
     }
 
     public float[] toArray(){
