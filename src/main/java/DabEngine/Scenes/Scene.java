@@ -12,7 +12,7 @@ import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.SortType;
 import DabEngine.Graphics.OpenGL.RenderTarget;
-import DabEngine.Graphics.OpenGL.Light.Light2D;
+import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.System.ComponentSystem;
 import DabEngine.Utils.FixedArrayList;
@@ -22,7 +22,7 @@ public abstract class Scene {
 	public Camera camera;
 	public ArrayDeque<Overlay> overlays = new ArrayDeque<>();
 	public App app;
-	protected FixedArrayList<Light2D> lights = new FixedArrayList<>(32);
+	protected FixedArrayList<Light> lights = new FixedArrayList<>(32);
 	protected float ambientStrength;
 	protected RenderTarget rt;
 	public SortType sortingMode;
@@ -39,9 +39,9 @@ public abstract class Scene {
 			if(camera != null)
 				g.setCamera(camera);
 			if(!lights.isEmpty()){
-				g.pushShader(Light2D.LIGHT_SHADER);
+				g.pushShader(Light.LIGHT_SHADER);
 				int i = 0;
-				for(Light2D light : lights){
+				for(Light light : lights){
 					light.lightbuffer.bindToShader(g.getCurrentShader());
 					light.lightbuffer.put(0, light.toArray());
 					i++;
@@ -50,7 +50,7 @@ public abstract class Scene {
 			for(ComponentSystem system : sys) {
 				system.render(g);
 			}
-			if(g.getCurrentShader() == Light2D.LIGHT_SHADER)
+			if(g.getCurrentShader() == Light.LIGHT_SHADER)
 					g.popShader();
 		g.end();
 		for(Overlay s : overlays){

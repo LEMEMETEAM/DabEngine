@@ -13,14 +13,10 @@ void genOffset(float offset, inout vec2 array[9]){
 }
 
 vec3 calcKernel(float kernel[9], vec2 offsets[9], sampler2D texture, vec2 uv){
-    vec3 sampleTex[9];
+    vec3 col = vec3(0.0);
     for(int i = 0; i < kernel.length(); i++)
     {
-        sampleTex[i] = vec3(texture(texture, uv.st + offsets[i]));
-    }
-    vec3 col = vec3(0.0);
-    for(int i = 0; i < kernel.length(); i++){
-        col += sampleTex[i] * kernel[i];
+        col += vec3(texture(texture, uv.st + offsets[i])) * kernel[i];
     }
     return col;
 }

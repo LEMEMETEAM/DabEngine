@@ -1,7 +1,6 @@
 package DabEngine.Graphics.Models;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL33.*;
 
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -11,14 +10,17 @@ import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Core.IDisposable;
 
+import java.util.Arrays;
+
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class VertexBuffer implements IDisposable {
 	
-	private VertexAttrib[] attribs;
+	VertexAttrib[] attribs;
 	private int totalComponents;
 	private int vertcount;
 	private FloatBuffer buffer;
+	private int vbo, vao;
 	
 	public VertexBuffer(int vertcount, VertexAttrib... attribs) {
 		this.attribs = attribs;
@@ -28,6 +30,14 @@ public class VertexBuffer implements IDisposable {
 		this.vertcount = vertcount;
 		
 		buffer = memCallocFloat(vertcount * totalComponents);
+
+		vbo = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		vao = glGenVertexArrays();
+
 	}
 	
 	public VertexBuffer(int vertcount, List<VertexAttrib> attribs) {
@@ -62,16 +72,20 @@ public class VertexBuffer implements IDisposable {
 	}
 	
 	public void bind() {
+		glBindVertexArray(vao);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, buffer.flip());
+
 		int offset = 0;
 		
 		int stride = totalComponents * 4;
 		
 		for(int i = 0; i < attribs.length; i++) {
 			VertexAttrib attrib = attribs[i];
-			buffer.position(offset);
+			glVertexAttribPointer(attrib.location, attrib.numComponents, GL_FLOAT, false, stride, offset);
 			glEnableVertexAttribArray(attrib.location);
-			glVertexAttribPointer(attrib.location, attrib.numComponents, GL_FLOAT, false, stride, buffer);
-			offset += attrib.numComponents;
+			offset += attrib.numComponents * 4;
 		}
 	}
 	
@@ -84,6 +98,10 @@ public class VertexBuffer implements IDisposable {
 			VertexAttrib attrib = attribs[i];
 			glDisableVertexAttribArray(attrib.location);
 		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindVertexArray(0);
 	}
 
 	@Override

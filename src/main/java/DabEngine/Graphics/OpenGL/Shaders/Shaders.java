@@ -1,6 +1,6 @@
 package DabEngine.Graphics.OpenGL.Shaders;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL33.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -65,6 +65,11 @@ public class Shaders {
             //System.exit(0);
         }
         glValidateProgram(program);
+        if(glGetProgrami(program, GL_VALIDATE_STATUS) == 0){
+            LOGGER.log(Level.SEVERE, "PROGRAM VALIDATION FAILED FOR " + program);
+            LOGGER.log(Level.SEVERE, glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
+            
+        }
 
         this.vs_source = source_vs;
         this.fs_source = source_fs;

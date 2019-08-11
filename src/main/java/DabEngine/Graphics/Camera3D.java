@@ -4,6 +4,14 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Camera3D extends Camera{
+
+    private float fovY;
+
+    public Camera3D(float fovY, float viewportWidth, float viewportHeight){
+        this.viewportWidth = viewportWidth;
+        this.viewportHeight = viewportHeight;
+        this.fovY = fovY;
+    }
 	
 	public void setPosition(Vector3f position) {
         this.position = position;
@@ -49,7 +57,14 @@ public class Camera3D extends Camera{
 
     @Override
     public Matrix4f getProjection() {
-        return null;
+        float aspect = viewportWidth / viewportHeight;
+        projection.setPerspective(fovY, aspect, near, far);
+        view.setLookAt(position, position.add(front, new Vector3f()), up);
+        combined.set(projection.mul(view, new Matrix4f()));
+
+        frustum.set(combined.invert(new Matrix4f()));
+        
+        return combined;
     }
     
 }

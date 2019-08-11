@@ -15,13 +15,15 @@ import DabEngine.Core.Engine;
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Batch.Batch;
 import DabEngine.Graphics.Batch.Font;
+import DabEngine.Graphics.Models.Model;
+import DabEngine.Graphics.Models.UniformBuffer;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Utils.Color;
 import DabEngine.Graphics.OpenGL.*;
-import DabEngine.Graphics.OpenGL.Light.Light2D;
+import DabEngine.Graphics.OpenGL.Light.Light;
 
 import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -83,7 +85,8 @@ public class Graphics implements IDisposable{
             r.bind();
             RenderTarget = r;
             glEnable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_STENCIL_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
         batch.begin();
     }
@@ -159,6 +162,29 @@ public class Graphics implements IDisposable{
             batch.addQuad(tex, x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
+    public void drawModel(Model model, float x, float y, float z, float scale){
+        batch.end();
+
+        model.modelMatrix.identity();
+        model.modelMatrix.translate(x, y, z);
+        model.modelMatrix.scale(scale);
+
+        UniformBuffer ubo = batch.ubo;
+        Matrix4f mvp = batch.projectionMatrix;
+        
+        ubo.bindToShader(shaderStack.peek());
+        ubo.put(0, mvp.mul(model.modelMatrix, new Matrix4f()).get(new float[16]));
+
+        shaderStack.peek().bind();
+        if(shaderStack.peek() == Light.LIGHT_SHADER){
+            shaderStack.peek().setUniform("textured", model.textured);
+        }
+        model.draw();
+        shaderStack.peek().unbind();
+
+        batch.begin();
+    }
+
     public void end() {
         batch.end();
         if (RenderTarget != null) {
@@ -167,7 +193,7 @@ public class Graphics implements IDisposable{
             glClear(GL_COLOR_BUFFER_BIT);
             //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
             RenderTarget.blit();
-            RenderTarget = null;
+            //RenderTarget = null;
         }
     }
 

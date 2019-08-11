@@ -1,11 +1,12 @@
 package DabEngine.Core;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL43.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.lwjgl.opengl.GLDebugMessageCallback;
 import org.lwjgl.system.Configuration;
 
 import DabEngine.Graphics.Graphics;
@@ -34,6 +35,7 @@ public class Engine {
      * Destroys the window and terminates the program
      */
     public void end() {
+        glBindVertexArray(0);
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
         app.dispose();
@@ -96,6 +98,14 @@ public class Engine {
 		    glfwSetCursorPosCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MousePos());
 		    glfwSetMouseButtonCallback(mainWindow.getWin(), InputHandler.INSTANCE.new MouseButton());
         
+            glEnable(GL_DEBUG_OUTPUT);
+    
+            glDebugMessageCallback(new GLDebugMessageCallback(){
+                @Override
+                public void invoke(int arg0, int arg1, int arg2, int arg3, int arg4, long arg5, long arg6) {
+                    System.out.println(getMessage(arg4, arg5));
+                }
+            }, 0);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             //glEnable(GL_SCISSOR_TEST);

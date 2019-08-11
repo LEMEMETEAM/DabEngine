@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - ModelTest",
+            "request": "launch",
+            "mainClass": "DabEngine.ModelTest",
+            "projectName": "DabEngine"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -11,8 +18,8 @@
             "name": "CodeLens (Launch) - TestCaseEngine",
             "request": "launch",
             "mainClass": "DabEngine.TestCaseEngine",
-            "projectName": "DabEngine"
-            
+            "projectName": "DabEngine",
+            "vmArgs": "-Xmx2G"
         }
     ]
 }

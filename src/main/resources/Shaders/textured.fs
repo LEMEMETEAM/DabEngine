@@ -1,5 +1,4 @@
 #version 330 core
-#extension all : warn
 
 #include /Shaders/Utils.h
 

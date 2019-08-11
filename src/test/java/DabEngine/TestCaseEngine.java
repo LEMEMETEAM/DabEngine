@@ -1,6 +1,5 @@
 package DabEngine;
 
-import static org.junit.Assert.assertTrue;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.io.File;
@@ -12,8 +11,6 @@ import org.joml.Vector2d;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.json.simple.parser.ParseException;
-import org.junit.Test;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.system.MemoryStack;
 
@@ -27,7 +24,7 @@ import DabEngine.Graphics.Models.UniformAttribs;
 import DabEngine.Graphics.Models.UniformBuffer;
 import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.RenderTarget;
-import DabEngine.Graphics.OpenGL.Light.Light2D;
+import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
@@ -52,8 +49,8 @@ public class TestCaseEngine extends App {
     private RenderTarget rt;
     private Viewport vp;
     private Camera2D cam;
-    private Light2D light1;
-    private Light2D light2;
+    private Light light1;
+    private Light light2;
     private Shaders light_shaders;
     float pow;
     Random rng = new Random();
@@ -76,7 +73,7 @@ public class TestCaseEngine extends App {
             // omr.draw(g);
             g.begin(rt);
                 g.setCamera(cam);
-                g.pushShader(Light2D.LIGHT_SHADER);
+                g.pushShader(Light.LIGHT_SHADER);
                 {
                     light1.lightbuffer.bindToShader(g.getCurrentShader());
                     light1.lightbuffer.put(0, light1.toArray());
@@ -172,7 +169,7 @@ public class TestCaseEngine extends App {
 
         
 
-        light1 = new Light2D(new Vector3f(400f, 300, 0.5f), new Vector3f(1,1,1));
+        light1 = new Light(new Vector3f(400f, 300, 0.5f), new Vector3f(1,1,1));
 
         posx = rng.nextFloat()*WIDTH;
         posy = rng.nextFloat()*HEIGHT;

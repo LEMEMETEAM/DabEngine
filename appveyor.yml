@@ -2,7 +2,7 @@ version: '{build}'
 os: Windows Server 2012
 skip_tags: true
 artifacts:
-- path: build/libs/DabEngine.jar
+- path: /build/libs/DabEngine.jar
   name: jar
 install:
   - cmd: SET JAVA_HOME=C:\Program Files\Java\jdk11
@@ -11,8 +11,8 @@ environment:
       access_token:
         secure: OUTYhMglLnU7WbZ6373KbVCBAMqGJRHE4rQXVXYWUT6BNRg5nJV6gH+qXcuZ3RBZ
 build_script:
-  - gradlew assemble
   - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=src/test -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
+  - gradlew sourcesJar
 on_success:
   - gradlew javadoc --continue
   - cd C:/

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL33;
 
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Models.UniformAttribs;
@@ -30,7 +30,7 @@ public class Batch implements IDisposable{
 	protected VertexBuffer data;
 	protected int maxsize = 1000*6;
 	protected Shaders shader;
-	protected UniformBuffer ubo;
+	public UniformBuffer ubo;
 	protected Texture tex;
 	protected static final List<VertexAttrib> ATTRIBUTES = 
 								Arrays.asList(new VertexAttrib(0, "position", 3),
@@ -216,14 +216,14 @@ public class Batch implements IDisposable{
 		updateUniforms();
 		
 		if(idx > 0){
-			data.flip();
+			//data.flip();
 			if(tex != null){
 				shader.setUniform("texture", 0);
 				tex.bind(0);
 			}
-			data.bind();
 			blend.apply();
-			data.draw(GL11.GL_TRIANGLES, 0, idx);
+			data.bind();
+			data.draw(GL33.GL_TRIANGLES, 0, idx);
 			data.unbind();
 			renderCalls++;
 	

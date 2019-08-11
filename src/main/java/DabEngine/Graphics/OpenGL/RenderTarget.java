@@ -35,12 +35,7 @@ public class RenderTarget {
 		
 		List<VertexAttrib> ATTRIBUTES = Arrays.asList(new VertexAttrib(0, "pos", 2), new VertexAttrib(1, "uv", 2));
 		quad = new VertexBuffer(6, ATTRIBUTES);
-		vertex(-1,-1,0,0);
-		vertex(-1,1,0,1);
-		vertex(1,1,1,1);
-		vertex(1,1,1,1);
-		vertex(1,-1,1,0);
-		vertex(-1,-1,0,0);
+		genQuad();
 
 		this.vp = vp;
 
@@ -79,7 +74,6 @@ public class RenderTarget {
 	}
 	
 	public void draw() {
-		quad.flip();
 		quad.bind();
 		quad.draw(GL_TRIANGLES, 0, 6);
 		quad.unbind();
@@ -122,5 +116,14 @@ public class RenderTarget {
 
 	public Shaders getShader(){
 		return fboShader.peek();
+	}
+
+	public void genQuad(){
+		vertex(-1,-1,0,0);
+		vertex(-1,1,0,1);
+		vertex(1,1,1,1);
+		vertex(1,1,1,1);
+		vertex(1,-1,1,0);
+		vertex(-1,-1,0,0);
 	}
 }
