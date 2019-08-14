@@ -83,7 +83,7 @@ public class UniformBuffer implements IDisposable {
 
     private void flush(){
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-        glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer.flip());
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer.rewind());
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 

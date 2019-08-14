@@ -5,6 +5,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import DabEngine.Core.App;
+import DabEngine.Core.DabEngineConfig;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera3D;
 import DabEngine.Graphics.Graphics;
@@ -33,6 +34,7 @@ public class ModelTest extends App {
         WIDTH = 800;
         HEIGHT = 600;
         MAXIMISED = false;
+        hints.put(GLFW_SAMPLES, 4);
     }
 
     @Override
@@ -44,19 +46,21 @@ public class ModelTest extends App {
     @Override
     public void render() {
         glClearColor(1,1,1,1);
-        g.begin(null);
+        g.begin(null, false);
             g.setCamera(cam);
             g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("LIT", "null"), new Pair<>("TEXTURED", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
-                model.draw(g, 0, 0, 0, 0.125f, rotation, new Vector3f(1,0,0));
+                Light.lightbuffer.put(1, 0.1f);
+                model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0));
             }
             g.popShader();
         g.end();
     }
 
     float yaw, pitch;
+    boolean togglez, togglex;
     @Override
     public void update() {
         Vector2d delta = InputHandler.INSTANCE.getMouseDelta();
@@ -81,6 +85,14 @@ public class ModelTest extends App {
             cam.strafeRight(0.25f);
         }
         //rotation++;
+        if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_Z)){
+            togglez = togglez ? false : true;
+            DabEngineConfig.MULTISAMPLE.setValue(Boolean.toString(togglez));
+        }
+        if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_X)){
+            togglex = togglex ? false : true;
+            DabEngineConfig.VSYNC.setValue(Boolean.toString(togglex));
+        }
     }
 
     @Override
@@ -88,10 +100,11 @@ public class ModelTest extends App {
         g = ENGINE.createGraphics(this);
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();
-        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Sonic Generations - Sonic the Hedgehog Modern/Sonic (Modern)/Sonic.DAE").toModel();
+        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/Nintendo 64 - Super Mario 64 - Peachs Castle Exterior/princess peaches castle (outside).obj").toModel();
         cam = new Camera3D(45, WIDTH, HEIGHT);
         light = new Light(new Vector3f(0, 5, 0), new Vector3f(1, 1, 1));
         glfwSetInputMode(ENGINE.getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+        
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL33;
 
 import DabEngine.Core.IDisposable;
+import DabEngine.Graphics.Camera;
 import DabEngine.Graphics.Models.UniformAttribs;
 import DabEngine.Graphics.Models.UniformBuffer;
 import DabEngine.Graphics.Models.VertexAttrib;
@@ -31,7 +32,7 @@ public class Batch implements IDisposable{
 	protected int maxsize = 1000*6;
 	protected Shaders shader;
 	public UniformBuffer ubo;
-	protected Texture tex;
+	protected Texture[] tex_slots;
 	protected static final List<VertexAttrib> ATTRIBUTES = 
 								Arrays.asList(new VertexAttrib(0, "position", 3),
 								new VertexAttrib(1, "color", 4),
@@ -42,6 +43,8 @@ public class Batch implements IDisposable{
 	};
 	public Matrix4f projectionMatrix = new Matrix4f();
 	public Blending blend;
+	private boolean batched;
+	public Camera cam;
 
 	public Batch(Shaders shader, Matrix4f proj) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
@@ -52,7 +55,7 @@ public class Batch implements IDisposable{
 		updateUniforms();
 	}
 
-    public void begin() {
+    public void begin(boolean batched) {
 		if(drawing) {
 			throw new IllegalStateException("must not be drawing before calling begin()");
 		}
@@ -60,8 +63,9 @@ public class Batch implements IDisposable{
 		shader.bind();
 		idx = 0;
 		renderCalls = 0;
-		tex = null;
+		tex_slots = new Texture[16];
 		blend = Blending.MIX;
+		this.batched = batched;
 	}
 	
 	public void end() {
@@ -69,7 +73,8 @@ public class Batch implements IDisposable{
 			throw new IllegalStateException("must be drawing before calling end()");
 		}
 		drawing = false;
-		flush();
+		if(batched)
+			flush();
 	}
 	
 	public void updateUniforms() {
@@ -122,7 +127,7 @@ public class Batch implements IDisposable{
 
 	}
 
-	public void setTexture(Texture tex){
+	public void setTexture(Pair<Texture, Integer>... tex){
 		changeTexture(tex);
 	}
 
@@ -143,6 +148,9 @@ public class Batch implements IDisposable{
 				data.put(vData[i*12+j]);
 			}
 			idx++;
+		}
+		if(!batched){
+			flush();
 		}
 	}
 
@@ -209,6 +217,10 @@ public class Batch implements IDisposable{
 			x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals2.x, faceNormals2.y, faceNormals2.z
 		};
 		add(verts);
+
+		if(!batched){
+			flush();
+		}
 	}
 	
 	private Vector3f calcNormals(float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, float p3x, float p3y, float p3z){
@@ -219,11 +231,18 @@ public class Batch implements IDisposable{
 		return N.normalize();
 	}
 
-    public void changeTexture(Texture t) {
-        if(t != tex){
-            flush();
-            this.tex = t;
-        }
+    public void changeTexture(Pair<Texture, Integer>... tex) {
+		//check if atleast one texture found that arent same
+		boolean one = false;
+        for(var t : tex){
+			if(t.left != tex_slots[t.right] && one == false){
+				//flush if only one is not same
+				flush();
+				one = true;
+			}
+			//still set each texture though
+			tex_slots[t.right] = t.left;
+		}
 	}
 	
 	private void checkSize(){
@@ -235,12 +254,16 @@ public class Batch implements IDisposable{
     public void flush() {
 
 		updateUniforms();
-		
+		if(cam != null){
+			shader.setUniform("viewPos", cam.getPosition());
+		}
 		if(idx > 0){
 			//data.flip();
-			if(tex != null){
-				shader.setUniform("texture", 0);
-				tex.bind(0);
+			for(int i = 0; i < tex_slots.length; i++){
+				Texture t = tex_slots[i];
+				if(t != null){
+					t.bind(i);
+				}
 			}
 			blend.apply();
 			data.bind();

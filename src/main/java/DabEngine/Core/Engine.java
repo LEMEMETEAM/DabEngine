@@ -3,6 +3,10 @@ package DabEngine.Core;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL43.*;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +22,6 @@ import DabEngine.Utils.Timer;
  * Main Engine class
  */
 public class Engine {
-
-    static{
-        Configuration.STACK_SIZE.set(512);
-    }
 	
     private Window mainWindow = null;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -30,12 +30,12 @@ public class Engine {
     public static double TARGET_FPS = 60 * TIMESCALE;
     private boolean graphics_init;
     public int FRAMES, UPDATES;
-    
+
     /**
      * Destroys the window and terminates the program
      */
     public void end() {
-        glBindVertexArray(0);
+        ConfigProps.save();
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
         app.dispose();

@@ -2,6 +2,6 @@
 
 vec4 sampleText(){
 
-        vec4 sampled = vec4(1.0, 1.0, 1.0, genTexel().r);
+        vec4 sampled = vec4(1.0, 1.0, 1.0, getTexel().r);
         return sampled; 
 }

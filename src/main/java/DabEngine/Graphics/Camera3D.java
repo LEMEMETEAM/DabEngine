@@ -16,10 +16,6 @@ public class Camera3D extends Camera{
 	public void setPosition(Vector3f position) {
         this.position = position;
     }
-	
-    public Vector3f getPosition() {
-        return position;
-    }
     
     public void setFront(Vector3f front) {
     	this.front = front;

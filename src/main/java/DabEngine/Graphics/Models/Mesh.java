@@ -16,8 +16,7 @@ public class Mesh {
     public float[] vData;
     public VertexAttrib[] attribs;
     public ArrayList<Texture> diffuse;
-    /** unused */
-    private ArrayList<Texture> specular;
+    public ArrayList<Texture> specular;
 
     public Mesh(float[] data, Texture[] diffuse, Texture[] specular){
         this.vData = data;

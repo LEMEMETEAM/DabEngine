@@ -24,6 +24,7 @@ import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Utils.Color;
+import DabEngine.Utils.Pair;
 import DabEngine.Graphics.OpenGL.*;
 import DabEngine.Graphics.OpenGL.Light.Light;
 
@@ -50,6 +51,7 @@ public class Graphics implements IDisposable{
      */
     private RenderTarget RenderTarget;
     private App app;
+    private Camera cam;
 
     public Graphics(App app){
         batch = new Batch(Batch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
@@ -79,10 +81,11 @@ public class Graphics implements IDisposable{
     }
 
     public void setCamera(Camera camera){
+        batch.cam = camera;
         batch.setProjectionMatrix(camera.getProjection());
     }
 
-    public void begin(RenderTarget r){
+    public void begin(RenderTarget r, boolean... batched){
         if(r != null){
             r.bind();
             RenderTarget = r;
@@ -90,7 +93,7 @@ public class Graphics implements IDisposable{
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        batch.begin();
+        batch.begin(batched == null ? true : batched[0]);
     }
 
     public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
@@ -112,7 +115,7 @@ public class Graphics implements IDisposable{
 
         float rotation = (float) Math.toDegrees((float) Math.atan2(dy, dx));
 
-        batch.setTexture(WHITE_PIXEL);
+        batch.setTexture(new Pair<>(WHITE_PIXEL, 0));
         batch.addQuad(x0 + wy, y0 - wx, depth, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
     }
 
@@ -131,7 +134,7 @@ public class Graphics implements IDisposable{
             x1 = q.x1();
             y1 = q.y1();
 
-            batch.setTexture(f.getTexture());
+            batch.setTexture(new Pair<>(f.getTexture(), 0));
             batch.addQuad(x0, y0, depth, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
         }
     }
@@ -155,13 +158,13 @@ public class Graphics implements IDisposable{
     }
 
     public void fillRect(float x, float y, float depth, float width, float height, float ox, float oy, float rotation, Color c) {
-        batch.setTexture(WHITE_PIXEL);
+        batch.setTexture(new Pair<>(WHITE_PIXEL, 0));
         batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void drawTexture(Texture tex, TextureRegion region, float x, float y, float depth, float width, float height, float ox, float oy,
             float rotation, Color c) {
-        batch.setTexture(tex);
+        batch.setTexture(new Pair<>(tex, 0));
         if(region != null)
             batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
         else

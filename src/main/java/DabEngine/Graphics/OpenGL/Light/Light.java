@@ -13,7 +13,7 @@ public class Light {
 
     public Vector3f pos;
     public Vector3f color;
-    public static UniformBuffer lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 2));
+    public static UniformBuffer lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 4 * 2), new UniformAttribs(32*4*2, "ambientStrength", 1));
     public boolean buffer_made;
 
     public Light(Vector3f pos, Vector3f color){

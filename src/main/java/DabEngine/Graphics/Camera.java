@@ -71,4 +71,8 @@ public abstract class Camera {
         position.y = clamp.apply(clampy_min, clampy_max, position.y);
         position.z = clamp.apply(clampz_min, clampz_max, position.z);
     }
+
+    public Vector3f getPosition() {
+        return position;
+    }
 }

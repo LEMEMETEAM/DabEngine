@@ -24,10 +24,6 @@ public class Camera2D extends Camera{
         this.position.add(position);
     }
 
-    public Vector3f getPosition() {
-        return position;
-    }
-
     public void rotate(Vector3f axis, float angle){
         front.rotateAxis(angle, axis.x, axis.y, axis.z);
         up.rotateAxis(angle, axis.x, axis.y, axis.z);
