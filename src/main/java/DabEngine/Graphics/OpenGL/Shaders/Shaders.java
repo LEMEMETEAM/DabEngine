@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
+import DabEngine.Cache.InMemoryCache;
 import DabEngine.Utils.Pair;
 
 /**
@@ -213,5 +215,24 @@ public class Shaders {
     
     private final String errorMessage(String uniformName, int location) {
     	return "Could not set uniform " + uniformName + " because location is " + location;
+    }
+
+    public static Shaders getUberShader(String shader_vs_dir, String shader_fs_dir, Pair<String, String>... defines){
+        String name_vs = shader_vs_dir.substring(shader_vs_dir.lastIndexOf("/")+1);
+        String name_fs = shader_fs_dir.substring(shader_fs_dir.lastIndexOf("/")+1);
+        Shaders s;
+        if((s = InMemoryCache.INSTANCE.get(name_vs.concat(name_fs).concat(definesToString(defines)))) == null){
+            s = new Shaders(Shaders.class.getResourceAsStream(shader_vs_dir), Shaders.class.getResourceAsStream(shader_fs_dir), defines);
+            InMemoryCache.INSTANCE.add(name_vs.concat(name_fs).concat(definesToString(defines)), s, 10000);
+        }
+        return s;
+    }
+
+    private static String definesToString(Pair<String, String>... defines){
+        String s = "";
+        for(var d:defines){
+            s += d.left + "_";
+        }
+        return s;
     }
 }

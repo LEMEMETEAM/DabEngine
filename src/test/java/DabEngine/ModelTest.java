@@ -1,5 +1,7 @@
 package DabEngine;
 
+import org.joml.Vector2d;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import DabEngine.Core.App;
@@ -9,7 +11,13 @@ import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Models.MeshLoader;
 import DabEngine.Graphics.Models.Model;
 import DabEngine.Graphics.OpenGL.Light.Light;
+import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
+import DabEngine.Input.InputHandler;
+import DabEngine.Utils.Pair;
+
+import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class ModelTest extends App {
 
@@ -32,22 +40,47 @@ public class ModelTest extends App {
 
     }
 
+    float rotation;
     @Override
     public void render() {
+        glClearColor(1,1,1,1);
         g.begin(null);
             g.setCamera(cam);
-            g.pushShader(Light.LIGHT_SHADER);
+            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("LIT", "null"), new Pair<>("TEXTURED", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
-                g.drawModel(model, 0, 0, 0, 0.01f);
+                model.draw(g, 0, 0, 0, 0.125f, rotation, new Vector3f(1,0,0));
             }
+            g.popShader();
         g.end();
     }
 
+    float yaw, pitch;
     @Override
     public void update() {
-        //cam.rotate(0.01, 0);
+        Vector2d delta = InputHandler.INSTANCE.getMouseDelta();
+        yaw += delta.x;
+        pitch += delta.y;
+        if(pitch > 89.0f)
+            pitch =  89.0f;
+        if(pitch < -89.0f)
+            pitch = -89.0f;
+        cam.rotate(yaw, -pitch);
+
+        if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_W)){
+            cam.moveForward(0.25f);
+        }
+        else if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_S)){
+            cam.moveBackward(0.25f);
+        }
+        else if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_A)){
+            cam.strafeLeft(0.25f);
+        }
+        else if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_D)){
+            cam.strafeRight(0.25f);
+        }
+        //rotation++;
     }
 
     @Override
@@ -55,9 +88,10 @@ public class ModelTest extends App {
         g = ENGINE.createGraphics(this);
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();
-        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Quake - Ranger/player/player.obj").toModel();
+        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Sonic Generations - Sonic the Hedgehog Modern/Sonic (Modern)/Sonic.DAE").toModel();
         cam = new Camera3D(45, WIDTH, HEIGHT);
-        light = new Light(new Vector3f(0, 30, 0), new Vector3f(1, 1, 1));
+        light = new Light(new Vector3f(0, 5, 0), new Vector3f(1, 1, 1));
+        glfwSetInputMode(ENGINE.getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     }
 
     @Override

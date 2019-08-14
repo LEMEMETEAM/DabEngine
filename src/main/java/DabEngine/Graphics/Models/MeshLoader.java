@@ -50,10 +50,6 @@ public class MeshLoader {
     }
 
     private Mesh processMesh(AIMesh mesh, AIScene scene){
-        Mesh dMesh = new Mesh(new VertexAttrib(0, "position", 3),
-        new VertexAttrib(1, "color", 4),
-        new VertexAttrib(2, "texCoords", 2),
-        new VertexAttrib(3, "normals", 3));
 
         float[] data = new float[12 * mesh.mNumVertices()];
 
@@ -102,7 +98,7 @@ public class MeshLoader {
             diffuse = loadMaterials(mat, aiTextureType_DIFFUSE);
             specular = loadMaterials(mat, aiTextureType_SPECULAR);
         }
-        dMesh.build(data, diffuse, specular);
+        Mesh dMesh = new Mesh(data, diffuse, specular);
 
         return dMesh;
     }

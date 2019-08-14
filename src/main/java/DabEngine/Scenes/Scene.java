@@ -39,7 +39,7 @@ public abstract class Scene {
 			if(camera != null)
 				g.setCamera(camera);
 			if(!lights.isEmpty()){
-				g.pushShader(Light.LIGHT_SHADER);
+//				g.pushShader(Light.LIGHT_SHADER);
 				int i = 0;
 				for(Light light : lights){
 					light.lightbuffer.bindToShader(g.getCurrentShader());
@@ -50,7 +50,7 @@ public abstract class Scene {
 			for(ComponentSystem system : sys) {
 				system.render(g);
 			}
-			if(g.getCurrentShader() == Light.LIGHT_SHADER)
+//			if(g.getCurrentShader() == Light.LIGHT_SHADER)
 					g.popShader();
 		g.end();
 		for(Overlay s : overlays){

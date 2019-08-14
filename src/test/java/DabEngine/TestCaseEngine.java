@@ -73,7 +73,7 @@ public class TestCaseEngine extends App {
             // omr.draw(g);
             g.begin(rt);
                 g.setCamera(cam);
-                g.pushShader(Light.LIGHT_SHADER);
+                g.pushShader(null);
                 {
                     light1.lightbuffer.bindToShader(g.getCurrentShader());
                     light1.lightbuffer.put(0, light1.toArray());

@@ -13,12 +13,8 @@ public class Light {
 
     public Vector3f pos;
     public Vector3f color;
-    public static UniformBuffer lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 6));
+    public static UniformBuffer lightbuffer = new UniformBuffer("lighting", new UniformAttribs(0, "lights", 32 * 2));
     public boolean buffer_made;
-
-    public static final Shaders LIGHT_SHADER = new Shaders(
-        Light.class.getResourceAsStream("/Shaders/default.vs"),
-        Light.class.getResourceAsStream("/Shaders/lit.fs"));
 
     public Light(Vector3f pos, Vector3f color){
         this.pos = pos;
@@ -30,9 +26,11 @@ public class Light {
             pos.x,
             pos.y,
             pos.z,
+            0,
             color.x,
             color.y,
-            color.z
+            color.z,
+            0
         };
     }
 }

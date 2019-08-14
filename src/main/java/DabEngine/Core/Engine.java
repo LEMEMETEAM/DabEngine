@@ -77,6 +77,7 @@ public class Engine {
                 FRAMES = frames;
                 UPDATES = updates;
                 LOGGER.log(Level.INFO, updates + " ups, " + frames + " fps");
+                LOGGER.log(Level.INFO, 1.0f/frames + " seconds per frame");
                 updates = 0;
                 frames = 0;
             }

@@ -21,6 +21,7 @@ public class UniformBuffer implements IDisposable {
     private static int bindingPoint;
     private static HashMap<Integer, String> binds = new HashMap<>();
     private FloatBuffer buffer;
+    private Shaders lastShader;
 
     public UniformBuffer(String block_name, UniformAttribs... attribs){
         this.attribs = attribs;
@@ -33,20 +34,22 @@ public class UniformBuffer implements IDisposable {
 
         ubo = glGenBuffers();
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-        glBufferData(GL_UNIFORM_BUFFER, buffer, GL_DYNAMIC_DRAW);
+        glBufferData(GL_UNIFORM_BUFFER, buffer, GL_STATIC_DRAW);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 
     public void bindToShader(Shaders s){
-        int point = getBindingPoint();
-        if(binds.get(point) != null){
-            return;
-        }
+            int point = getBindingPoint();
+            if(binds.get(point) != null && lastShader == s){
+                return;
+            }
 
-        int idx = glGetUniformBlockIndex(s.getProgram(), block_name);
-        glUniformBlockBinding(s.getProgram(), idx, point);
-        glBindBufferBase(GL_UNIFORM_BUFFER, point, ubo); 
-        binds.put(point, block_name);
+            int idx = glGetUniformBlockIndex(s.getProgram(), block_name);
+            glUniformBlockBinding(s.getProgram(), idx, point);
+            glBindBufferBase(GL_UNIFORM_BUFFER, point, ubo); 
+            binds.put(point, block_name);
+            lastShader = s;
+
     }
 
     private int getBindingPoint(){

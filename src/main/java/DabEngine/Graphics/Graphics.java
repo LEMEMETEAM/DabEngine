@@ -2,10 +2,12 @@ package DabEngine.Graphics;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Stack;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
@@ -84,10 +86,10 @@ public class Graphics implements IDisposable{
         if(r != null){
             r.bind();
             RenderTarget = r;
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_STENCIL_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_STENCIL_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         batch.begin();
     }
 
@@ -110,7 +112,8 @@ public class Graphics implements IDisposable{
 
         float rotation = (float) Math.toDegrees((float) Math.atan2(dy, dx));
 
-        batch.addQuad(WHITE_PIXEL, x0 + wy, y0 - wx, depth, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
+        batch.setTexture(WHITE_PIXEL);
+        batch.addQuad(x0 + wy, y0 - wx, depth, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
     }
 
     public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, float depth, Color col) {
@@ -128,7 +131,8 @@ public class Graphics implements IDisposable{
             x1 = q.x1();
             y1 = q.y1();
 
-            batch.addQuad(f.getTexture(), x0, y0, depth, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
+            batch.setTexture(f.getTexture());
+            batch.addQuad(x0, y0, depth, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
         }
     }
 
@@ -151,38 +155,55 @@ public class Graphics implements IDisposable{
     }
 
     public void fillRect(float x, float y, float depth, float width, float height, float ox, float oy, float rotation, Color c) {
-        batch.addQuad(WHITE_PIXEL, x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
+        batch.setTexture(WHITE_PIXEL);
+        batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
     public void drawTexture(Texture tex, TextureRegion region, float x, float y, float depth, float width, float height, float ox, float oy,
             float rotation, Color c) {
+        batch.setTexture(tex);
         if(region != null)
-            batch.addQuad(tex, x, y, depth, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
+            batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
         else
-            batch.addQuad(tex, x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
+            batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
-    public void drawModel(Model model, float x, float y, float z, float scale){
-        batch.end();
+    public void draw(float data[], float x, float y, float z, float scale, float rotation, Vector3f rotationAxis){
+        float[] temp = Arrays.copyOf(data, data.length);
+        rotation = (float)Math.toRadians(rotation);
+        for(int i = 0; i < temp.length/12; i++){
+            float pX = temp[i*12+0]*scale;
+            float pY = temp[i*12+1]*scale;
+            float pZ = temp[i*12+2]*scale;
 
-        model.modelMatrix.identity();
-        model.modelMatrix.translate(x, y, z);
-        model.modelMatrix.scale(scale);
+            float tx = 0, ty = 0, tz = 0;
+            tx = pX + x;
+            ty = pY + y;
+            tz = pZ + z;
 
-        UniformBuffer ubo = batch.ubo;
-        Matrix4f mvp = batch.projectionMatrix;
-        
-        ubo.bindToShader(shaderStack.peek());
-        ubo.put(0, mvp.mul(model.modelMatrix, new Matrix4f()).get(new float[16]));
+            float rx = 0, ry = 0, rz = 0;
+            if(rotationAxis.z == 1){
+                rx = tx*(float)Math.cos(rotation) - ty*(float)Math.sin(rotation);
+                ry = tx*(float)Math.sin(rotation) + ty*(float)Math.cos(rotation);
+                rz = tz;
+            }
+            else if(rotationAxis.y == 1){
+                rx = tx*(float)Math.cos(rotation) + tz*(float)Math.sin(rotation);
+                ry = ty;
+                rz = tx*-(float)Math.sin(rotation) + tz*(float)Math.cos(rotation);
+            }
+            else if(rotationAxis.x == 1){
+                rx = tx;
+                ry = ty*(float)Math.cos(rotation) - tz*(float)Math.sin(rotation);
+                rz = ty*(float)Math.sin(rotation) + tz*(float)Math.cos(rotation);
+            }
 
-        shaderStack.peek().bind();
-        if(shaderStack.peek() == Light.LIGHT_SHADER){
-            shaderStack.peek().setUniform("textured", model.textured);
+            temp[i*12+0] = rx;
+            temp[i*12+1] = ry;
+            temp[i*12+2] = rz;
         }
-        model.draw();
-        shaderStack.peek().unbind();
 
-        batch.begin();
+        batch.add(temp);
     }
 
     public void end() {

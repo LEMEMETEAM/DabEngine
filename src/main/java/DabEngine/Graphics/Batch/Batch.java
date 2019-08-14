@@ -16,14 +16,14 @@ import DabEngine.Graphics.OpenGL.Blending;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Utils.Color;
+import DabEngine.Utils.Pair;
 
 /**
  * Batch Renderer
  */
 public class Batch implements IDisposable{
 
-	public static Shaders DEFAULT_SHADER = new Shaders(Batch.class.getResourceAsStream("/Shaders/default.vs"),
-    Batch.class.getResourceAsStream("/Shaders/textured.fs"));
+	public static Shaders DEFAULT_SHADER = Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"));
     protected boolean drawing;
 	protected int idx;
 	public static int renderCalls = 0;
@@ -122,22 +122,34 @@ public class Batch implements IDisposable{
 
 	}
 
-    protected VertexBuffer vertex(float x, float y, float z, float r, float g, float b, float a, float u, float v, float nx, float ny, float nz) {
-        data.put(x).put(y).put(z).put(r).put(g).put(b).put(a).put(u).put(v).put(nx).put(ny).put(nz);
-        idx++;
-        return data;
+	public void setTexture(Texture tex){
+		changeTexture(tex);
 	}
 
-	public void addVertex(Texture tex, float x, float y, float z, float u, float v, float r, float g, float b, float a, float nx, float ny, float nz){
-		checkFlush(tex);
-        vertex(x, y, z, r, g, b, a, u, v, nx, ny, nz);
-    }
+	/**
+     * add array of vertexdata to batch 
+     * Data must not be tightly packed and should be arranged in the the order of attributes per vertex.
+     * Bad Example:
+     *   v1  v2  v3              v1  v2
+     * [xyz,xyz,xyz,xyz,xyz,xyz,rgb,rgb...]
+     * Good Example:
+     *   v1  v1 v1  v2  v2 v2
+     * [xyz,rgb,st,xyz,rgb,st...]
+     */
+	public void add(float[] vData){
+		for(int i = 0; i < vData.length/12; i++){
+			checkSize();
+			for(int j = 0; j < 12; j++){
+				data.put(vData[i*12+j]);
+			}
+			idx++;
+		}
+	}
 
-    public void addQuad(Texture tex, float x, float y, float z, float width, float height, float ox, float oy, float rotation,
+    public void addQuad(float x, float y, float z, float width, float height, float ox, float oy, float rotation,
             Color c, float u, float v, float u2, float v2) {
+		checkSize();
         float x1,y1,x2,y2,x3,y3,x4,y4;
-
-        checkFlush(tex);
 
         final float cx = ox;
 		final float cy = oy;
@@ -187,13 +199,16 @@ public class Batch implements IDisposable{
 		
 		
 		//x+width*y
-        vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z);
-		vertex(x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
-		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z);
+		float[] verts = new float[]{
+			x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals1.x, faceNormals1.y, faceNormals1.z,
+			x2, y2, z, col[0+4*1], col[1+4*1], col[2+4*1], col[3+4*1], u, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z,
+			x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals1.x, faceNormals1.y, faceNormals1.z,
 		
-		vertex(x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals2.x, faceNormals2.y, faceNormals2.z);
-		vertex(x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
-		vertex(x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals2.x, faceNormals2.y, faceNormals2.z);
+			x3, y3, z, col[0+4*2], col[1+4*2], col[2+4*2], col[3+4*2], u2, v2, faceNormals2.x, faceNormals2.y, faceNormals2.z,
+			x4, y4, z, col[0+4*3], col[1+4*3], col[2+4*3], col[3+4*3], u2, v, faceNormals2.x, faceNormals2.y, faceNormals2.z,
+			x1, y1, z, col[0+4*0], col[1+4*0], col[2+4*0], col[3+4*0], u, v, faceNormals2.x, faceNormals2.y, faceNormals2.z
+		};
+		add(verts);
 	}
 	
 	private Vector3f calcNormals(float p1x, float p1y, float p1z, float p2x, float p2y, float p2z, float p3x, float p3y, float p3z){
@@ -204,12 +219,18 @@ public class Batch implements IDisposable{
 		return N.normalize();
 	}
 
-    public void checkFlush(Texture t) {
-        if(t != tex || idx >= maxsize){
+    public void changeTexture(Texture t) {
+        if(t != tex){
             flush();
             this.tex = t;
         }
-    }
+	}
+	
+	private void checkSize(){
+		if(idx >= maxsize){
+			flush();
+		}
+	}
     
     public void flush() {
 

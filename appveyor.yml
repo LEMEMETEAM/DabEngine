@@ -1,6 +1,14 @@
 version: '{build}'
 os: Windows Server 2012
-skip_tags: true
+branches:
+  # whitelist
+  only:
+    - master
+
+  # blacklist
+  except:
+    - gh-pages
+    
 artifacts:
 - path: /build/libs/DabEngine.jar
   name: jar
@@ -36,11 +44,11 @@ before_deploy:
 - cmd: gradlew sourcesJar
 deploy:
 - provider: GitHub
-  release: DabEngine - v$(appveyor_build_version)
-  description: $(appveyor_repo_commit_message) \n $(appveyor_repo_commit_message_extended)
+  name: release
   auth_token:
     secure: OUTYhMglLnU7WbZ6373KbVCBAMqGJRHE4rQXVXYWUT6BNRg5nJV6gH+qXcuZ3RBZ
   artifact: jar
   on:
     branch: master
+    APPVEYOR_REPO_TAG: true
   force_update: true

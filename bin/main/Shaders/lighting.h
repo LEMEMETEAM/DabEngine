@@ -1,3 +1,5 @@
+in vec3 outNormal;
+
 struct Light{
     vec3 position;
     vec3 color;
@@ -6,7 +8,7 @@ struct Light{
 layout (std140) uniform lighting{
     Light[32] lights;
 };
-float ambientStrength = 1;
+float ambientStrength = 0.01;
 
 vec4 calcAmbient(int current_light){
     return ambientStrength * vec4(lights[current_light].color, 1.0);

@@ -2,6 +2,7 @@ package DabEngine.Cache;
 
 import java.lang.ref.SoftReference;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -51,8 +52,8 @@ public enum InMemoryCache implements Cache {
 		if(objectToCache == null) {
 			cache.remove(refName);
 		} else {
-			lifeTime += System.currentTimeMillis();
-			cache.put(refName, new SoftReference<>(new CachedObject<T>(objectToCache, lifeTime)));
+			long ttl = System.currentTimeMillis() + lifeTime;
+			cache.put(refName, new SoftReference<>(new CachedObject<T>(objectToCache, ttl)));
 		}
 	}
 	
@@ -102,11 +103,6 @@ public enum InMemoryCache implements Cache {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void cleanUp() {
-		Iterator<Entry<String, SoftReference<CachedObject>>> it = cache.entrySet().iterator();
-		while(it.hasNext()) {
-			if(it.next().getValue().get().isExpired()) {
-				it.remove();
-			}
-		}
+		cache.entrySet().removeIf(entry -> Optional.ofNullable(entry.getValue()).map(SoftReference::get).map(CachedObject::isExpired).orElse(false));
 	}
 }
