@@ -79,7 +79,7 @@ public class Texture implements IDisposable {
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        
+        glGenerateMipmap(GL_TEXTURE_2D);
 
         this.width = width;
         this.height = height;
@@ -142,6 +142,7 @@ public class Texture implements IDisposable {
         }
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        glGenerateMipmap(GL_TEXTURE_2D);
 
         this.width = width;
         this.height = height;

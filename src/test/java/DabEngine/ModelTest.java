@@ -56,7 +56,7 @@ public class ModelTest extends App {
                 model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0));
             }
             g.popShader();
-        g.end();
+        g.end(false);
     }
 
     float yaw, pitch;

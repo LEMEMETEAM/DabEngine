@@ -29,7 +29,7 @@ public class Batch implements IDisposable{
 	protected int idx;
 	public static int renderCalls = 0;
 	protected VertexBuffer data;
-	protected int maxsize = 1000*6;
+	protected int maxsize = 4096*6;
 	protected Shaders shader;
 	public UniformBuffer ubo;
 	protected Texture[] tex_slots;
