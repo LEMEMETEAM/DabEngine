@@ -73,9 +73,9 @@ public class Graphics implements IDisposable{
         batch.setBlend(blend);
     }
 
-    public void setRenderTarget(RenderTarget r){
+    public void setRenderTarget(RenderTarget r, boolean render){
         if(r != RenderTarget){
-            end();
+            end(render);
             begin(r);
         }
     }
@@ -209,15 +209,17 @@ public class Graphics implements IDisposable{
         batch.add(temp);
     }
 
-    public void end() {
+    public void end(boolean render) {
         batch.end();
         if (RenderTarget != null) {
             RenderTarget.unbind();
-            glDisable(GL_DEPTH_TEST);
-            glClear(GL_COLOR_BUFFER_BIT);
-            //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
-            RenderTarget.blit();
-            //RenderTarget = null;
+            if(render){
+                glDisable(GL_DEPTH_TEST);
+                glClear(GL_COLOR_BUFFER_BIT);
+                //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
+                RenderTarget.blit();
+                RenderTarget = null;
+            }
         }
     }
 

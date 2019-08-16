@@ -235,13 +235,17 @@ public class Batch implements IDisposable{
 		//check if atleast one texture found that arent same
 		boolean one = false;
         for(var t : tex){
-			if(t.left != tex_slots[t.right] && one == false){
+			if(t.left != tex_slots[t.right]){
 				//flush if only one is not same
 				flush();
 				one = true;
+				break;
 			}
-			//still set each texture though
-			tex_slots[t.right] = t.left;
+		}
+		for(var t : tex){
+			if(one){
+				tex_slots[t.right] = t.left;
+			}
 		}
 	}
 	

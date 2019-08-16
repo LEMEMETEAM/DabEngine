@@ -13,7 +13,7 @@ import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Utils.Pair;
 
 public class Model {
-    ArrayList<Mesh> meshes = new ArrayList<>();
+    public ArrayList<Mesh> meshes = new ArrayList<>();
     public int bTextured;
     int vCount;
 
@@ -25,21 +25,8 @@ public class Model {
     }
 
     public void draw(Graphics g, float x, float y, float z, float scale, float rotation, Vector3f axis){
-        boolean textured = false;
-        for(int i = 0; i < meshes.size(); i++){
-            for(int j = 0; j < meshes.get(i).diffuse.size(); j++){
-                g.getBatch().setTexture(new Pair<>(meshes.get(i).diffuse.get(j), 0));
-                textured = true;
-            }
-            for(int j = 0; j < meshes.get(i).specular.size(); j++){
-                g.getBatch().setTexture(new Pair<>(meshes.get(i).specular.get(j), 1));
-                textured = true;
-            }
-            if(!textured){
-                g.getBatch().setTexture(new Pair<>(new Texture(0), 0));
-            }
-            
-            g.draw(meshes.get(i).vData, x, y, z, scale, rotation, axis);
+        for(Mesh m : meshes){
+            m.draw(g, x, y, z, scale, rotation, axis);
         }
     }
 }

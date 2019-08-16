@@ -43,35 +43,15 @@ public class Shaders {
         vs = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vs, source_vs);
         glCompileShader(vs);
-        if(glGetShaderi(vs, GL_COMPILE_STATUS) == 0){
-        	LOGGER.log(Level.SEVERE, "Failed compiling vertex shader " + vs);
-            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(vs, glGetShaderi(vs, GL_INFO_LOG_LENGTH)));
-            System.exit(0);
-        }
         glAttachShader(program, vs);
 
         fs = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fs, source_fs);
         glCompileShader(fs);
-        if(glGetShaderi(fs, GL_COMPILE_STATUS) == 0){
-        	LOGGER.log(Level.SEVERE, "Failed compiling fragment shader " + fs);
-            LOGGER.log(Level.SEVERE, glGetShaderInfoLog(fs, glGetShaderi(fs, GL_INFO_LOG_LENGTH)));
-            System.exit(0);
-        }
         glAttachShader(program, fs);
 
         glLinkProgram(program);
-        if(glGetProgrami(program, GL_LINK_STATUS) == 0){
-        	LOGGER.log(Level.SEVERE, "Failed linking shaders to program " + program);
-            LOGGER.log(Level.SEVERE, glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
-            //System.exit(0);
-        }
         glValidateProgram(program);
-        if(glGetProgrami(program, GL_VALIDATE_STATUS) == 0){
-            LOGGER.log(Level.SEVERE, "PROGRAM VALIDATION FAILED FOR " + program);
-            LOGGER.log(Level.SEVERE, glGetProgramInfoLog(program, glGetProgrami(program, GL_INFO_LOG_LENGTH)));
-            
-        }
 
         this.vs_source = source_vs;
         this.fs_source = source_fs;

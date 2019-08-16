@@ -51,5 +51,11 @@ void main(){
         finalColor *= sampled;
     #endif
 
+    #ifdef FOG
+        float z = gl_FragCoord.z / gl_FragCoord.w;
+        float fog = clamp(exp(-FOG * z * z), 0.2, 1);
+        finalColor = mix(vec4(0.6, 0.8, 1.0, 1.0), finalColor, fog);
+    #endif
+
     fragColor = finalColor;
 }
