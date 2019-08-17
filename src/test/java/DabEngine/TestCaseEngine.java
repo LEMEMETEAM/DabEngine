@@ -109,7 +109,7 @@ public class TestCaseEngine extends App {
                     } 
                 g.popShader();
                 //light1.lightbuffer.flush();
-            g.end();
+            g.end(true);
     }
 
     float timer;

@@ -18,6 +18,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Cache.InMemoryCache;
 import DabEngine.Utils.Pair;
@@ -68,9 +69,9 @@ public class Shaders {
             String prevLine = "";
             while((line = br.readLine()) != null){
                 if(defines != null){
-                    if((prevLine.contains("#version") || prevLine.contains("#extension")) && !line.contains("#extension")){
+                    if((prevLine.contains("#version") || prevLine.contains("#extension")) && !line.contains("#")){
                         for(var p : defines){
-                            string.append("#define ").append(p.left).append(" ").append(p.right);
+                            string.append("\n").append("#define ").append(p.left).append(" ").append(p.right).append("\n");
                         }
                     }
                 }
@@ -137,9 +138,11 @@ public class Shaders {
             LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
             System.exit(1);
         }
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
-        value.get(buffer);
-        glUniformMatrix4fv(location, false, buffer);
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4*4);
+            value.get(buffer);
+            glUniformMatrix4fv(location, false, buffer);
+        }
     }
 
     public void setUniform(String uniformName, int value){
@@ -166,9 +169,11 @@ public class Shaders {
         	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
             System.exit(1);
         }
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(4);
-        value.get(buffer);
-        glUniform4fv(location, buffer);
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4);
+            value.get(buffer);
+            glUniform4fv(location, buffer);
+        }
     }
     
     public void setUniform(String uniformName, Vector3f value){
@@ -188,9 +193,11 @@ public class Shaders {
         	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
             System.exit(1);
         }
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(4);
-        value.get(buffer);
-        glUniform2fv(location, buffer);
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4);
+            value.get(buffer);
+            glUniform2fv(location, buffer);
+        }
     }
     
     private final String errorMessage(String uniformName, int location) {
@@ -201,18 +208,20 @@ public class Shaders {
         String name_vs = shader_vs_dir.substring(shader_vs_dir.lastIndexOf("/")+1);
         String name_fs = shader_fs_dir.substring(shader_fs_dir.lastIndexOf("/")+1);
         Shaders s;
-        if((s = InMemoryCache.INSTANCE.get(name_vs.concat(name_fs).concat(definesToString(defines)))) == null){
+        final StringBuilder builder = new StringBuilder();
+        builder.append(name_vs).append(name_fs).append(definesToString(defines));
+        if((s = InMemoryCache.INSTANCE.get(builder.toString())) == null){
             s = new Shaders(Shaders.class.getResourceAsStream(shader_vs_dir), Shaders.class.getResourceAsStream(shader_fs_dir), defines);
-            InMemoryCache.INSTANCE.add(name_vs.concat(name_fs).concat(definesToString(defines)), s, 10000);
+            InMemoryCache.INSTANCE.add(builder.toString(), s, 10000);
         }
         return s;
     }
 
     private static String definesToString(Pair<String, String>... defines){
-        String s = "";
+        final StringBuilder builder = new StringBuilder();
         for(var d:defines){
-            s += d.left + "_";
+            builder.append(d.left).append("_");
         }
-        return s;
+        return builder.toString();
     }
 }

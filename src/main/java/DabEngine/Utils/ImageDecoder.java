@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 /*
  * ONLY WORKS WITH FILE, iNPUTsTREAM AND BUFFEREDIMAGE
@@ -46,7 +47,7 @@ public class ImageDecoder<T> {
         int[] pixels_raw = new int[width * height];
         pixels_raw = bi.getRGB(0, 0, width, height, null, 0, width);
 
-        pixels = BufferUtils.createByteBuffer(width * height * 4);
+        pixels = MemoryUtil.memAlloc(width*height*4);
 
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++){
@@ -75,6 +76,7 @@ public class ImageDecoder<T> {
 
     public void close() throws IOException {
         pixels.clear();
+        MemoryUtil.memFree(pixels);
         if(resource instanceof InputStream){
             ((InputStream)resource).close();
         }

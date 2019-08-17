@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.lwjgl.assimp.AIColor4D;
+import org.lwjgl.assimp.AIFace;
 import org.lwjgl.assimp.AIMaterial;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AINode;
@@ -30,7 +31,7 @@ public class MeshLoader {
     private int vCount;
 
     public MeshLoader(String path){
-        AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+        AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_ImproveCacheLocality);
         if(scene == null || (scene.mFlags() & AI_SCENE_FLAGS_INCOMPLETE) == 1 || scene.mRootNode() == null){
             throw new Error("Error loading model");
         }
@@ -49,24 +50,38 @@ public class MeshLoader {
         }
     }
 
+    private ArrayList<Integer> genIndicies(AIMesh mesh){
+        ArrayList<Integer> idx = new ArrayList<>();
+        int numFaces = mesh.mNumFaces();
+        AIFace.Buffer faces = mesh.mFaces();
+        for(int i = 0; i < numFaces; i++){
+            AIFace face = faces.get(i);
+            IntBuffer idxbuffer = face.mIndices();
+            while(idxbuffer.remaining() > 0){
+                idx.add(idxbuffer.get());
+            }
+        }
+        return idx;
+    }
+
     private Mesh processMesh(AIMesh mesh, AIScene scene){
 
-        float[] data = new float[12 * mesh.mNumVertices()];
-
-        int stride = 12;
         vCount = mesh.mNumVertices();
-        for(int i = 0; i < vCount; i++){
-            AIVector3D verts = mesh.mVertices().get(i);
+        ArrayList<Integer> idx = genIndicies(mesh);
+
+        float[] data = new float[12 * idx.size()];
+        for(int i = 0; i < idx.size(); i++){
+            AIVector3D verts = mesh.mVertices().get(idx.get(i));
             data[i * 12 + 0] = verts.x();
             data[i * 12 + 1] = verts.y();
             data[i * 12 + 2] = verts.z();
 
             AIColor4D.Buffer color = mesh.mColors(0);
             if(color != null){
-                data[i * 12 + 3] = color.get(i).r();
-                data[i * 12 + 4] = color.get(i).g();
-                data[i * 12 + 5] = color.get(i).b();
-                data[i * 12 + 6] = color.get(i).a();
+                data[i * 12 + 3] = color.get(idx.get(i)).r();
+                data[i * 12 + 4] = color.get(idx.get(i)).g();
+                data[i * 12 + 5] = color.get(idx.get(i)).b();
+                data[i * 12 + 6] = color.get(idx.get(i)).a();
             }
             else{
                 data[i * 12 + 3] = 1;
@@ -77,15 +92,15 @@ public class MeshLoader {
 
             AIVector3D.Buffer uv = mesh.mTextureCoords(0);
             if(uv != null){
-                data[i * 12 + 7] = uv.get(i).x();
-                data[i * 12 + 8] = uv.get(i).y();
+                data[i * 12 + 7] = uv.get(idx.get(i)).x();
+                data[i * 12 + 8] = uv.get(idx.get(i)).y();
             }
             else{
                 data[i * 12 + 7] = 0;
                 data[i * 12 + 8] = 0;
             }
 
-            AIVector3D norms = mesh.mNormals().get(i);
+            AIVector3D norms = mesh.mNormals().get(idx.get(i));
             data[i * 12 + 9] = norms.x();
             data[i * 12  + 10] = norms.y();
             data[i * 12 + 11] = norms.z();

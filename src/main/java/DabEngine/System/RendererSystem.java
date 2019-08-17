@@ -36,7 +36,7 @@ public class RendererSystem extends ComponentSystem {
         for(int e : depth){
             CTransform  t = EntityManager.INSTANCE.component(e, CTransform.class);
             if(EntityManager.INSTANCE.has(e, CBuffered.class)){
-                g.setRenderTarget(EntityManager.INSTANCE.component(e, CBuffered.class).rt);
+                g.setRenderTarget(EntityManager.INSTANCE.component(e, CBuffered.class).rt, true);
             }
             if(EntityManager.INSTANCE.has(e, CSprite.class) || EntityManager.INSTANCE.has(e, CPolygon.class) || EntityManager.INSTANCE.has(e, CText.class) || EntityManager.INSTANCE.has(e, CTileMap.class)){
                 if(EntityManager.INSTANCE.has(e, CSprite.class)){

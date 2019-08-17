@@ -52,7 +52,7 @@ public abstract class Scene {
 			}
 //			if(g.getCurrentShader() == Light.LIGHT_SHADER)
 					g.popShader();
-		g.end();
+		g.end(true);
 		for(Overlay s : overlays){
 			s.render(g);
 		}

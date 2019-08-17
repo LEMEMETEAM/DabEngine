@@ -30,6 +30,7 @@ public class Engine {
     public static double TARGET_FPS = 60 * TIMESCALE;
     private boolean graphics_init;
     public int FRAMES, UPDATES;
+    private final StringBuilder stats_builder = new StringBuilder();
 
     /**
      * Destroys the window and terminates the program
@@ -76,8 +77,8 @@ public class Engine {
                 timer ++;
                 FRAMES = frames;
                 UPDATES = updates;
-                LOGGER.log(Level.INFO, updates + " ups, " + frames + " fps");
-                LOGGER.log(Level.INFO, 1.0f/frames + " seconds per frame");
+                LOGGER.log(Level.INFO, stats_builder.append(updates).append(" ups, ").append(frames).append(" fps").append("\n").append(1.0f/frames).append(" seconds per frame").toString());
+                stats_builder.setLength(0);
                 updates = 0;
                 frames = 0;
             }

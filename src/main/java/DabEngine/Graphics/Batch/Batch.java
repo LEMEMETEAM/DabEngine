@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL33;
+import static org.lwjgl.opengl.GL33.*;
 
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Camera;
@@ -271,7 +271,7 @@ public class Batch implements IDisposable{
 			}
 			blend.apply();
 			data.bind();
-			data.draw(GL33.GL_TRIANGLES, 0, idx);
+			data.draw(GL_TRIANGLES, 0, idx);
 			data.unbind();
 			renderCalls++;
 	

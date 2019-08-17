@@ -31,7 +31,7 @@ import DabEngine.Graphics.OpenGL.Light.Light;
 import static org.lwjgl.stb.STBTruetype.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public class Graphics implements IDisposable{
 

@@ -46,7 +46,7 @@ public class ModelTest extends App {
     @Override
     public void render() {
         glClearColor(1,1,1,1);
-        g.begin(null, false);
+        g.begin(null, true);
             g.setCamera(cam);
             g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("LIT", "null"), new Pair<>("TEXTURED", "0")));
             {
@@ -56,7 +56,7 @@ public class ModelTest extends App {
                 model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0));
             }
             g.popShader();
-        g.end(false);
+        g.end(true);
     }
 
     float yaw, pitch;
