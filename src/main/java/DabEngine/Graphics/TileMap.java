@@ -76,7 +76,7 @@ public class TileMap {
             JSONObject obj = (JSONObject)tiles.get(i);
             int imagewidth = ((Long)obj.get("imagewidth")).intValue(), imageheight = ((Long)obj.get("imageheight")).intValue(), tilewidth = ((Long)obj.get("tilewidth")).intValue(), tileheight = ((Long)obj.get("tileheight")).intValue();
             TextureLoader loader = new TextureLoader(new File(dir + (String)obj.get("image")));
-            Texture tex = new Texture(loader.pixels, loader.width, loader.height, Texture.Parameters.LINEAR);
+            Texture tex = new Texture(loader.pixels, loader.width, loader.height, false, Texture.Parameters.LINEAR);
             TextureRegion r = new TextureRegion(imagewidth / tilewidth, imageheight / tileheight);
             tilesets.put(((Long)obj.get("firstgid")).intValue(), new Pair<>(tex, r));
         }

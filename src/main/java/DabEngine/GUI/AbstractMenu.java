@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import org.joml.Vector2f;
 
 import DabEngine.Core.App;
+import DabEngine.GUI.GUIObject.States;
 import DabEngine.GUI.Objects.Button;
 import DabEngine.GUI.Objects.Image;
 import DabEngine.GUI.Objects.Panel;
@@ -36,6 +37,7 @@ public abstract class AbstractMenu {
 		}
 		for(var g : objs){
 			checkHover(g);
+			g.update();
 		}
 	}
 
@@ -63,20 +65,12 @@ public abstract class AbstractMenu {
 	}
 	
 	private void checkHover(GUIObject g) {
-		Vector2f half_extent_g = new Vector2f(g.size.x/2, g.size.y/2);
-		Vector2f mouse_pos_g = new Vector2f((float)InputHandler.INSTANCE.getMousePos().x, (float) InputHandler.INSTANCE.getMousePos().y);
-		Vector2f distance_g = mouse_pos_g.sub(g.pos.x + half_extent_g.x, g.pos.y + half_extent_g.y, new Vector2f());
-		
-		distance_g.x = (float) Math.abs(distance_g.x);
-		distance_g.y = (float) Math.abs(distance_g.y);
-		
-		distance_g.sub(half_extent_g.add(new Vector2f(1, 1), new Vector2f()));
-		
-		if(distance_g.x < 0 && distance_g.y < 0) {
-			g.onHover();
+		if(Math.abs(g.pos.x - (float)InputHandler.INSTANCE.getMousePos().x) * 2 <= (g.size.x + 1) &&
+			Math.abs(g.pos.y - (float)InputHandler.INSTANCE.getMousePos().y) * 2 <= (g.size.y + 1)){
+			g.state.setState(States.HOVER);
 		}
-		else {
-			g.onExit();
+		else{
+			g.state.setState(States.EXIT);
 		}
 	}
 }

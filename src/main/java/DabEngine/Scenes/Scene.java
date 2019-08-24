@@ -13,9 +13,11 @@ import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.Batch.SortType;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light;
+import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.System.ComponentSystem;
 import DabEngine.Utils.FixedArrayList;
+import DabEngine.Utils.Pair;
 
 public abstract class Scene {
 	private LinkedHashSet<ComponentSystem> sys = new LinkedHashSet<>();
@@ -35,24 +37,25 @@ public abstract class Scene {
 	}
 	
 	public void render(Graphics g) {
-		g.begin(rt != null ? rt : null);
+		g.begin(rt != null ? rt : null, true);
 			if(camera != null)
 				g.setCamera(camera);
 			if(!lights.isEmpty()){
-//				g.pushShader(Light.LIGHT_SHADER);
+				g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"), new Pair<>("LIT", "0")));
 				int i = 0;
 				for(Light light : lights){
-					light.lightbuffer.bindToShader(g.getCurrentShader());
-					light.lightbuffer.put(0, light.toArray());
+					Light.lightbuffer.bindToShader(g.getCurrentShader());
+					Light.lightbuffer.put(0, light.toArray());
+					Light.lightbuffer.put(1, ambientStrength);
 					i++;
 				}
 			}
 			for(ComponentSystem system : sys) {
 				system.render(g);
 			}
-//			if(g.getCurrentShader() == Light.LIGHT_SHADER)
+			if(g.getCurrentShader() == Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"), new Pair<>("LIT", "0")))
 					g.popShader();
-		g.end(true);
+		g.end();
 		for(Overlay s : overlays){
 			s.render(g);
 		}

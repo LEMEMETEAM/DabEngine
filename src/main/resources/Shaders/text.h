@@ -1,7 +1,5 @@
-#include /Shaders/textured.h
+vec4 sampleText(semplaer2D text, vec2 uv){
 
-vec4 sampleText(){
-
-        vec4 sampled = vec4(1.0, 1.0, 1.0, getTexel().r);
+        vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, uv).r);
         return sampled; 
 }

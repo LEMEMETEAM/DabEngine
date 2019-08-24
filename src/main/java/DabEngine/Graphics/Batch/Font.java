@@ -7,6 +7,7 @@ import org.lwjgl.BufferUtils;
 
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Utils.Pair;
 import DabEngine.Utils.Utils;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -28,9 +29,7 @@ public class Font {
     private STBTTPackedchar.Buffer cData;
     private Texture texture;
     public float size;
-    public static final Shaders TEXT_DEFAULT_SHADER = new Shaders(
-        Font.class.getResourceAsStream("/Shaders/default.vs"),
-        Font.class.getResourceAsStream("/Shaders/text.fs"));
+    public static final Shaders TEXT_DEFAULT_SHADER = Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"), new Pair<>("TEXT", "0"));
 
     /**
      * creates the texture atlas for the specified ttf file.

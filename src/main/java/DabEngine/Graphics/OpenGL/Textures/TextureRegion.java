@@ -5,7 +5,7 @@ import org.joml.Vector4f;
 public class TextureRegion {
 	
 	private float scalex, scaley;
-	private Vector4f uv;
+	public Vector4f uv;
 	public int tileNomX, tileNomY;
 	
 	public TextureRegion(int tileNomX, int tileNomY) {

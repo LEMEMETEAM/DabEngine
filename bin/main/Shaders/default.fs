@@ -3,59 +3,95 @@
 
 in vec3 outPosition;
 in vec4 outColor;
+in vec2 outTexCord;
+in vec3 outNormal;
 
-#include /Shaders/lighting.h
-#include /Shaders/text.h
-
-layout(binding=1) uniform sampler2D specMap;
-layout(binding=2) uniform sampler2D normalmap;
 uniform vec3 viewPos = vec3(0.0);
+#if defined(LAMBERT) || defined(BLINN)
+    #include /Shaders/lighting.h
+
+    layout (std140) uniform lighting{
+        Light[32] lights;
+        float ambientStrength;
+    };
+
+    Surface surf;
+
+    #ifdef SPEC_MAP
+        layout(binding=1) uniform sampler2D specMap;
+    #endif
+    #ifdef NORMAL_MAP
+        layout(binding=2) uniform sampler2D normalmap;
+    #endif
+#endif
+
+#ifdef TEXT
+    #include /Shaders/text.h
+#endif
+
+#include /Shaders/textured.h
+//imports utils as well
+
+layout(binding=0) uniform sampler2D texture;
 
 out vec4 fragColor;
 
 void main(){
     vec4 finalColor = outColor;
 
-    #if defined(TEXTURED) && !defined(LIT)
-        finalColor *= getTexel();
+    #ifdef UNSHADED
+        #ifdef TEXTURED
+            finalColor *= getTexel(texture, outTexCord);
+        #endif
     #endif
 
-    #ifdef LIT
-        vec4 color;
+    #ifdef HDR
+        vec3 hdrColor = getTexel(texture, outTexCord).rgb;
+        finalColor *= vec4(hdrColor / (hdrColor + vec3(1.0)), 1.0);
+    #endif
+
+    #if defined(LAMBERT) || defined(BLINN)
+        #ifdef TEXTURED
+            surf.albedo = getTexel(texture, outTexCord).rgb;
+        #else
+            surf.albedo = outColor.rgb;
+        #endif
+        #ifdef NORMAL_MAP
+            surf.normal = (getTexel(normalmap, outTexCord).rgb * 2) - 1;
+        #else
+            surf.normal = outNormal;
+        #endif
+        #ifdef SPEC_MAP
+            surf.gloss = getTexel(specMap, outTexCord).rgb;
+        #else
+            surf.gloss = vec3(0.5);
+        #endif
+        //TODO ADD POINT LIGHTS
+        vec3 c = vec3(0.0);
         for(int i = 0; i < lights.length(); i++){
-            vec4 ambient = calcAmbient(i) * getTexel();
-            #ifdef NORMAL_MAP
-                vec4 tex = texture(normalmap, outTexCord);
-                tex = (tex * 2) - 1;
-                vec4 diffuse = calcDiffuse(i, tex.xyz, outPosition) * getTexel();
-                #ifdef SPEC_MAP
-                    vec4 specular = calcSpecular(i, viewPos, tex.xyz, outPosition, 0.5, 32) * texture(specMap, outTexCord);
-                #else
-                    vec4 specular = calcSpecular(i, viewPos, tex.xyz, outPosition, 0.5, 32);
-                #endif
-            #else
-                vec4 diffuse = calcDiffuse(i, outNormal, outPosition) * getTexel();
-                #ifdef SPEC_MAP
-                    vec4 specular = calcSpecular(i, viewPos, outNormal, outPosition, 0.5, 32) * texture(specMap, outTexCord);
-                #else
-                    vec4 specular = calcSpecular(i, viewPos, outNormal, outPosition, 0.5, 32);
-                #endif
+            #ifdef LAMBERT
+                c += lambertLighting(surf, lights[i], normalize(lights[i].position - outPosition), length(lights[i].position - outPosition));
+            #elif defined(BLINN)
+                c += blinnPhongLighting(surf, lights[i], normalize(lights[i].position - outPosition), normalize(viewPos - outPosition), length(lights[i].position - outPosition));
             #endif
-            color += (specular + diffuse + ambient);
         }
-        finalColor *= vec4(color.rgb, 1);
+
+        finalColor *= vec4(c, 1.0);
     #endif
 
     #ifdef TEXT
-        vec4 sampled = sampleText();
+        vec4 sampled = sampleText(texture, outTexCord);
         finalColor *= sampled;
     #endif
 
     #ifdef FOG
-        float z = gl_FragCoord.z / gl_FragCoord.w;
-        float fog = clamp(exp(-FOG * z * z), 0.2, 1);
-        finalColor = mix(vec4(0.6, 0.8, 1.0, 1.0), finalColor, fog);
+        finalColor = calcFog(vec4(0.6, 0.8, 1.0, 1.0), finalColor, FOG);
     #endif
 
-    fragColor = finalColor;
+    #ifdef SRGB
+        float gamma = 2.2;
+        fragColor = pow(finalColor, vec4(1.0/gamma));
+    #else   
+        fragColor = finalColor;
+    #endif
 }

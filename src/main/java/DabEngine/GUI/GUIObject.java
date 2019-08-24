@@ -8,20 +8,54 @@ import DabEngine.GUI.Objects.Panel;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Input.InputHandler;
 import DabEngine.Observer.ActionEventListener;
+import DabEngine.States.State;
+import DabEngine.States.StateManager;
 import DabEngine.Utils.Color;
 
 public abstract class GUIObject implements ActionEventListener {
 	
-	protected boolean hover = false;
 	public Vector3f pos;
 	public Vector2f size;
-	public int z_index;
 	
 	public Color color;
-	
-	public abstract void onHover();
-	
-	public abstract void onExit();
+
+	public StateManager state = new StateManager();
+	public enum States implements State{
+		PRESSED(false),
+		RELEASED(false),
+		HOVER(true),
+		EXIT(true),
+		ACTION(false);
+
+		private boolean interruptable;
+		public boolean finished;
+
+		States(boolean i){
+			interruptable = i;
+		}
+
+		@Override
+		public boolean isInterruptable() {
+			return interruptable;
+		}
+
+		@Override
+		public boolean isFinished() {
+			return finished;
+		}
+
+		@Override
+		public void setFinished(boolean finished){
+			this.finished = finished;
+		}
+	}
+
+	public enum AnchorPoint {
+		TOP, RIGHT, BOTTOM, LEFT,
+		TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT;
+	}
+
+	public AnchorPoint anchor;
 	
 	public void onAddedToPanel(Panel p) {
 		pos.add(p.pos);
@@ -33,4 +67,5 @@ public abstract class GUIObject implements ActionEventListener {
 	}
 
 	public abstract void render(Graphics g);
+	public abstract void update();
 }

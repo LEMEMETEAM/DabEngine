@@ -1,32 +1,36 @@
-in vec3 outNormal;
-
 struct Light{
     vec3 position;
     vec3 color;
 };
 
-layout (std140) uniform lighting{
-    Light[32] lights;
-    float ambientStrength;
+struct Surface{
+    vec3 albedo;
+    vec3 normal;
+    vec3 gloss;
 };
-layout(binding=1) uniform sampler2D specular;
+
+vec3 lambertLighting(Surface s, Light light, vec3 lightdir, float distance){
+    vec3 c;
+
+    float diff = max(dot(s.normal, lightdir), 0.0);
+    float att = 1.0 / (distance * distance);
+
+    c.rgb = diff * light.color * s.albedo.rgb * att;
 
 
-vec4 calcAmbient(int current_light){
-    return ambientStrength * vec4(lights[current_light].color, 1.0);
+    return c;
 }
 
-vec4 calcDiffuse(int current_light, vec3 Normal, vec3 Position){
-    vec3 normal = normalize(Normal);
-    vec3 lightDir = normalize(lights[current_light].position - Position);
-    float diff = max(dot(normal, lightDir), 0.0);
-    return diff * vec4(lights[current_light].color, 1.0);
-}
+vec3 blinnPhongLighting(Surface s, Light light, vec3 lightdir, vec3 viewDir, float distance){
+    vec3 c;
 
-vec4 calcSpecular(int current_light, vec3 viewPos, vec3 Normal, vec3 Position, float strength, float shininess){
-    vec3 viewDir = normalize(viewPos - Position);
-    vec3 lightDir = normalize(lights[current_light].position - Position);
-    vec3 reflectDir = reflect(-lightDir, Normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
-    return spec * vec4(lights[current_light].color, 1.0) * strength;
+    vec3 halfDir = normalize(lightdir + viewDir);
+
+    float diff = max(dot(s.normal, lightdir), 0.0);
+    float spec = pow(max(dot(s.normal, halfDir), 0.0), 32);
+    float att = 1.0 / (pow(distance, 2));
+
+    c.rgb = ((diff * light.color * s.albedo.rgb) + (spec * light.color * s.gloss)) * att;
+    
+    return c;
 }

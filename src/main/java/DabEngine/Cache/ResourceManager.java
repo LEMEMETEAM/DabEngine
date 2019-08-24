@@ -20,15 +20,15 @@ public enum ResourceManager {
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try(TextureLoader loader = new TextureLoader(new File(filename))){
 				if(params.length > 1)
-					resource = new Texture(loader.pixels, loader.width, loader.height, params);
+					resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 				else
-					resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
+					resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
 					if(params.length > 1)
-						resource = new Texture(loader.pixels, loader.width, loader.height, params);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -44,15 +44,15 @@ public enum ResourceManager {
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
 			try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
 				if(params.length < 1)
-					resource = new Texture(loader.pixels, loader.width, loader.height, params);
+					resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 				else
-					resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
+					resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
 				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))){
 					if(params.length < 1)
-						resource = new Texture(loader.pixels, loader.width, loader.height, params);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, Parameters.NEAREST_LINEAR);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

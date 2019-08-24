@@ -1,13 +1,17 @@
 #version 330 core
 
-layout (location =0) in vec2 pos;
-layout (location =1) in vec2 uv;
+layout (location =0) in vec3 pos;
+layout (location =2) in vec2 uv;
 
 out vec2 outUV;
-out vec2 outPos;
+out vec3 outPos;
+
+layout (std140) uniform mvp {
+    mat4 projectionViewMatrix;
+};
 
 void main(){
-    gl_Position = vec4(pos, 0.0, 1.0);
+    gl_Position = projectionViewMatrix * vec4(pos, 1.0);
     outUV = uv;
     outPos = pos;
 }

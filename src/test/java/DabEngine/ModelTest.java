@@ -3,21 +3,33 @@ package DabEngine;
 import org.joml.Vector2d;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import DabEngine.Core.App;
 import DabEngine.Core.DabEngineConfig;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera3D;
 import DabEngine.Graphics.Graphics;
+import DabEngine.Graphics.Models.Mesh;
 import DabEngine.Graphics.Models.MeshLoader;
 import DabEngine.Graphics.Models.Model;
+import DabEngine.Graphics.OpenGL.Blending;
+import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
+import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Input.InputHandler;
+import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
+import DabEngine.Utils.Primitives.Cube;
 
 import static org.lwjgl.opengl.GL33.*;
+
+import java.io.File;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class ModelTest extends App {
@@ -27,6 +39,11 @@ public class ModelTest extends App {
     private Model model;
     private Camera3D cam;
     private Light light;
+    private Shaders normal, edge;
+    private Mesh light_cube;
+    private RenderTarget rt;
+    private TextureRegion inv_uv;
+    private Mesh skybox;
 
 
     {
@@ -34,7 +51,7 @@ public class ModelTest extends App {
         WIDTH = 800;
         HEIGHT = 600;
         MAXIMISED = false;
-        hints.put(GLFW_SAMPLES, 4);
+        //hints.put(GLFW_SAMPLES, 4);
     }
 
     @Override
@@ -46,17 +63,34 @@ public class ModelTest extends App {
     @Override
     public void render() {
         glClearColor(1,1,1,1);
-        g.begin(null, true);
+        //glEnable(GL_CULL_FACE);
+        g.begin(rt, true);
+        {
             g.setCamera(cam);
-            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("LIT", "null"), new Pair<>("TEXTURED", "0")));
+            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
-                Light.lightbuffer.put(1, 0.1f);
-                model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0));
+                Light.lightbuffer.put(1, 0.9f);
+                model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0), Color.WHITE);
             }
             g.popShader();
-        g.end(true);
+            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("UNSHADED", "0")));
+            {
+                light_cube.draw(g, light.pos.x, light.pos.y, light.pos.z, 1, 0, new Vector3f(1,0,0), Color.RED);
+                skybox.draw(g, 0, 0, 0, 900, 0, new Vector3f(1,0,0), Color.GREEN);
+                
+            }
+            g.popShader();
+        }
+        g.end();
+        g.begin(null, true);
+        {
+            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
+            g.drawTexture(rt.texture[0], inv_uv, 0, 0, 0, WIDTH, HEIGHT, 0, 0, 0, Color.WHITE);
+            g.popShader();
+        }
+        g.end();
     }
 
     float yaw, pitch;
@@ -100,11 +134,20 @@ public class ModelTest extends App {
         g = ENGINE.createGraphics(this);
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();
-        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/Nintendo 64 - Super Mario 64 - Peachs Castle Exterior/princess peaches castle (outside).obj").toModel();
+        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Sonic Generations - Sonic the Hedgehog Modern/Sonic (Modern)/Sonic.DAE.dae").toModel();
         cam = new Camera3D(45, WIDTH, HEIGHT);
-        light = new Light(new Vector3f(0, 5, 0), new Vector3f(1, 1, 1));
+        light = new Light(new Vector3f(0, -25, 40), new Vector3f(1360));
         glfwSetInputMode(ENGINE.getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
         
+        light_cube = new Cube().generate(0,0,0).toMesh();
+
+        rt = new RenderTarget(WIDTH, HEIGHT, vp, new Texture(null, WIDTH, HEIGHT, true, Parameters.LINEAR));
+
+        inv_uv = new TextureRegion();
+        inv_uv.uv = new Vector4f(0,1,1,0);
+
+        skybox = new Cube().generate(0, 0, 0).toMesh();
+
     }
 
     @Override

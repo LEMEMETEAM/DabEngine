@@ -33,7 +33,7 @@ public class Image extends GUIObject {
 	@Override
 	public void onMousePress(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -43,20 +43,13 @@ public class Image extends GUIObject {
 	}
 
 	@Override
-	public void onHover() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void render(Graphics g) {
-		g.drawTexture(image, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
+		g.drawTexture(image, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, color);
+	}
+
+	@Override
+	public void update() {
+
 	}
 
 }

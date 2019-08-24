@@ -32,7 +32,7 @@ public class Texture implements IDisposable {
     };
     private int width, height;
 
-    public Texture(ByteBuffer data, int width, int height, Texture.Parameters... params) {
+    public Texture(ByteBuffer data, int width, int height, boolean hdr, Texture.Parameters... params) {
         t_id = glGenTextures();
 
         glBindTexture(GL_TEXTURE_2D, t_id);
@@ -78,7 +78,7 @@ public class Texture implements IDisposable {
             }
         }
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, hdr ? GL_RGBA16F : GL_SRGB_ALPHA, width, height, 0, GL_RGBA, hdr ? GL_FLOAT : GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         this.width = width;
@@ -87,7 +87,7 @@ public class Texture implements IDisposable {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    public Texture(int width, int height, boolean white, Texture.Parameters... params){
+    private static ByteBuffer pixel(boolean white, int width, int height){
         ByteBuffer buf = BufferUtils.createByteBuffer(width * height * 4);
         for(int i = 0; i < buf.limit(); i++){
             if(white){
@@ -97,57 +97,12 @@ public class Texture implements IDisposable {
                 buf.put(i, (byte)(0 & 0xFF));
             }
         }
-        t_id = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, t_id);
+        return buf;
+    }
 
-        for(Texture.Parameters p : params){
-            switch(p){
-                case REPEAT:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-                    break;
-                
-                case MIRRORED:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-                    break;
-
-                case CLAMP_TO_EDGE:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                    break;
-
-                case CLAMP_TO_BORDER:
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-                    break;
-
-                case NEAREST:
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-                    break;
-
-                case LINEAR:
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    break;
-
-                default:
-                case NEAREST_LINEAR:
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    break;
-
-            }
-        }
+    public Texture(int width, int height, boolean white, boolean hdr, Texture.Parameters... params){
         
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        this.width = width;
-        this.height = height;
-
-        glBindTexture(GL_TEXTURE_2D, 0);
+        this(pixel(white, width, height), width, height, hdr, params);
     }
 
     /**

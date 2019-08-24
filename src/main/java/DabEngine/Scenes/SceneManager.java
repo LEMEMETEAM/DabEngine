@@ -20,6 +20,21 @@ public abstract class SceneManager {
 		CHANGE_SCENE,
 		TRANS_OUT,
 		END;
+
+		@Override
+		public boolean isInterruptable() {
+			return true;
+		}
+
+		@Override
+		public boolean isFinished() {
+			return false;
+		}
+
+		@Override
+		public void setFinished(boolean finished) {
+
+		}
 	}
 	private static TransitionState transState;
 	private static Stack<Transition> transitionStack = new Stack<>();

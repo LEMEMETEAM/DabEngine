@@ -18,8 +18,8 @@ public abstract class Camera {
     protected Vector3f up = new Vector3f(0,1,0);
 
     protected float zoom = 1;
-    protected float near = 0.5f;
-    protected float far = 100;
+    protected float near = 1f;
+    protected float far = 1000.0f;
 
     public float viewportWidth, viewportHeight;
 

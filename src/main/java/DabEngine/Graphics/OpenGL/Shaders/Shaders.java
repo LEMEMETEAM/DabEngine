@@ -212,7 +212,7 @@ public class Shaders {
         builder.append(name_vs).append(name_fs).append(definesToString(defines));
         if((s = InMemoryCache.INSTANCE.get(builder.toString())) == null){
             s = new Shaders(Shaders.class.getResourceAsStream(shader_vs_dir), Shaders.class.getResourceAsStream(shader_fs_dir), defines);
-            InMemoryCache.INSTANCE.add(builder.toString(), s, 10000);
+            InMemoryCache.INSTANCE.add(builder.toString(), s, 1000000);
         }
         return s;
     }

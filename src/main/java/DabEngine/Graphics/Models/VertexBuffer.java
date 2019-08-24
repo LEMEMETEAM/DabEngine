@@ -75,7 +75,6 @@ public class VertexBuffer implements IDisposable {
 		glBindVertexArray(vao);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, buffer.flip());
 
 		int offset = 0;
 		
@@ -90,6 +89,7 @@ public class VertexBuffer implements IDisposable {
 	}
 	
 	public void draw(int type, int first, int count) {
+		glBufferSubData(GL_ARRAY_BUFFER, 0, buffer.flip());
 		glDrawArrays(type, first, count);
 	}
 	

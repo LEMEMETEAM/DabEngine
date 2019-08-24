@@ -7,3 +7,9 @@ void alphaScissor(vec4 tex_color){
         discard;
     }
 }
+
+vec4 calcFog(vec4 fog_color, vec4 mix_color, float intensity){
+    float z = gl_FragCoord.z / gl_FragCoord.w;
+    float fog = clamp(exp(-intensity * z * z), 0.2, 1);
+    return mix(fog_color, mix_color, fog);
+}

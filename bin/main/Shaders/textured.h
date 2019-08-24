@@ -1,11 +1,7 @@
 #include /Shaders/Utils.h
 
-in vec2 outTexCord;
-
-uniform sampler2D texture;
-
-vec4 getTexel(){
-    vec4 tex = texture(texture, outTexCord);
+vec4 getTexel(sampler2D texture, vec2 uv){
+    vec4 tex = texture(texture, uv);
     alphaScissor(tex);
     return tex;
 }

@@ -35,7 +35,7 @@ import static org.lwjgl.opengl.GL33.*;
 
 public class Graphics implements IDisposable{
 
-    public static final Texture WHITE_PIXEL = new Texture(1, 1, true);
+    public static final Texture WHITE_PIXEL = new Texture(1, 1, true, false);
     /**
      * The vertex batch to use
      */
@@ -75,8 +75,8 @@ public class Graphics implements IDisposable{
 
     public void setRenderTarget(RenderTarget r, boolean render){
         if(r != RenderTarget){
-            end(render);
-            begin(r);
+            end();
+            begin(r, false);
         }
     }
 
@@ -85,15 +85,17 @@ public class Graphics implements IDisposable{
         batch.setProjectionMatrix(camera.getProjection());
     }
 
-    public void begin(RenderTarget r, boolean... batched){
+    public void begin(RenderTarget r, boolean clear, boolean... batched){
         if(r != null){
             r.bind();
             RenderTarget = r;
         }
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_STENCIL_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        batch.begin(batched == null ? true : batched[0]);
+        if(clear){
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_STENCIL_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        }
+        batch.begin(batched.length == 0 ? true : batched[0]);
     }
 
     public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
@@ -171,7 +173,7 @@ public class Graphics implements IDisposable{
             batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
-    public void draw(float data[], float x, float y, float z, float scale, float rotation, Vector3f rotationAxis){
+    public void draw(float data[], float x, float y, float z, float scale, float rotation, Vector3f rotationAxis, Color c){
         float[] temp = Arrays.copyOf(data, data.length);
         rotation = (float)Math.toRadians(rotation);
         for(int i = 0; i < temp.length/12; i++){
@@ -204,22 +206,21 @@ public class Graphics implements IDisposable{
             temp[i*12+0] = rx;
             temp[i*12+1] = ry;
             temp[i*12+2] = rz;
+            if(c!=null){
+                temp[i*12+3] = c.getColor()[0];
+                temp[i*12+4] = c.getColor()[1];
+                temp[i*12+5] = c.getColor()[2];
+                temp[i*12+6] = c.getColor()[3];
+            }
         }
 
         batch.add(temp);
     }
 
-    public void end(boolean render) {
+    public void end() {
         batch.end();
         if (RenderTarget != null) {
             RenderTarget.unbind();
-            if(render){
-                glDisable(GL_DEPTH_TEST);
-                glClear(GL_COLOR_BUFFER_BIT);
-                //glViewport(0,0,engine.getMainWindow().getFramebufferWidth(),engine.getMainWindow().getFramebufferHeight());
-                RenderTarget.blit();
-                RenderTarget = null;
-            }
         }
     }
 

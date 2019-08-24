@@ -13,6 +13,7 @@ import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
+import DabEngine.States.StateManager;
 import DabEngine.Utils.Color;
 
 public class Button extends GUIObject {
@@ -40,49 +41,40 @@ public class Button extends GUIObject {
 	@Override
 	public void onKeyRelease(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override
 	public void onMousePress(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (hover && e.getButton() == GLFW_MOUSE_BUTTON_LEFT) {
-			action();
+		if (state.getState() == States.HOVER && e.getButton() == GLFW_MOUSE_BUTTON_LEFT) {
+			state.setState(States.PRESSED);
 		}
 	}
 
 	@Override
 	public void onMouseRelease(MouseEvent e) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void onHover() {
-		// TODO Auto-generated method stub
-		hover = true;
-	}
-
-	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
-		hover = false;
-	}
-
-	public void action() {
-
+		if(state.getState() == States.PRESSED)
+			state.setState(States.RELEASED);
 	}
 
 	@Override
 	public void render(Graphics g) {
 		if(buttonTexture != null){
-			g.drawTexture(buttonTexture, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
+			g.drawTexture(buttonTexture, null, pos.x - size.x/2, pos.y - size.y/2, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
 		}
 		else{
-			g.fillRect(pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, color);
+			g.fillRect(pos.x-size.x/2, pos.y-size.y/2, pos.z, size.x, size.y, 0, 0, 0, color);
 			g.pushShader(Font.TEXT_DEFAULT_SHADER);
-			g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, pos.z, label_color);
+			g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, pos.z+0.1f, label_color);
 			g.popShader();
 		}
+	}
+
+	@Override
+	public void update() {
+
 	}
 	
 	

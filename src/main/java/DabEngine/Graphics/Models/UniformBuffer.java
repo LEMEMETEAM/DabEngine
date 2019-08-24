@@ -22,8 +22,9 @@ public class UniformBuffer implements IDisposable {
     private static HashMap<Integer, String> binds = new HashMap<>();
     private FloatBuffer buffer;
     private Shaders lastShader;
+    public boolean defered;
 
-    public UniformBuffer(String block_name, UniformAttribs... attribs){
+    public UniformBuffer(String block_name, boolean defered, UniformAttribs... attribs){
         this.attribs = attribs;
         this.block_name = block_name;
         for(UniformAttribs attrib : attribs){
@@ -36,6 +37,8 @@ public class UniformBuffer implements IDisposable {
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferData(GL_UNIFORM_BUFFER, buffer, GL_STATIC_DRAW);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+        this.defered = defered;
     }
 
     public void bindToShader(Shaders s){
@@ -63,25 +66,28 @@ public class UniformBuffer implements IDisposable {
 
     public UniformBuffer put(int num, float f){
         buffer.put(attribs[num].pos, f);
-        flush();
+        if(!defered)
+            flush();
         return this;    
     }
 
     public UniformBuffer put(int num, FloatBuffer f){
         int orig = buffer.position();
         buffer.position(attribs[num].pos).put(f);
-        flush();
+        if(!defered)
+            flush();
         return this;    
     }
 
     public UniformBuffer put(int num, float[] f){
         int orig = buffer.position();
         buffer.position(attribs[num].pos).put(f);
-        flush();
+        if(!defered)
+            flush();
         return this;    
     }
 
-    private void flush(){
+    public void flush(){
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer.rewind());
         glBindBuffer(GL_UNIFORM_BUFFER, 0);

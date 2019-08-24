@@ -57,9 +57,12 @@ public class Panel extends GUIObject {
 	@Override
 	public void onMousePress(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (hover && moveable) {
-			Vector2d m = InputHandler.INSTANCE.getMouseDelta();
-			pos = new Vector3f().set((float)m.x, (float)m.y, pos.z);
+		if (state.getState() == States.HOVER) {
+			if(moveable){
+				Vector2d m = InputHandler.INSTANCE.getMouseDelta();
+				pos = new Vector3f().set((float)m.x, (float)m.y, pos.z);
+			}
+			state.setState(States.PRESSED);
 		}
 	}
 
@@ -70,22 +73,15 @@ public class Panel extends GUIObject {
 	}
 
 	@Override
-	public void onHover() {
-		// TODO Auto-generated method stub
-		hover = true;
-	}
-
-	@Override
-	public void onExit() {
-		// TODO Auto-generated method stub
-		hover = false;
-	}
-
-	@Override
 	public void render(Graphics g) {
 		for(var obj : panel_objects){
 			obj.render(g);
 		}
+	}
+
+	@Override
+	public void update() {
+
 	}
 	
 }

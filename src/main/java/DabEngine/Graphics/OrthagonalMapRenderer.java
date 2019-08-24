@@ -9,7 +9,7 @@ import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Graphics.TileMap.MapLayer;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
-import DabEngine.Utils.Primitives.Primitives;
+import DabEngine.Utils.Primitives.Primitive;
 
 public class OrthagonalMapRenderer {
 

@@ -42,15 +42,16 @@ public class Batch implements IDisposable{
 		new UniformAttribs(0, "mvpMatrix", 16)
 	};
 	public Matrix4f projectionMatrix = new Matrix4f();
+	private Matrix4f proj;
 	public Blending blend;
 	private boolean batched;
 	public Camera cam;
 
 	public Batch(Shaders shader, Matrix4f proj) {
 		data = new VertexBuffer(maxsize, ATTRIBUTES);
-		ubo = new UniformBuffer("mvp", uATTRIBUTES);
+		ubo = new UniformBuffer("mvp", true, uATTRIBUTES);
 		this.shader = shader;
-		projectionMatrix.set(proj);
+		this.proj = proj;
 		ubo.bindToShader(shader);
 		updateUniforms();
 	}
@@ -61,10 +62,13 @@ public class Batch implements IDisposable{
 		}
 		drawing = true;
 		shader.bind();
+		data.bind();
+		projectionMatrix.set(proj);
 		idx = 0;
 		renderCalls = 0;
 		tex_slots = new Texture[16];
 		blend = Blending.MIX;
+		blend.apply();
 		this.batched = batched;
 	}
 	
@@ -75,6 +79,7 @@ public class Batch implements IDisposable{
 		drawing = false;
 		if(batched)
 			flush();
+		data.unbind();
 	}
 	
 	public void updateUniforms() {
@@ -97,9 +102,14 @@ public class Batch implements IDisposable{
 		if(shader == null) {
 			throw new NullPointerException("shader cannot be null; use getDefaultShader instead");
 		}
+		else if(this.shader == shader){
+			return;
+		}
+
 		if(drawing) {
 			flush();
 		}
+
 		this.shader = shader;
 		ubo.bindToShader(shader);
 		
@@ -124,7 +134,7 @@ public class Batch implements IDisposable{
 			flush();
 		}
 		this.blend = blend;
-
+		blend.apply();
 	}
 
 	public void setTexture(Pair<Texture, Integer>... tex){
@@ -256,12 +266,11 @@ public class Batch implements IDisposable{
 	}
     
     public void flush() {
-
-		updateUniforms();
-		if(cam != null){
-			shader.setUniform("viewPos", cam.getPosition());
-		}
 		if(idx > 0){
+			updateUniforms();
+			if(cam != null){
+				shader.setUniform("viewPos", cam.getPosition());
+			}
 			//data.flip();
 			for(int i = 0; i < tex_slots.length; i++){
 				Texture t = tex_slots[i];
@@ -269,10 +278,8 @@ public class Batch implements IDisposable{
 					t.bind(i);
 				}
 			}
-			blend.apply();
-			data.bind();
+			ubo.flush();
 			data.draw(GL_TRIANGLES, 0, idx);
-			data.unbind();
 			renderCalls++;
 	
 			idx = 0;
