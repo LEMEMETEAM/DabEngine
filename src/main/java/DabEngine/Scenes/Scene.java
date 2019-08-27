@@ -38,6 +38,7 @@ public abstract class Scene {
 	
 	protected Scene(App app, SceneConfig config){
 		this.app = app;
+		this.config = config;
 		if(config.renderToTexture){
 			ArrayList<Texture> textures = new ArrayList<>();
 			for(int i = 0; i < config.renderTextureAmmount; i++){
