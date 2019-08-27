@@ -139,16 +139,13 @@ public enum EntityManager {
 	/**
 	 * Iterates over entities with specified component types and does something to them.
 	 * @param itr action to do to entities
-	 * @param types component types
+	 * @param filter component filter
 	 */
-	public void each(EntityIterator itr, Class... types){
-		ArrayList<ComponentHandle> handles = handles(types);
+	public void each(EntityIterator itr, EntityFilter filter){
 		ArrayList<Integer> ids = new ArrayList<>(Arrays.stream(entities).boxed().collect(Collectors.toList()));
-		for(ComponentHandle h : handles){
-			for(Iterator<Integer> it = ids.iterator(); it.hasNext(); ){
-				if(h.comps[it.next()] == null){
-					it.remove();
-				}
+		for(Iterator<Integer> it = ids.iterator(); it.hasNext(); ){
+			if(!(filter.boolFunc.test(it.next()))){
+				it.remove();
 			}
 		}
 		for(int id : ids){
@@ -161,7 +158,9 @@ public enum EntityManager {
 	 */
 	public void destroyAll(){
 		for(int entity : entities){
-			destroy(entity);
+			if(entity != 0){
+				destroy(entity);
+			}
 		}
 	}
 

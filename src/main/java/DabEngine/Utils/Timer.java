@@ -4,16 +4,16 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Timer  {
 
-	private static double lasttime = getTime();
+	private static double lasttime = 0.0;
 	private static double deltaTime = 0.0;
 	
 	/**
-	 * Get the time in milliseconds
+	 * Get the time in seconds
 	 * 
-	 * @return The system time in milliseconds
+	 * @return The system time in seconds
 	 */
 	public static double getTime() {
-		return glfwGetTime();
+		return System.nanoTime() / 1000000000.0;
 	}
 
 	public static void update(){
@@ -24,5 +24,9 @@ public class Timer  {
 
 	public static double getDelta() {
 		return deltaTime;
+	}
+
+	public static void init(){
+		lasttime = getTime();
 	}
 }

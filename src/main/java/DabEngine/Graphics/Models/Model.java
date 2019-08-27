@@ -15,7 +15,6 @@ import DabEngine.Utils.Pair;
 
 public class Model {
     public ArrayList<Mesh> meshes = new ArrayList<>();
-    public int bTextured;
     int vCount;
 
     /**
@@ -25,7 +24,7 @@ public class Model {
         
     }
 
-    public void draw(Graphics g, float x, float y, float z, float scale, float rotation, Vector3f axis, Color c){
+    public void draw(Graphics g, float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
         for(Mesh m : meshes){
             m.draw(g, x, y, z, scale, rotation, axis, c);
         }

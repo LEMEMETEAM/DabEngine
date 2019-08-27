@@ -2,8 +2,6 @@ package DabEngine.Entities.Components;
 
 import java.lang.reflect.Array;
 
-import org.python.bouncycastle.util.Arrays;
-
 /**
  * Handle for a component that maps entities to components of this type.
  * @param <T> component type

@@ -12,6 +12,7 @@ import org.joml.Vector4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
+import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Core.IDisposable;
@@ -54,9 +55,10 @@ public class Graphics implements IDisposable{
     private Camera cam;
 
     public Graphics(App app){
-        batch = new Batch(Batch.DEFAULT_SHADER, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
+        Shaders def = ResourceManager.INSTANCE.getShader("default_vs", "default_fs");
+        batch = new Batch(def, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
         shaderStack = new ArrayDeque<>();
-        shaderStack.push(Batch.DEFAULT_SHADER);
+        shaderStack.push(def);
         this.app = app;
     }
 
@@ -73,6 +75,10 @@ public class Graphics implements IDisposable{
         batch.setBlend(blend);
     }
 
+    /**
+     * @deprecated in v1.2.3
+     */
+    @Deprecated
     public void setRenderTarget(RenderTarget r, boolean render){
         if(r != RenderTarget){
             end();
@@ -173,39 +179,31 @@ public class Graphics implements IDisposable{
             batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
     }
 
-    public void draw(float data[], float x, float y, float z, float scale, float rotation, Vector3f rotationAxis, Color c){
+    public void draw(float data[], float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
         float[] temp = Arrays.copyOf(data, data.length);
         rotation = (float)Math.toRadians(rotation);
+        float sin = (float)Math.sin(rotation);
+        float cos = (float)Math.cos(rotation);
+
+        Vector3f pos = new Vector3f();
+
         for(int i = 0; i < temp.length/12; i++){
-            float pX = temp[i*12+0]*scale;
-            float pY = temp[i*12+1]*scale;
-            float pZ = temp[i*12+2]*scale;
+            float pX = temp[i*12+0]*scale.x;
+            float pY = temp[i*12+1]*scale.y;
+            float pZ = temp[i*12+2]*scale.z;
 
             float tx = 0, ty = 0, tz = 0;
             tx = pX + x;
             ty = pY + y;
             tz = pZ + z;
 
-            float rx = 0, ry = 0, rz = 0;
-            if(rotationAxis.z == 1){
-                rx = tx*(float)Math.cos(rotation) - ty*(float)Math.sin(rotation);
-                ry = tx*(float)Math.sin(rotation) + ty*(float)Math.cos(rotation);
-                rz = tz;
-            }
-            else if(rotationAxis.y == 1){
-                rx = tx*(float)Math.cos(rotation) + tz*(float)Math.sin(rotation);
-                ry = ty;
-                rz = tx*-(float)Math.sin(rotation) + tz*(float)Math.cos(rotation);
-            }
-            else if(rotationAxis.x == 1){
-                rx = tx;
-                ry = ty*(float)Math.cos(rotation) - tz*(float)Math.sin(rotation);
-                rz = ty*(float)Math.sin(rotation) + tz*(float)Math.cos(rotation);
-            }
+            pos.set(tx, ty, tz);
+            if(rotation % 360 != 0)
+                pos.rotateAxis(rotation, axis.x, axis.y, axis.z);
 
-            temp[i*12+0] = rx;
-            temp[i*12+1] = ry;
-            temp[i*12+2] = rz;
+            temp[i*12+0] = pos.x;
+            temp[i*12+1] = pos.y;
+            temp[i*12+2] = pos.z;
             if(c!=null){
                 temp[i*12+3] = c.getColor()[0];
                 temp[i*12+4] = c.getColor()[1];

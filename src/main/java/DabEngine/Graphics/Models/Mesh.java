@@ -26,7 +26,7 @@ public class Mesh {
         this.specular = new ArrayList<>(Arrays.asList(specular));
     }
 
-    public void draw(Graphics g, float x, float y, float z, float scale, float rotation, Vector3f axis, Color c){
+    public void draw(Graphics g, float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
         boolean textured = false;
         for(int j = 0; j < Math.max(diffuse.size(), specular.size()); j++){
             if(j<diffuse.size()){

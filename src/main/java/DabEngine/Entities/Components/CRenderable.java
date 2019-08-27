@@ -1,5 +1,8 @@
 package DabEngine.Entities.Components;
 
-public class CRenderable extends Component {
+import DabEngine.Utils.Color;
 
+public class CRenderable extends Component {
+    public boolean buffered;
+    public Color color;
 }

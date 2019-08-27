@@ -10,6 +10,7 @@ import DabEngine.Utils.Timer;
 
 public class MusicTest {
 
+    @Test
     public void assertTimeIncrementsWhilePlaying(){
         Music m = new Music(new File("src/test/resources/audiocheck.wav"));
         long start_pos = m.getSamplePos();

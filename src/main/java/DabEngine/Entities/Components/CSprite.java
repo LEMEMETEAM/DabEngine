@@ -20,8 +20,4 @@ public class CSprite extends Component {
 	 * Texture region
 	 */
 	public transient TextureRegion region;
-	/**
-	 * Color field, uses {@link DabEngine.Utils.Color}
-	 */
-	public transient Color color;
 }

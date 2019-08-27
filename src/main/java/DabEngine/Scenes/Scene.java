@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Stack;
 
+import org.joml.Vector4f;
+
 import DabEngine.Core.App;
 import DabEngine.Graphics.Camera;
 import DabEngine.Graphics.Camera2D;
@@ -14,48 +16,46 @@ import DabEngine.Graphics.Batch.SortType;
 import DabEngine.Graphics.OpenGL.RenderTarget;
 import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
+import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.System.ComponentSystem;
+import DabEngine.Utils.Color;
 import DabEngine.Utils.FixedArrayList;
 import DabEngine.Utils.Pair;
 
 public abstract class Scene {
 	private LinkedHashSet<ComponentSystem> sys = new LinkedHashSet<>();
-	public Camera camera;
 	public ArrayDeque<Overlay> overlays = new ArrayDeque<>();
 	public App app;
-	protected FixedArrayList<Light> lights = new FixedArrayList<>(32);
-	protected float ambientStrength;
-	protected RenderTarget rt;
-	public SortType sortingMode;
+	public final int MAX_LIGHTS = 32;
+	public float ambientStrength;
 	public boolean paused;
+	public SceneConfig config;
+	public RenderTarget rt;
+	public TextureRegion inv_uv = new TextureRegion();
 	
-	public Scene(App app, boolean renderToTexture){
+	protected Scene(App app, SceneConfig config){
 		this.app = app;
-		if(renderToTexture)
-			rt = new RenderTarget(app.WIDTH, app.HEIGHT, app.vp);
+		if(config.renderToTexture){
+			ArrayList<Texture> textures = new ArrayList<>();
+			for(int i = 0; i < config.renderTextureAmmount; i++){
+				textures.add(new Texture(null, app.WIDTH, app.HEIGHT, config.srgb, Parameters.LINEAR));
+			}
+			rt = new RenderTarget(app.WIDTH, app.HEIGHT, app.vp, textures.toArray(new Texture[textures.size()]));
+			inv_uv.uv = new Vector4f(0,1,1,0);
+		}
 	}
 	
+	public Scene(App app){
+		
+	}
+
 	public void render(Graphics g) {
-		g.begin(rt != null ? rt : null, true);
-			if(camera != null)
-				g.setCamera(camera);
-			if(!lights.isEmpty()){
-				g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"), new Pair<>("LIT", "0")));
-				int i = 0;
-				for(Light light : lights){
-					Light.lightbuffer.bindToShader(g.getCurrentShader());
-					Light.lightbuffer.put(0, light.toArray());
-					Light.lightbuffer.put(1, ambientStrength);
-					i++;
-				}
-			}
-			for(ComponentSystem system : sys) {
-				system.render(g);
-			}
-			if(g.getCurrentShader() == Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"), new Pair<>("LIT", "0")))
-					g.popShader();
-		g.end();
+		for(ComponentSystem system : sys) {
+			system.render(g);
+		}
 		for(Overlay s : overlays){
 			s.render(g);
 		}
@@ -71,10 +71,12 @@ public abstract class Scene {
 			s.update();
 		}
 	}
+
 	public void addSystem(ComponentSystem system) {
 		sys.add(system);
 		system.addedToScene(this);
 	}
+	
 	public <T> T getSystem(Class<T> clazz) {
 		for(ComponentSystem system : sys) {
 			if(clazz.isAssignableFrom(system.getClass())) {

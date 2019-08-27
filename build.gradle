@@ -35,7 +35,6 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
-    implementation name: 'jython-standalone-2.7.0'
     implementation fileTree('libs/lwjgl'){include '*.jar'}
 
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
@@ -43,7 +42,7 @@ dependencies {
 
 }
 
-task sourcesJar(type: Jar) {
+jar {
     from sourceSets.main.output
     from sourceSets.main.allSource
 }

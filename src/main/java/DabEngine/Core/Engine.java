@@ -36,7 +36,6 @@ public class Engine {
      * Destroys the window and terminates the program
      */
     public void end() {
-        ConfigProps.save();
     	glfwDestroyWindow(mainWindow.getWin());
         glfwTerminate();
         app.dispose();
@@ -115,7 +114,9 @@ public class Engine {
 		    
 		    this.app = app;
 		    
-		    app.init();
+            app.init();
+            
+            Timer.init();
         }
         else {
         	LOGGER.log(Level.SEVERE, "Window not loaded");

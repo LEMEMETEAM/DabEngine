@@ -1,5 +1,6 @@
 package DabEngine.System;
 
+import DabEngine.Entities.EntityFilter;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CAnimation;
 import DabEngine.Graphics.Graphics;
@@ -18,7 +19,7 @@ public class AnimationSystem extends ComponentSystem {
                 }
                 a.currentFrame = 0;
             }
-        }, CAnimation.class);
+        }, EntityFilter.has(CAnimation.class));
     }
 
     @Override

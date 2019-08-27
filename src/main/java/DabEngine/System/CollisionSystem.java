@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector3f;
 
+import DabEngine.Entities.EntityFilter;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Observer.EventManager;
@@ -29,7 +30,7 @@ public class CollisionSystem extends ComponentSystem {
 				c.bounds.half_extent = t.size.div(2, new Vector3f());
 			}
 			ids.add(e);
-		}, CCollision.class, CTransform.class);
+		}, EntityFilter.has(CCollision.class).and(CTransform.class));
 
 		for(int i = 0; i < ids.size(); i++){
 			for(int j = i + 1; j < ids.size(); j++) {

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,8 +33,8 @@ public class Shaders {
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public String vs_source, fs_source;
     
-    public Shaders(File filevs, File filefs, Pair<String, String>... defines){
-        this(readFile(filevs, defines), readFile(filefs, defines));
+    public Shaders(File filevs, File filefs, Pair<String, String>... defines) throws NullPointerException, IOException {
+        this(read(filevs, defines), read(filefs, defines));
     }
     
     public Shaders(String source_vs, String source_fs) {
@@ -57,12 +56,19 @@ public class Shaders {
         this.vs_source = source_vs;
         this.fs_source = source_fs;
     }
-    
-    public Shaders(InputStream stream_vs, InputStream stream_fs, Pair<String, String>... defines) {
-        this(readFileFromStream(stream_vs, defines), readFileFromStream(stream_fs, defines));
+
+    private static String read(File file, Pair<String, String>... defines) throws NullPointerException, IOException {
+        String shader_source = "";
+        try{
+            shader_source = readFile(file, defines);
+        }catch (Exception io){
+            shader_source = readFileFromStream(Shaders.class.getResourceAsStream(file.getPath().replace("\\", "/")), defines);
+        }
+
+        return shader_source;
     }
 
-    private static String readFile(File file, Pair<String, String>... defines){
+    private static String readFile(File file, Pair<String, String>... defines) throws IOException, NullPointerException {
         StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new FileReader(file))){
             String line;
@@ -78,20 +84,18 @@ public class Shaders {
                 if(line.contains("#include")){
                     line = line.replaceAll("\\s", "");
                     line = line.replace("#include", "");
-                    string.append(readFileFromStream(Shaders.class.getResourceAsStream(line)));
+                    string.append(read(new File(line)));
                     continue;
                 }
                 string.append(line);
                 string.append("\n");
                 prevLine = line;
             }
-        }catch(IOException e){
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return string.toString();
     }
     
-    private static String readFileFromStream(InputStream stream, Pair<String, String>... defines) {
+    private static String readFileFromStream(InputStream stream, Pair<String, String>... defines) throws IOException, NullPointerException {
         StringBuilder string = new StringBuilder();
         try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
             String line;
@@ -107,15 +111,13 @@ public class Shaders {
                 if(line.contains("#include")){
                     line = line.replaceAll("\\s", "");
                     line = line.replace("#include", "");
-                    string.append(readFileFromStream(Shaders.class.getResourceAsStream(line)));
+                    string.append(read(new File(line)));
                     continue;
                 }
                 string.append(line);
                 string.append("\n");
                 prevLine = line;
             }
-        }catch(IOException e){
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         return string.toString();
     }
@@ -202,26 +204,5 @@ public class Shaders {
     
     private final String errorMessage(String uniformName, int location) {
     	return "Could not set uniform " + uniformName + " because location is " + location;
-    }
-
-    public static Shaders getUberShader(String shader_vs_dir, String shader_fs_dir, Pair<String, String>... defines){
-        String name_vs = shader_vs_dir.substring(shader_vs_dir.lastIndexOf("/")+1);
-        String name_fs = shader_fs_dir.substring(shader_fs_dir.lastIndexOf("/")+1);
-        Shaders s;
-        final StringBuilder builder = new StringBuilder();
-        builder.append(name_vs).append(name_fs).append(definesToString(defines));
-        if((s = InMemoryCache.INSTANCE.get(builder.toString())) == null){
-            s = new Shaders(Shaders.class.getResourceAsStream(shader_vs_dir), Shaders.class.getResourceAsStream(shader_fs_dir), defines);
-            InMemoryCache.INSTANCE.add(builder.toString(), s, 1000000);
-        }
-        return s;
-    }
-
-    private static String definesToString(Pair<String, String>... defines){
-        final StringBuilder builder = new StringBuilder();
-        for(var d:defines){
-            builder.append(d.left).append("_");
-        }
-        return builder.toString();
     }
 }

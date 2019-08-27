@@ -4,9 +4,10 @@ import org.joml.Vector2d;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.junit.Test;
 
+import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
-import DabEngine.Core.DabEngineConfig;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera3D;
 import DabEngine.Graphics.Graphics;
@@ -24,12 +25,14 @@ import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Input.InputHandler;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
+import DabEngine.Utils.Timer;
 import DabEngine.Utils.Primitives.Cube;
 
 import static org.lwjgl.opengl.GL33.*;
 
 import java.io.File;
 
+import static org.junit.Assert.assertTrue;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class ModelTest extends App {
@@ -63,22 +66,22 @@ public class ModelTest extends App {
     @Override
     public void render() {
         glClearColor(1,1,1,1);
-        //glEnable(GL_CULL_FACE);
+        glEnable(GL_CULL_FACE);
         g.begin(rt, true);
         {
             g.setCamera(cam);
-            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
+            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
                 Light.lightbuffer.put(1, 0.9f);
-                model.draw(g, 0, 0, 0, 1, 0, new Vector3f(1,0,0), Color.WHITE);
+                model.draw(g, 0, 0, 0, new Vector3f(1), rotation, new Vector3f(1,1,1), Color.WHITE);
             }
             g.popShader();
-            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("UNSHADED", "0")));
+            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("UNSHADED", "0")));
             {
-                light_cube.draw(g, light.pos.x, light.pos.y, light.pos.z, 1, 0, new Vector3f(1,0,0), Color.RED);
-                skybox.draw(g, 0, 0, 0, 900, 0, new Vector3f(1,0,0), Color.GREEN);
+                light_cube.draw(g, light.pos.x, light.pos.y, light.pos.z, new Vector3f(1), 0, new Vector3f(0,0,0), Color.RED);
+                skybox.draw(g, 0, 0, 0, new Vector3f(900), 0, new Vector3f(0,0,0), Color.GREEN);
                 
             }
             g.popShader();
@@ -86,7 +89,7 @@ public class ModelTest extends App {
         g.end();
         g.begin(null, true);
         {
-            g.pushShader(Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
+            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
             g.drawTexture(rt.texture[0], inv_uv, 0, 0, 0, WIDTH, HEIGHT, 0, 0, 0, Color.WHITE);
             g.popShader();
         }
@@ -95,8 +98,10 @@ public class ModelTest extends App {
 
     float yaw, pitch;
     boolean togglez, togglex;
+    double deltatime;
     @Override
     public void update() {
+        rotation++;
         Vector2d delta = InputHandler.INSTANCE.getMouseDelta();
         yaw += delta.x;
         pitch += delta.y;
@@ -119,14 +124,10 @@ public class ModelTest extends App {
             cam.strafeRight(0.25f);
         }
         //rotation++;
-        if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_Z)){
-            togglez = togglez ? false : true;
-            DabEngineConfig.MULTISAMPLE.setValue(Boolean.toString(togglez));
+        if(deltatime > 30.0){
+            ENGINE.end();
         }
-        if(InputHandler.INSTANCE.isKeyPressed(GLFW_KEY_X)){
-            togglex = togglex ? false : true;
-            DabEngineConfig.VSYNC.setValue(Boolean.toString(togglex));
-        }
+        deltatime += Timer.getDelta();
     }
 
     @Override
@@ -159,6 +160,11 @@ public class ModelTest extends App {
     public static void main(String[] args){
         ENGINE.init(new ModelTest());
         ENGINE.run();
+    }
+
+    @Test
+    public void testMain(){
+        ModelTest.main(null);
     }
 
 }

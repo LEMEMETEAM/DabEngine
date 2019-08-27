@@ -24,7 +24,6 @@ import DabEngine.Utils.Pair;
  */
 public class Batch implements IDisposable{
 
-	public static Shaders DEFAULT_SHADER = Shaders.getUberShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("TEXTURED", "0"));
     protected boolean drawing;
 	protected int idx;
 	public static int renderCalls = 0;

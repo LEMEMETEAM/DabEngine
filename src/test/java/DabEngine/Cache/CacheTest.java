@@ -9,6 +9,7 @@ import DabEngine.Cache.InMemoryCache;
 
 public class CacheTest {
     
+    @Test
     public void checkIfObjectCanBeAddedAndRetrived(){
         String obj = "lol";
         InMemoryCache.INSTANCE.add("string", obj, 3000);
@@ -22,6 +23,7 @@ public class CacheTest {
         assertSame(obj, newObj);
     }
 
+    @Test
     public void checkIfCleaningWorks(){
         String obj = "lol";
         InMemoryCache.INSTANCE.add("string", obj, 3000);
