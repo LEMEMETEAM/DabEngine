@@ -80,7 +80,7 @@ public class Cube implements Primitive<Cube> {
     }
 
     public Mesh toMesh(){
-        Mesh m = new Mesh(data, new Texture[1], new Texture[1]);
+        Mesh m = new Mesh(data, new Texture[1], new Texture[1], new Texture[1]);
         return m;
     }
 }

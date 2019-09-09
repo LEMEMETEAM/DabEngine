@@ -27,37 +27,22 @@ public enum ResourceManager {
 				else
 					resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 			}catch(Exception e) {
-				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
-					if(params.length > 1)
+				try(TextureLoader loader = new TextureLoader(Thread.currentThread().getContextClassLoader().getResourceAsStream(filename))){
+					if(params.length >1)
 						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 				}
-			}
-			add(filename, resource);
-		}
-		return resource;
-	}
-	
-	public Texture getTextureFromStream(String filename, Parameters... params){
-		Texture resource;
-		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
-			try(TextureLoader loader = new TextureLoader((InputStream)new FileInputStream(new File(filename)))){
-				if(params.length < 1)
-					resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
-				else
-					resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
-			}catch(Exception e) {
-				try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))){
-					if(params.length < 1)
-						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
-					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
-				} catch (Exception e1) {
-					e1.printStackTrace();
+				catch(Exception e2){
+					try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
+						if(params.length > 1)
+							resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
+						else
+							resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 			add(filename, resource);

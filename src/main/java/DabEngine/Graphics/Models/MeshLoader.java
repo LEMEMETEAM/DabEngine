@@ -9,8 +9,11 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joml.Vector3f;
+import org.lwjgl.assimp.AIColor3D;
 import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
+import org.lwjgl.assimp.AILight;
 import org.lwjgl.assimp.AIMaterial;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AINode;
@@ -20,6 +23,7 @@ import org.lwjgl.assimp.AITexture;
 import org.lwjgl.assimp.AIVector3D;
 
 import DabEngine.Cache.ResourceManager;
+import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 
@@ -27,26 +31,40 @@ public class MeshLoader {
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public ArrayList<Mesh> meshes = new ArrayList<>();
+    public ArrayList<Light> lights = new ArrayList<>();
     private String directory;
     private int vCount;
 
     public MeshLoader(String path){
-        AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_ImproveCacheLocality);
+        AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices | aiProcess_ValidateDataStructure);
         if(scene == null || (scene.mFlags() & AI_SCENE_FLAGS_INCOMPLETE) == 1 || scene.mRootNode() == null){
             throw new Error("Error loading model");
         }
 
         directory = path.substring(0, path.lastIndexOf("/"));
-        processNode(scene.mRootNode(), scene);
+        processNode(scene.mRootNode(), scene, scene.mRootNode().mName().dataString());
+        processLight(scene);
     }
 
-    private void processNode(AINode node, AIScene scene){
+    private void processLight(AIScene scene){
+        int l_num = scene.mNumLights();
+        for(int i = 0; i < l_num; i++){
+            AILight scene_light = AILight.create(scene.mLights().get(i));
+            AIVector3D pos = scene_light.mPosition();
+            AIColor3D color = scene_light.mColorDiffuse();
+
+            lights.add(new Light(new Vector3f(pos.x(), pos.y(), pos.z()), new Vector3f(color.r(), color.g(), color.b())));
+        }
+    }
+
+    private void processNode(AINode node, AIScene scene, String name){
         for (int i = 0; i < node.mNumMeshes(); i++) {
             AIMesh mesh = AIMesh.create(scene.mMeshes().get(node.mMeshes().get(i)));
-            meshes.add(processMesh(mesh, scene));
+            meshes.add(processMesh(mesh, scene, name));
         }
         for(int i = 0; i < node.mNumChildren(); i++){
-            processNode(AINode.create(node.mChildren().get(i)), scene);
+            AINode n = AINode.create(node.mChildren().get(i));
+            processNode(n, scene, n.mName().dataString());
         }
     }
 
@@ -64,7 +82,7 @@ public class MeshLoader {
         return idx;
     }
 
-    private Mesh processMesh(AIMesh mesh, AIScene scene){
+    private Mesh processMesh(AIMesh mesh, AIScene scene, String name){
 
         vCount = mesh.mNumVertices();
         ArrayList<Integer> idx = genIndicies(mesh);
@@ -108,12 +126,15 @@ public class MeshLoader {
 
         Texture[] diffuse = null;
         Texture[] specular = null;
+        Texture[] normals = null;
         if(mesh.mMaterialIndex() >= 0){
             AIMaterial mat = AIMaterial.create(scene.mMaterials().get(mesh.mMaterialIndex()));
             diffuse = loadMaterials(mat, aiTextureType_DIFFUSE);
             specular = loadMaterials(mat, aiTextureType_SPECULAR);
+            normals = loadMaterials(mat, aiTextureType_NORMALS);
         }
-        Mesh dMesh = new Mesh(data, diffuse, specular);
+        Mesh dMesh = new Mesh(data, diffuse, specular, normals);
+        dMesh.name = name;
 
         return dMesh;
     }

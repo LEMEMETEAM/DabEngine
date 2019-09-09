@@ -63,7 +63,7 @@ public class InputHandler extends ActionEventSender<ActionEventListener> {
 		public void invoke(long arg0, int arg1, int arg2, int arg3) {
 			// TODO Auto-generated method stub
 
-			buttons[arg1] = arg3;
+			buttons[arg1] = arg2;
 			
 			dispatchMouseEvent(new MouseEvent(INSTANCE, arg1, arg2, arg3));
 		}

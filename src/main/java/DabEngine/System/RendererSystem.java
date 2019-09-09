@@ -86,6 +86,8 @@ public class RendererSystem extends ComponentSystem {
             g.end();
         }
         depth.clear();
+        lights.clear();
+        camera = 0;
     }
 
     

@@ -19,21 +19,27 @@ public class Mesh {
     public float[] vData;
     public ArrayList<Texture> diffuse;
     public ArrayList<Texture> specular;
+    public ArrayList<Texture> normal;
+    public String name;
 
-    public Mesh(float[] data, Texture[] diffuse, Texture[] specular){
+    public Mesh(float[] data, Texture[] diffuse, Texture[] specular, Texture[] normals){
         this.vData = data;
         this.diffuse = new ArrayList<>(Arrays.asList(diffuse));
         this.specular = new ArrayList<>(Arrays.asList(specular));
+        this.normal = new ArrayList<>(Arrays.asList(normals));
     }
 
     public void draw(Graphics g, float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
         boolean textured = false;
-        for(int j = 0; j < Math.max(diffuse.size(), specular.size()); j++){
+        for(int j = 0; j < Math.max(normal.size(), Math.max(diffuse.size(), specular.size())); j++){
             if(j<diffuse.size()){
                 g.getBatch().setTexture(new Pair<>(diffuse.get(j), 0));
             }
             if(j<specular.size()){
                 g.getBatch().setTexture(new Pair<>(specular.get(j), 1));
+            }
+            if(j<normal.size()){
+                g.getBatch().setTexture(new Pair<>(normal.get(j), 2));
             }
             textured = true;
         }

@@ -142,7 +142,8 @@ public enum EntityManager {
 	 * @param filter component filter
 	 */
 	public void each(EntityIterator itr, EntityFilter filter){
-		ArrayList<Integer> ids = new ArrayList<>(Arrays.stream(entities).boxed().collect(Collectors.toList()));
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (int i : entities) if(i != 0) ids.add(i);
 		for(Iterator<Integer> it = ids.iterator(); it.hasNext(); ){
 			if(!(filter.boolFunc.test(it.next()))){
 				it.remove();
