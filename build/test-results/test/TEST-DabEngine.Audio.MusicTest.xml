@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DabEngine.Audio.MusicTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-09-13T13:18:50" hostname="APPVYR-WIN" time="0.14">
+  <properties/>
+  <testcase name="assertTimeIncrementsWhilePlaying" classname="DabEngine.Audio.MusicTest" time="0.14"/>
+  <system-out><![CDATA[No audio available
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

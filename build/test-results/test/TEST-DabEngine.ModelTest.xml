@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DabEngine.ModelTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-09-13T13:19:01" hostname="APPVYR-WIN" time="0.231">
+  <properties/>
+  <testcase name="testMain" classname="DabEngine.ModelTest" time="0.231"/>
+  <system-out><![CDATA[No drawing available
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
