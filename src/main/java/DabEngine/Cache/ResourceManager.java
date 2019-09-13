@@ -31,7 +31,7 @@ public enum ResourceManager {
 					if(params.length >1)
 						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST);
 				}
 				catch(Exception e2){
 					try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
