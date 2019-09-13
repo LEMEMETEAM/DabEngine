@@ -19,8 +19,7 @@ environment:
       access_token:
         secure: OUTYhMglLnU7WbZ6373KbVCBAMqGJRHE4rQXVXYWUT6BNRg5nJV6gH+qXcuZ3RBZ
 build_script:
-  - gradlew sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=src/test -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
-  - gradlew sourcesJar
+  - gradlew build sonarqube -Dsonar.projectKey=LEMEMETEAM_DabEngine -Dsonar.organization=lememeteam-github -Dsonar.host.url=http://sonarcloud.io -Dsonar.login=fd5908403296d4ab96a5911e86362f542e1a3679 -Dsonar.tests=src/test -Dsonar.binaries=build/classes -Dsonar.junit.reportsPath=build/test-reports
 on_success:
   - gradlew javadoc --continue
   - cd C:/
