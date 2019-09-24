@@ -2,41 +2,25 @@ package DabEngine.Cache;
 
 import java.lang.ref.SoftReference;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public enum InMemoryCache implements Cache {
+public enum InMemoryCache {
 	
 	INSTANCE;
 
-	public long CACHE_CLEANUP_SLEEP_TIME = 5;
-	@SuppressWarnings("rawtypes")
-	private ConcurrentHashMap<String, SoftReference<CachedObject>> cache = new ConcurrentHashMap<>();
+	private Map<String, SoftReference<CachedObject>> cache = Colections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true)){
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            return this.size() > maxSize; //must override it if used in a fixed cache
+        }
+    }
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	/**
-	 * Singleton class that caches objects that are used multiple times.
-	 * Runs on a separate thread.
-	 */
-	InMemoryCache() {
-		Thread cleanUpThread = new Thread(() -> {
-			while(true) {
-				try {
-					Thread.sleep(CACHE_CLEANUP_SLEEP_TIME * 1000L);
-					cleanUp();
-				} catch (InterruptedException e) {
-					LOGGER.log(Level.WARNING, "Thread Error", e);
-					Thread.currentThread().interrupt();
-				}
-			}
-		});
-		
-		cleanUpThread.setDaemon(true);
-		cleanUpThread.start();
-	}
 
 	/**
 	 * Adds an object to the cache.
@@ -45,15 +29,14 @@ public enum InMemoryCache implements Cache {
 	 * @param lifeTime life time of cache object in milliseconds
 	 */
 	@Override
-	public <T> void add(String refName, T objectToCache, long lifeTime) {
+	public <T> void add(String refName, T objectToCache) {
 		if(refName.isEmpty() || refName == null) {
 			return;
 		}
 		if(objectToCache == null) {
 			cache.remove(refName);
 		} else {
-			long ttl = System.currentTimeMillis() + lifeTime;
-			cache.put(refName, new SoftReference<>(new CachedObject<T>(objectToCache, ttl)));
+			cache.put(refName, new SoftReference<>(new CachedObject<T>(objectToCache)));
 		}
 	}
 	
@@ -95,14 +78,5 @@ public enum InMemoryCache implements Cache {
 	@Override
 	public void clear() {
 		cache.clear();
-	}
-
-	/**
-	 * cleans up any expired cache objects
-	 */
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void cleanUp() {
-		cache.entrySet().removeIf(entry -> Optional.ofNullable(entry.getValue()).map(SoftReference::get).map(CachedObject::isExpired).orElse(false));
 	}
 }

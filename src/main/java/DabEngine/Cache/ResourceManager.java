@@ -17,7 +17,7 @@ import DabEngine.Utils.Pair;
 public enum ResourceManager {
 
 	INSTANCE;
-	
+
 	public Texture getTexture(String filename, Parameters... params){
 		Texture resource;
 		if((resource = InMemoryCache.INSTANCE.<Texture>get(filename)) == null) {
@@ -31,7 +31,7 @@ public enum ResourceManager {
 					if(params.length >1)
 						resource = new Texture(loader.pixels, loader.width, loader.height, false, params);
 					else
-						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST);
+						resource = new Texture(loader.pixels, loader.width, loader.height, false, Parameters.NEAREST_LINEAR);
 				}
 				catch(Exception e2){
 					try(TextureLoader loader = new TextureLoader(ResourceManager.class.getResourceAsStream("/Textures/unavailable.jpg"))) {
@@ -49,7 +49,7 @@ public enum ResourceManager {
 		}
 		return resource;
 	}
-	
+
 	public Shaders getShader(String shader_vs_dir, String shader_fs_dir, Pair<String, String>... defines){
         String name_vs = shader_vs_dir.substring(shader_vs_dir.lastIndexOf("/")+1);
         String name_fs = shader_fs_dir.substring(shader_fs_dir.lastIndexOf("/")+1);
@@ -83,7 +83,7 @@ public enum ResourceManager {
         }
         return builder.toString();
     }
-	
+
 	private static <T> void add(String filename, T resource) {
 		InMemoryCache.INSTANCE.add(filename, resource, 10000);
 	}
