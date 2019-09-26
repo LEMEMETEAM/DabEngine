@@ -21,8 +21,8 @@ public enum InMemoryCache {
             }
             
             @Override
-            public V remove(Object key){
-                super.remove().dispose();
+            public SoftReference<CachedObject> remove(String key){
+                super.remove().get().dispose();
             }
         });
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
