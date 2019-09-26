@@ -62,44 +62,17 @@ public class Shaders implements IDisposable {
     private static String read(File file, Pair<String, String>... defines) throws NullPointerException, IOException {
         String shader_source = "";
         try{
-            shader_source = readFile(file, defines);
+            shader_source = readFile(new FileReader(file), defines);
         }catch (Exception io){
-            shader_source = readFileFromStream(Shaders.class.getResourceAsStream(file.getPath().replace("\\", "/")), defines);
+            shader_source = readFile(new InputStreamReader(Shaders.class.getResourceAsStream(file.getPath().replace("\\", "/"))), defines);
         }
 
         return shader_source;
     }
 
-    private static String readFile(File file, Pair<String, String>... defines) throws IOException, NullPointerException {
+    private static String readFile(Reader file, Pair<String, String>... defines) throws IOException, NullPointerException {
         StringBuilder string = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new FileReader(file))){
-            String line;
-            String prevLine = "";
-            while((line = br.readLine()) != null){
-                if(defines != null){
-                    if((prevLine.contains("#version") || prevLine.contains("#extension")) && !line.contains("#")){
-                        for(var p : defines){
-                            string.append("\n").append("#define ").append(p.left).append(" ").append(p.right).append("\n");
-                        }
-                    }
-                }
-                if(line.contains("#include")){
-                    line = line.replaceAll("\\s", "");
-                    line = line.replace("#include", "");
-                    string.append(read(new File(line)));
-                    continue;
-                }
-                string.append(line);
-                string.append("\n");
-                prevLine = line;
-            }
-        }
-        return string.toString();
-    }
-    
-    private static String readFileFromStream(InputStream stream, Pair<String, String>... defines) throws IOException, NullPointerException {
-        StringBuilder string = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(stream))){
+        try(BufferedReader br = new BufferedReader(file)){
             String line;
             String prevLine = "";
             while((line = br.readLine()) != null){
@@ -134,78 +107,6 @@ public class Shaders implements IDisposable {
 
     public int getProgram(){
         return program;
-    }
-
-    public void setUniform(String uniformName, Matrix4f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-            LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4*4);
-            value.get(buffer);
-            glUniformMatrix4fv(location, false, buffer);
-        }
-    }
-
-    public void setUniform(String uniformName, int value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        glUniform1i(location, value);
-    }
-    
-    public void setUniform(String uniformName, float value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        glUniform1f(location, value);
-    }
-    
-    public void setUniform(String uniformName, Vector4f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4);
-            value.get(buffer);
-            glUniform4fv(location, buffer);
-        }
-    }
-    
-    public void setUniform(String uniformName, Vector3f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(4);
-        value.get(buffer);
-        glUniform3fv(location, buffer);
-    }
-    
-    public void setUniform(String uniformName, Vector2f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4);
-            value.get(buffer);
-            glUniform2fv(location, buffer);
-        }
-    }
-    
-    private final String errorMessage(String uniformName, int location) {
-    	return "Could not set uniform " + uniformName + " because location is " + location;
     }
 
     public void dispose(){
