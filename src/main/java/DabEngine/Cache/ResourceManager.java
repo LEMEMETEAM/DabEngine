@@ -71,7 +71,7 @@ public enum ResourceManager {
 					e1.printStackTrace();
 				}
 			}
-            InMemoryCache.INSTANCE.add(builder.toString(), s, 1000000);
+            add(builder.toString(), s);
         }
         return s;
     }
@@ -85,6 +85,6 @@ public enum ResourceManager {
     }
 
 	private static <T> void add(String filename, T resource) {
-		InMemoryCache.INSTANCE.add(filename, resource, 10000);
+		InMemoryCache.INSTANCE.add(filename, resource);
 	}
 }
