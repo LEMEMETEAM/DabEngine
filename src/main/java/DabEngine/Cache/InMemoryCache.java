@@ -21,8 +21,12 @@ public enum InMemoryCache {
             }
             
             @Override
-            public SoftReference<CachedObject> remove(String key){
-                super.remove().get().dispose();
+            public V remove(Object key){
+                V val = super.remove();
+                if(val != null){
+                    val.get().dispose();
+                }
+                return val;
             }
         });
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -34,7 +38,6 @@ public enum InMemoryCache {
 	 * @param objectToCache object to cache
 	 * @param lifeTime life time of cache object in milliseconds
 	 */
-	@Override
 	public <T> void add(String refName, T objectToCache) {
 		if(refName.isEmpty() || refName == null) {
 			return;
@@ -49,7 +52,6 @@ public enum InMemoryCache {
 	/**
 	 * Remove cache object at <code>refName</code>
 	 */
-	@Override
 	public void remove(String refName) {
 		cache.remove(refName);
 	}
@@ -57,7 +59,6 @@ public enum InMemoryCache {
 	/**
 	 * Check how many objects are in cache
 	 */
-	@Override
 	public long size() {
 		return cache.size();
 	}
@@ -67,7 +68,6 @@ public enum InMemoryCache {
 	 * @param refName reference name of object to get
 	 */
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T> T get(String refName) {
 		CachedObject<T> t;
 		try {
@@ -81,7 +81,6 @@ public enum InMemoryCache {
 	/**
 	 * clear the cache
 	 */
-	@Override
 	public void clear() {
 		cache.clear();
 	}
