@@ -22,10 +22,12 @@ import org.lwjgl.system.MemoryStack;
 import DabEngine.Cache.InMemoryCache;
 import DabEngine.Utils.Pair;
 
+import DabEngine.Core.IDisposable;
+
 /**
  * class that loads shaders, adds them to opengl and stores the id forthe program, vertex shader and fragment shader
  */
-public class Shaders {
+public class Shaders implements IDisposable {
 
     private int program;
     private int vs;
@@ -204,5 +206,11 @@ public class Shaders {
     
     private final String errorMessage(String uniformName, int location) {
     	return "Could not set uniform " + uniformName + " because location is " + location;
+    }
+
+    public void dispose(){
+        glDeleteProgram(program);
+        glDeleteShader(vs);
+        glDeleteShader(fs);
     }
 }
