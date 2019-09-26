@@ -109,6 +109,79 @@ public class Shaders implements IDisposable {
         return program;
     }
 
+    public void setUniform(String uniformName, Matrix4f value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+            LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4*4);
+            value.get(buffer);
+            glUniformMatrix4fv(location, false, buffer);
+        }
+    }
+
+    public void setUniform(String uniformName, int value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        glUniform1i(location, value);
+    }
+    
+    public void setUniform(String uniformName, float value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        glUniform1f(location, value);
+    }
+    
+    public void setUniform(String uniformName, Vector4f value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4);
+            value.get(buffer);
+            glUniform4fv(location, buffer);
+        }
+    }
+    
+    public void setUniform(String uniformName, Vector3f value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(4);
+        value.get(buffer);
+        glUniform3fv(location, buffer);
+    }
+    
+    public void setUniform(String uniformName, Vector2f value){
+    	int location = glGetUniformLocation(program, uniformName);
+        if(location < 0){
+        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
+            System.exit(1);
+        }
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer buffer = stack.mallocFloat(4);
+            value.get(buffer);
+            glUniform2fv(location, buffer);
+        }
+    }
+    
+    private final String errorMessage(String uniformName, int location) {
+    	return "Could not set uniform " + uniformName + " because location is " + location;
+    }
+
+
     public void dispose(){
         glDeleteProgram(program);
         glDeleteShader(vs);
