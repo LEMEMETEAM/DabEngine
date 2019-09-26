@@ -10,7 +10,6 @@ public class CachedObject<T> {
 	 */
 	public CachedObject(T value) {
 		this.value = value;
-		this.lifeTime = lifeTime;
 	}
 	
 	/**
