@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,9 +13,9 @@ public enum InMemoryCache {
 	
 	INSTANCE;
 
-	private Map<String, SoftReference<CachedObject>> cache = Colections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true){
+	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true){
             @Override
-            protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            protected boolean removeEldestEntry(Map.Entry<String, SoftReference<CachedObject>> eldest) {
                 return this.size() > maxSize; //must override it if used in a fixed cache
             }
             
