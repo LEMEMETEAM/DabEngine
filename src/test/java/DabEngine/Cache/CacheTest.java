@@ -21,19 +21,5 @@ public class CacheTest {
         }
         String newObj = InMemoryCache.INSTANCE.get("string");
         assertSame(obj, newObj);
-    }
-
-    @Test
-    public void checkIfCleaningWorks(){
-        String obj = "lol";
-        InMemoryCache.INSTANCE.add("string", obj);
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        String newObj = InMemoryCache.INSTANCE.get("string");
-        assertNotSame(obj, newObj);
-    }
+   }
 }
