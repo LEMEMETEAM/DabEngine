@@ -24,7 +24,7 @@ public class CachedObject<T> implements IDisposable {
 
         @Override
         public void dispose(){
-                if(value instanceof Disposable){
+                if(value instanceof IDisposable){
                        ((IDisposable)value).dispose();
                 }
         }
