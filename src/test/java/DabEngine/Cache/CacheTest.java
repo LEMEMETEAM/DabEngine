@@ -12,7 +12,7 @@ public class CacheTest {
     @Test
     public void checkIfObjectCanBeAddedAndRetrived(){
         String obj = "lol";
-        InMemoryCache.INSTANCE.add("string", obj, 3000);
+        InMemoryCache.INSTANCE.add("string", obj);
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -26,7 +26,7 @@ public class CacheTest {
     @Test
     public void checkIfCleaningWorks(){
         String obj = "lol";
-        InMemoryCache.INSTANCE.add("string", obj, 3000);
+        InMemoryCache.INSTANCE.add("string", obj);
         try {
             Thread.sleep(8000);
         } catch (InterruptedException e) {
