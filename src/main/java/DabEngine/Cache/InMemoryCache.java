@@ -21,8 +21,8 @@ public enum InMemoryCache {
             }
             
             @Override
-            public V remove(Object key){
-                V val = super.remove();
+            public SoftReference<CachedObject> remove(Object key){
+                var val = super.remove();
                 if(val != null){
                     val.get().dispose();
                 }
