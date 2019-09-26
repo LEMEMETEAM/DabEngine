@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +17,11 @@ public enum InMemoryCache {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
                 return this.size() > maxSize; //must override it if used in a fixed cache
+            }
+            
+            @Override
+            public V remove(Object key){
+                super.remove().dispose();
             }
         });
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
