@@ -13,12 +13,12 @@ public enum InMemoryCache {
 	
 	INSTANCE;
 
-	private Map<String, SoftReference<CachedObject>> cache = Colections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true)){
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-            return this.size() > maxSize; //must override it if used in a fixed cache
-        }
-    }
+	private Map<String, SoftReference<CachedObject>> cache = Colections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true){
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+                return this.size() > maxSize; //must override it if used in a fixed cache
+            }
+        });
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 
