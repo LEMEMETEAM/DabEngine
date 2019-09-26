@@ -22,7 +22,7 @@ public enum InMemoryCache {
             
             @Override
             public SoftReference<CachedObject> remove(Object key){
-                var val = super.remove();
+                var val = super.remove(key);
                 if(val != null){
                     val.get().dispose();
                 }
