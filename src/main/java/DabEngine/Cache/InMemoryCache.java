@@ -13,7 +13,8 @@ public enum InMemoryCache {
 	
 	INSTANCE;
 
-	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(16, 1.0f, true){
+        private final int maxSize = 16;
+	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(maxSize, 1.0f, true){
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, SoftReference<CachedObject>> eldest) {
                 return this.size() > maxSize; //must override it if used in a fixed cache
