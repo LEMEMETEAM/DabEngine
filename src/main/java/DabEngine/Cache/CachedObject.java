@@ -2,7 +2,7 @@ package DabEngine.Cache;
 
 import DabEngine.Core.IDisposable;
 
-public class CachedObject<T> implements IDisposable {
+public class CachedObject<T> implements IDisposable{
 	
 	private T value;
 	
@@ -22,10 +22,11 @@ public class CachedObject<T> implements IDisposable {
 		return value;
 	}
 
-        @Override
-        public void dispose(){
-                if(value instanceof IDisposable){
-                       ((IDisposable)value).dispose();
-                }
-        }
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		if(value instanceof IDisposable){
+			((IDisposable)value).dispose();
+		}
+	}
 }

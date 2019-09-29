@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
 
-import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.OpenGL.Shaders.Shaders;
 import DabEngine.Graphics.Models.VertexAttrib;
@@ -29,10 +28,6 @@ public class RenderTarget {
 	private Viewport vp;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-	public static final Shaders RENDERTARGET_SHADER_DEFAULT = ResourceManager.INSTANCE.getShader(
-		"/Shaders/defaultFBO.vs",
-		"/Shaders/defaultFBO.fs");
-	
 	public RenderTarget(int width, int height, Viewport vp, Texture... renderToTexture) {
 		f_id = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, f_id);

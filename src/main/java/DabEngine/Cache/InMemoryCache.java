@@ -9,28 +9,47 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public enum InMemoryCache {
-	
-	INSTANCE;
+public class InMemoryCache {
 
-        private final int maxSize = 16;
-	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(maxSize, 1.0f, true){
+	public static final class Builder {
+
+		private int initialSize, maxSize;
+		
+		public Builder initialSize(int initialSize){
+			this.initialSize = initialSize;
+			return this;
+		}
+
+		public Builder maxSize(int maxSize){
+			this.maxSize = maxSize;
+			return this;
+		}
+
+		public InMemoryCache build(){
+			return new InMemoryCache(initialSize, maxSize);
+		}
+	}
+
+	private int initialSize, maxSize;
+
+	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(initialSize, 1.0f, true){
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, SoftReference<CachedObject>> eldest) {
-                return this.size() > maxSize; //must override it if used in a fixed cache
+				
+                if(this.size() > maxSize){
+					eldest.getValue().get().dispose();
+					return true;
+				} //must override it if used in a fixed cache
+				return false;
             }
-            
-            @Override
-            public SoftReference<CachedObject> remove(Object key){
-                var val = super.remove(key);
-                if(val != null){
-                    val.get().dispose();
-                }
-                return val;
-            }
+
         });
 	private final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	
+
+	protected InMemoryCache(int initialSize, int maxSize){
+		this.initialSize = initialSize;
+		this.maxSize = maxSize;
+	}
 
 	/**
 	 * Adds an object to the cache.
@@ -54,13 +73,6 @@ public enum InMemoryCache {
 	 */
 	public void remove(String refName) {
 		cache.remove(refName);
-	}
-
-	/**
-	 * Check how many objects are in cache
-	 */
-	public long size() {
-		return cache.size();
 	}
 
 	/**

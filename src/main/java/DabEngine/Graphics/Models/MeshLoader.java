@@ -22,7 +22,7 @@ import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AITexture;
 import org.lwjgl.assimp.AIVector3D;
 
-import DabEngine.Cache.ResourceManager;
+import DabEngine.Cache.ResourceCache;
 import DabEngine.Graphics.OpenGL.Light.Light;
 import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
@@ -34,8 +34,16 @@ public class MeshLoader {
     public ArrayList<Light> lights = new ArrayList<>();
     private String directory;
     private int vCount;
+    private ResourceCache cache;
 
-    public MeshLoader(String path){
+    public MeshLoader(String path, ResourceCache cache){
+        if(cache == null){
+            this.cache = new ResourceCache();
+        }
+        else{
+            this.cache = cache;
+        }
+
         AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices | aiProcess_ValidateDataStructure);
         if(scene == null || (scene.mFlags() & AI_SCENE_FLAGS_INCOMPLETE) == 1 || scene.mRootNode() == null){
             throw new Error("Error loading model");
@@ -147,7 +155,7 @@ public class MeshLoader {
             aiGetMaterialTexture(mat, type, i, path, (IntBuffer) null, null, null, null, null, null);
             String fPath = path.dataString();
             if(fPath != null && fPath.length() > 0){
-                tex[i] = ResourceManager.INSTANCE.getTexture(directory + "/" + fPath, Parameters.LINEAR);
+                tex[i] = cache.get(directory + "/" + fPath, Texture.class, Parameters.LINEAR);
             }
         }
         return tex;

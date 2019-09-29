@@ -1,5 +1,7 @@
 package DabEngine.Graphics;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -12,7 +14,6 @@ import org.joml.Vector4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
-import DabEngine.Cache.ResourceManager;
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Core.IDisposable;
@@ -34,7 +35,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.opengl.GL33.*;
 
-public class Graphics implements IDisposable{
+public class Graphics implements IDisposable {
 
     public static final Texture WHITE_PIXEL = new Texture(1, 1, true, false);
     /**
@@ -42,9 +43,8 @@ public class Graphics implements IDisposable{
      */
     private Batch batch;
     /**
-     * Stack of shaders. Can push shaders to the stack to be 
-     * used by the {@see VertexBatch} and also pop them off to
-     * revert back to a previous shader.
+     * Stack of shaders. Can push shaders to the stack to be used by the
+     * {@see VertexBatch} and also pop them off to revert back to a previous shader.
      */
     private ArrayDeque<Shaders> shaderStack;
     /**
@@ -54,8 +54,18 @@ public class Graphics implements IDisposable{
     private App app;
     private Camera cam;
 
-    public Graphics(App app){
-        Shaders def = ResourceManager.INSTANCE.getShader("default_vs", "default_fs");
+    public Graphics(App app) {
+        Shaders def = null;
+        try {
+            def = new Shaders(new File("/Shaders/default.vs"), new File("/Shaders/default.fs"),
+                    new Pair<>("UNSHADED", "0"));
+        } catch (NullPointerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         batch = new Batch(def, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
         shaderStack = new ArrayDeque<>();
         shaderStack.push(def);

@@ -15,6 +15,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Cache.InMemoryCache;
+import DabEngine.Core.IDisposable;
 import DabEngine.Utils.Pair;
 
 import DabEngine.Core.IDisposable;

@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.junit.Test;
 
-import DabEngine.Cache.ResourceManager;
+import DabEngine.Cache.ResourceCache;
 import DabEngine.Core.App;
 import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera3D;
@@ -47,6 +47,7 @@ public class ModelTest extends App {
     private RenderTarget rt;
     private TextureRegion inv_uv;
     private Mesh skybox;
+    private ResourceCache cache;
 
 
     {
@@ -70,7 +71,7 @@ public class ModelTest extends App {
         g.begin(rt, true);
         {
             g.setCamera(cam);
-            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
+            g.pushShader(cache.get("def1", Shaders.class, new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
@@ -78,7 +79,7 @@ public class ModelTest extends App {
                 model.draw(g, 0, 0, 0, new Vector3f(1), rotation, new Vector3f(1,1,1), Color.WHITE);
             }
             g.popShader();
-            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("UNSHADED", "0")));
+            g.pushShader(cache.get("def2", Shaders.class, new Pair<>("UNSHADED", "0")));
             {
                 light_cube.draw(g, light.pos.x, light.pos.y, light.pos.z, new Vector3f(1), 0, new Vector3f(0,0,0), Color.RED);
                 skybox.draw(g, 0, 0, 0, new Vector3f(900), 0, new Vector3f(0,0,0), Color.GREEN);
@@ -89,7 +90,7 @@ public class ModelTest extends App {
         g.end();
         g.begin(null, true);
         {
-            g.pushShader(ResourceManager.INSTANCE.getShader("/Shaders/default.vs", "/Shaders/default.fs", new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
+            g.pushShader(cache.get("def3", Shaders.class, new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
             g.drawTexture(rt.texture[0], inv_uv, 0, 0, 0, WIDTH, HEIGHT, 0, 0, 0, Color.WHITE);
             g.popShader();
         }
@@ -125,7 +126,7 @@ public class ModelTest extends App {
         }
         //rotation++;
         if(deltatime > 30.0){
-            ENGINE.end();
+            //ENGINE.end();
         }
         deltatime += Timer.getDelta();
     }
@@ -135,7 +136,8 @@ public class ModelTest extends App {
         g = ENGINE.createGraphics(this);
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();
-        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Sonic Generations - Sonic the Hedgehog Modern/Sonic (Modern)/Sonic.DAE.dae").toModel();
+        cache = new ResourceCache();
+        model = new MeshLoader("C:/Users/B/Documents/DabEngine/src/test/resources/PC Computer - Sonic Generations - Sonic the Hedgehog Modern/Sonic (Modern)/Sonic.DAE.dae", cache).toModel();
         cam = new Camera3D(45, WIDTH, HEIGHT);
         light = new Light(new Vector3f(0, -25, 40), new Vector3f(1360));
         glfwSetInputMode(ENGINE.getMainWindow().getWin(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);  

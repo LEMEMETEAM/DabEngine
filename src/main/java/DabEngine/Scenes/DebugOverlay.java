@@ -36,7 +36,7 @@ public class DebugOverlay extends Overlay {
     @Override
     public void render(Graphics g) {
         g.begin(null, false);
-        g.pushShader(Font.TEXT_DEFAULT_SHADER);
+        g.pushShader(f.shader);
         g.drawText(f, text, 0, 0, 0, Color.GREEN);
         g.popShader();
         g.end();
