@@ -22,7 +22,7 @@ public class ResourceCache {
 		if((resource = cache.get(res)) == null) {
 			switch (type.getSimpleName()) {
 				case "Texture":
-					TextureLoader loader = null;
+					TextureLoader loader;
 					try {
 						loader = new TextureLoader(new File(res));
 					} catch (Exception tex_ex1) {
@@ -42,6 +42,8 @@ public class ResourceCache {
 								}
 							}
 						}
+					} finally {
+						loader.close();
 					}
 					Texture tex = new Texture(loader.pixels, loader.width, loader.height, false, Arrays.copyOf(extras, extras.length, Parameters[].class));
 					resource = type.cast(tex);
