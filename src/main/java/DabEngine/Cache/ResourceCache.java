@@ -13,16 +13,18 @@ import DabEngine.Graphics.OpenGL.Textures.TextureLoader;
 import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
 import DabEngine.Utils.Pair;
 
+import javax.annotation.Nonnull;
+
 public class ResourceCache {
 
 	private InMemoryCache cache = new InMemoryCache.Builder().initialSize(16).maxSize(64).build();
 
-	@NotNull
 	public <T> T get(String res, Class<T> type, Object... extras) {
 		T resource = null;
 		if((resource = cache.get(res)) == null) {
 			switch (type.getSimpleName()) {
 				case "Texture":
+					@Nonnull
 					TextureLoader loader = null;
 					try {
 						loader = new TextureLoader(new File(res));
