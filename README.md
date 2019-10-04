@@ -6,11 +6,12 @@
 ![Dab](https://thumbs.dreamstime.com/t/dabbing-person-making-dab-black-glyph-icon-symbol-113558248.jpg)
 
 ## About
-DabEngine is a 2D/(Soon)3D game engine written in Java. I started it randomly because I wanted to know how other games/engines were made. I hade started in November 2018 and I didn't expect it to take this long :)
+DabEngine is a 2D/3D game engine written in Java. I started it randomly because I wanted to know how other games/engines were made. I had started in November 2018 and I didn't expect it to take this long :)
 
 ## Example
 There is a platformer example that most of the elements of the game engine. It contains some bugs (some due to the engine itself). But it mostly works.
 [PlatformerTest](https://github.com/LEMEMETEAM/PlatformerTest)
+There are also quick and simple sample games that are remakes of older games. [Sample Games](https://github.com/LEMEMETEAM/Game=Samples).
 
 ## Features
 - Entity-Compoent-System
@@ -28,16 +29,17 @@ There is a platformer example that most of the elements of the game engine. It c
 - In-Memory Cache and ResourceManager
 - Audio playing (not spacial)
 - Animating Values
-- GUI System (quite bare-bones)
+- Simple GUI System
 - Event System
-- Python Scripting
+- Kotlin Scripting
 
 ## Build/Package
 The repository is packed with Gradle so once you download it from the github, just open a new Terminal at the root of the DabEngine folder and do `gradle build` to build the class files and such.
 Use `gradle sourcesJar` to build a jar of DabEngine with sources. The resukting jar is saved in `build/libs`.
 
 ## TODO
-There is still quite alot to add to the engine.
-However, what is currently there is atleat 98% functional.
+Performance Tuning
+Cube Maps
+Possibly change shader architecture, again
 
 Anyone is welcome to contribute to the codebase.
