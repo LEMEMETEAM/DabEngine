@@ -22,7 +22,7 @@ public class ResourceCache {
 		if((resource = cache.get(res)) == null) {
 			switch (type.getSimpleName()) {
 				case "Texture":
-					TextureLoader loader;
+					TextureLoader loader = null;
 					try {
 						loader = new TextureLoader(new File(res));
 					} catch (Exception tex_ex1) {
@@ -36,9 +36,9 @@ public class ResourceCache {
 								try {
 									loader = new TextureLoader(
 											ResourceCache.class.getResourceAsStream("/Textures/unavailable.jpg"));
-								} catch (IOException e) {
+								} catch (IOException ex) {
 									// TODO Auto-generated catch block
-									e.printStackTrace();
+									ex.printStackTrace();
 								}
 							}
 						}
