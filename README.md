@@ -11,7 +11,7 @@ DabEngine is a 2D/3D game engine written in Java. I started it randomly because 
 ## Example
 There is a platformer example that most of the elements of the game engine. It contains some bugs (some due to the engine itself). But it mostly works.
 [PlatformerTest](https://github.com/LEMEMETEAM/PlatformerTest)
-There are also quick and simple sample games that are remakes of older games. [Sample Games](https://github.com/LEMEMETEAM/Game=Samples).
+There are also quick and simple sample games that are remakes of older games. [Sample Games](https://github.com/LEMEMETEAM/Game-Samples).
 
 ## Features
 - Entity-Compoent-System
