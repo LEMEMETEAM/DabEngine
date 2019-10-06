@@ -71,28 +71,25 @@ public class ModelTest extends App {
         g.begin(rt, true);
         {
             g.setCamera(cam);
-            g.pushShader(cache.get("def1", Shaders.class, new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
+            g.setShader(cache.get("def1", Shaders.class, new Pair<>("BLINN", "0"), new Pair<>("TEXTURED", "0"), new Pair<>("SPEC_MAP", "0")));
             {
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
                 Light.lightbuffer.put(0, light.toArray());
-                Light.lightbuffer.put(1, 0.9f);
-                model.draw(g, 0, 0, 0, new Vector3f(1), rotation, new Vector3f(1,1,1), Color.WHITE);
+                Light.lightbuffer.put(1, 0.0f);
+                model.draw(g, 0, 0, 0, new Vector3f(1), rotation, new Vector3f(1,0,0), Color.WHITE);
             }
-            g.popShader();
-            g.pushShader(cache.get("def2", Shaders.class, new Pair<>("UNSHADED", "0")));
+            g.setShader(cache.get("def2", Shaders.class, new Pair<>("UNSHADED", "0")));
             {
-                light_cube.draw(g, light.pos.x, light.pos.y, light.pos.z, new Vector3f(1), 0, new Vector3f(0,0,0), Color.RED);
+                light_cube.draw(g, light.pos.x, light.pos.y, -light.pos.z, new Vector3f(1), 0, new Vector3f(0,0,0), Color.RED);
                 skybox.draw(g, 0, 0, 0, new Vector3f(900), 0, new Vector3f(0,0,0), Color.GREEN);
                 
             }
-            g.popShader();
         }
         g.end();
         g.begin(null, true);
         {
-            g.pushShader(cache.get("def3", Shaders.class, new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
+            g.setShader(cache.get("def3", Shaders.class, new Pair<>("HDR", "0"), new Pair<>("SRGB", "0")));
             g.drawTexture(rt.texture[0], inv_uv, 0, 0, 0, WIDTH, HEIGHT, 0, 0, 0, Color.WHITE);
-            g.popShader();
         }
         g.end();
     }

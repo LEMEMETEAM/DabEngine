@@ -66,15 +66,12 @@ public class RendererSystem extends ComponentSystem {
             CShader s = EntityManager.INSTANCE.component(e, CShader.class);
             
             if(s!=null){
-                g.pushShader(s.shader);
+                g.setShader(s.shader);
                 Light.lightbuffer.bindToShader(g.getCurrentShader());
             }
             if(EntityManager.INSTANCE.has(e, CModel.class)){
                 CModel m = EntityManager.INSTANCE.component(e, CModel.class);
                 m.model.draw(g, t.pos.x, t.pos.y, t.pos.z, t.size, t.rotation.w, new Vector3f(t.rotation.x, t.rotation.y, t.rotation.z), r.color);
-            }
-            if(s!=null){
-                g.popShader();
             }
         }
         g.end();

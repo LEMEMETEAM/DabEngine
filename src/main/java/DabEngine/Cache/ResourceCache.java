@@ -21,36 +21,42 @@ public class ResourceCache {
 
 	public <T> T get(String res, Class<T> type, Object... extras) {
 		T resource = null;
-		if((resource = cache.get(res)) == null) {
+		if ((resource = cache.get(res)) == null) {
 			switch (type.getSimpleName()) {
-				case "Texture":
-					@Nonnull
-					TextureLoader loader = null;
+			case "Texture":
+				@Nonnull
+				TextureLoader loader = null;
+				try {
+					loader = new TextureLoader(new File(res));
+				} catch (Exception tex_ex1) {
 					try {
-						loader = new TextureLoader(new File(res));
-					} catch (Exception tex_ex1) {
+						loader = new TextureLoader(
+								Thread.currentThread().getContextClassLoader().getResourceAsStream(res));
+					} catch (Exception tex_ex2) {
 						try {
-							loader = new TextureLoader(
-									Thread.currentThread().getContextClassLoader().getResourceAsStream(res));
-						} catch (Exception tex_ex2) {
+							loader = new TextureLoader(ResourceCache.class.getResourceAsStream(res));
+						} catch (Exception tex_ex3) {
 							try {
-								loader = new TextureLoader(ResourceCache.class.getResourceAsStream(res));
-							} catch (Exception tex_ex3) {
-								try {
-									loader = new TextureLoader(
-											ResourceCache.class.getResourceAsStream("/Textures/unavailable.jpg"));
-								} catch (IOException ex) {
-									// TODO Auto-generated catch block
-									ex.printStackTrace();
-								}
+								loader = new TextureLoader(
+										ResourceCache.class.getResourceAsStream("/Textures/unavailable.jpg"));
+							} catch (IOException ex) {
+								// TODO Auto-generated catch block
+								ex.printStackTrace();
 							}
 						}
-					} finally {
-						loader.close();
 					}
-					Texture tex = new Texture(loader.pixels, loader.width, loader.height, false, Arrays.copyOf(extras, extras.length, Parameters[].class));
+				} finally {
+					Texture tex = new Texture(loader.pixels, loader.width, loader.height, false,
+							Arrays.copyOf(extras, extras.length, Parameters[].class));
 					resource = type.cast(tex);
-					break;
+					try {
+						loader.close();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				break;
 
 				case "Shaders":
 					String[] res_split = res.split("\\|");

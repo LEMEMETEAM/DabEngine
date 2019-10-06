@@ -8,11 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import DabEngine.Cache.InMemoryCache;
 import DabEngine.Core.IDisposable;
@@ -30,6 +31,8 @@ public class Shaders implements IDisposable {
     private int fs;
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public String vs_source, fs_source;
+    private InMemoryCache uLocationCache = new InMemoryCache.Builder().initialSize(16).maxSize(32).build();
+    private final FloatBuffer FLOATS = MemoryUtil.memAllocFloat(16);
     
     public Shaders(File filevs, File filefs, Pair<String, String>... defines) throws NullPointerException, IOException {
         this(read(filevs, defines), read(filefs, defines));
@@ -105,72 +108,44 @@ public class Shaders implements IDisposable {
         return program;
     }
 
-    public void setUniform(String uniformName, Matrix4f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-            LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
+    private int uniformLocation(String name){
+        Integer loc = null;
+        if((loc = uLocationCache.get(name)) == null){
+            loc = glGetUniformLocation(program, name);
+            if(loc == -1) {
+                LOGGER.log(Level.SEVERE, errorMessage(name, loc));
+                return -1;
+            }
+            else {
+                uLocationCache.add(name, loc);
+            }
         }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4*4);
-            value.get(buffer);
-            glUniformMatrix4fv(location, false, buffer);
-        }
+        return loc;
     }
 
-    public void setUniform(String uniformName, int value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        glUniform1i(location, value);
+    public void setUniform(String name, Matrix4fc value){
+        FloatBuffer buffer = value.get(FLOATS);
+        glUniformMatrix4fv(uniformLocation(name), false, buffer);
     }
-    
-    public void setUniform(String uniformName, float value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        glUniform1f(location, value);
+
+    public void setUniform(String name, Vector2f value){
+        glUniform2f(uniformLocation(name), value.x(), value.y());
     }
-    
-    public void setUniform(String uniformName, Vector4f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4);
-            value.get(buffer);
-            glUniform4fv(location, buffer);
-        }
+
+    public void setUniform(String name, Vector3f value){
+        glUniform3f(uniformLocation(name), value.x(), value.y(), value.z());
     }
-    
-    public void setUniform(String uniformName, Vector3f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(4);
-        value.get(buffer);
-        glUniform3fv(location, buffer);
+
+    public void setUniform(String name, Vector4f value){
+        glUniform4f(uniformLocation(name), value.x(), value.y(), value.z(), value.w());
     }
-    
-    public void setUniform(String uniformName, Vector2f value){
-    	int location = glGetUniformLocation(program, uniformName);
-        if(location < 0){
-        	LOGGER.log(Level.SEVERE, errorMessage(uniformName, location));
-            System.exit(1);
-        }
-        try(MemoryStack stack = MemoryStack.stackPush()){
-            FloatBuffer buffer = stack.mallocFloat(4);
-            value.get(buffer);
-            glUniform2fv(location, buffer);
-        }
+
+    public void setUniform(String name, float value){
+        glUniform1f(uniformLocation(name), value);
+    }
+
+    public void setUniform(String name, int value){
+        glUniform1i(uniformLocation(name), value);
     }
     
     private final String errorMessage(String uniformName, int location) {

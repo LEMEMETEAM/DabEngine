@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Stack;
+import java.util.function.Consumer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -15,6 +16,7 @@ import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Core.App;
+import DabEngine.Core.Command;
 import DabEngine.Core.Engine;
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Batch.Batch;
@@ -27,6 +29,7 @@ import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
 import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
+import DabEngine.Utils.Procedure;
 import DabEngine.Graphics.OpenGL.*;
 import DabEngine.Graphics.OpenGL.Light.Light;
 
@@ -47,12 +50,14 @@ public class Graphics implements IDisposable {
      * {@see VertexBatch} and also pop them off to revert back to a previous shader.
      */
     private ArrayDeque<Shaders> shaderStack;
+    private Shaders currentShader;
     /**
      * The {@see RenderTarget} to render to.
      */
     private RenderTarget RenderTarget;
     private App app;
     private Camera cam;
+    private boolean setuniform_called;
 
     public Graphics(App app) {
         Shaders def = null;
@@ -72,13 +77,20 @@ public class Graphics implements IDisposable {
         this.app = app;
     }
 
+    @Deprecated
     public void pushShader(Shaders s){
         shaderStack.push(s);
         batch.setShader(shaderStack.peek());
     }
 
+    @Deprecated
     public void popShader(){
         batch.setShader(shaderStack.pop());
+    }
+
+    public void setShader(Shaders s){
+        batch.setShader((currentShader = s));
+        setuniform_called = false;
     }
 
     public void setBlend(Blending blend){
@@ -112,6 +124,7 @@ public class Graphics implements IDisposable {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
         batch.begin(batched.length == 0 ? true : batched[0]);
+        setuniform_called = false;
     }
 
     public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
@@ -230,10 +243,18 @@ public class Graphics implements IDisposable {
         if (RenderTarget != null) {
             RenderTarget.unbind();
         }
+        setuniform_called = false;
     }
 
     public Shaders getCurrentShader(){
-        return shaderStack.peek();
+        return currentShader;
+    }
+
+    public void setUniform(Consumer<Shaders> consumer){
+        if(setuniform_called) end();
+        consumer.accept(getCurrentShader());
+        if(setuniform_called) begin(RenderTarget, false);
+        if(!setuniform_called) setuniform_called = true;
     }
 
     public Batch getBatch(){
