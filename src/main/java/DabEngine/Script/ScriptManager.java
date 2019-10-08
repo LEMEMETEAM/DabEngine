@@ -9,8 +9,8 @@ public class ScriptManager {
 
 	private static Globals globals = JsePlatform.standardGlobals();
 
-	public static void load(String script){
-		globals.loadfile(script);
+	public static LuaValue load(String script){
+		return globals.loadfile(script);
 	}
 
         public static void run(String script){
