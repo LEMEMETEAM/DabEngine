@@ -1,43 +1,48 @@
 package DabEngine.Script;
 
-import org.luaj.vm2.*;
-import org.luaj.vm2.lib.LibFunction;
-import org.luaj.vm2.lib.LibFunction;
-import org.luaj.vm2.lib.jse.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.jruby.embed.EmbedEvalUnit;
+import org.jruby.embed.LocalVariableBehavior;
+import org.jruby.embed.PathType;
+import org.jruby.embed.ScriptingContainer;
+import org.jruby.javasupport.JavaEmbedUtils;
+
+import DabEngine.Utils.MultiFunc;
+import DabEngine.Utils.Utils;
 
 public class ScriptManager {
 
-	private static Globals globals = JsePlatform.standardGlobals();
+	private static ScriptingContainer container = new ScriptingContainer();
+	private static EmbedEvalUnit parsed;
+	private static String _last;
+	private static Object scriptObj;
 
-	public static LuaValue load(String script){
-		return globals.loadfile(script);
-	}
-
-        public static void run(String script){
-                load(script).call();
-        }
-
-	public static void bindFunction(String name, LibFunction value){
-		globals.set(LuaValue.valueOf(name), value);
-	}
-
-        public static void bindValue(String name, Object value) {
-                globals.set(LuaValue.valueOf(name), CoerceJavaToLua.coerce(value));
-        }
-
-	public static LuaValue get(String name){
-		return globals.get(LuaValue.valueOf(name));
-	}
-
-	public static Varargs invokeFunction(String name, Object... args){
-		if(args != null && args.length > 0) {
-			LuaValue[] values = new LuaValue[args.length];
-			for(int i = 0; i < args.length; i++){
-				values[i] = CoerceJavaToLua.coerce(args[i]);
-			}
-			return globals.get(name).invoke(LuaValue.varargsOf(values));
-		}else{
-			return globals.get(name).call();
+	public static void run(String script){
+		if(_last != script){
+			parsed = container.parse(PathType.CLASSPATH, script);
+			_last = script;
 		}
+
+		scriptObj = JavaEmbedUtils.rubyToJava(parsed.run());
+	}
+
+	public static void bind(String name, Object value){
+		container.put(scriptObj, name, value);
+	}
+
+	public static <T> T invokeFunction(String name, Class<T> type, Object... args){
+		return container.callMethod(scriptObj, name, args, type);
+	}
+
+	public static Object invokeFunction(String name, Object... args){
+		return container.callMethod(scriptObj, name, args);
+	}
+
+	public static void get(String name){
+		container.get(name);
 	}
 }

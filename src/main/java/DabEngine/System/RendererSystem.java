@@ -73,6 +73,10 @@ public class RendererSystem extends ComponentSystem {
                 CModel m = EntityManager.INSTANCE.component(e, CModel.class);
                 m.model.draw(g, t.pos.x, t.pos.y, t.pos.z, t.size, t.rotation.w, new Vector3f(t.rotation.x, t.rotation.y, t.rotation.z), r.color);
             }
+            else if(EntityManager.INSTANCE.has(e, CSprite.class)){
+                CSprite sp = EntityManager.INSTANCE.component(e, CSprite.class);
+                g.drawTexture(sp.texture, sp.region, t.pos.x, t.pos.y, t.pos.z, t.size.x, t.size.y, t.origin.x, t.origin.y, t.rotation.z, r.color);
+            }
         }
         g.end();
         if(scene.config.renderToTexture){

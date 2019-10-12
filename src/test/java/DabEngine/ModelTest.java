@@ -123,7 +123,7 @@ public class ModelTest extends App {
         }
         //rotation++;
         if(deltatime > 30.0){
-            //ENGINE.end();
+            ENGINE.end();
         }
         deltatime += Timer.getDelta();
     }
