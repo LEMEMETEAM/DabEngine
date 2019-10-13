@@ -4,9 +4,16 @@ import DabEngine.Graphics.Graphics;
 
 public abstract class Transition {
 
-	public float in_transition_time, out_transition_time;
-	
-	public abstract void in(Graphics g, double time);
-	public abstract void out(Graphics g, double time);
-	public abstract void cleanUp();
+	private float duration;
+	private float time;
+
+	public Transition(float duration){
+		this.duration = duration;
+	}
+
+	public abstract void render(Graphics g);
+
+	public boolean isFinished(){
+		return this.time > this.duration;
+	}
 }
