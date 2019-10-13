@@ -2,6 +2,7 @@ package DabEngine.System;
 
 import java.util.logging.Logger;
 
+import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Scenes.Scene;
 
@@ -10,7 +11,7 @@ import DabEngine.Scenes.Scene;
  * All other ComponentSystems must extend this.
  */
 
-public abstract class ComponentSystem {
+public abstract class ComponentSystem implements IDisposable{
 	
 	/**
 	 * Reference to scene that this ComponentSystem is part of.
@@ -36,4 +37,10 @@ public abstract class ComponentSystem {
 	 * Base update method used by ComponentSystems.
 	 */
 	public abstract void render(Graphics g);
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 }

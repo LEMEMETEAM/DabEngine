@@ -24,7 +24,9 @@ public class TransitionScene extends Scene {
         switch(transitionState){
             case OUT:
                 if(outEffect != null){
-                    oldScene.render(g);
+                    if(oldScene != null){
+                        oldScene.render(g);
+                    }
                     outEffect.render(g);
                     if(outEffect.isFinished()){
                         transitionState = TransitionState.IN;
@@ -35,7 +37,9 @@ public class TransitionScene extends Scene {
                 break;
             case IN:
                 if(inEffect != null){
-                    newScene.render(g);
+                    if(newScene != null){
+                        newScene.render(g);
+                    }
                     inEffect.render(g);
                     if(inEffect.isFinished()){
                         SceneManager.setScene(newScene);

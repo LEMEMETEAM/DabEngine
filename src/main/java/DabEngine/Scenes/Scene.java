@@ -10,7 +10,21 @@ import DabEngine.System.ComponentSystem;
 public class Scene implements IScene {
 
     protected StateManager stateManager = new StateManager();
-    protected ArrayDeque<ComponentSystem> systems = new ArrayDeque<>();
+    /*Must be used as a stack, not linked list!*/
+    protected ArrayDeque<ComponentSystem> systems = new ArrayDeque<>(){
+        @Override
+        public void addFirst(ComponentSystem e){
+            e.addedToScene(Scene.this);
+            super.addFirst(e);
+        }
+
+        @Override
+        public ComponentSystem removeFirst(){
+            ComponentSystem c = super.removeFirst();
+            c.dispose();
+            return c;
+        }
+    };
     protected App app;
 
     protected Scene(App app){
