@@ -10,6 +10,7 @@ public abstract class SceneManager {
 
 	public static void setScene(IScene scene){
 		currentScene = scene;
+		scene.init();
 	}
 
 	public static IScene getScene(){

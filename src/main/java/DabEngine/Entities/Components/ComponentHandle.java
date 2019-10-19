@@ -58,6 +58,6 @@ public class ComponentHandle<T extends Component> {
      * @return whether the entity has component or not
      */
     public boolean has(int entity){
-        return comps[entity] != null;
+        if(comps.length > entity) return comps[entity] != null; else return false;
     }
 }

@@ -5,7 +5,7 @@ import org.joml.Vector4f;
 public class TextureRegion {
 	
 	private float scalex, scaley;
-	public Vector4f uv;
+	private Vector4f uv;
 	public int tileNomX, tileNomY;
 	
 	public TextureRegion(int tileNomX, int tileNomY) {
@@ -21,43 +21,33 @@ public class TextureRegion {
 		this(1, 1);
 	}
 	
-	public void setTile(int tileposx, int tileposy) {
+	public TextureRegion setTile(int tileposx, int tileposy) {
 		uv.x = ((tileposx - 1) * scalex);
 		uv.y = (tileposy - 1) * scaley;
 		uv.z = uv.x + scalex;
 		uv.w = uv.y + scaley;
+		return this;
 	}
 
-	public void setTile(int tilexmin, int tilexmax, int tileymin, int tileymax){
+	public TextureRegion setTile(int tilexmin, int tilexmax, int tileymin, int tileymax){
 		uv.x = ((tilexmin - 1) * scalex);
 		uv.y = ((tileymin - 1) * scaley);
 		uv.z = ((tilexmax - 1) * scalex) + scalex;
 		uv.w = ((tileymax - 1) * scaley) + scaley;
+		return this;
 	}
 	
-	public void setTile(int tile) {
+	public TextureRegion setTile(int tile) {
 		uv.x = (((tile - 1 % tileNomX)) * scalex);
 		uv.y = (((tile / tileNomX)) * scaley);
 		uv.z = uv.x + scalex;
 		uv.w = uv.y + scaley;
+		return this;
 	}
-	
-	public Vector4f getTile(int tileposx, int tileposy) {
-		Vector4f uv = new Vector4f();
-		uv.x = ((tileposx - 1) * scalex);
-		uv.y = (tileposy - 1) * scaley;
-		uv.z = uv.x + scalex;
-		uv.w = uv.y + scaley;
-		return uv;
-	}
-	
-	public Vector4f getTile(int tile) {
-		Vector4f uv = new Vector4f();
-		uv.x = (((tile - 1 % tileNomX)) * scalex);
-		uv.y = (((tile / tileNomX)) * scaley);
-		uv.z = uv.x + scalex;
-		uv.w = uv.y + scaley;
-		return uv;
+
+	public TextureRegion setUV(float u, float v, float s, float t){
+		uv.set(u, v, s, t);
+		return this;
 	}
 	
 	public Vector4f getUV() {

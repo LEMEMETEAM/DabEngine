@@ -1,3 +1,3 @@
-while true 
-    puts "lol"
-end
+require "DabEngine"
+
+puts(DabEngine::Math.pow(2,2))

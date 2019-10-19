@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.jruby.Profile;
 import org.jruby.Ruby;
+import org.jruby.RubyInstanceConfig;
 import org.jruby.RubyRuntimeAdapter;
 import org.jruby.embed.EmbedEvalUnit;
 import org.jruby.embed.LocalVariableBehavior;
@@ -25,6 +27,7 @@ import org.jruby.runtime.GlobalVariable;
 import org.jruby.runtime.RubyEvent;
 import org.jruby.runtime.ThreadContext;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.jruby.util.cli.Options;
 
 import DabEngine.Core.IDisposable;
 import DabEngine.Utils.MultiFunc;
@@ -39,33 +42,18 @@ public enum ScriptManager implements IDisposable {
 	private RubyRuntimeAdapter evaler;
 	private Pair<String, EvalUnit> lastScript;
 	private IRubyObject _loaded;
-	public static final int HOOK_COUNT = 20;
+	public static final int HOOK_COUNT = 1000;
+	
+	/*
+	disallowedInRubyOpts(argument);
+	Options.DEBUG_FULLTRACE.force("true");
+	RubyInstanceConfig.FULL_TRACE_ENABLED = true;
+	config.setDebuggingFrozenStringLiteral(true);
+	*/
 	
 	ScriptManager(){
 		runtime = Ruby.getGlobalRuntime();
 		evaler = JavaEmbedUtils.newRuntimeAdapter();
-
-		runtime.addEventHook(new EventHook(){
-
-			int hookCount;
-		
-			@Override
-			public boolean isInterestedInEvent(RubyEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		
-			@Override
-			public void eventHandler(ThreadContext context, String eventName, String file, int line, String name,
-					IRubyObject type) {
-				// TODO Auto-generated method stub
-				++hookCount;
-				if(hookCount >= HOOK_COUNT){
-					hookCount = 0;
-					throw new Error("Script overran resource limits.");
-				}
-			}
-		});
 	}
 
 	public void load(String script){
@@ -104,11 +92,6 @@ public enum ScriptManager implements IDisposable {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		JavaEmbedUtils.terminate(runtime);
-	}
-
-	public static void main(String[] args) {
-		ScriptManager.INSTANCE.load("test.rb");
-
 	}
 	
 }

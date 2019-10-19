@@ -143,8 +143,7 @@ public class ModelTest extends App {
 
         rt = new RenderTarget(WIDTH, HEIGHT, vp, new Texture(null, WIDTH, HEIGHT, true, Parameters.LINEAR));
 
-        inv_uv = new TextureRegion();
-        inv_uv.uv = new Vector4f(0,1,1,0);
+        inv_uv = new TextureRegion().setUV(0,1,1,0);
 
         skybox = new Cube().generate(0, 0, 0).toMesh();
 

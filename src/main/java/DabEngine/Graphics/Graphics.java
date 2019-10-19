@@ -63,7 +63,7 @@ public class Graphics implements IDisposable {
         Shaders def = null;
         try {
             def = new Shaders(new File("/Shaders/default.vs"), new File("/Shaders/default.fs"),
-                    new Pair<>("UNSHADED", "0"));
+                    new Pair<>("UNSHADED", "0"), new Pair<>("TEXTURED", "0"));
         } catch (NullPointerException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
