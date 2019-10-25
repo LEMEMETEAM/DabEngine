@@ -1,12 +1,14 @@
 package DabEngine.GUI.Objects;
 
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
-import DabEngine.Utils.Color;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Resources.Textures.Texture;
 
 public class Image extends GUIObject {
 
@@ -44,7 +46,8 @@ public class Image extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawTexture(image, null, pos.x, pos.y, pos.z, size.x, size.y, 0, 0, 0, color);
+		g.setTexture(image);
+		g.drawQuad(pos, new Vector3f(size.x, size.y, 0), new Vector3f(0), new Vector4f(0), color);
 	}
 
 	@Override

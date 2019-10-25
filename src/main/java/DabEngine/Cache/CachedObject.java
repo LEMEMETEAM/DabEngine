@@ -2,7 +2,8 @@ package DabEngine.Cache;
 
 import DabEngine.Core.IDisposable;
 
-public class CachedObject<T> implements IDisposable{
+public class CachedObject<T> implements IDisposable
+{
 	
 	private T value;
 	
@@ -10,7 +11,8 @@ public class CachedObject<T> implements IDisposable{
 	 * Wrapper for an object that is put inside {@link InMemoryCache}
 	 * @param value the object to put in cache
 	 */
-	public CachedObject(T value) {
+	public CachedObject(T value) 
+	{
 		this.value = value;
 	}
 	

@@ -14,7 +14,7 @@ public enum EventManager {
 	private HashMap<Class, ArrayList<IEventListener>> listeners = new HashMap<>();
 
 	public void submit(Event e, Class clz){
-		for(var o : listeners.get(clz)){
+		for(IEventListener o : listeners.get(clz)){
 			o.onNotify(e);
 		}
 	}

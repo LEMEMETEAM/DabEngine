@@ -1,25 +1,13 @@
 package DabEngine.Entities;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-import java.util.WeakHashMap;
-import java.util.Map.Entry;
-import java.util.function.*;
-import java.util.stream.Collectors;
 
-import DabEngine.Entities.Components.CText;
-import DabEngine.Entities.Components.CTransform;
 import DabEngine.Entities.Components.Component;
 import DabEngine.Entities.Components.ComponentHandle;
-import DabEngine.Observer.EventManager;
 
 /**
  * Main EntityManager class.
@@ -31,9 +19,8 @@ public enum EntityManager {
 	INSTANCE;
 
 	private HashMap<Class, ComponentHandle> usedComps = new HashMap<>();
-	private int[] entities = new int[32];
-	private int next = 1;
-	private int highest = 1;
+	private boolean[] entities = new boolean[32];
+	private int next = 0;
 	private ArrayDeque<Integer> recycleBin = new ArrayDeque<>();
 
 	/**
@@ -88,23 +75,17 @@ public enum EntityManager {
 	 */
 	public int create(){
 		int id;
-		if(highest == 1){
-			id = next;
-			highest++;
+		if(!recycleBin.isEmpty()){
+			id = recycleBin.remove();
 		}
 		else{
-			if(!recycleBin.isEmpty()){
-				id = recycleBin.remove();
-			}
-			else{
-				id = next;
-				highest++;
-			}
+			id = next;
 		}
+
 		if(next + 1 == entities.length){
 			resize();
 		}
-		entities[id] = id;
+		entities[id] = true;
 		next++;
 		//Arrays.sort(entities, 0, highest);
 		return id;
@@ -117,10 +98,9 @@ public enum EntityManager {
 	public void destroy(int entity){
 		recycleBin.add(entity);
 		for(ComponentHandle s : usedComps.values()){
-			s.comps[entity] = null;
+			if(s.comps.length > entity) s.comps[entity] = null;
 		}
-		entities[entity] = 0;
-		highest = entities[next];
+		entities[entity] = false;
 	}
 
 	/**
@@ -143,7 +123,7 @@ public enum EntityManager {
 	 */
 	public void each(EntityIterator itr, EntityFilter filter){
 		ArrayList<Integer> ids = new ArrayList<>();
-		for (int i : entities) if(i != 0) ids.add(i);
+		for (int i = 0; i < entities.length; i++) if(entities[i]) ids.add(i);
 		for(Iterator<Integer> it = ids.iterator(); it.hasNext(); ){
 			if(!(filter.boolFunc.test(it.next()))){
 				it.remove();
@@ -158,9 +138,9 @@ public enum EntityManager {
 	 * destroy all entities
 	 */
 	public void destroyAll(){
-		for(int entity : entities){
-			if(entity != 0){
-				destroy(entity);
+		for(int i = 0; i < entities.length; i++){
+			if(entities[i]){
+				destroy(i);
 			}
 		}
 	}
@@ -177,5 +157,35 @@ public enum EntityManager {
 			return hndl.has(entity);
 		}
 		return false;
+	}
+
+	/**
+	 * alloc a block of entities for pooling
+	 */
+	public int[] alloc(int size){
+		int[] e = new int[size];
+		for(int i = 0; i < size; i++){
+			e[i] = create();
+		}
+		return e;
+	}
+
+	/**
+	 * frees a previously made block of entities
+	 */
+	public void free(int[] e){
+		for(int i = 0; i < e.length; i++){
+			destroy(e[i]);
+		}
+	}
+
+	/**
+	 * Clears all components of
+	 * entity but doesn't destroy the entity
+	 */
+	public void clear(int entity){
+		for(ComponentHandle s : usedComps.values()){
+			if(s.comps.length > entity) s.comps[entity] = null;
+		}
 	}
 }

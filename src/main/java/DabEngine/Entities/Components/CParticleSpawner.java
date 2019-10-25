@@ -1,18 +1,20 @@
 package DabEngine.Entities.Components;
 
+import org.joml.Vector3f;
 import org.jruby.util.Random;
 
 import DabEngine.Graphics.OpenGL.Blending;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Resources.Textures.*;
 
 public class CParticleSpawner extends Component {
 
-    public Texture particle_texture;
+    public String particle_texture;
     public float spread;
     public float direction;
     public Blending blend_mode;
-    public float force_on_particle;
+    public Vector3f force_on_particle;
     public float particleLifeTime;
-    public final Random rng = new Random();
+    public float particle_mass;
+    public Vector3f particle_size;
 
 }

@@ -3,17 +3,16 @@ package DabEngine.GUI.Objects;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.Batch.Font;
-import DabEngine.Graphics.Batch.Polygon;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Observer.Event;
-import DabEngine.States.StateManager;
+import DabEngine.Resources.Font.Font;
+import DabEngine.Resources.Textures.Texture;
 import DabEngine.Utils.Color;
 
 public class Button extends GUIObject {
@@ -62,13 +61,15 @@ public class Button extends GUIObject {
 	@Override
 	public void render(Graphics g) {
 		if(buttonTexture != null){
-			g.drawTexture(buttonTexture, null, pos.x - size.x/2, pos.y - size.y/2, pos.z, size.x, size.y, 0, 0, 0, Color.WHITE);
+			g.setTexture(buttonTexture);
+			g.drawQuad(null, new Vector3f(pos.x - size.x/2, pos.y - size.y/2, pos.z), new Vector3f(size.x, size.y, 0), new Vector3f(0), new Vector4f(0), Color.WHITE);
 		}
 		else{
-			g.fillRect(pos.x-size.x/2, pos.y-size.y/2, pos.z, size.x, size.y, 0, 0, 0, color);
-			g.pushShader(font.shader);
-			g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, pos.z+0.1f, label_color);
-			g.popShader();
+			g.setTexture(null);
+			g.drawQuad(null, new Vector3f(pos.x - size.x/2, pos.y - size.y/2, pos.z), new Vector3f(size.x, size.y, 0), new Vector3f(0), new Vector4f(0), color);
+			// g.pushShader(font.shader);
+			// g.drawText(font, label, (size.x * label_pos.x) + pos.x, (size.y * label_pos.y) + pos.y, pos.z+0.1f, label_color);
+			// g.popShader();
 		}
 	}
 

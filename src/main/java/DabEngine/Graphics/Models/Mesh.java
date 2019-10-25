@@ -3,9 +3,10 @@ package DabEngine.Graphics.Models;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Resources.Textures.*;
 import DabEngine.Utils.Color;
 import DabEngine.Utils.Pair;
 
@@ -29,24 +30,24 @@ public class Mesh {
         this.normal = new ArrayList<>(Arrays.asList(normals));
     }
 
-    public void draw(Graphics g, float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
+    public void draw(Graphics g, Vector3f pos, Vector3f scale, Vector3f origin_rot, Vector4f rotation, Color c){
         boolean textured = false;
         for(int j = 0; j < Math.max(normal.size(), Math.max(diffuse.size(), specular.size())); j++){
             if(j<diffuse.size()){
-                g.getBatch().setTexture(new Pair<>(diffuse.get(j), 0));
+                g.setTexture(0, diffuse.get(j));
             }
             if(j<specular.size()){
-                g.getBatch().setTexture(new Pair<>(specular.get(j), 1));
+                g.setTexture(1, specular.get(j));
             }
             if(j<normal.size()){
-                g.getBatch().setTexture(new Pair<>(normal.get(j), 2));
+                g.setTexture(2, normal.get(j));
             }
             textured = true;
         }
         if(!textured){
-            g.getBatch().setTexture(new Pair<>(new Texture(0), 0));
+            g.setTexture(0, null);
         }
         
-        g.draw(vData, x, y, z, scale, rotation, axis, c);
+        g.draw(vData, pos, scale, origin_rot, rotation, c);
     }
 }

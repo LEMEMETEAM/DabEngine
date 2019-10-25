@@ -32,7 +32,7 @@ public class InMemoryCache {
 
 	private int initialSize, maxSize;
 
-	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<>(initialSize, 1.0f, true){
+	private Map<String, SoftReference<CachedObject>> cache = Collections.synchronizedMap(new LinkedHashMap<String, SoftReference<CachedObject>>(initialSize, 1.0f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, SoftReference<CachedObject>> eldest) {
 				

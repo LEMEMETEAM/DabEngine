@@ -105,7 +105,4 @@ public class AABB {
         return new Pair<>(distance.x < 0 && distance.y < 0, distance);
     }*/
 
-    public void debugDraw(Graphics g){
-        g.drawRect(center.x - half_extent.x, center.y - half_extent.y, 0, half_extent.x * 2, half_extent.y*2, 1, Color.RED);
-    }
 }

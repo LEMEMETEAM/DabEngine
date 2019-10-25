@@ -2,8 +2,8 @@ package DabEngine.Entities.Components;
 
 import org.joml.Vector4f;
 
-import DabEngine.Graphics.Batch.Font;
-import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Resources.Font.*;
+import DabEngine.Resources.Shaders.*;
 import DabEngine.Utils.Color;
 
 public class CText extends Component {

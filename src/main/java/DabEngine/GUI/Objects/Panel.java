@@ -74,7 +74,7 @@ public class Panel extends GUIObject {
 
 	@Override
 	public void render(Graphics g) {
-		for(var obj : panel_objects){
+		for(GUIObject obj : panel_objects){
 			obj.render(g);
 		}
 	}

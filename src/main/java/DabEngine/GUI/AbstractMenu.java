@@ -1,22 +1,11 @@
 package DabEngine.GUI;
 
-import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glScissor;
-
 import java.util.ArrayList;
-
-import org.joml.Vector2f;
 
 import DabEngine.Core.App;
 import DabEngine.GUI.GUIObject.States;
-import DabEngine.GUI.Objects.Button;
-import DabEngine.GUI.Objects.Image;
 import DabEngine.GUI.Objects.Panel;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Graphics.Batch.Font;
 import DabEngine.Input.InputHandler;
 
 public abstract class AbstractMenu {
@@ -35,7 +24,7 @@ public abstract class AbstractMenu {
 		for(Panel p : obj){
 			objs.addAll(unpackPanel(p));
 		}
-		for(var g : objs){
+		for(GUIObject g : objs){
 			checkHover(g);
 			g.update();
 		}
@@ -43,9 +32,9 @@ public abstract class AbstractMenu {
 
 	private ArrayList<GUIObject> unpackPanel(Panel p){
 		ArrayList<GUIObject> unpacked = new ArrayList<>();
-		for(var obj : p.panel_objects){
+		for(GUIObject obj : p.panel_objects){
 			if(obj instanceof Panel){
-				var un = unpackPanel((Panel)obj);
+				ArrayList<GUIObject> un = unpackPanel((Panel)obj);
 				for(GUIObject o : un){
 					unpacked.add(o);
 				}

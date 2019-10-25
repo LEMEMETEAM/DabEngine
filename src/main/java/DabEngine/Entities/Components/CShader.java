@@ -1,7 +1,7 @@
 package DabEngine.Entities.Components;
 
 import DabEngine.Graphics.Models.UniformBuffer;
-import DabEngine.Graphics.OpenGL.Shaders.Shaders;
+import DabEngine.Resources.Shaders.*;
 
 public class CShader extends Component {
     public Shaders shader;

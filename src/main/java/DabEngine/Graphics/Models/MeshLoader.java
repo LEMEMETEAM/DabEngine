@@ -22,27 +22,18 @@ import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AITexture;
 import org.lwjgl.assimp.AIVector3D;
 
-import DabEngine.Cache.ResourceCache;
-import DabEngine.Graphics.OpenGL.Light.Light;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
-import DabEngine.Graphics.OpenGL.Textures.Texture.Parameters;
+import DabEngine.Resources.*;
+import DabEngine.Resources.Shaders.*;
+import DabEngine.Resources.Textures.*;
 
 public class MeshLoader {
 
     private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public ArrayList<Mesh> meshes = new ArrayList<>();
-    public ArrayList<Light> lights = new ArrayList<>();
     private String directory;
     private int vCount;
-    private ResourceCache cache;
 
-    public MeshLoader(String path, ResourceCache cache){
-        if(cache == null){
-            this.cache = new ResourceCache();
-        }
-        else{
-            this.cache = cache;
-        }
+    public MeshLoader(String path){
 
         AIScene scene = aiImportFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices | aiProcess_ValidateDataStructure);
         if(scene == null || (scene.mFlags() & AI_SCENE_FLAGS_INCOMPLETE) == 1 || scene.mRootNode() == null){
@@ -51,18 +42,6 @@ public class MeshLoader {
 
         directory = path.substring(0, path.lastIndexOf("/"));
         processNode(scene.mRootNode(), scene, scene.mRootNode().mName().dataString());
-        processLight(scene);
-    }
-
-    private void processLight(AIScene scene){
-        int l_num = scene.mNumLights();
-        for(int i = 0; i < l_num; i++){
-            AILight scene_light = AILight.create(scene.mLights().get(i));
-            AIVector3D pos = scene_light.mPosition();
-            AIColor3D color = scene_light.mColorDiffuse();
-
-            lights.add(new Light(new Vector3f(pos.x(), pos.y(), pos.z()), new Vector3f(color.r(), color.g(), color.b())));
-        }
     }
 
     private void processNode(AINode node, AIScene scene, String name){
@@ -155,7 +134,7 @@ public class MeshLoader {
             aiGetMaterialTexture(mat, type, i, path, (IntBuffer) null, null, null, null, null, null);
             String fPath = path.dataString();
             if(fPath != null && fPath.length() > 0){
-                tex[i] = cache.get(directory + "/" + fPath, Texture.class, Parameters.LINEAR);
+                tex[i] = ResourceManager.INSTANCE.getTexture(directory + "/" + fPath, true, false);
             }
         }
         return tex;

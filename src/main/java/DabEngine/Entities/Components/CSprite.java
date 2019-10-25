@@ -2,8 +2,7 @@ package DabEngine.Entities.Components;
 
 import org.joml.Vector4f;
 
-import DabEngine.Graphics.OpenGL.Textures.Texture;
-import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
+import DabEngine.Resources.Textures.*;
 import DabEngine.Utils.Color;
 
 public class CSprite extends Component {

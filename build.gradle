@@ -26,6 +26,11 @@ repositories {
     }
 }
 
+configurations {
+    releaseJar
+    compile.extendsFrom(releaseJar)
+}
+
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api 'org.apache.commons:commons-math3:3.6.1'
@@ -36,18 +41,21 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
-    compile 'org.jruby:jruby:9.2.8.0'
+    implementation 'org.jruby:jruby:9.2.8.0'
     
     implementation fileTree('libs/lwjgl'){include '*.jar'}
 
     // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    releaseJar name: 'libtiled-1.0-SNAPSHOT'
+
 }
 
 jar {
     from sourceSets.main.output
     from sourceSets.main.allSource
+    from configurations.releaseJar.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 javadoc.options.encoding = 'UTF-8'

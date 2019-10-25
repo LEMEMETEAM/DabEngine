@@ -1,7 +1,7 @@
 package DabEngine.Entities.Components;
 
 import DabEngine.Graphics.Camera;
-import DabEngine.Graphics.OpenGL.RenderTarget;
+import DabEngine.Resources.RenderTarget;
 
 public class CCamera extends Component {
     public Camera camera;

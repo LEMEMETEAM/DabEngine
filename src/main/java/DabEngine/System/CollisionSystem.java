@@ -34,8 +34,8 @@ public class CollisionSystem extends ComponentSystem {
 
 		for(int i = 0; i < ids.size(); i++){
 			for(int j = i + 1; j < ids.size(); j++) {
-				var e = ids.get(i);
-				var e2 = ids.get(j);
+				int e = ids.get(i);
+				int e2 = ids.get(j);
 
 				CCollision c = EntityManager.INSTANCE.component(e, CCollision.class);
 				CCollision c2 = EntityManager.INSTANCE.component(e2, CCollision.class);
@@ -53,14 +53,7 @@ public class CollisionSystem extends ComponentSystem {
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		if(draw_bounds){
-			for(int i = 0 ; i < ids.size(); i++){
-				var e = ids.get(i);
-				CCollision c = EntityManager.INSTANCE.component(e, CCollision.class);
-				c.bounds.debugDraw(g);
-			}
-			ids.clear();
-		}
+
 	}
 	
 }

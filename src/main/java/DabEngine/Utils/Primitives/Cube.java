@@ -1,7 +1,7 @@
 package DabEngine.Utils.Primitives;
 
 import DabEngine.Graphics.Models.Mesh;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
+import DabEngine.Resources.Textures.*;
 
 public class Cube implements Primitive<Cube> {
 

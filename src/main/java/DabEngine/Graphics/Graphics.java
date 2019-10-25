@@ -1,163 +1,264 @@
 package DabEngine.Graphics;
 
-import java.io.File;
-import java.io.IOException;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.stb.STBTruetype.stbtt_GetPackedQuad;
+
 import java.nio.FloatBuffer;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Stack;
-import java.util.function.Consumer;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Core.App;
-import DabEngine.Core.Command;
-import DabEngine.Core.Engine;
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Batch.Batch;
-import DabEngine.Graphics.Batch.Font;
-import DabEngine.Graphics.Models.Model;
+import DabEngine.Graphics.Models.UniformAttribs;
 import DabEngine.Graphics.Models.UniformBuffer;
-import DabEngine.Graphics.OpenGL.Shaders.Shaders;
-import DabEngine.Graphics.OpenGL.Textures.Texture;
-import DabEngine.Graphics.OpenGL.Textures.TextureRegion;
-import DabEngine.Graphics.OpenGL.Viewport.Viewport;
+import DabEngine.Graphics.OpenGL.Blending;
+import DabEngine.Resources.ResourceManager;
+import DabEngine.Resources.Font.Font;
+import DabEngine.Resources.Shaders.Shaders;
+import DabEngine.Resources.Textures.Texture;
+import DabEngine.Resources.Textures.TextureRegion;
 import DabEngine.Utils.Color;
-import DabEngine.Utils.Pair;
-import DabEngine.Utils.Procedure;
-import DabEngine.Graphics.OpenGL.*;
-import DabEngine.Graphics.OpenGL.Light.Light;
 
-import static org.lwjgl.stb.STBTruetype.*;
-import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.opengl.GL33.*;
+public class Graphics implements IDisposable 
+{
 
-public class Graphics implements IDisposable {
-
-    public static final Texture WHITE_PIXEL = new Texture(1, 1, true, false);
-    /**
-     * The vertex batch to use
-     */
     private Batch batch;
-    /**
-     * Stack of shaders. Can push shaders to the stack to be used by the
-     * {@see VertexBatch} and also pop them off to revert back to a previous shader.
-     */
-    private ArrayDeque<Shaders> shaderStack;
     private Shaders currentShader;
-    /**
-     * The {@see RenderTarget} to render to.
-     */
-    private RenderTarget RenderTarget;
-    private App app;
+    private Texture[] currentTextureSlots;
     private Camera cam;
-    private boolean setuniform_called;
+    private Blending blending;
+    private App app;
+    private UniformBuffer uniformbuffer;
 
-    public Graphics(App app) {
-        Shaders def = null;
-        try {
-            def = new Shaders(new File("/Shaders/default.vs"), new File("/Shaders/default.fs"),
-                    new Pair<>("UNSHADED", "0"), new Pair<>("TEXTURED", "0"));
-        } catch (NullPointerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        batch = new Batch(def, new Matrix4f().setOrtho2D(0, app.WIDTH, app.HEIGHT, 0));
-        shaderStack = new ArrayDeque<>();
-        shaderStack.push(def);
+    public Graphics(App app)
+    {
+        batch = new Batch(1024);
+
+        uniformbuffer = new UniformBuffer("globals", new UniformAttribs(0, "matrix", 16));
+
+        currentTextureSlots = new Texture[16];
+
         this.app = app;
+        
     }
 
-    @Deprecated
-    public void pushShader(Shaders s){
-        shaderStack.push(s);
-        batch.setShader(shaderStack.peek());
+    private void updateUniforms()
+    {
+        try(MemoryStack stack = MemoryStack.stackPush())
+        {
+            FloatBuffer b = stack.mallocFloat(16);
+            cam.getProjection().get(b);
+            uniformbuffer.put(0, b);
+        }
+        //TODO: temp
+        for(int i = 0; i < currentTextureSlots.length; i++)
+        {
+            currentShader.setUniform1i("texture"+i, i);
+        }
     }
 
-    @Deprecated
-    public void popShader(){
-        batch.setShader(shaderStack.pop());
+    public void begin()
+    {
+        batch.begin();
+
+        cam = new Camera2D(app.WIDTH, app.HEIGHT);
+
+        currentTextureSlots[0] = ResourceManager.defaultTexture;
+        currentShader = ResourceManager.defaultShaders;
+
+        currentShader.bind();
+        uniformbuffer.bindToShader(currentShader);
+
+        updateUniforms();
     }
 
-    public void setShader(Shaders s){
-        batch.setShader((currentShader = s));
-        setuniform_called = false;
+    public void end()
+    {
+        flush();
+        batch.end();
     }
 
-    public void setBlend(Blending blend){
-        batch.setBlend(blend);
+    private void flush()
+    {
+        uniformbuffer.flush();
+        if(blending != null) blending.apply();
+        for(int i = 0; i < currentTextureSlots.length; i++)
+        {
+            if(currentTextureSlots[i] != null)
+                currentTextureSlots[i].bind(i);
+        }
+        batch.flush();
+        for(int i = 0; i < currentTextureSlots.length; i++)
+        {
+            if(currentTextureSlots[i] != null)
+                currentTextureSlots[i].unbind();
+        }
+    }
+
+    private void checkFlush()
+    {
+        if(batch.getIdx() >= batch.getSize())
+        {
+            flush();
+        }
+    }
+
+    //
+    //TEXTURES
+    //
+
+    public void setTexture(int unit, Texture tex)
+    {
+        if(tex != currentTextureSlots[unit] && batch.hasBegun())
+        {
+            flush();
+            if(unit == 0 && tex == null)
+            {
+                currentTextureSlots[unit] = ResourceManager.defaultTexture;
+                return;
+            }
+            currentTextureSlots[unit] = tex;
+        }
+    }
+
+    public void setTexture(Texture tex)
+    {
+        setTexture(0, tex);
+    }
+
+    public Texture getCurrentTexture(int unit)
+    {
+        return currentTextureSlots[unit];
+    }
+
+    public Texture getCurrentTexture()
+    {
+        return getCurrentTexture(0);
+    }
+
+    //----------------------------------------------------------------------
+
+    //
+    //SHADERS
+    //
+
+    /**
+     * @param currentShader the currentShader to set
+     */
+    public void setCurrentShader(Shaders currentShader) {
+        if(this.currentShader != currentShader && batch.hasBegun())
+        {
+            flush();
+            this.currentShader  = currentShader == null ? ResourceManager.defaultShaders : currentShader;
+            currentShader.bind();
+            uniformbuffer.bindToShader(currentShader);
+            updateUniforms();
+        }
     }
 
     /**
-     * @deprecated in v1.2.3
+     * @return the currentShader
      */
-    @Deprecated
-    public void setRenderTarget(RenderTarget r, boolean render){
-        if(r != RenderTarget){
-            end();
-            begin(r, false);
-        }
+    public Shaders getCurrentShader() {
+        return currentShader;
     }
 
-    public void setCamera(Camera camera){
-        batch.cam = camera;
-        batch.setProjectionMatrix(camera.getProjection());
-    }
+    //----------------------------------------------------------------------------
 
-    public void begin(RenderTarget r, boolean clear, boolean... batched){
-        if(r != null){
-            r.bind();
-            RenderTarget = r;
-        }
-        if(clear){
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_STENCIL_TEST);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        }
-        batch.begin(batched.length == 0 ? true : batched[0]);
-        setuniform_called = false;
-    }
+    //
+    //DRAWING
+    //
+    public void draw(float[] data, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    {
+        checkFlush();
 
-    public void drawLine(float x0, float y0, float x1, float y1, float depth, float thickness, Color c) {
-        if (x1 < x0) {
-            float temp = x0;
-            x0 = x1;
-            x1 = temp;
-            temp = y0;
-            y0 = y1;
-            y1 = temp;
+        Matrix4f model = new Matrix4f();
+        model.translate(pos);
+        model.scale(scale);
+        model.rotateAround(new Quaternionf().rotateAxis(rotation.w, rotation.x, rotation.y, rotation.z), rot_origin.x, rot_origin.y, rot_origin.z);
+
+        float[] d = new float[data.length];
+        System.arraycopy(data, 0, d, 0, data.length);
+
+        for(int i = 0; i < data.length/12; i++)
+        {
+            Vector3f verts = new Vector3f(d[i*12+0], d[i*12+1], d[i*12+2]).mulPosition(model);
+            d[i*12+0] = verts.x;
+            d[i*12+1] = verts.y;
+            d[i*12+2] = verts.z;
         }
 
-        float dx = x1 - x0, dy = y1 - y0;
-
-        float length = (float) Math.sqrt(dx * dx + dy * dy);
-
-        float wx = dx * (thickness / 2) / length;
-        float wy = dy * (thickness / 2) / length;
-
-        float rotation = (float) Math.toDegrees((float) Math.atan2(dy, dx));
-
-        batch.setTexture(new Pair<>(WHITE_PIXEL, 0));
-        batch.addQuad(x0 + wy, y0 - wx, depth, length, thickness, 0, 0, rotation, c, 0, 0, 1, 1);
+        batch.add(d);
     }
 
-    public void drawCharacter(Font f, char c, FloatBuffer x, FloatBuffer y, float depth, Color col) {
-        try (MemoryStack stack = stackPush()) {
+    public void drawQuad(TextureRegion region, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    {
+        if(region == null)
+        {
+            region = new TextureRegion().setUV(0, 0, 1, 1);
+        }
+        Vector3f normals1 = new Vector3f(0, 0, 1);
+        Vector3f normals2 = new Vector3f(0, 0, -1);
+        float[] data = new float[]{
+            -1, -1, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
+            region.getUV().x, region.getUV().y,
+            normals1.x, normals1.y, normals1.z,
+
+            -1, 1, 0,
+            color.color[4], color.color[5], color.color[6], color.color[7],
+            region.getUV().x, region.getUV().w,
+            normals1.x, normals1.y, normals1.z,
+
+            1, 1, 0,
+            color.color[8], color.color[9], color.color[10], color.color[11],
+            region.getUV().z, region.getUV().w,
+            normals1.x, normals1.y, normals1.z,
+
+            1, 1, 0,
+            color.color[8], color.color[9], color.color[10], color.color[11],
+            region.getUV().z, region.getUV().w,
+            normals2.x, normals2.y, normals2.z,
+
+            1, -1, 0,
+            color.color[12], color.color[13], color.color[14], color.color[15],
+            region.getUV().z, region.getUV().y,
+            normals2.x, normals2.y, normals2.z,
+
+            -1, -1, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
+            region.getUV().x, region.getUV().y,
+            normals2.x, normals2.y, normals2.z
+        };
+
+        draw(data, pos, scale, rot_origin, rotation, color);
+    }
+
+    public void drawQuad(Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    {
+        drawQuad(null, pos, scale, rot_origin, rotation, color);
+    }
+
+    public void drawCharacter(Font font, char c, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
 
             STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
 
-            f.getData().position(0);
+            font.getData().position(0);
 
-            stbtt_GetPackedQuad(f.getData(), 512, 512, c, x, y, q, f.integer_align);
+            FloatBuffer x = stack.floats(pos.x);
+            FloatBuffer y = stack.floats(pos.y);
+
+            stbtt_GetPackedQuad(font.getData(), 512, 512, c, x, y, q, font.integer_align);
 
             float x0, y0, x1, y1;
             x0 = q.x0();
@@ -165,104 +266,80 @@ public class Graphics implements IDisposable {
             x1 = q.x1();
             y1 = q.y1();
 
-            batch.setTexture(new Pair<>(f.getTexture(), 0));
-            batch.addQuad(x0, y0, depth, x1 - x0, y1 - y0, 0, 0, 0, col, q.s0(), q.t0(), q.s1(), q.t1());
+            setTexture(font.getTexture());
+            float width = x1 - x0;
+            float height = y1 - y0;
+            drawQuad(new Vector3f(x0 - (width/2), y0 - (height/2), pos.z), new Vector3f(width, height, scale.z), rot_origin, rotation, color);
         }
     }
 
-    public void drawText(Font f, String s, float x, float y, float depth, Color col) {
-        try (MemoryStack stack = stackPush()) {
-            FloatBuffer pX = stack.floats(x);
-            FloatBuffer pY = stack.floats(y);
-
-            for (int c = 0; c < s.length(); c++) {
-                drawCharacter(f, s.charAt(c), pX, pY, depth, col);
-            }
+    public void drawText(Font font, String s, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    {
+        for (int c = 0; c < s.length(); c++) {
+            drawCharacter(font, s.charAt(c), pos, scale, rot_origin, rotation, color);
         }
     }
 
-    public void drawRect(float x, float y, float depth, float width, float height, float thickness, Color c) {
-        drawLine(x, y, x + width, y, depth, thickness, c);
-        drawLine(x + width, y, x + width, y + height, depth, thickness, c);
-        drawLine(x + width, y + height, x, y + height, depth, thickness, c);
-        drawLine(x, y + height, x, y, depth, thickness, c);
-    }
+    //---------------------------------------------------------------------------------------------------------------------------------
 
-    public void fillRect(float x, float y, float depth, float width, float height, float ox, float oy, float rotation, Color c) {
-        batch.setTexture(new Pair<>(WHITE_PIXEL, 0));
-        batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
-    }
-
-    public void drawTexture(Texture tex, TextureRegion region, float x, float y, float depth, float width, float height, float ox, float oy,
-            float rotation, Color c) {
-        batch.setTexture(new Pair<>(tex, 0));
-        if(region != null)
-            batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, region.getUV().x, region.getUV().y, region.getUV().z, region.getUV().w);
+    //
+    //BLENDING
+    //
+    public void setBlendMode(Blending b)
+    {
+        if(b != null)
+        {
+            glEnable(GL_BLEND);
+        }
         else
-            batch.addQuad(x, y, depth, width, height, ox, oy, rotation, c, 0, 0, 1, 1);
-    }
-
-    public void draw(float data[], float x, float y, float z, Vector3f scale, float rotation, Vector3f axis, Color c){
-        float[] temp = Arrays.copyOf(data, data.length);
-        rotation = (float)Math.toRadians(rotation);
-        float sin = (float)Math.sin(rotation);
-        float cos = (float)Math.cos(rotation);
-
-        Vector3f pos = new Vector3f();
-
-        for(int i = 0; i < temp.length/12; i++){
-            float pX = temp[i*12+0]*scale.x;
-            float pY = temp[i*12+1]*scale.y;
-            float pZ = temp[i*12+2]*scale.z;
-
-            float tx = 0, ty = 0, tz = 0;
-            tx = pX + x;
-            ty = pY + y;
-            tz = pZ + z;
-
-            pos.set(tx, ty, tz);
-            if(rotation % 360 != 0)
-                pos.rotateAxis(rotation, axis.x, axis.y, axis.z);
-
-            temp[i*12+0] = pos.x;
-            temp[i*12+1] = pos.y;
-            temp[i*12+2] = pos.z;
-            if(c!=null){
-                temp[i*12+3] = c.getColor()[0];
-                temp[i*12+4] = c.getColor()[1];
-                temp[i*12+5] = c.getColor()[2];
-                temp[i*12+6] = c.getColor()[3];
-            }
+        {
+            glDisable(GL_BLEND);
         }
 
-        batch.add(temp);
-    }
-
-    public void end() {
-        batch.end();
-        if (RenderTarget != null) {
-            RenderTarget.unbind();
+        if(blending != b && batch.hasBegun())
+        { 
+            flush();
+            blending = b;
         }
-        setuniform_called = false;
     }
 
-    public Shaders getCurrentShader(){
-        return currentShader;
+    //---------------------------------------
+
+    //
+    //CAMERA
+    //
+    public void setCamera(Camera cam)
+    {
+        if(cam == null) this.cam = new Camera2D(app.WIDTH, app.HEIGHT);
+        if(this.cam != cam && batch.hasBegun()) 
+        {
+            flush();
+            this.cam = cam;
+            updateUniforms();
+        }
     }
 
-    public void setUniform(Consumer<Shaders> consumer){
-        if(setuniform_called) end();
-        consumer.accept(getCurrentShader());
-        if(setuniform_called) begin(RenderTarget, false);
-        if(!setuniform_called) setuniform_called = true;
+    /**
+     * @return the cam
+     */
+    public Camera getCamera() 
+    {
+        return cam;
     }
 
-    public Batch getBatch(){
-        return batch;
-    }
-
+    //----------------------------------------
+    
     @Override
-    public void dispose() {
+    public void dispose() 
+    {
+        // TODO Auto-generated method stub
         batch.dispose();
+        for(int i = 0; i < currentTextureSlots.length; i++)
+        {
+            if(currentTextureSlots[i] != null) currentTextureSlots[i].dispose();
+        }
+        
     }
+
+    
 }

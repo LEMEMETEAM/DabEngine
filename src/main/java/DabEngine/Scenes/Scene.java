@@ -11,7 +11,7 @@ public class Scene implements IScene {
 
     protected StateManager stateManager = new StateManager();
     /*Must be used as a stack, not linked list!*/
-    protected ArrayDeque<ComponentSystem> systems = new ArrayDeque<>(){
+    protected ArrayDeque<ComponentSystem> systems = new ArrayDeque<ComponentSystem>(){
         @Override
         public void addFirst(ComponentSystem e){
             e.addedToScene(Scene.this);
