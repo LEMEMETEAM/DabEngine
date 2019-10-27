@@ -1,4 +1,3 @@
-DabEngine.Audio
 DabEngine.Cache
 DabEngine.Core
 DabEngine.Easing
@@ -8,14 +7,16 @@ DabEngine.Graphics
 DabEngine.Graphics.Batch
 DabEngine.Graphics.Models
 DabEngine.Graphics.OpenGL
-DabEngine.Graphics.OpenGL.Light
-DabEngine.Graphics.OpenGL.Shaders
-DabEngine.Graphics.OpenGL.Textures
 DabEngine.Graphics.OpenGL.Viewport
 DabEngine.GUI
 DabEngine.GUI.Objects
 DabEngine.Input
 DabEngine.Observer
+DabEngine.Resources
+DabEngine.Resources.Audio
+DabEngine.Resources.Font
+DabEngine.Resources.Shaders
+DabEngine.Resources.Textures
 DabEngine.Scenes
 DabEngine.Script
 DabEngine.States
