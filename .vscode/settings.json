@@ -1,6 +1,0 @@
-{
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "files.exclude": {
-    "src\\test\\java\\DabEngine\\TestCaseEngine.java.exclude": true
-  }
-}
