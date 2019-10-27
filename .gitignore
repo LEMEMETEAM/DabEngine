@@ -5,3 +5,7 @@
 build/*
 
 !build/docs
+
+bin
+
+.vscode

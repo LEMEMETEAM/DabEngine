@@ -54,5 +54,5 @@ void main() {
  	
  	//multiply the summed amount by our distance, which gives us a radial falloff
  	//then multiply by vertex (light) color  
- 	finalColor = outColor * vec4(vec3(1.0), lit * smoothstep(1.0, 0.0, r));
+ 	finalColor = outColor * vec4(vec3(1.0), lit * smoothstep(1.0, 1.0-0.5, r));
 }

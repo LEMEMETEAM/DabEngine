@@ -6,6 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 
+import DabEngine.Resources.Audio.Music;
 import DabEngine.Utils.Timer;
 
 public class MusicTest {
@@ -13,7 +14,8 @@ public class MusicTest {
     @Test
     public void assertTimeIncrementsWhilePlaying(){
         try {
-            Music m = new Music(new File("src/test/resources/audiocheck.wav"));
+            Music m = new Music("src/test/resources/audiocheck.wav", false);
+            m.load();
             long start_pos = m.getSamplePos();
             System.out.println(start_pos);
             m.play();

@@ -145,7 +145,7 @@ public class GraphicsTest extends App
                     {
                         Vector2d mouse = InputHandler.INSTANCE.getMousePos();
                         pos = new Vector3f(camera.screenToWorld(new Vector2f((float)mouse.x, (float)mouse.y), WIDTH, HEIGHT), 0);
-                        size = new Vector3f((float)Math.random() * 512);
+                        size = new Vector3f(1024);
                         color = new Color(new float[]{
                             (float)Math.random(), (float)Math.random(), (float)Math.random(), 1.0f
                         });
