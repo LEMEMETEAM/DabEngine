@@ -1,6 +1,5 @@
 package DabEngine.Utils.Primitives;
 
-import DabEngine.Graphics.Models.Mesh;
 import DabEngine.Resources.Textures.*;
 
 public class Cube implements Primitive<Cube> {
@@ -79,8 +78,4 @@ public class Cube implements Primitive<Cube> {
         return this;
     }
 
-    public Mesh toMesh(){
-        Mesh m = new Mesh(data, new Texture[1], new Texture[1], new Texture[1]);
-        return m;
-    }
 }
