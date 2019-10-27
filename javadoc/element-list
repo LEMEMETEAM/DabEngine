@@ -15,10 +15,11 @@ DabEngine.Observer
 DabEngine.Resources
 DabEngine.Resources.Audio
 DabEngine.Resources.Font
+DabEngine.Resources.Mesh
+DabEngine.Resources.Script
 DabEngine.Resources.Shaders
 DabEngine.Resources.Textures
 DabEngine.Scenes
-DabEngine.Script
 DabEngine.States
 DabEngine.System
 DabEngine.Utils
