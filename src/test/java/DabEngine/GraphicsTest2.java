@@ -123,7 +123,7 @@ public class GraphicsTest2 extends App
     @Override
     public void init() {
         // TODO Auto-generated method stub
-        g = ENGINE.createGraphics(this);
+        g = ENGINE.createGraphics();
         ResourceManager.init();
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();

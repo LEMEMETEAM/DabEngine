@@ -37,9 +37,9 @@ public class HorizontalScrollPanel extends Panel {
 	}
 	
 	@Override
-	public void onKeyPress(KeyEvent e) {
+	public void onKeyDown(KeyEvent e) {
 		// TODO Auto-generated method stub
-		super.onKeyPress(e);
+		super.onKeyDown(e);
 		if(lowest.pos.y + pos.y <= pos.y + size.y || highest.pos.y + pos.y >= pos.y) {
 			return;
 		}

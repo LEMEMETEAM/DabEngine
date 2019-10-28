@@ -3,18 +3,18 @@ package DabEngine.GUI;
 import java.util.ArrayList;
 
 import DabEngine.Core.App;
+import DabEngine.Core.Engine;
 import DabEngine.GUI.GUIObject.States;
 import DabEngine.GUI.Objects.Panel;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Input.InputHandler;
 
 public abstract class AbstractMenu {
 	
 	public ArrayList<Panel> obj = new ArrayList<>();
-	private App app;
+	private Engine engine;
 
-	public AbstractMenu(App app){
-		this.app = app;
+	public AbstractMenu(Engine engine){
+		this.engine = engine;
 	}
 	
 
@@ -54,8 +54,8 @@ public abstract class AbstractMenu {
 	}
 	
 	private void checkHover(GUIObject g) {
-		if(Math.abs(g.pos.x - (float)InputHandler.INSTANCE.getMousePos().x) * 2 <= (g.size.x + 1) &&
-			Math.abs(g.pos.y - (float)InputHandler.INSTANCE.getMousePos().y) * 2 <= (g.size.y + 1)){
+		if(Math.abs(g.pos.x - (float)engine.getMouse().getPos().x) * 2 <= (g.size.x + 1) &&
+			Math.abs(g.pos.y - (float)engine.getMouse().getPos().y) * 2 <= (g.size.y + 1)){
 			g.state.setState(States.HOVER);
 		}
 		else{

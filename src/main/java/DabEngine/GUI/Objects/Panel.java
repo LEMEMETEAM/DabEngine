@@ -8,9 +8,9 @@ import org.joml.Vector3f;
 
 import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
-import DabEngine.Input.InputHandler;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
+import DabEngine.Input.MouseMoveEvent;
 import DabEngine.Observer.Event;
 
 public class Panel extends GUIObject {
@@ -43,38 +43,34 @@ public class Panel extends GUIObject {
 	}
 
 	@Override
-	public void onKeyPress(KeyEvent e) {
+	public void onKeyDown(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onKeyRelease(KeyEvent e) {
+	public void onKeyUp(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onMousePress(MouseEvent e) {
+	public void onMouseButtonDown(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (state.getState() == States.HOVER) {
-			if(moveable){
-				Vector2d m = InputHandler.INSTANCE.getMouseDelta();
-				pos = new Vector3f().set((float)m.x, (float)m.y, pos.z);
-			}
 			state.setState(States.PRESSED);
 		}
 	}
 
 	@Override
-	public void onMouseRelease(MouseEvent e) {
+	public void onMouseButtonUp(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void render(Graphics g) {
-		for(GUIObject obj : panel_objects){
+		for (GUIObject obj : panel_objects) {
 			obj.render(g);
 		}
 	}
@@ -82,6 +78,16 @@ public class Panel extends GUIObject {
 	@Override
 	public void update() {
 
+	}
+
+	@Override
+	public void onMouseMove(MouseMoveEvent e) {
+		// TODO Auto-generated method stub
+		if(moveable && state.getState() == States.PRESSED)
+		{
+			Vector2d m = e.getMouseDelta();
+			pos = new Vector3f().set((float)m.x, (float)m.y, pos.z);
+		}
 	}
 	
 }

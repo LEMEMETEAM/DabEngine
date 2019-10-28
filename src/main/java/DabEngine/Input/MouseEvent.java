@@ -1,6 +1,5 @@
 package DabEngine.Input;
 
-import DabEngine.Observer.ActionEventSender;
 import DabEngine.Observer.Event;
 
 public class MouseEvent implements Event {
@@ -8,10 +7,8 @@ public class MouseEvent implements Event {
 	private int button;
 	private int action;
 	private int modifier;
-	private ActionEventSender sub;
 	
-	public MouseEvent(ActionEventSender sub, int button, int action, int mod) {
-		this.sub = sub;
+	public MouseEvent(int button, int action, int mod) {
 		this.button = button;
 		this.action = action;
 		this.modifier = mod;
@@ -27,9 +24,5 @@ public class MouseEvent implements Event {
 	
 	public int getAction() {
 		return action;
-	}
-	
-	public ActionEventSender getSubject() {
-		return sub;
 	}
 }
