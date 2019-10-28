@@ -1,6 +1,11 @@
 package DabEngine.Resources;
 
 import DabEngine.Cache.InMemoryCache;
+import DabEngine.Resources.Audio.Audio;
+import DabEngine.Resources.Audio.Music;
+import DabEngine.Resources.Audio.Sample;
+import DabEngine.Resources.Font.Font;
+import DabEngine.Resources.Script.Script;
 import DabEngine.Resources.Shaders.Shaders;
 import DabEngine.Resources.Textures.Texture;
 
@@ -119,4 +124,86 @@ public enum ResourceManager {
         }
         return s;
     }   
+
+    public Audio getAudio(String name, boolean stream, boolean looped)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        Audio audio = get(name);
+        if(audio == null)
+        {
+            Audio newAudio;
+            newAudio = stream ? new Music(name, looped) : new Sample(name, looped);
+            newAudio.load();    
+
+            if(!newAudio.ready)
+            {
+                return null;
+            }
+
+            cache.add(name, newAudio);
+            return newAudio;
+
+        }
+
+        return audio;
+    }
+
+    public Script getScript(String name)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        Script s = get(name);
+        if(s == null)
+        {
+            Script newScript = new Script(name);
+            newScript.load();
+
+            if(!newScript.ready)
+            {
+                return null;
+            }
+
+            cache.add(name, newScript);
+            return newScript;
+        }
+
+        return s;
+    }
+
+    public Font getFont(String name, float size, int oversampling)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        Font f = get(name);
+
+        if(f == null)
+        {
+            Font newFont = new Font(name, size, oversampling);
+            newFont.load();
+
+            if(!newFont.ready)
+            {
+                //TODO: add system fonts
+                return null;
+            }
+
+            cache.add(name, newFont);
+            return newFont;
+        }
+
+        return f;
+    }
 }

@@ -7,42 +7,13 @@ import DabEngine.GUI.GUIObject;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Input.MouseEvent;
+import DabEngine.Input.MouseMoveEvent;
 import DabEngine.Observer.Event;
 import DabEngine.Resources.Textures.Texture;
 
 public class Image extends GUIObject {
 
 	public Texture image;
-
-	@Override
-	public void onNotify(Event e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onKeyPress(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onKeyRelease(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onMousePress(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMouseRelease(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void render(Graphics g) {
@@ -52,6 +23,42 @@ public class Image extends GUIObject {
 
 	@Override
 	public void update() {
+
+	}
+
+	@Override
+	public void onKeyDown(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onKeyUp(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onNotify(Event e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onMouseButtonDown(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onMouseButtonUp(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onMouseMove(MouseMoveEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 

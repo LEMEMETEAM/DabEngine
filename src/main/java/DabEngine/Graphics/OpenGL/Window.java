@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWVidMode.Buffer;
 import org.lwjgl.opengl.GL;
 
@@ -75,11 +76,17 @@ public class Window implements IDisposable{
         if(app.MAXIMISED) {
             if(op.isPresent()){
                 primary = op.get();
-                glfwWindowHint(GLFW_RED_BITS, primary.getValue().get(0).redBits());
-                glfwWindowHint(GLFW_GREEN_BITS, primary.getValue().get(0).greenBits());
-                glfwWindowHint(GLFW_BLUE_BITS, primary.getValue().get(0).blueBits());
-                glfwWindowHint(GLFW_REFRESH_RATE, primary.getValue().get(0).refreshRate());
-                win = glfwCreateWindow(primary.getValue().get(0).width(), primary.getValue().get(0).height(), app.TITLE, primary.getKey(), 0);
+                GLFWVidMode best = primary.getValue().get(primary.getValue().capacity()-1);
+                glfwWindowHint(GLFW_RED_BITS, best.redBits());
+                glfwWindowHint(GLFW_GREEN_BITS, best.greenBits());
+                glfwWindowHint(GLFW_BLUE_BITS, best.blueBits());
+                glfwWindowHint(GLFW_REFRESH_RATE, best.refreshRate());
+                for(Entry<Integer, Integer> hints : app.hints.entrySet()){
+                    glfwWindowHint(hints.getKey(), hints.getValue());
+                }
+                win = glfwCreateWindow(best.width(), best.height(), app.TITLE, primary.getKey(), 0);
+                app.WIDTH = best.width();
+                app.HEIGHT = best.height();
             }
             else{
                 LOGGER.log(Level.WARNING, "primary monitor not found");
@@ -133,6 +140,11 @@ public class Window implements IDisposable{
     
     public void setTitle(String title) {
     	glfwSetWindowTitle(win, title);
+    }
+
+    public void updateTitle()
+    {
+        glfwSetWindowTitle(win, app.TITLE);
     }
 
     public void showWindow(){
