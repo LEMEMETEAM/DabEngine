@@ -8,8 +8,6 @@ DabEngine.Graphics.Batch
 DabEngine.Graphics.Models
 DabEngine.Graphics.OpenGL
 DabEngine.Graphics.OpenGL.Viewport
-DabEngine.GUI
-DabEngine.GUI.Objects
 DabEngine.Input
 DabEngine.Observer
 DabEngine.Resources
@@ -22,5 +20,6 @@ DabEngine.Resources.Textures
 DabEngine.Scenes
 DabEngine.States
 DabEngine.System
+DabEngine.UI
 DabEngine.Utils
 DabEngine.Utils.Primitives
