@@ -87,6 +87,8 @@ public class Window implements IDisposable{
                 win = glfwCreateWindow(best.width(), best.height(), app.TITLE, primary.getKey(), 0);
                 app.WIDTH = best.width();
                 app.HEIGHT = best.height();
+                app.currentVidMode = best;
+                app.currentMonitor = primary.getKey();
             }
             else{
                 LOGGER.log(Level.WARNING, "primary monitor not found");

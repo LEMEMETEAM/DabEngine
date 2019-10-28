@@ -9,17 +9,8 @@ public class StateManager {
 	}
 	
 	public void setState(State state) {
-		if(this.state != null && !this.state.isInterruptable())
+		if(this.state != null)
 		{
-			if(this.state.isFinished())
-			{
-				state.setFinished(false);
-				this.state = state;
-			}
-		}
-		else
-		{
-			state.setFinished(false);
 			this.state = state;
 		}
 	}
