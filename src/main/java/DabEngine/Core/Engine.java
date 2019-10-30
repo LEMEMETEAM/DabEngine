@@ -123,6 +123,9 @@ public class Engine {
                         keyboard.onKeyUp(key, scancode, mods);
                         break;
                     case 1:
+                        keyboard.onKeyClicked(key, scancode, mods);
+                        break;
+                    case 2:
                         keyboard.onKeyDown(key, scancode, mods);
                         break;
                 }
@@ -147,6 +150,7 @@ public class Engine {
                 @Override
                 public void invoke(int arg0, int arg1, int arg2, int arg3, int arg4, long arg5, long arg6) 
                 {
+                    Thread.currentThread().dumpStack();
                     System.out.println(getMessage(arg4, arg5));
                 }
             }, 0);

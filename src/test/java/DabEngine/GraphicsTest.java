@@ -21,6 +21,7 @@ import DabEngine.Input.MouseMoveEvent;
 import DabEngine.Observer.Event;
 import DabEngine.Resources.RenderTarget;
 import DabEngine.Resources.ResourceManager;
+import DabEngine.Resources.Font.Font;
 import DabEngine.Resources.Textures.Texture;
 import DabEngine.Resources.Textures.TextureRegion;
 import DabEngine.Utils.Color;
@@ -45,13 +46,13 @@ public class GraphicsTest extends App {
 
     private ArrayList<Light> lights = new ArrayList<>();
     private ArrayList<Rectangle> boxes = new ArrayList<>();
-    private Camera2D camera;
+    private Font font;
 
     {
         TITLE = "test";
         WIDTH = 800;
         HEIGHT = 600;
-        MAXIMISED = true;
+        //MAXIMISED = true;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class GraphicsTest extends App {
 
         g.begin();
         g.setBlendMode(Blending.MIX);
-        g.setCamera(camera);
+        g.setMatrix(null);
         drawOcc(g);
         // g.setTexture(l.occludersFBO.texture[0]);
         // g.drawQuad(new TextureRegion().setUV(0,1,1,0), new Vector3f((WIDTH/2) -
@@ -83,6 +84,7 @@ public class GraphicsTest extends App {
         // l.size.x, l.size.y+5, 0), new Vector3f(l.shadowMap.texture[0].getWidth()/2,
         // l.shadowMap.texture[0].getHeight()/2f, 0), new Vector3f(0), new
         // Vector4f(1,0,0,0), Color.WHITE);
+        g.drawText(font, "The quick brown fox\njumped over the lazy\ndog", new Vector3f(0), Color.WHITE);
         g.end();
 
     }
@@ -102,7 +104,7 @@ public class GraphicsTest extends App {
         g.begin();
         Camera2D cam = new Camera2D(l.occludersFBO.texture[0].getWidth(), l.occludersFBO.texture[0].getHeight());
         cam.setPosition(l.pos);
-        g.setCamera(cam);
+        g.setMatrix(cam.getProjection());
         drawOcc(g);
         g.end();
 
@@ -114,29 +116,30 @@ public class GraphicsTest extends App {
         GL33.glClear(GL33.GL_COLOR_BUFFER_BIT);
         g.begin();
         g.setCurrentShader(ResourceManager.INSTANCE
-                .getShader("src/test/resources/pass.glsl|src/test/resources/occluders.glsl", false));
+                .getShader("src/test/resources/pass.glsl", "src/test/resources/occluders.glsl"));
         g.getCurrentShader().setUniform2f("resolution", new Vector2f(l.size.x, l.size.y));
 
         Camera2D cam2 = new Camera2D(l.shadowMap.texture[0].getWidth(), l.shadowMap.texture[0].getHeight());
-        g.setCamera(cam2);
+        g.setMatrix(cam2.getProjection());
 
         g.setTexture(l.occludersFBO.texture[0]);
-        g.drawQuad(new TextureRegion().setUV(0, 1, 1, 0), new Vector3f(0), new Vector3f(l.size.x / 2, 1f / 2f, 0),
+        g.drawQuad(new TextureRegion().setUV(0, 1, 1, 0), new Vector3f(0), new Vector3f(l.size.x, 1f, 0),
                 new Vector3f(0), new Vector4f(1, 0, 0, 0), Color.WHITE);
 
         g.end();
 
         l.shadowMap.unbind();
 
+        g.setMatrix(null);
         g.begin();
         g.setBlendMode(new Blending(() -> GL33.glBlendFunc(GL33.GL_SRC_ALPHA, GL33.GL_ONE)));
         g.setCurrentShader(ResourceManager.INSTANCE
-                .getShader("src/test/resources/pass.glsl|src/test/resources/shadowmap.glsl", false));
+                .getShader("src/test/resources/pass.glsl", "src/test/resources/shadowmap.glsl"));
         g.getCurrentShader().setUniform2f("resolution", new Vector2f(l.size.x, l.size.y));
         g.getCurrentShader().setUniform1f("softShadows", 1f);
         g.setTexture(l.shadowMap.texture[0]);
         g.drawQuad(new TextureRegion().setUV(0, 0, 1, 1), new Vector3f(l.pos),
-                new Vector3f(l.size.x / 2f, l.size.y / 2f, 0), new Vector3f(0), new Vector4f(1, 0, 0, 0), l.color);
+                new Vector3f(l.size.x, l.size.y, 0), new Vector3f(0), new Vector4f(1, 0, 0, 0), l.color);
         g.end();
     }
 
@@ -157,7 +160,7 @@ public class GraphicsTest extends App {
         ResourceManager.init();
         vp = new Viewport(0, 0, WIDTH, HEIGHT);
         vp.apply();
-        camera = new Camera2D(WIDTH, HEIGHT);
+        font = ResourceManager.INSTANCE.getFont("C:/Windows/Fonts/arial.ttf", 24, 2);
 
         ENGINE.getMouse().addObserver(new MouseEventListener() {
 
@@ -178,11 +181,9 @@ public class GraphicsTest extends App {
                     {
                         {
                             Vector2d mouse = m_pos;
-                            pos = new Vector3f(camera.screenToWorld(new Vector2f((float)mouse.x, (float)mouse.y), WIDTH, HEIGHT), 0);
+                            pos = new Vector3f((float)mouse.x, (float)mouse.y, 0);
                             size = new Vector3f(1024);
-                            color = new Color(new float[]{
-                                (float)Math.random(), (float)Math.random(), (float)Math.random(), 1.0f
-                            });
+                            color = new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1.0f);
                             occludersFBO = new RenderTarget((int)size.x, (int)size.y, vp, new Texture((int)size.x, (int)size.y, false, false));
                             shadowMap = new RenderTarget((int)size.x, 1, vp, new Texture((int)size.x, 1, false, false));
                         }
@@ -194,11 +195,9 @@ public class GraphicsTest extends App {
                     boxes.add(new Rectangle() {
                         {
                             Vector2d mouse = m_pos;
-                            pos = new Vector3f(
-                                    camera.screenToWorld(new Vector2f((float) mouse.x, (float) mouse.y), WIDTH, HEIGHT), 0);
+                            pos = new Vector3f((float) mouse.x, (float) mouse.y, 0);
                             size = new Vector3f((float) Math.random() * 100, (float) Math.random() * 100, 0);
-                            color = new Color(new float[] { (float) Math.random(), (float) Math.random(),
-                                    (float) Math.random(), 1.0f });
+                            color = new Color((float) Math.random(), (float) Math.random(),(float) Math.random(), 1.0f);
                         }
                     });
                 }

@@ -7,5 +7,6 @@ public interface KeyboardEventListener extends IEventListener
 
     public void onKeyDown(KeyEvent e);
     public void onKeyUp(KeyEvent e);
+    public void onKeyClicked(KeyEvent e);
     
 }
