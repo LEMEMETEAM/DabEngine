@@ -33,7 +33,7 @@ public class Graphics implements IDisposable
     private Batch batch;
     private Shaders currentShader;
     private Texture[] currentTextureSlots;
-    private Camera cam;
+    private Matrix4f mat;
     private Blending blending;
     private App app;
     private UniformBuffer uniformbuffer;
@@ -55,7 +55,7 @@ public class Graphics implements IDisposable
         try(MemoryStack stack = MemoryStack.stackPush())
         {
             FloatBuffer b = stack.mallocFloat(16);
-            cam.getProjection().get(b);
+            mat.get(b);
             uniformbuffer.put(0, b);
         }
         //TODO: temp
@@ -69,7 +69,7 @@ public class Graphics implements IDisposable
     {
         batch.begin();
 
-        cam = new Camera2D(app.WIDTH, app.HEIGHT);
+        if(mat == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
 
         currentTextureSlots[0] = ResourceManager.defaultTexture;
         currentShader = ResourceManager.defaultShaders;
@@ -183,7 +183,7 @@ public class Graphics implements IDisposable
         Matrix4f model = new Matrix4f();
         model.translate(pos);
         model.scale(scale);
-        model.rotateAround(new Quaternionf().rotateAxis(rotation.w, rotation.x, rotation.y, rotation.z), rot_origin.x, rot_origin.y, rot_origin.z);
+        model.rotateAround(new Quaternionf().rotateAxis(rotation.w, rotation.x==0&&rotation.y==0&&rotation.z==0 ? 1 : rotation.x, rotation.y, rotation.z), rot_origin.x, rot_origin.y, rot_origin.z);
 
         float[] d = new float[data.length];
         System.arraycopy(data, 0, d, 0, data.length);
@@ -208,32 +208,32 @@ public class Graphics implements IDisposable
         Vector3f normals1 = new Vector3f(0, 0, 1);
         Vector3f normals2 = new Vector3f(0, 0, -1);
         float[] data = new float[]{
-            -1, -1, 0,
+            -0.5f, -0.5f, 0,
             color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().x, region.getUV().y,
             normals1.x, normals1.y, normals1.z,
 
-            -1, 1, 0,
-            color.color[4], color.color[5], color.color[6], color.color[7],
+            -0.5f, 0.5f, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().x, region.getUV().w,
             normals1.x, normals1.y, normals1.z,
 
-            1, 1, 0,
-            color.color[8], color.color[9], color.color[10], color.color[11],
+            0.5f, 0.5f, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().z, region.getUV().w,
             normals1.x, normals1.y, normals1.z,
 
-            1, 1, 0,
-            color.color[8], color.color[9], color.color[10], color.color[11],
+            0.5f, 0.5f, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().z, region.getUV().w,
             normals2.x, normals2.y, normals2.z,
 
-            1, -1, 0,
-            color.color[12], color.color[13], color.color[14], color.color[15],
+            0.5f, -0.5f, 0,
+            color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().z, region.getUV().y,
             normals2.x, normals2.y, normals2.z,
 
-            -1, -1, 0,
+            -0.5f, -0.5f, 0,
             color.color[0], color.color[1], color.color[2], color.color[3],
             region.getUV().x, region.getUV().y,
             normals2.x, normals2.y, normals2.z
@@ -247,36 +247,76 @@ public class Graphics implements IDisposable
         drawQuad(null, pos, scale, rot_origin, rotation, color);
     }
 
-    public void drawCharacter(Font font, char c, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
+    public void drawText(Font font, String s, Vector3f pos, Color color)
     {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-
-            STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
-
-            font.getData().position(0);
-
+        setTexture(font.getTexture());
+        try(MemoryStack stack = MemoryStack.stackPush())
+        {
             FloatBuffer x = stack.floats(pos.x);
             FloatBuffer y = stack.floats(pos.y);
 
-            stbtt_GetPackedQuad(font.getData(), 512, 512, c, x, y, q, font.integer_align);
+            STBTTAlignedQuad q = STBTTAlignedQuad.mallocStack(stack);
 
-            float x0, y0, x1, y1;
-            x0 = q.x0();
-            y0 = q.y0();
-            x1 = q.x1();
-            y1 = q.y1();
+            for (int c = 0; c < s.length(); c++) {
 
-            setTexture(font.getTexture());
-            float width = x1 - x0;
-            float height = y1 - y0;
-            drawQuad(new Vector3f(x0 - (width/2), y0 - (height/2), pos.z), new Vector3f(width, height, scale.z), rot_origin, rotation, color);
-        }
-    }
+        
+                font.getData().position(0);
+                char cp = s.charAt(c);
 
-    public void drawText(Font font, String s, Vector3f pos, Vector3f scale, Vector3f rot_origin, Vector4f rotation, Color color)
-    {
-        for (int c = 0; c < s.length(); c++) {
-            drawCharacter(font, s.charAt(c), pos, scale, rot_origin, rotation, color);
+                if(cp == '\n')
+                {
+                    y.put(0, y.get(0) + (font.getAscent() - font.getDescent() + font.getLineGap()) * font.getScale());
+                    x.put(0, pos.x);
+                    continue;
+                }
+                else if(cp < 32 || cp >= 128)
+                {
+                    continue;
+                }
+    
+                stbtt_GetPackedQuad(font.getData(), 512, 512, cp, x, y, q, font.align_to_int);
+    
+                float x0, y0, x1, y1;
+                x0 = q.x0();
+                y0 = q.y0();
+                x1 = q.x1();
+                y1 = q.y1();
+                
+                batch.add(
+                    new float[]{
+                        x0, y0, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s0(), q.t0(),
+                        0, 0, 1,
+
+                        x0, y1, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s0(), q.t1(),
+                        0, 0, 1,
+
+                        x1, y1, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s1(), q.t1(),
+                        0, 0, 1,
+
+                        x1, y1, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s1(), q.t1(),
+                        0, 0, -1,
+
+                        x1, y0, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s1(), q.t0(),
+                        0, 0, -1,
+
+                        x0, y0, pos.z,
+                        color.getColor()[0], color.getColor()[1], color.getColor()[2], color.getColor()[3],
+                        q.s0(), q.t0(),
+                        0, 0, -1,
+                    }
+                );
+                
+            }
         }
     }
 
@@ -306,25 +346,22 @@ public class Graphics implements IDisposable
     //---------------------------------------
 
     //
-    //CAMERA
+    //MATRIX
     //
-    public void setCamera(Camera cam)
+    public void setMatrix(Matrix4f m)
     {
-        if(cam == null) this.cam = new Camera2D(app.WIDTH, app.HEIGHT);
-        if(this.cam != cam && batch.hasBegun()) 
+        if(batch.hasBegun())
         {
             flush();
-            this.cam = cam;
+            if(m == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
+            else mat = m;
             updateUniforms();
         }
-    }
-
-    /**
-     * @return the cam
-     */
-    public Camera getCamera() 
-    {
-        return cam;
+        else
+        {
+            if(m == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
+            else mat = m;
+        }
     }
 
     //----------------------------------------

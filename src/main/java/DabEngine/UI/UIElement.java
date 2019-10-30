@@ -4,6 +4,7 @@ import org.joml.Vector2d;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
+import DabEngine.Graphics.Graphics;
 import DabEngine.Input.KeyboardEventListener;
 import DabEngine.Input.MouseEvent;
 import DabEngine.Input.MouseEventListener;
@@ -12,14 +13,17 @@ import DabEngine.Input.MouseMoveEvent;
 public abstract class UIElement implements KeyboardEventListener, MouseEventListener
 {
 
+    protected interface EventCallback {public void call();}
+    public interface OnInsideCallback extends EventCallback{}
     protected Vector2f pos;
     protected Vector2f size;
     protected Vector2f anchor;
 
     protected boolean visible;
     protected boolean active, keepActive;
-    protected boolean busy;
-    protected boolean mouseInside;
+    protected boolean busy, enabled;
+    
+    private boolean MOUSE_INSIDE, PRESSED;
 
     protected UIElement parent;
 
@@ -32,154 +36,69 @@ public abstract class UIElement implements KeyboardEventListener, MouseEventList
         visible = true;
         active = false;
         keepActive = false;
+        enabled = true;
         busy = false;
-        mouseInside = false;
 
         parent = null;
     }
 
-    public UIElement setPosAbsolute(float x, float y)
+    public void setParent(UIElement parent) 
     {
-        if(pos.x != x || pos.y != y)
+        this.parent = parent;
+    }
+
+    public void setVisible(boolean visible) 
+    {
+        this.visible = visible;
+    }
+
+    public void setPos(float x, float y) 
+    {
+        if(parent != null)
         {
-            pos.x = x;
-            pos.y = y;
-            onMove();
+            pos.set((parent.getPos().x + x) - size.x * anchor.x, (parent.getPos().y + y) - size.y * anchor.y);
         }
-
-        return this;
-    }
-
-    public UIElement setPosAbsoluteX(float x)
-    {
-        return setPosAbsolute(x, pos.y);
-    }
-
-    public UIElement setPosAbsoluteY(float y)
-    {
-        return setPosAbsolute(pos.x, y);
-    }
-
-    public UIElement setPos(float x, float y)
-    {
-        return setPosAbsolute(x - size.x * anchor.x, y - size.y * anchor.y);
-    }
-
-    public UIElement setPosX(float x)
-    {
-        return setPosAbsoluteX(x - size.x * anchor.x);
-    }
-
-    public UIElement setPosY(float y)
-    {
-        return setPosAbsoluteY(y - size.y * anchor.y);
-    }
-
-    public UIElement setSizeAbsolute(float x, float y)
-    {
-        if(size.x != x || size.y != y)
+        else
         {
-            size.x = x;
-            size.y = y;
-            onResize();
+            pos.set(x - size.x * anchor.x, y - size.y * anchor.y);
         }
-
-        return this;
+        onMove();
     }
 
-    public UIElement setSizeAbsoluteX(float x)
+    public Vector2f getPos() 
     {
-        return setSizeAbsolute(x, size.y);
+        return pos;
     }
 
-    public UIElement setSizeAbsoluteY(float y)
+    public void setSize(float x, float y) 
     {
-        return setSizeAbsolute(size.x, y);
+        pos.set(pos.x + (size.x - x) * anchor.x, pos.y + (size.y - y) * anchor.y);
+        size.set(x, y);
+        onResize();
     }
 
-    public UIElement setSize(float x, float y)
+    public Vector2f getSize() 
     {
-        setPosAbsolute(pos.x + (size.x - x) * anchor.x, pos.y + (size.y - y) * anchor.y);
-        return setSizeAbsolute(x, y);
+        return size;
     }
 
-    public UIElement setSizeX(float x)
+    public void setAnchor(float x, float y) 
     {
-        setPosAbsoluteX(pos.x + (size.x - x) * anchor.x);
-        return setSizeAbsoluteX(x);
+        pos.set(pos.x + size.x * (anchor.x - x), pos.y + size.y * (anchor.y - y));
+        anchor.set(x, y);
     }
-
-    public UIElement setSizeY(float y)
-    {
-        setPosAbsoluteY(pos.y + (size.y - y) * anchor.y);
-        return setSizeAbsoluteY(y);
-    }
-
-    public UIElement setAnchorAbsolute(float x, float y)
-    {
-        if(anchor.x != x || anchor.y != y)
-        {
-            anchor.x = x;
-            anchor.y = y;
-        }
-
-        return this;
-    }
-
-    public UIElement setAnchorAbsoluteX(float x)
-    {
-        return setAnchorAbsolute(x, anchor.y);
-    }
-
-    public UIElement setAnchorAbsoluteY(float y)
-    {
-        return setAnchorAbsolute(anchor.x, y);
-    }
-
-    public UIElement setAnchor(float x, float y)
-    {
-        setPosAbsolute(pos.x - size.x * (x - anchor.x), pos.y - size.y * (y - anchor.y));
-        setPosAbsolute(pos.x - size.x * (x - anchor.x), pos.y - size.y * (y - anchor.y));
-        setAnchorAbsolute(x, y);
-        updateLayout();
-        return this;
-    }
-
-    public UIElement setAnchorX(float x)
-    {
-        setPosAbsoluteX(pos.x - size.x * (x - anchor.x));
-        setPosAbsoluteX(pos.x - size.x * (x - anchor.x));
-        setAnchorAbsoluteX(x);
-        updateLayout();
-        return this;
-    }
-
-    public UIElement setAnchorY(float y)
-    {
-        setPosAbsoluteY(pos.y - size.y * (y - anchor.y));
-        setPosAbsoluteY(pos.y - size.y * (y - anchor.y));
-        setAnchorAbsoluteY(y);
-        updateLayout();
-        return this;
-    }
-
-    public UIElement setVisible(boolean b){visible = b; return this;}
-    public UIElement setActive(boolean b){active = b; return this;}
-    public UIElement setBusy(boolean b){busy = b; return this;}
-    public UIElement setParent(UIElement e){parent = e; return this;}
-
-    public void updateLayout(){if(parent!=null)parent.updateLayout();}
 
     @Override
     public void onMouseMove(MouseMoveEvent e) {
         // TODO Auto-generated method stub
         Vector2d m_pos = e.getMousePos();
-        if(m_pos.x >= pos.x+1 && m_pos.x <= (pos.x+1) + (size.x-1) && m_pos.y >= pos.y+1 && m_pos.y <= (pos.y+1) + (size.y-1))
+        //is mouse inside element
+        if(m_pos.x >= (pos.x+1)-(size.x/2-1) && m_pos.x <= (pos.x+1) + (size.x/2-1) && m_pos.y >= (pos.y+1) - (size.y/2-1) && m_pos.y <= (pos.y+1) + (size.y/2-1))
         {
-            if(!mouseInside)
+            if(MOUSE_INSIDE == false)
             {
-                mouseInside = true;
-                if(visible)
+                MOUSE_INSIDE = true;
+                if(visible && enabled)
                 {
                     onMouseInside();
                 }
@@ -187,32 +106,32 @@ public abstract class UIElement implements KeyboardEventListener, MouseEventList
         }
         else
         {
-            if(mouseInside)
+            if(MOUSE_INSIDE == true)
             {
-                mouseInside = false;
-                if(visible)
+                MOUSE_INSIDE = false;
+                if(visible && enabled)
                 {
                     onMouseOutside();
                 }
             }
         }
+        
     }
 
     @Override
     public void onMouseButtonDown(MouseEvent e) {
         // TODO Auto-generated method stub
-        if(!visible ) return;
-
         if(e.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT)
         {
-            if(mouseInside)
+            if(MOUSE_INSIDE && !PRESSED)
             {
                 active = true;
-                onMouseDownInside();
+                PRESSED = true;
+                onPress();
             }
             else
             {
-                onMouseDownOutside();
+                active = false;
             }
         }
     }
@@ -220,31 +139,24 @@ public abstract class UIElement implements KeyboardEventListener, MouseEventList
     @Override
     public void onMouseButtonUp(MouseEvent e) {
         // TODO Auto-generated method stub
-        if(active)
+        if(PRESSED)
         {
-            if(mouseInside)
-            {
-                onMouseUpInside();
-            }
-            else{
-                onMouseUpOutside();
-            }
-
-            if(!keepActive)
-                active = false;
+            PRESSED = false;
+            onRelease();
         }
     }
 
-    public abstract void draw();
-    public abstract void update();
+    public abstract void draw(Graphics g);
+    public void update()
+    {
+
+    }
 
     public void onMove(){}
     public void onResize(){}
-    public void onMouseDownInside(){}
-    public void onMouseDownOutside(){}
-    public void onMouseUpInside(){}
-    public void onMouseUpOutside(){}
     public void onMouseInside(){}
     public void onMouseOutside(){}
+    public void onPress(){}
+    public void onRelease(){}
 
 }

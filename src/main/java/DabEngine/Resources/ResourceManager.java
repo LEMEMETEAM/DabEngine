@@ -92,7 +92,34 @@ public enum ResourceManager {
         return tex;
     }
 
-    public Shaders getShader(String name, boolean source, String... sources)
+    public Shaders getShader(String name_vs, String name_fs)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        String join = name_vs+"|"+name_fs;
+
+        Shaders s = get(join);
+        if(s == null)
+        {
+            Shaders newS;
+            newS = new Shaders(name_vs, name_fs, false);
+            newS.load();
+            if(!newS.ready)
+            {
+                return defaultShaders;
+            }
+            
+            cache.add(join, new ResourceHandle<Shaders>(newS));
+            return newS;
+        }
+        return s;
+    }   
+
+    public Shaders getShaderFragment(String name)
     {
         if(!ready)
         {
@@ -104,15 +131,32 @@ public enum ResourceManager {
         if(s == null)
         {
             Shaders newS;
-            if(!source)
+            newS = new Shaders(vs_source, name, true);
+            newS.load();
+            if(!newS.ready)
             {
-                String[] names = name.split("\\|");
-                newS = new Shaders(names[0], names[1], source);
+                return defaultShaders;
             }
-            else
-            {
-                newS = new Shaders(sources[0], sources[1], source);
-            }
+            
+            cache.add(name, new ResourceHandle<Shaders>(newS));
+            return newS;
+        }
+        return s;        
+    }
+
+    public Shaders getShaderVertex(String name)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        Shaders s = get(name);
+        if(s == null)
+        {
+            Shaders newS;
+            newS = new Shaders(vs_source, name, true);
             newS.load();
             if(!newS.ready)
             {
@@ -123,7 +167,32 @@ public enum ResourceManager {
             return newS;
         }
         return s;
-    }   
+    }
+
+    public Shaders getShaderFromSource(String name, String... sources)
+    {
+        if(!ready)
+        {
+            //LOG
+            throw new IllegalStateException("Init ResourceManager first");
+        }
+
+        Shaders s = get(name);
+        if(s == null)
+        {
+            Shaders newS;
+            newS = new Shaders(sources[0], sources[1], true);
+            newS.load();
+            if(!newS.ready)
+            {
+                return defaultShaders;
+            }
+            
+            cache.add(name, new ResourceHandle<Shaders>(newS));
+            return newS;
+        }
+        return s;
+    }
 
     public Audio getAudio(String name, boolean stream, boolean looped)
     {
