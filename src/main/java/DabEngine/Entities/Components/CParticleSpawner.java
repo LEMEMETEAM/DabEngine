@@ -3,7 +3,7 @@ package DabEngine.Entities.Components;
 import org.joml.Vector3f;
 import org.jruby.util.Random;
 
-import DabEngine.Graphics.OpenGL.Blending;
+import DabEngine.Graphics.Blending;
 import DabEngine.Resources.Textures.*;
 
 public class CParticleSpawner extends Component {

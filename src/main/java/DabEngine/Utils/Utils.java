@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
@@ -21,6 +22,8 @@ import java.util.Map;
 import java.awt.Color;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 
 public class Utils {
 
@@ -171,5 +174,43 @@ public class Utils {
         }
         // Return the list of keys whose value matches with given value.
         return listOfKeys;	
+    }
+
+    public static boolean isWindows() {
+        String operSys = System.getProperty("os.name").toLowerCase();
+        if (operSys.contains("win")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isLinux() {
+        String operSys = System.getProperty("os.name").toLowerCase();
+        if (operSys.contains("nix") || operSys.contains("nux")
+        || operSys.contains("aix")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMac() {
+        String operSys = System.getProperty("os.name").toLowerCase();
+        if (operSys.contains("mac")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static DabEngine.Core.Monitor toMonitorClass(long monitor)
+    {
+        try(MemoryStack stack = MemoryStack.stackPush())
+        {
+            IntBuffer xpos = stack.mallocInt(1);
+            IntBuffer ypos = stack.mallocInt(1);
+            
+            GLFW.glfwGetMonitorPos(monitor, xpos, ypos);
+            String name = GLFW.glfwGetMonitorName(monitor);
+            return new DabEngine.Core.Monitor(monitor, xpos.get(0), ypos.get(0), name);
+        }
     }
 }

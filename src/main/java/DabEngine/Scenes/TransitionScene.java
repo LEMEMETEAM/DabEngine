@@ -1,6 +1,6 @@
 package DabEngine.Scenes;
 
-import DabEngine.Core.App;
+import DabEngine.Core.AppAdapter;
 import DabEngine.Graphics.Graphics;
 
 public class TransitionScene extends Scene {
@@ -10,7 +10,7 @@ public class TransitionScene extends Scene {
     private enum TransitionState {IN, OUT}
     private TransitionState transitionState;
 
-    public TransitionScene(App app, IScene oldScene, IScene newScene, Transition outEffect, Transition inEffect){
+    public TransitionScene(AppAdapter app, IScene oldScene, IScene newScene, Transition outEffect, Transition inEffect){
         super(app);
         this.oldScene = oldScene;
         this.newScene = newScene;

@@ -5,7 +5,7 @@ import java.util.Random;
 import org.joml.Vector3f;
 
 import DabEngine.Resources.*;
-import DabEngine.Core.Engine;
+import DabEngine.Core.App;
 import DabEngine.Entities.EntityFilter;
 import DabEngine.Entities.EntityManager;
 import DabEngine.Entities.Components.CDynamic;
@@ -24,9 +24,11 @@ public class ParticleEmitterSystem extends ComponentSystem {
     private int lastUsedParticle;
     private final Random rng = new Random();
     public static boolean debug = false;
+    private App app;
 
-    public ParticleEmitterSystem(int size) {
+    public ParticleEmitterSystem(App app, int size) {
         pool = EntityManager.INSTANCE.alloc(size);
+        this.app = app;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class ParticleEmitterSystem extends ComponentSystem {
                 if(p != null){
                     CTransform p_t = em.component(pool[i], CTransform.class);
                     CDynamic d = em.component(pool[i], CDynamic.class);
-                    p.lifetime -= (1/Engine.TARGET_FPS);
+                    p.lifetime -= (1/app.getConfig().targetFPS);
                     t.pos.x += d.velocity.x += (cs.force_on_particle.x / d.mass);
                     t.pos.y += d.velocity.y += (cs.force_on_particle.y / d.mass);
                     t.pos.z += d.velocity.z += (cs.force_on_particle.z / d.mass);

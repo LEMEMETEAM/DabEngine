@@ -1,4 +1,4 @@
-package DabEngine.Resources.Script;
+package DabEngine.Script;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,14 +15,16 @@ import org.jruby.javasupport.JavaEmbedUtils.EvalUnit;
 import org.jruby.runtime.GlobalVariable;
 import org.jruby.runtime.builtin.IRubyObject;
 
+import DabEngine.Core.IDisposable;
 import DabEngine.Resources.Resource;
 
-public class Script extends Resource
+public enum ScriptManager implements IDisposable
 {
+
+	INSTANCE;
 
 	private Ruby runtime;
 	private RubyRuntimeAdapter evaler;
-	private IRubyObject _loaded;
 	public static final int HOOK_COUNT = 1000;
 	
 	/*
@@ -32,14 +34,11 @@ public class Script extends Resource
 	config.setDebuggingFrozenStringLiteral(true);
 	*/
 	
-	public Script(String script){
-		super(script);
+	{
+
 
 		runtime = Ruby.getGlobalRuntime();
 		evaler = JavaEmbedUtils.newRuntimeAdapter();
-
-		_loaded = null;
-
 
 	}
 
@@ -65,7 +64,7 @@ public class Script extends Resource
             if (obj instanceof JavaObject) rubyArgs[i] = Java.wrap(runtime, obj);
 		}
 		
-		return _loaded.callMethod(runtime.getCurrentContext(), name, rubyArgs);
+		return runtime.getTopSelf().callMethod(runtime.getCurrentContext(), name, rubyArgs);
 	}
 
 	@Override
@@ -74,14 +73,13 @@ public class Script extends Resource
 		JavaEmbedUtils.terminate(runtime);
 	}
 
-	@Override
-	protected void create() {
+	public void execFile(String filename) {
 		// TODO Auto-generated method stub
 		StringBuilder source = new StringBuilder();
 		try(BufferedReader b = new BufferedReader(new FileReader(filename)))
 		{
 			String s;
-			if((s = b.readLine()) != null)
+			while((s = b.readLine()) != null)
 			{
 				source.append(s).append("\n");
 			}
@@ -92,10 +90,7 @@ public class Script extends Resource
 			return;
 		}
 
-		EvalUnit e = evaler.parse(runtime, source.toString(), filename, 0);
-		_loaded = e.run();
-
-		ready = true;
+		evaler.eval(runtime, source.toString());
 	}
 	
 }

@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 
 import org.lwjgl.BufferUtils;
 
-import DabEngine.Core.Engine;
+import DabEngine.Core.App;
+import DabEngine.Graphics.Viewport;
 import DabEngine.Graphics.Models.VertexAttrib;
 import DabEngine.Graphics.Models.VertexBuffer;
-import DabEngine.Graphics.OpenGL.Viewport.Viewport;
 import DabEngine.Observer.EventManager;
 import DabEngine.Resources.Textures.Texture;
 public class RenderTarget {

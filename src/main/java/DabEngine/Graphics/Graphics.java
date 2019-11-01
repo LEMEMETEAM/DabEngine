@@ -15,11 +15,12 @@ import org.lwjgl.stb.STBTTAlignedQuad;
 import org.lwjgl.system.MemoryStack;
 
 import DabEngine.Core.App;
+import DabEngine.Core.AppAdapter;
 import DabEngine.Core.IDisposable;
 import DabEngine.Graphics.Batch.Batch;
 import DabEngine.Graphics.Models.UniformAttribs;
 import DabEngine.Graphics.Models.UniformBuffer;
-import DabEngine.Graphics.OpenGL.Blending;
+import DabEngine.Graphics.Blending;
 import DabEngine.Resources.ResourceManager;
 import DabEngine.Resources.Font.Font;
 import DabEngine.Resources.Shaders.Shaders;
@@ -69,7 +70,7 @@ public class Graphics implements IDisposable
     {
         batch.begin();
 
-        if(mat == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
+        if(mat == null) mat = new Matrix4f().ortho2D(0, app.getWindow().getWidth(true), app.getWindow().getHeight(true), 0);
 
         currentTextureSlots[0] = ResourceManager.defaultTexture;
         currentShader = ResourceManager.defaultShaders;
@@ -353,13 +354,13 @@ public class Graphics implements IDisposable
         if(batch.hasBegun())
         {
             flush();
-            if(m == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
+            if(m == null) mat = new Matrix4f().ortho2D(0, app.getWindow().getWidth(true), app.getWindow().getHeight(true), 0);
             else mat = m;
             updateUniforms();
         }
         else
         {
-            if(m == null) mat = new Matrix4f().ortho2D(0, app.WIDTH, app.HEIGHT, 0);
+            if(m == null) mat = new Matrix4f().ortho2D(0, app.getWindow().getWidth(true), app.getWindow().getHeight(true), 0);
             else mat = m;
         }
     }

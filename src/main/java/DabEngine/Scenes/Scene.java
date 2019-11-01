@@ -2,7 +2,7 @@ package DabEngine.Scenes;
 
 import java.util.ArrayDeque;
 
-import DabEngine.Core.App;
+import DabEngine.Core.AppAdapter;
 import DabEngine.Graphics.Graphics;
 import DabEngine.States.StateManager;
 import DabEngine.System.ComponentSystem;
@@ -25,9 +25,9 @@ public class Scene implements IScene {
             return c;
         }
     };
-    protected App app;
+    protected AppAdapter app;
 
-    protected Scene(App app){
+    protected Scene(AppAdapter app){
         this.app = app;
     }
 

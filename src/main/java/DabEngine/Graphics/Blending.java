@@ -1,4 +1,4 @@
-package DabEngine.Graphics.OpenGL;
+package DabEngine.Graphics;
 
 import static org.lwjgl.opengl.GL33.*;
 

@@ -5,7 +5,6 @@ import DabEngine.Resources.Audio.Audio;
 import DabEngine.Resources.Audio.Music;
 import DabEngine.Resources.Audio.Sample;
 import DabEngine.Resources.Font.Font;
-import DabEngine.Resources.Script.Script;
 import DabEngine.Resources.Shaders.Shaders;
 import DabEngine.Resources.Textures.Texture;
 
@@ -220,32 +219,6 @@ public enum ResourceManager {
         }
 
         return audio;
-    }
-
-    public Script getScript(String name)
-    {
-        if(!ready)
-        {
-            //LOG
-            throw new IllegalStateException("Init ResourceManager first");
-        }
-
-        Script s = get(name);
-        if(s == null)
-        {
-            Script newScript = new Script(name);
-            newScript.load();
-
-            if(!newScript.ready)
-            {
-                return null;
-            }
-
-            cache.add(name, newScript);
-            return newScript;
-        }
-
-        return s;
     }
 
     public Font getFont(String name, float size, int oversampling)

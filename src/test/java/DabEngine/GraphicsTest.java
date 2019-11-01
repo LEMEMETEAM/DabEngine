@@ -9,8 +9,8 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL33;
 
+import DabEngine.Core.AppAdapter;
 import DabEngine.Core.App;
-import DabEngine.Core.Engine;
 import DabEngine.Graphics.Camera2D;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Graphics.OpenGL.Blending;
@@ -26,9 +26,9 @@ import DabEngine.Resources.Textures.Texture;
 import DabEngine.Resources.Textures.TextureRegion;
 import DabEngine.Utils.Color;
 
-public class GraphicsTest extends App {
+public class GraphicsTest extends AppAdapter {
 
-    private static Engine ENGINE = new Engine();
+    private static App ENGINE = new App();
     private Graphics g;
 
     private class Light {

@@ -95,10 +95,4 @@ public class UIContainer extends UIElement {
         }
     }
 
-    @Override
-    public void onKeyClicked(KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

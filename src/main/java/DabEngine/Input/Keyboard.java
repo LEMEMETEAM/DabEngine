@@ -9,11 +9,11 @@ public class Keyboard extends IEventSender<KeyboardEventListener>
 
 	public void onKeyDown(int keycode, int scancode, int mods)
 	{
-		KeyEvent e = new KeyEvent(keycode, scancode, GLFW_REPEAT, mods);
+		KeyEvent e = new KeyEvent(keycode, scancode, GLFW_PRESS, mods);
 
 		for(KeyboardEventListener l : observers)
 		{
-			l.onNotify(e);
+			l.onKeyDown(e);
 		}
 	}
 
@@ -23,17 +23,7 @@ public class Keyboard extends IEventSender<KeyboardEventListener>
 
 		for(KeyboardEventListener l : observers)
 		{
-			l.onNotify(e);
-		}
-	}
-
-	public void onKeyClicked(int keycode, int scancode, int mods)
-	{
-		KeyEvent e = new KeyEvent(keycode, scancode, GLFW_PRESS, mods);
-
-		for(KeyboardEventListener l : observers)
-		{
-			l.onNotify(e);
+			l.onKeyUp(e);
 		}
 	}
 }

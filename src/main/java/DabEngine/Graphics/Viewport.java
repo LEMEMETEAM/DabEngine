@@ -1,4 +1,4 @@
-package DabEngine.Graphics.OpenGL.Viewport;
+package DabEngine.Graphics;
 
 import org.lwjgl.opengl.GL11;
 
