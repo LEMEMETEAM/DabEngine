@@ -9,7 +9,9 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.internal.MemUtil;
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import DabEngine.Resources.Resource;
 
@@ -51,6 +53,28 @@ public class Texture extends Resource {
         this.mipmap = mipmap;
         this.hdr = hdr;
 
+        if(hdr) pixels = MemoryUtil.memCallocFloat(numChannels*width*height);
+        else pixels = MemoryUtil.memCalloc(numChannels*width*height);
+        for(int i = 0; i < width*height; i++)
+        {
+            if(hdr)
+            {
+                FloatBuffer fp = ((FloatBuffer)pixels);
+                fp.put((byte)255);
+                fp.put((byte)255);
+                fp.put((byte)255);
+                fp.put((byte)255);
+            }
+            else
+            {
+                ByteBuffer fp = ((ByteBuffer)pixels);
+                fp.put((byte)255);
+                fp.put((byte)255);
+                fp.put((byte)255);
+                fp.put((byte)255);
+            }
+        }
+
         created = true;
     }
 
@@ -72,7 +96,7 @@ public class Texture extends Resource {
     protected void create() {
         // TODO Auto-generated method stub
 
-        if (t_id != 0)
+        if (t_id != 0 || ready)
             return;
 
         if(!created)    ready = loadRaw();
@@ -87,9 +111,9 @@ public class Texture extends Resource {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
 
         if(hdr)
-            glTexImage2D(GL_TEXTURE_2D, 0, numChannels == 4 ? GL_RGBA16F : (numChannels == 3 ? GL_RGB16F : (numChannels == 1 ? GL_LUMINANCE16 : GL_RGBA16F)), width, height, 0, numChannels == 4 ? GL_RGBA16F : (numChannels == 3 ? GL_RGB16F : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA16F)), GL_FLOAT, (FloatBuffer)pixels);
+            glTexImage2D(GL_TEXTURE_2D, 0, numChannels == 4 ? GL_RGBA16F : (numChannels == 3 ? GL_RGB16F : (numChannels == 1 ? GL_LUMINANCE16 : GL_RGBA16F)), width, height, 0, numChannels == 4 ? GL_RGBA16F : (numChannels == 3 ? GL_RGB16F : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA16F)), GL_FLOAT, (FloatBuffer)pixels.flip());
         else
-            glTexImage2D(GL_TEXTURE_2D, 0, numChannels == 4 ? GL_RGBA : (numChannels == 3 ? GL_RGB : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA)), width, height, 0, numChannels == 4 ? GL_RGBA : (numChannels == 3 ? GL_RGB : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA)), GL_UNSIGNED_BYTE, (ByteBuffer)pixels);
+            glTexImage2D(GL_TEXTURE_2D, 0, numChannels == 4 ? GL_RGBA : (numChannels == 3 ? GL_RGB : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA)), width, height, 0, numChannels == 4 ? GL_RGBA : (numChannels == 3 ? GL_RGB : (numChannels == 1 ? GL_LUMINANCE : GL_RGBA)), GL_UNSIGNED_BYTE, (ByteBuffer)pixels.flip());
 
         if(mipmap)
         {

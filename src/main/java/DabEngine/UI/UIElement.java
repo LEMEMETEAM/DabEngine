@@ -14,7 +14,6 @@ public abstract class UIElement implements KeyboardEventListener, MouseEventList
 {
 
     protected interface EventCallback {public void call();}
-    public interface OnInsideCallback extends EventCallback{}
     protected Vector2f pos;
     protected Vector2f size;
     protected Vector2f anchor;

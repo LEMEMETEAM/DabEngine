@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DabEngine.iml" filepath="$PROJECT_DIR$/DabEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DabEngine.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DabEngine.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DabEngine.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DabEngine.test.iml" />
+    </modules>
+  </component>
+</project>

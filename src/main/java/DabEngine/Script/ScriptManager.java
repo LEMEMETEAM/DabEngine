@@ -4,76 +4,46 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.jruby.Ruby;
-import org.jruby.RubyRuntimeAdapter;
-import org.jruby.internal.runtime.GlobalVariable.Scope;
-import org.jruby.javasupport.Java;
-import org.jruby.javasupport.JavaEmbedUtils;
-import org.jruby.javasupport.JavaObject;
-import org.jruby.javasupport.JavaUtil;
-import org.jruby.javasupport.JavaEmbedUtils.EvalUnit;
-import org.jruby.runtime.GlobalVariable;
-import org.jruby.runtime.builtin.IRubyObject;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.Varargs;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.CoerceLuaToJava;
+import org.luaj.vm2.lib.jse.JsePlatform;
 
 import DabEngine.Core.IDisposable;
 import DabEngine.Resources.Resource;
 
-public enum ScriptManager implements IDisposable
+public enum ScriptManager
 {
 
 	INSTANCE;
 
-	private Ruby runtime;
-	private RubyRuntimeAdapter evaler;
-	public static final int HOOK_COUNT = 1000;
-	
-	/*
-	disallowedInRubyOpts(argument);
-	Options.DEBUG_FULLTRACE.force("true");
-	RubyInstanceConfig.FULL_TRACE_ENABLED = true;
-	config.setDebuggingFrozenStringLiteral(true);
-	*/
+	private Globals globals;
+	private LuaValue chunk;
 	
 	{
-
-
-		runtime = Ruby.getGlobalRuntime();
-		evaler = JavaEmbedUtils.newRuntimeAdapter();
-
+		globals = JsePlatform.standardGlobals();
 	}
 
 	public void bind(String key, Object value){
-		runtime.defineVariable(new GlobalVariable(runtime, "$"+key, JavaEmbedUtils.javaToRuby(runtime, value)), Scope.GLOBAL);
+		globals.set(LuaValue.valueOf(key), CoerceJavaToLua.coerce(value));
 	}
 
-	public void bindConstant(String key, Object value){
-		runtime.defineReadonlyVariable("$"+key, JavaEmbedUtils.javaToRuby(runtime, value), Scope.GLOBAL);
+	public LuaValue getBinding(String key){
+		return globals.get(LuaValue.valueOf(key));
 	}
 
-	public IRubyObject getBinding(String key){
-		return runtime.getGlobalVariables().get("$"+key);
-	}
-
-	public IRubyObject invokeMethod(String name, Object... args){
-		IRubyObject[] rubyArgs = JavaUtil.convertJavaArrayToRuby(runtime, args);
-
-        // Create Ruby proxies for any input arguments that are not primitives.
-        for (int i = 0; i < rubyArgs.length; i++) {
-            IRubyObject obj = rubyArgs[i];
-
-            if (obj instanceof JavaObject) rubyArgs[i] = Java.wrap(runtime, obj);
+	public Varargs invokeMethod(String name, Object... args){
+		LuaValue[] lArgs = new LuaValue[args.length];
+		for(int i = 0; i < lArgs.length; i++)
+		{
+			lArgs[i] = CoerceJavaToLua.coerce(args[i]);
 		}
-		
-		return runtime.getTopSelf().callMethod(runtime.getCurrentContext(), name, rubyArgs);
+		return globals.get(LuaValue.valueOf(name)).checkfunction().invoke(lArgs);
 	}
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		JavaEmbedUtils.terminate(runtime);
-	}
-
-	public void execFile(String filename) {
+	public LuaValue execFile(String filename) {
 		// TODO Auto-generated method stub
 		StringBuilder source = new StringBuilder();
 		try(BufferedReader b = new BufferedReader(new FileReader(filename)))
@@ -87,10 +57,11 @@ public enum ScriptManager implements IDisposable
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
+			return null;
 		}
 
-		evaler.eval(runtime, source.toString());
+		chunk = globals.load(source.toString(), "main.lua");
+		return chunk.call();
 	}
 	
 }

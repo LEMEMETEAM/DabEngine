@@ -68,6 +68,11 @@ public class App implements IDisposable
             glfwSwapBuffers(window.getHandle());
 
         }
+
+        adapter.dispose();
+        window.dispose();
+        System.exit(0);
+
     }
 
     /**

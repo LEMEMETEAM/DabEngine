@@ -7,6 +7,7 @@ import org.joml.Vector4f;
 import DabEngine.Graphics.Graphics;
 import DabEngine.Input.KeyEvent;
 import DabEngine.Observer.Event;
+import DabEngine.Resources.ResourceManager;
 import DabEngine.Resources.Font.Font;
 import DabEngine.Utils.Color;
 
@@ -22,7 +23,9 @@ public class UIButton extends UIElement {
     protected boolean drawBackground;
 
     protected Font font;
-    protected String text;
+    protected String text = "";
+
+    private float stringWidth, stringHeight;
 
     public UIButton(float x, float y, float sizex, float sizey, String text) {
         super(x, y, sizex, sizey);
@@ -43,8 +46,16 @@ public class UIButton extends UIElement {
         setText(text);
     }
 
-    public void setText(String text){this.text = text;}
-    public void setFont(Font font){this.font = font;}
+    public void setText(String text){this.text = text; updateStringMetrics();}
+    public void setFont(Font font){this.font = font; updateStringMetrics();}
+    public void setSizeToContent(int horizontalBorderSize, int verticalBorderSize){setSize(stringWidth+2*horizontalBorderSize, stringHeight+2*verticalBorderSize);}
+
+    public void updateStringMetrics()
+    {
+        if(font == null) return;
+        stringHeight = font.getHeight();
+        stringWidth = font.getWidth(text);
+    }
 
     /**
      * @param callback the callback to set
@@ -76,6 +87,7 @@ public class UIButton extends UIElement {
         // TODO Auto-generated method stub
         if(!visible) return;
 
+        g.setTexture(null);
         //draw frame
         if(drawFrame) g.drawQuad(new Vector3f(pos, 0), new Vector3f(size, 0), new Vector3f(0), new Vector4f(0), frameColor);
 

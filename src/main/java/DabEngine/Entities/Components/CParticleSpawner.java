@@ -1,7 +1,6 @@
 package DabEngine.Entities.Components;
 
 import org.joml.Vector3f;
-import org.jruby.util.Random;
 
 import DabEngine.Graphics.Blending;
 import DabEngine.Resources.Textures.*;

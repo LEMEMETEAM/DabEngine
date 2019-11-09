@@ -206,6 +206,9 @@ public class Window implements IDisposable {
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-        
+        input.dispose();
+        glfwSetFramebufferSizeCallback(windowHandle, null);
+        glfwDestroyWindow(windowHandle);
+        glfwTerminate();
     }
 }

@@ -42,14 +42,10 @@ public enum ResourceManager {
     + "uniform sampler2D texture0;\n\n"//
     + "void main(){\n"//
     + "     vec4 col = texture(texture0, outUV);\n"//
-    + "     if(col == vec4(0)){\n"//
-    + "         finalColor = outColor;\n"//
-    + "     } else {\n"//
-    + "         finalColor = col * outColor;\n"//
-    + "     }\n"//
-    + "     if(finalColor.a < 0.1){\n"//
+    + "     if(col.a < 0.1){\n"//
     + "         discard;\n"//
     + "     }\n"//
+    + "     finalColor = col * outColor;\n"//
     + "}\n";
     public static Shaders defaultShaders = new Shaders(vs_source, fs_source, true);
     private static boolean ready = false;
@@ -213,7 +209,7 @@ public enum ResourceManager {
                 return null;
             }
 
-            cache.add(name, newAudio);
+            cache.add(name, new ResourceHandle<Audio>(newAudio));
             return newAudio;
 
         }
@@ -242,7 +238,7 @@ public enum ResourceManager {
                 return null;
             }
 
-            cache.add(name, newFont);
+            cache.add(name, new ResourceHandle<Font>(newFont));
             return newFont;
         }
 

@@ -39,15 +39,17 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 
-    implementation 'org.jruby:jruby:9.2.8.0'
+    releaseJar 'org.luaj:luaj-jse:3.0.1'
     
     implementation fileTree('libs/lwjgl'){include '*.jar'}
 
-    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-
     releaseJar name: 'libtiled-1.0-SNAPSHOT'
 
+}
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 }
 
 jar {

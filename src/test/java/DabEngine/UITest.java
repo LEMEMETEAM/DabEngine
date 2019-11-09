@@ -10,13 +10,16 @@ import DabEngine.Graphics.Viewport;
 import DabEngine.Resources.ResourceManager;
 import DabEngine.Script.ScriptManager;
 import DabEngine.UI.UIContainer;
+import DabEngine.Utils.Timer;
 
 public class UITest extends AppAdapter
 {
 
     private Graphics graphics;
-    private UIContainer container;
     private Viewport vp;
+    private Timer timer;
+    private double time;
+    private volatile int frames, updates;
 
     @Override
     public void dispose() {
@@ -33,12 +36,14 @@ public class UITest extends AppAdapter
         graphics.begin();
         ScriptManager.INSTANCE.invokeMethod("draw", graphics);
         graphics.end();
+        frames++;
     }
 
     @Override
     public void update() {
         // TODO Auto-generated method stub
         ScriptManager.INSTANCE.invokeMethod("update");
+        updates++;
     }
 
     @Override
@@ -49,8 +54,25 @@ public class UITest extends AppAdapter
         vp = new Viewport(0, 0, app.getConfig().width, app.getConfig().height);
         vp.apply();
 
-        ScriptManager.INSTANCE.bindConstant("app", app);
-        ScriptManager.INSTANCE.execFile("C:/Users/B/Documents/DabEngine/src/test/java/DabEngine/UITest.rb");
+        timer = new Timer();
+        time = timer.getTime();
+
+        ScriptManager.INSTANCE.bind("app", app);
+        ScriptManager.INSTANCE.execFile("C:/Users/B/Documents/DabEngine/src/test/java/DabEngine/UITest.lua");
+
+        new Thread(() -> 
+        {
+            while(true)
+            {
+                if(timer.getTime() - time > 1.0)
+                {
+                    time++;
+                    System.out.println("UPS:\t" + updates + "\tFPS:\t" + frames);
+                    updates = 0;
+                    frames = 0;
+                }
+            }
+        }).start();
     }
 
     @Override

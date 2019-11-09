@@ -10,7 +10,8 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
-public class Input {
+public class Input implements IDisposable
+{
 
     private Mouse mouse;
     private Keyboard keyboard;
@@ -66,5 +67,13 @@ public class Input {
      */
     public Mouse getMouse() {
         return mouse;
+    }
+
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+        keyCallback.free();
+        mousePosCallback.free();
+        mouseButtonCallback.free();
     }
 }
