@@ -1,0 +1,66 @@
+
+=DabEngine.System.ParticleEmitterSystem#firstUnusedParticle()IY
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java[ [(#"4"9"1*Ã
+3Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javag# g($"c
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javah h(
+""*˜
+4Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javae e('”
+‘
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javae e(0&
+%2 DabEngine.Entities.EntityManager"__id*
+""ÏÌ
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javae e(T-
+%3'DabEngine.Entities.Components.CParticle"gDabEngine.Entities.EntityManager#component(ILjava/lang/Class;)LDabEngine/Entities/Components/Component;*(
+&
+%2 DabEngine.Entities.EntityManager*
+""*
+""2component(ILjava/lang/Class;)Ã
+À
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javae e(U,
+p'DabEngine.Entities.Components.CParticle"__id*/
+-
+%3'DabEngine.Entities.Components.CParticle*	
+3
+4
+1*Ã
+8Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java_# _($"c
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java` `(
+""*›
+9Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java] ]('”
+‘
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java] ](0&
+%0 DabEngine.Entities.EntityManager"__id*
+""ÏÌ
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java] ](T-
+%1'DabEngine.Entities.Components.CParticle"gDabEngine.Entities.EntityManager#component(ILjava/lang/Class;)LDabEngine/Entities/Components/Component;*(
+&
+%0 DabEngine.Entities.EntityManager*
+""*
+""2component(ILjava/lang/Class;)Ã
+À
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.java] ](U,
+p'DabEngine.Entities.Components.CParticle"__id*/
+-
+%1'DabEngine.Entities.Components.CParticle*
+4
+8
+9
+1*Ã
+1Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javal l("c
+Y
+OC:\projects\dabengine\src\main\java\DabEngine\System\ParticleEmitterSystem.javam m(
+""B*(
+&DabEngine.System.ParticleEmitterSystem

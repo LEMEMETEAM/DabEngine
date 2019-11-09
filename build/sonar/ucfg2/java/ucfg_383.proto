@@ -1,0 +1,48 @@
+
+"DabEngine.Utils.Tuple3#hashCode()II
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java ("1*∆
+1I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java	 (Ñ
+Å
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java ($
+%0A"__id*%*#
+DabEngine.Utils.Tuple3"
+first¨
+©
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java (%	
+%1int"/java.util.Objects#hashCode(Ljava/lang/Object;)I*"
+java.util.Objects*	
+
+%0AÖ
+Ç
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java9 (?
+%2B"__id*&*$
+DabEngine.Utils.Tuple3"
+second¨
+©
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java( (@	
+%3int"/java.util.Objects#hashCode(Ljava/lang/Object;)I*"
+java.util.Objects*	
+
+%2BÑ
+Å
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaT (Y
+%4C"__id*%*#
+DabEngine.Utils.Tuple3"
+third¨
+©
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.javaC (Z	
+%5int"/java.util.Objects#hashCode(Ljava/lang/Object;)I*"
+java.util.Objects*	
+
+%4C"S
+I
+?C:\projects\dabengine\src\main\java\DabEngine\Utils\Tuple3.java ([
+""B
+DabEngine.Utils.Tuple3
